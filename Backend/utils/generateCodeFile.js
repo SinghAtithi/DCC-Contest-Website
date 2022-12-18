@@ -9,7 +9,7 @@ if (!fs.existsSync(dirCodeFiles)) {
   fs.mkdirSync(dirCodeFiles, { recursive: true });
 }
 
-const generateCodeFile = async (lang, content, id, attempt) => {
+const generateCodeFile = async (lang, content, input, id, attempt) => {
   const userDir = path.join(dirCodeFiles, `${id}`);
   if (!fs.existsSync(userDir)) {
     fs.mkdirSync(userDir, { recursive: true });
@@ -20,8 +20,12 @@ const generateCodeFile = async (lang, content, id, attempt) => {
   const codeFileName = `${id}_${now.toString()}_${attempt}.${lang}`;
   const codeFilePath = path.join(userDir, codeFileName);
 
+  const inFileName = `${codeFileName.split('.')[0]}.txt`
+  const inPath = path.join(userDir,inFileName);
+
+  await fs.writeFileSync(inPath, input);
   await fs.writeFileSync(codeFilePath, content);
-  return codeFilePath;
+  return {codeFilePath,inPath};
 };
 
 module.exports = {generateCodeFile};
