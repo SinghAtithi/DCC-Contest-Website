@@ -7,6 +7,7 @@ const mongoose = require("mongoose");
 
 const RunRoutes = require("./routes/run.js");
 const QuesRoutes = require("./routes/question.js");
+const SubmitRoutes = require("./routes/submit.js");
 const { Question } = require("./models/question.js");
 
 const app = express();
@@ -21,6 +22,7 @@ dotenv.config();
 
 app.use("/api", RunRoutes);
 app.use("/question",QuesRoutes);
+app.use("/question",SubmitRoutes);
 
 
 // ------------- database connection --------------
