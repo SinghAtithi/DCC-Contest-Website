@@ -1,8 +1,8 @@
 # Every task will be updated here
 
-> 1. Get the language and code as post request and develop a mechanism to execute it.
-> 2. Set up a mechanism to give inputs to the code.
-> 3. Set up the database to store questions - 
+>- [x] 1. Get the language and code as post request and develop a mechanism to execute it.
+>- [x] 2. Set up a mechanism to give inputs to the code.
+>- [x] 3. Set up the database to store questions - 
 > >* ques_id 
 > >* Description
 > >* Constraints
@@ -11,9 +11,11 @@
 > >* Expected Time Limit (in seconds)
 > >* Public Test Cases : [{input,output}]
 > >* Private Test Cases : [{input,output}]
-> 4. How to exeute multiple test cases , compare results and give the final verdict ?
-> 5. Handle TLE
-> 6. Set up the database to store user details :
+> >> ### <strong>Extra</strong> : Added an endpoint /question/create to create questions. While the question is being created, .txt files for inputs and outputs are also created.
+>- [x] 4. How to exeute multiple test cases , compare results and give the final verdict ?
+> >> ### <strong>Extra</strong> : Added an endpoint /submit that will evaluate the code using private test cases.
+>- [x] 5. Handle TLE
+>- [ ] 6. Set up the database to store user details :
 > >* user_id
 > >* user_name
 > >* password
@@ -21,13 +23,13 @@
 > >* middle name
 > >* last name
 > >* email
-> 7. Set up the database to store the code :
+>- [ ] 7. Set up the database to store the code :
 > >* code_id 
 > >* ques_id
 > >* user_id
 > >* language
 > >* Code Body
 > >* No of attempts 
-> 8. Set up the apis to get the question and code(if solved).
-> 9. Authentication and Authorisation
-> 10. Implementing JobQueues
+>- [ ] 8. Set up the apis to get the question and code(if solved).
+>- [ ] 9. Authentication and Authorisation
+>- [ ] 10. Implementing JobQueues
