@@ -2,7 +2,7 @@
 
 >- [x] 1. Get the language and code as post request and develop a mechanism to execute it.
 >- [x] 2. Set up a mechanism to give inputs to the code.
->- [ ] 3. Set up the database to store questions - 
+>- [x] 3. Set up the database to store questions - 
 > >* ques_id 
 > >* Description
 > >* Constraints
@@ -11,6 +11,7 @@
 > >* Expected Time Limit (in seconds)
 > >* Public Test Cases : [{input,output}]
 > >* Private Test Cases : [{input,output}]
+> >> ### <strong>Extra</strong> : Added an endpoint /question/create to create questions. While the question is being created, .txt files for inputs and outputs are also created.
 >- [ ] 4. How to exeute multiple test cases , compare results and give the final verdict ?
 >- [ ] 5. Handle TLE
 >- [ ] 6. Set up the database to store user details :
