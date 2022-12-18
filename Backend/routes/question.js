@@ -18,8 +18,9 @@ router.post("/create", async (req, res) => {
         const ques = await new Question({description, constraints,input_format,output_format,time_limit,public_test_cases,private_test_cases,no_of_public_test_cases,no_of_private_test_cases}).save();
         
 
-        generateTestCaseFiles(public_tc,private_tc,ques._id);
-        res.send(ques);
+        generateTestCaseFiles(public_tc, private_tc, ques._id);
+        // send res 200
+        res.status(200).json("Question created successfully");
     }
     catch(error){
         console.log(error);
