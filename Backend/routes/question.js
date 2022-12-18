@@ -6,7 +6,9 @@ const router = express.Router();
 
 
 router.post("/create", async (req, res) => {
+
     const {description, constraints,input_format,output_format,time_limit,public_test_cases,private_test_cases} = req.body;
+    console.log(req.body);
     try{
         var public_tc = JSON.parse(public_test_cases);
         var private_tc = JSON.parse(private_test_cases);
@@ -20,6 +22,7 @@ router.post("/create", async (req, res) => {
         res.send(ques);
     }
     catch(error){
+        console.log(error);
         res.status(500).json(error);
     }
     

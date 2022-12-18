@@ -12,8 +12,9 @@
 > >* Public Test Cases : [{input,output}]
 > >* Private Test Cases : [{input,output}]
 > >> ### <strong>Extra</strong> : Added an endpoint /question/create to create questions. While the question is being created, .txt files for inputs and outputs are also created.
->- [ ] 4. How to exeute multiple test cases , compare results and give the final verdict ?
->- [ ] 5. Handle TLE
+>- [x] 4. How to exeute multiple test cases , compare results and give the final verdict ?
+> >> ### <strong>Extra</strong> : Added an endpoint /submit that will evaluate the code using private test cases.
+>- [x] 5. Handle TLE
 >- [ ] 6. Set up the database to store user details :
 > >* user_id
 > >* user_name
