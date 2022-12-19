@@ -20,6 +20,7 @@ body {
     -100px -100px;
   color: #f7f7e7;
   min-height: 100vh;
+  overflow: hidden;
 }
 
 a {
