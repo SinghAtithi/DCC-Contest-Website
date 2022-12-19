@@ -15,8 +15,8 @@ function Navbar() {
               className="hover:scale-110 "
               src="/DCC_LOGO.png"
               alt="Picture of the author"
-              width={64}
-              height={64}
+              width={48}
+              height={48}
             />
           </Link>
         </div>
