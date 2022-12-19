@@ -1,9 +1,8 @@
-import React from 'react'
+import React from "react";
+import BlogsIndex from "./Blogs/BlogsIndex";
 
 function Blogs() {
-  return (
-    <div>Blogs</div>
-  )
+  return <BlogsIndex />;
 }
 
-export default Blogs
+export default Blogs;

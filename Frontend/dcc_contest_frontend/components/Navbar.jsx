@@ -29,7 +29,7 @@ function Navbar() {
               <Link href="/ProblemSet">Problem Set</Link>
             </li>
             <li>
-              <Link href="/">Blogs</Link>
+              <Link href="/Blogs">Blogs</Link>
             </li>
             <li>
               <Link href="/">About</Link>
