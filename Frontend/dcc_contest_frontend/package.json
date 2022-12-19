@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
+    "build": "node -v && frontity build && node -v",
     "start": "next start",
     "lint": "next lint"
   },
@@ -25,5 +25,9 @@
     "autoprefixer": "^10.4.13",
     "postcss": "^8.4.20",
     "tailwindcss": "^3.2.4"
+  },
+  "engines": {
+    "node": "16.13.0",
+    "npm": ">=6.0.0"
   }
 }
