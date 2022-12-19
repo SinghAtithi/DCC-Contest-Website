@@ -2,7 +2,6 @@ import React from "react";
 import Editor, { DiffEditor, useMonaco, loader } from "@monaco-editor/react";
 
 function CodeEditor(props) {
-  // console.log(props);
   return (
     <div className="relative ">
       <Editor

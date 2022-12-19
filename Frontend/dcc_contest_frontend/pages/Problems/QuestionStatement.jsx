@@ -1,8 +1,8 @@
 import React from "react";
 
-function Contests() {
+function QuestionStatement() {
   return (
-    <div className="overflow-hidden">
+    <div className="flex flex-col w-full justify-start ">
       <div className="flex flex-col w-full items-center justify-center">
         <h1 className="text-2xl">Problem Name</h1>
         <p className="text-sm mt-1 italic">Time Limit : 1 Sec</p>
@@ -57,17 +57,10 @@ function Contests() {
           architecto cupiditate consequatur earum eaque sunt temporibus nostrum
           facilis, iste natus perferendis sapiente, consectetur rem vitae rerum
           ipsam. Quam, minima nisi?
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Ad, inventore! Doloremque nostrum, ex cupiditate consectetur fuga placeat, blanditiis minima similique vero, omnis voluptatibus quos asperiores quis neque nesciunt iusto modi?
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Numquam quos, impedit dolor possimus delectus tenetur quaerat. Fuga harum eaque quidem ipsa alias, odit ea dolor sit doloremque itaque consequatur laudantium?
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Provident, laborum excepturi adipisci architecto maxime non vero obcaecati molestiae eos, eligendi perferendis corporis voluptate minima mollitia magnam nesciunt! Veritatis, repudiandae consequatur!
-          Lorem ipsum dolor sit amet consectetur, adipisicing elit. Voluptas ut dolores accusantium repellendus ea rem cum, velit reprehenderit aspernatur fuga, molestias reiciendis placeat dolorum. Iure numquam dolore ad nisi labore!Lorem
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Animi eius blanditiis voluptatibus molestiae minus asperiores, id quos exercitationem tempore, ab magnam corrupti nam delectus quaerat fugiat officia fuga tempora dolor.
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Cum voluptatem hic aspernatur repellendus quam aliquam vero ipsa, minima quae enim inventore libero. Dolores excepturi veniam sequi eum natus quia consequatur?
-          fff
         </p>
       </div>
     </div>
   );
 }
 
-export default Contests;
+export default QuestionStatement;
