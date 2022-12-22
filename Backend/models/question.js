@@ -4,42 +4,58 @@
 const mongoose = require("mongoose");
 
 const QuesSchema = mongoose.Schema({
-    description: {
-        type: String,
-        required: true,
-    },
-    constraints: {
-        type: String,
-        required: true,
-    },
-    input_format: {
-        type: String,
-        required: true,
-    },
-    output_format: {
-        type: String,
-        required: true,
-    },
-    time_limit: {
-        type: Number,
-        required: true,
-    },
-    public_test_cases: {
-        type: String,
-        required: true,
-    },
-    private_test_cases: {
-        type: String,
-        required: true,
-    },
-    no_of_public_test_cases: {
-        type: Number,
-        required: true,
-    },
-    no_of_private_test_cases: {
-        type: Number,
-        required: true,
-    },
+  ques_no: {
+    type: String,
+    required: true,
+    unique: true
+
+  },
+  name: {
+    type: String,
+    required: true,
+    unique: true
+  },
+  description: {
+    type: String,
+    required: true,
+  },
+  constraints: {
+    type: String,
+    required: true,
+  },
+  input_format: {
+    type: String,
+    required: true,
+  },
+  output_format: {
+    type: String,
+    required: true,
+  },
+  time_limit: {
+    type: Number,
+    required: true,
+  },
+  public_test_cases: {
+    type: String,
+    required: true,
+  },
+  private_test_cases: {
+    type: String,
+    required: true,
+  },
+  no_of_public_test_cases: {
+    type: Number,
+    required: true,
+  },
+  no_of_private_test_cases: {
+    type: Number,
+    required: true,
+  },
+  // topics is a comma separated string
+  topics: {
+    type: String,
+    required: false,
+  },
 });
 
 const Question = new mongoose.model("question", QuesSchema);
@@ -56,4 +72,3 @@ module.exports = Question;
 //         required : true
 //     }
 // }]
-
