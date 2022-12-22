@@ -34,7 +34,7 @@ mongoose.set("strictQuery", true);
 mongoose
   .connect(process.env.CONNECTION_URL, {
     useNewUrlParser: true,
-    useUnifiedTopology: true,
+    useUnifiedTopology: true, 
   })
   .then(() =>
     app.listen(PORT, () => {
