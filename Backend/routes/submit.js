@@ -12,7 +12,7 @@ const { saveCodes } = require("../utils/save_codes.js");
 const router = express.Router();
 
 router.post("/submit", async (req, res) => {
-  const { lang = "cpp", code, ques_id } = req.body;
+  const { lang = "cpp", code, ques_no } = req.body;
   const user_id = 1; // To be defined later
 
   // If no code is sent
@@ -21,7 +21,7 @@ router.post("/submit", async (req, res) => {
   }
 
   // Save the code to the database
-  const response = await saveCodes(ques_id, user_id, code, lang);
+  const response = await saveCodes(ques_no, user_id, code, lang);
 
   if (response.status_code == 200) {
     const attempt_no = response.details.codes.length;
@@ -37,22 +37,23 @@ router.post("/submit", async (req, res) => {
     // Try to execute the file created and deliver the verdict
     try {
       // For pre defined Private Test Cases
-      const ques = await Question.findById(ques_id);
+      const ques = await Question.findOne({ques_no:ques_no}).exec();
       var error = false;
       for (var i = 0; i < ques.no_of_private_test_cases; i++) {
         const inPath = path.join(
           path.join(
-            path.join(path.join(basePath(), "TestCases"), `${ques_id}`),
+            path.join(path.join(basePath(), "TestCases"), `${ques._id}`),
             "private"
           ),
           `${i}_in.txt`
         );
-        var ans = await executeCpp(
+        var resp = await executeCpp(
           codeFilePath,
           user_id,
           inPath,
           ques.time_limit
         ); // path of code file, user_id, path of input file, time_limit
+        ans = resp.stdout;
         // ans = ans.replace(/(\r)/gm, ""); // Windows by default adds \r before every \n. This was causing an issue with file comparison. So removed all \r from output.
         // Create a file for the result obtained by the code which was executed.
         const resultFilePath = await generateResultFile(
@@ -65,7 +66,7 @@ router.post("/submit", async (req, res) => {
         // Path of the pre defined output file for this test case
         const outPath = path.join(
           path.join(
-            path.join(path.join(basePath(), "TestCases"), `${ques_id}`),
+            path.join(path.join(basePath(), "TestCases"), `${ques._id}`),
             "private"
           ),
           `${i}_out.txt`
@@ -79,15 +80,16 @@ router.post("/submit", async (req, res) => {
       }
 
       if (!error) {
-        res.send({ message: "Passed" });
+        res.status(200).json({ message: "Passed", time : resp.difference });
       } else {
         res.status(406).json({ error: "Incorrect Output", message: "Failed" });
       }
     } catch (error) {
-      res.status(500).json({ error: error });
+      console.log(error);
+      res.status(508).json({ error: error });
     }
   } else {
-    return res.status(500).send({ error: "Something Went Wrong" });
+    return res.status(505).send({ error: "Something Went Wrong" });
   }
 });
 

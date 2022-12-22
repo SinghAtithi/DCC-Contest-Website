@@ -1,11 +1,11 @@
 const Code = require("../models/code.js");
 
-async function saveCodes(ques_id, user_id, code, language) {
+async function saveCodes(ques_no, user_id, code, language) {
   var status_code;
   var details;
 
   try {
-    let code_obj = await Code.findOne({ ques_id: ques_id }).exec();
+    let code_obj = await Code.findOne({ ques_no: ques_no }).exec();
 
     if (code_obj) {
       code_obj.codes.push(code);
