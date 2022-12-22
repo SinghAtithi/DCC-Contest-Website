@@ -11,10 +11,10 @@ function CodeEditor(props) {
   useEffect(() => {
     let prevCode = localStorage.getItem(props.ProblemId, code);
     props.setCode(prevCode);
-    prevCode = prevCode.replace(/\s/g, "");
-    if (prevCode.length === 0) {
-      props.setCode(code);
-    }
+    // prevCode = prevCode.replace(/\s/g, "");
+    // if (prevCode.length === 0) {
+    //   props.setCode(code);
+    // }
   }, []);
 
   return (

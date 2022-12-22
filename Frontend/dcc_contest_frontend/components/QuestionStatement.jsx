@@ -18,17 +18,21 @@ function QuestionStatement(props) {
       .get(`http://localhost:5000/question/${props.problemId}`)
       .then((res) => {
         console.log(res.data);
-        setQuestion({
-          name: res.data.name,
-          description: res.data.description,
-          constraints: res.data.constraints,
-          input_format: res.data.input_format,
-          output_format: res.data.output_format,
-          topics: res.data.topics,
-          public_test_cases: res.data.public_test_cases,
-        });
-      });
-  }, []);
+        if(question.name != res.data.name){
+          setQuestion({
+            name: res.data.name,
+            description: res.data.description,
+            constraints: res.data.constraints,
+            input_format: res.data.input_format,
+            output_format: res.data.output_format,
+            topics: res.data.topics,
+            public_test_cases: res.data.public_test_cases,
+          });
+
+        }
+      })
+      // Catch errors and redirect
+  }, [question]);
 
   return (
     <div className="flex flex-col w-full justify-start ">
