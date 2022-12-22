@@ -5,7 +5,7 @@ function QuestionStatement(props) {
   const [question, setQuestion] = React.useState({
     name: "",
     description: "",
-    constraints: "",
+    constraints: "", 
     input_format: "",
     output_format: "",
     topics: "",
@@ -13,18 +13,21 @@ function QuestionStatement(props) {
   });
 
   useEffect(() => {
-    axios.get(`http://localhost:5000/question/Trial-01`).then((res) => {
-      console.log(res.data);
-      setQuestion({
-        name: res.data.name,
-        description: res.data.description,
-        constraints: res.data.constraints,
-        input_format: res.data.input_format,
-        output_format: res.data.output_format,
-        topics: res.data.topics,
-        public_test_cases: res.data.public_test_cases,
+    console.log(props);
+    axios
+      .get(`http://localhost:5000/question/${props.problemId}`)
+      .then((res) => {
+        console.log(res.data);
+        setQuestion({
+          name: res.data.name,
+          description: res.data.description,
+          constraints: res.data.constraints,
+          input_format: res.data.input_format,
+          output_format: res.data.output_format,
+          topics: res.data.topics,
+          public_test_cases: res.data.public_test_cases,
+        });
       });
-    });
   }, []);
 
   return (
