@@ -5,13 +5,16 @@ const bodyParser = require("body-parser");
 const dotenv = require("dotenv");
 const mongoose = require("mongoose");
 
+const { Question } = require("./models/question.js");
+const { User } = require("./models/user.js");
+const { Code } = require("./models/code.js");
+
 const RunRoutes = require("./routes/run.js");
 const QuesRoutes = require("./routes/question.js");
 const SubmitRoutes = require("./routes/submit.js");
-const { Question } = require("./models/question.js");
+const CodeRoutes = require("./routes/code.js");
 
 const app = express();
-
 
 // ------------- Middlewares --------------
 
@@ -21,9 +24,9 @@ app.use(cors());
 dotenv.config();
 
 app.use("/api", RunRoutes);
-app.use("/question",QuesRoutes);
-app.use("/question",SubmitRoutes);
-
+app.use("/question", QuesRoutes);
+app.use("/question", SubmitRoutes);
+app.use("/code", CodeRoutes);
 
 // ------------- database connection --------------
 
