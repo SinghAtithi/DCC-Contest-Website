@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import CodeEditor from "../../components/CodeEditor";
 import Navbar from "../../components/Navbar";
 import QuestionStatement from "../../components/QuestionStatement";
+import snippetCode from "../../components/snippet";
 
 function demo() {
   const [problemId, setProblemId] = React.useState("");
@@ -17,8 +18,15 @@ function demo() {
   }, []);
 
   useEffect(() => {
-    if (problemId) {
+    let prevCode = localStorage.getItem(problemId, snippetCode);
+    if (prevCode === null) {
+      prevCode = snippetCode;
     }
+    let prevCodeWithoutSpaces = prevCode.replace(/\s/g, "");
+    if (prevCodeWithoutSpaces.length === 0) {
+      prevCode = snippetCode;
+    }
+    setCode(prevCode);
   }, [problemId]);
 
   const onSubmit = () => {
@@ -33,7 +41,7 @@ function demo() {
           <QuestionStatement problemId={problemId} />
         </div>
         <div className="flex flex-col items-center mt-32 px-4">
-          <CodeEditor Code={code} setCode={setCode} ProblemId="demo" />
+          <CodeEditor Code={code} setCode={setCode} ProblemId={problemId} />
           <button
             className="btn btn-outline btn-success mt-6"
             onClick={onSubmit}
