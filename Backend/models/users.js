@@ -1,7 +1,14 @@
+// This is a mongoose model for the users collection in the database.
+// It defines the schema for this collection.
+
 const mongoose = require("mongoose");
 
-const userSchema = mongoose.Schema({
-      username: {
+const UserSchema = mongoose.Schema({
+      name: {
+            type: String,
+            required: true,
+      },
+      user_name: {
             type: String,
             required: true,
             unique: true,
@@ -15,23 +22,10 @@ const userSchema = mongoose.Schema({
             type: String,
             required: true,
       },
-      avatar: {
-            type: String,
-      },
-      bio: {
-            type: String,
-      },
-      social: {
-            type: [String],
-      },
-      problemsSolved: {
-            type: [String],
-      },
-      numProblemsSolved: {
-            type: Number,
-            default: () => this.problemsSolved.length,
+      questions_solved: {
+            type: Array,
       },
 });
 
-const User = mongoose.model("user", userSchema);
+const User = new mongoose.model("user", UserSchema);
 module.exports = User;
