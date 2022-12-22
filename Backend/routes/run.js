@@ -63,7 +63,7 @@ router.post("/run", async (req, res) => {
         inPath,
         ques.time_limit
       ); // path of code file, user_id, path of input file , time_limit
-      ans = ans.replace(/(\r)/gm, ""); // Windows by default adds \r before every \n. This was causing an issue with file comparison. So removed all \r from output.
+      // const ans1 = ans.replace(/(\r)/gm, ""); // Windows by default adds \r before every \n. This was causing an issue with file comparison. So removed all \r from output.
 
       
       // Create a file for the result obtained by the code which was executed.

@@ -20,23 +20,21 @@
 >- [x] 4. How to exeute multiple test cases , compare results and give the final verdict ?
 > >> <strong>Extra</strong> : Added an endpoint /submit that will evaluate the code using private test cases.
 >- [x] 5. Handle TLE
-> >> <strong>Extra</strong> : Added endpoints /question to get the list of ques_no,name and topics of all questions and /:ques_id to get question by ques_no
->- [ ] 6. Set up the database to store user details :
+> >> <strong>Extra</strong> : Added endpoints /question to get the list of ques_no,name and topics of all questions and question/:ques_id to get question by ques_no
+>- [x] 6. Set up the database to store user details :
 > >* user_id
 > >* user_name
-> >* password
-> >* first name
-> >* middle name
-> >* last name
+> >* name
 > >* email
->- [ ] 7. Set up the database to store the code :
-> >* code_id 
+> >* password
+> >* questions_solved
+>- [x] 7. Set up the database to store the code :
 > >* ques_id
 > >* user_id
 > >* language
 > >* Code Body
-> >* No of attempts 
->- [ ] 8. Set up the apis to get the question and code(if solved).
+>- [x] 8. Set up the apis to get the question and code(if solved).
+>> <strong>Extra</strong> : Added endpoints /code/:ques_no to get all the attempts of code and /code/:ques_no/:attempt_no to get the code by attempt_no
 >- [ ] 9. Authentication and Authorisation
 >- [ ] 10. Implementing JobQueues
 >- [ ] 11. Cleaning files

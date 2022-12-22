@@ -32,7 +32,6 @@ router.get("/:ques_no", (req,res)=>{
                 }
                 res.status(200).json(result);
             }
-    
         })
     }
     catch(error){
@@ -44,7 +43,6 @@ router.get("/:ques_no", (req,res)=>{
 router.post("/create", async (req, res) => {
 
     const {description, constraints,input_format,output_format,time_limit,public_test_cases,private_test_cases} = req.body;
-    console.log(req.body);
     try{
         var public_tc = JSON.parse(public_test_cases);
         var private_tc = JSON.parse(private_test_cases);
