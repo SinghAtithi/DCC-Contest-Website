@@ -20,19 +20,19 @@ router.get("/", (req, res) => {
 });
 
 router.post("/createQuestion/create", async (req, res) => {
-    console.log("Came to Question create");
-    const { description, constraints, input_format, output_format, time_limit, public_test_cases, private_test_cases } = req.body;
+    console.log(req.body); 
+    const { description, constraints, input_format, output_format, time_limit, public_test_cases, private_test_cases, topics } = req.body;
     try {
-        var public_tc = JSON.parse(public_test_cases);
+        var public_tc = JSON.parse(public_test_cases); 
         var private_tc = JSON.parse(private_test_cases);
 
         var no_of_public_test_cases = public_tc.length;
         var no_of_private_test_cases = private_tc.length;
-        const ques = await new Question({ description, constraints, input_format, output_format, time_limit, public_test_cases, private_test_cases, no_of_public_test_cases, no_of_private_test_cases }).save();
+        const ques = await new Question({ description, constraints, input_format, output_format, time_limit, public_test_cases, private_test_cases, no_of_public_test_cases, no_of_private_test_cases, topics }).save();
 
 
         generateTestCaseFiles(public_tc, private_tc, ques._id);
-        res.status(200).json("Question created successfully");
+        res.status(200).json("Question created successfully"); 
     }
     catch (error) {
         console.log(error);
