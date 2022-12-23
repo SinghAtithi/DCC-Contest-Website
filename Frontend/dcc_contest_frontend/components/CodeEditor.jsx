@@ -15,7 +15,7 @@ function CodeEditor(props) {
   }, []);
 
   return (
-    <div className="relative ">
+    <div className="relative">
       <Editor
         className=" border-2 border-green-700"
         height="60vh"

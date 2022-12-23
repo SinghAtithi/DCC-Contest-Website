@@ -35,11 +35,11 @@ const QuesSchema = mongoose.Schema({
     required: true,
   },
   public_test_cases: {
-    type: String,
+    type: Array,
     required: true,
   },
   private_test_cases: {
-    type: String,
+    type: Array,
     required: true,
   },
   no_of_public_test_cases: {

@@ -12,7 +12,7 @@ const generateTestCaseFiles = async (public_test_case_obj, private_test_case_obj
     // Create a new directory for the question
     // quesDir: directory path of the question
 
-    const quesDir = path.join(dirTestCases, `${ques_id}`);
+    const quesDir = path.join(testCasesDir, `${ques_id}`);
     if (!fs.existsSync(quesDir)) {
         fs.mkdirSync(quesDir, { recursive: true });
     }

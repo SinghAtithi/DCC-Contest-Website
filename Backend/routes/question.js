@@ -21,7 +21,8 @@ router.get("/", (req, res) => {
 
 router.post("/createQuestion/create", async (req, res) => {
     console.log(req.body); 
-    const { description, constraints, input_format, output_format, time_limit, public_test_cases, private_test_cases, topics, problemID } = req.body;
+
+    const {name, description, constraints, input_format, output_format, time_limit, public_test_cases, private_test_cases, topics, problemID } = req.body;
     try {
         var public_tc = public_test_cases;
         var private_tc = private_test_cases;
@@ -29,7 +30,7 @@ router.post("/createQuestion/create", async (req, res) => {
 
         var no_of_public_test_cases = public_tc.length;
         var no_of_private_test_cases = private_tc.length;
-        const ques = await new Question({ description, constraints, input_format, output_format, time_limit, public_test_cases, private_test_cases, no_of_public_test_cases, no_of_private_test_cases, topics,ques_no }).save();
+        const ques = await new Question({ name, description, constraints, input_format, output_format, time_limit, public_test_cases, private_test_cases, no_of_public_test_cases, no_of_private_test_cases, topics,ques_no }).save();
 
 
         generateTestCaseFiles(public_tc, private_tc, ques._id);
