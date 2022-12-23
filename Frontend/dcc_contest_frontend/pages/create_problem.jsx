@@ -16,7 +16,6 @@ function create_problem() {
   const [problemID, setProblemID] = React.useState("");
   const [inputTestCase, setInputTestCase] = React.useState("");
   const [outputTestCase, setOutputTestCase] = React.useState("");
-  const [testCase, setTestCase] = React.useState([]);
 
   const onSubmit = () => {
     axios
@@ -127,7 +126,7 @@ function create_problem() {
                 <button
                   className="btn btn-error"
                   onClick={() => {
-                    setPrivateTestCases(
+                    setPublicTestCases(
                       public_test_cases.filter((_, i) => i !== index)
                     );
                   }}
