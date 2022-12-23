@@ -124,6 +124,16 @@ function create_problem() {
                   <h1 className="text-2xl">Output : </h1>
                   <p className="text-lg whitespace-pre">{test.output}</p>
                 </div>
+                <button
+                  className="btn btn-error"
+                  onClick={() => {
+                    setPrivateTestCases(
+                      public_test_cases.filter((_, i) => i !== index)
+                    );
+                  }}
+                >
+                  Delete
+                </button>
               </div>
             );
           })}
@@ -141,6 +151,16 @@ function create_problem() {
                   <h1 className="text-2xl">Output : </h1>
                   <p className="text-lg">{test.output}</p>
                 </div>
+                <button
+                  className="btn btn-error"
+                  onClick={() => {
+                    setPrivateTestCases(
+                      private_test_cases.filter((_, i) => i !== index)
+                    );
+                  }}
+                >
+                  Delete
+                </button>
               </div>
             );
           })}
