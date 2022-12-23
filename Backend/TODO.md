@@ -37,4 +37,4 @@
 >> <strong>Extra</strong> : Added endpoints /code/:ques_no to get all the attempts of code and /code/:ques_no/:attempt_no to get the code by attempt_no
 >- [ ] 9. Authentication and Authorisation
 >- [ ] 10. Implementing JobQueues
->- [ ] 11. Cleaning files
+>- [x] 11. Cleaning files
