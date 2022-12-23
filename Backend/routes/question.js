@@ -23,7 +23,7 @@ router.post("/createQuestion/create", async (req, res) => {
     console.log(req.body); 
     const { description, constraints, input_format, output_format, time_limit, public_test_cases, private_test_cases, topics, problemID } = req.body;
     try {
-        var public_tc = public_test_cases; 
+        var public_tc = public_test_cases;
         var private_tc = private_test_cases;
         var ques_no = problemID;
 
