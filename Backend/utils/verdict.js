@@ -5,13 +5,12 @@
  * @returns a boolean that represents the result of the comparison
  */
 
-const { FilesManager } = require('turbodepot-node');
+const { FilesManager } = require("turbodepot-node");
 
-const getVerdict = (resultFilePath,outputFilePath)=>{
-    let filesManager = new FilesManager();
-    console.log(resultFilePath,outputFilePath);
-    let verdict = filesManager.isFileEqualTo(resultFilePath,outputFilePath);
-    return verdict;
+const getVerdict = (resultFilePath, outputFilePath) => {
+  let filesManager = new FilesManager();
+  let verdict = filesManager.isFileEqualTo(resultFilePath, outputFilePath);
+  return verdict;
 };
 
-module.exports = {getVerdict};
+module.exports = { getVerdict };
