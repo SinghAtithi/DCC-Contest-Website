@@ -8,7 +8,6 @@ const QuesSchema = mongoose.Schema({
     type: String,
     required: true,
     unique: true
-
   },
   name: {
     type: String,
@@ -45,11 +44,11 @@ const QuesSchema = mongoose.Schema({
   },
   no_of_public_test_cases: {
     type: Number,
-    required: true,
+    // required: true,
   },
   no_of_private_test_cases: {
     type: Number,
-    required: true,
+    // required: true,
   },
   // topics is a comma separated string
   topics: {
