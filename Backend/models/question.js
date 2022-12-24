@@ -6,7 +6,7 @@ const mongoose = require("mongoose");
 const QuesSchema = mongoose.Schema({
   ques_no: {
     type: String,
-    required: true,
+    required: true, 
     unique: true
   },
   name: {
