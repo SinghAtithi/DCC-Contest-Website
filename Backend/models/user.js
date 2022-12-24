@@ -8,11 +8,6 @@ const UserSchema = mongoose.Schema({
     type: String,
     required: true,
   },
-  user_name: {
-    type: String,
-    required: true,
-    unique: true,
-  },
   email: {
     type: String,
     required: true,
@@ -22,6 +17,32 @@ const UserSchema = mongoose.Schema({
     type: String,
     required: true,
   },
+  userName: {
+    type: String,
+    required: true,
+    unique: true,
+  },
+  githubURL: {
+    type: String,
+    unique: true,
+  },
+  linkedinURL: {
+    type: String,
+    unique: true,
+  },
+  codeforcesURL: {
+    type: String,
+    unique: true,
+  },
+  codechefURL: {
+    type: String,
+    unique: true,
+  },
+  bio: {
+    type: String,
+    unique: true,
+  },
+  // Array of ques_no
   questions_solved: {
     type: Array,
   },
