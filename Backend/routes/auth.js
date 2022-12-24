@@ -2,9 +2,12 @@ const express = require("express");
 const bcrypt = require("bcrypt");
 const User = require("../models/user.js");
 
+
+
 const router = express.Router();
 
-router.post('/register', async (req,res)=>{
+router.post('/register', async (req, res) => {
+    console.log(req.body)
     try{
         const {name,email,password,confirmPassword,userName,githubURL="",linkedinURL="",codeforcesURL="",codechefURL="",bio=""} = req.body;
         if(name){
@@ -15,7 +18,9 @@ router.post('/register', async (req,res)=>{
                             if(password==confirmPassword){
                                 const hashedPassword = await bcrypt.hash(password,10);
                                 // console.log(hashedPassword);
-                                const user = await new User({name,email,password:hashedPassword,userName,githubURL,linkedinURL,codeforcesURL,codechefURL,bio}).save();
+                                const user = await new User({ name, email, password: hashedPassword, userName, githubURL, linkedinURL, codeforcesURL, codechefURL, bio }).save();
+                                
+                                console.log(user)
 
                                 res.status(200).json("Successfully registered. Please confirm your email before further process."); 
 
@@ -48,7 +53,8 @@ router.post('/register', async (req,res)=>{
         }
         
     }
-    catch(error){
+    catch (error) {
+        console.log(error)
         res.status(500).send({ error: error });
     }
 });

@@ -24,29 +24,28 @@ const UserSchema = mongoose.Schema({
   },
   githubURL: {
     type: String,
-    unique: true,
   },
   linkedinURL: {
     type: String,
-    unique: true,
   },
   codeforcesURL: {
     type: String,
-    unique: true,
   },
   codechefURL: {
     type: String,
-    unique: true,
   },
   bio: {
     type: String,
-    unique: true,
+    default: "Jai Mahakal",
   },
   // Array of ques_no
   questions_solved: {
     type: Array,
   },
 });
+
+
+UserSchema.plugin(require('mongoose-beautiful-unique-validation'));
 
 const User = new mongoose.model("user", UserSchema);
 module.exports = User;
