@@ -9,6 +9,7 @@ function signup() {
   const [name, setName] = React.useState("");
   const [email, setEmail] = React.useState("");
   const [password, setPassword] = React.useState("");
+  const [confirmPassword, setConfirmPassword] = React.useState("");
   const [userName, setUserName] = React.useState("");
   const [githubURL, setGithubURL] = React.useState("");
   const [linkedinURL, setLinkedinURL] = React.useState("");
@@ -33,21 +34,23 @@ function signup() {
         setPassword(text);
         break;
       case 3:
+        setConfirmPassword(text);
+      case 4:
         setUserName(text);
         break;
-      case 4:
+      case 5:
         setGithubURL(text);
         break;
-      case 5:
+      case 6:
         setLinkedinURL(text);
         break;
-      case 6:
+      case 7:
         setCodeforcesURL(text);
         break;
-      case 7:
+      case 8:
         setCodechefURL(text);
         break;
-      case 8:
+      case 9:
         setBio(text);
         break;
       default:
