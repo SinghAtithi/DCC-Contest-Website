@@ -1,6 +1,8 @@
 const { exec } = require("child_process");
 const path = require("path");
 const { basePath } = require("../basePath.js");
+const { deleteFile } = require("../utils/deleteFiles.js");
+
 const fs = require("fs");
 
 const dirCodeFiles = path.join(
@@ -39,7 +41,14 @@ const executeCpp = async (filePath, user_id, inPath, time_limit) => {
       else{
         let start = new Date();
         exec(`cd UsersCodes && cd codeFiles && cd ${user_id} && ${outFileName} < ${inPath}`,(err, std_out, std_err) => {
+
           let end = new Date();
+
+
+          var to_delete = [];
+          to_delete.push(outPath);
+          deleteFile(to_delete);
+
           if(err||std_err){
             rej({err,std_err});
           }
@@ -50,7 +59,7 @@ const executeCpp = async (filePath, user_id, inPath, time_limit) => {
         else{
           const response = {
             stdout : std_out,
-            difference : dif
+            difference : dif,
           }
           res(response);
 

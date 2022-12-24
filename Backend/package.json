@@ -10,6 +10,7 @@
   "author": "Ritik Kaushal",
   "license": "ISC",
   "dependencies": {
+    "bcrypt": "^5.1.0",
     "body-parser": "^1.20.1",
     "child-process": "^1.0.2",
     "cors": "^2.8.5",

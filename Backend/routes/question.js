@@ -14,7 +14,9 @@ router.get("/", (req, res) => {
             if (result === null || result === undefined) {
                 res.status(404).send({ error: "Not Found" });
             }
-            res.status(200).json(result);
+            else{
+                res.status(200).json(result);
+            }
         }
     })
 });
@@ -52,7 +54,10 @@ router.get("/:ques_no", (req, res) => {
                 if (result === null || result === undefined) {
                     res.status(404).send({ error: "Not Found" });
                 }
-                else res.status(200).json(result);
+                else{
+                    res.status(200).json(result);
+
+                }
             }
         })
     }

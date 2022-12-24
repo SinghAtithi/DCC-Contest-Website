@@ -13,11 +13,11 @@ const RunRoutes = require("./routes/run.js");
 const QuesRoutes = require("./routes/question.js");
 const SubmitRoutes = require("./routes/submit.js");
 const CodeRoutes = require("./routes/code.js");
+const AuthRoutes = require("./routes/auth.js");
 
 const app = express();
 
 // ------------- Middlewares --------------
-
 app.use(bodyParser.json({ extended: true }));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cors());
@@ -27,9 +27,9 @@ app.use("/api", RunRoutes);
 app.use("/question", QuesRoutes);
 app.use("/question", SubmitRoutes);
 app.use("/code", CodeRoutes);
+app.use("/auth",AuthRoutes);
 
-// ------------- database connection --------------
-
+// ------------- database connection and starting the server --------------
 const PORT = process.env.PORT || 5000;
 
 mongoose.set("strictQuery", true);
