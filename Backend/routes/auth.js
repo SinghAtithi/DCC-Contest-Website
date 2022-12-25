@@ -12,36 +12,43 @@ router.post('/register', async (req, res) => {
         const {name,email,password,confirmPassword,userName,githubURL="",linkedinURL="",codeforcesURL="",codechefURL="",bio=""} = req.body;
         if(name){
             if(email){
-                if(userName){
-                    if(password){
-                        if(confirmPassword){
-                            if(password==confirmPassword){
-                                const hashedPassword = await bcrypt.hash(password,10);
-                                // console.log(hashedPassword);
-                                const user = await new User({ name, email, password: hashedPassword, userName, githubURL, linkedinURL, codeforcesURL, codechefURL, bio }).save();
-                                
-                                console.log(user)
-
-                                res.status(200).json("Successfully registered. Please confirm your email before further process."); 
-
+                if(email.includes("@") && email.includes(".",email.indexOf("@"))){
+                    if(userName){
+                        if(! userName.includes("@") && ! userName.includes(".")){
+                            if(password){
+                                if(confirmPassword){
+                                    if(password==confirmPassword){
+                                        const hashedPassword = await bcrypt.hash(password,Number(process.env.SECRET_PASSWORD_SALT_NUMBER));
+                                        const user = await new User({ name, email, password: hashedPassword, userName, githubURL, linkedinURL, codeforcesURL, codechefURL, bio }).save();
+                                        console.log(user)
+    
+                                        res.status(200).json("Successfully registered. Please confirm your email before further process."); 
+    
+                                    }
+                                    else{
+                                        res.status(400).send({ error: "Password and Confirm Password must match." });
+                                    }
+                                }
+                                else{
+                                    res.status(400).send({ error: "Password Confirmation is compulsory." });
+                                }
+    
                             }
                             else{
-                                res.status(400).send({ error: "Password and Confirm Password must match." });
+                                res.status(400).send({ error: "Password is compulsory." });
                             }
                         }
                         else{
-                            res.status(400).send({ error: "Password Confirmation is compulsory." });
+                            res.status(400).send({ error: "USername cannot contain @ or ." });
                         }
-
                     }
                     else{
-                        res.status(400).send({ error: "Password is compulsory." });
+                        res.status(400).send({ error: "UserName is compulsory." });
                     }
                 }
                 else{
-                    res.status(400).send({ error: "UserName is compulsory." });
-                }
-                
+                    res.status(400).send({ error: "Provide a valid email." });
+                }   
             }
             else{
                 res.status(400).send({ error: "Email is compulsory." });
@@ -61,10 +68,16 @@ router.post('/register', async (req, res) => {
 
 router.post("/login",async (req,res)=>{
     try{
-        const {email,password} = req.body;
-        if(email){
+        const {loginId,password} = req.body;
+        if(loginId){
             if(password){
-                const user = await User.findOne({email:email},'password').exec();
+                let user;
+                if(loginId.includes("@") && loginId.includes(".",loginId.indexOf("@"))){
+                    user = await User.findOne({email:loginId},'password').exec();
+                }
+                else{
+                    user = await User.findOne({userName:loginId},'password').exec();
+                }
 
                 if(user){
                     const valid = await bcrypt.compare(password,user.password);
@@ -77,7 +90,7 @@ router.post("/login",async (req,res)=>{
                     }
                 }
                 else{
-                    res.status(400).send({ error: "Invalid User Name." });
+                    res.status(400).send({ error: "Invalid User Name or email." });
                 } 
             }
             else{
@@ -85,7 +98,7 @@ router.post("/login",async (req,res)=>{
             }
         }
         else{
-            res.status(400).send({ error: "Username is compulsory." });
+            res.status(400).send({ error: "Username or email is compulsory." });
         }
 
     }
