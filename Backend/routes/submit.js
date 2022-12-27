@@ -17,6 +17,7 @@ router.post("/submit", async (req, res) => {
   const user_id = 1; // To be defined later
 
   var to_delete = [];
+  var failedTestCase;
 
   // If no code is sent
   if (code === undefined) {
@@ -86,6 +87,7 @@ router.post("/submit", async (req, res) => {
         // Check for verdict
         if (!getVerdict(resultFilePath, outPath)) {
           error = true;
+          failedTestCase = ques.private_test_cases[i];
           break;
         }
       }
@@ -94,18 +96,23 @@ router.post("/submit", async (req, res) => {
       deleteFile(to_delete);
 
       if (!error) {
-        res.status(200).json({ message: "Passed", time: resp.difference });
+        res.status(200).json({ message: `Verdict : Passed \nTime Taken : ${resp.difference}` });
       } else {
-        res.status(406).json({ error: "Incorrect Output", message: "Failed" });
+        res.status(406).json({ error: `Verdict : Incorrect Output\n\nLast Failed Test Case :\n\tinput : ${failedTestCase.input}\n\toutput : ${failedTestCase.output}\n\tYour Output : ${ans}`});
       }
     } catch (error) {
-      // console.log(error);
-      // console.log("In catch : ",to_delete);
-      deleteFile(to_delete);
-      res.status(508).json({ error: error });
+        deleteFile(to_delete);
+
+        let err;
+        if(error.stderr){
+          const searchString = to_delete[0]+":"
+          err=error.stderr.split(searchString).join("");
+        }
+
+        res.status(508).json({ error: err });
     }
   } else {
-    return res.status(505).send({ error: "Something Went Wrong" });
+    return res.status(505).send({ error: "Something Went Wrong. Please refresh the page and try again." });
   }
 });
 
