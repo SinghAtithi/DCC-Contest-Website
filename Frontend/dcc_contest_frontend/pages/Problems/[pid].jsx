@@ -63,7 +63,7 @@ function demo() {
 
 
   const controlConsole = () => {
-    setEditorHeight((editorHeight==="80vh")?"60vh":"80vh");
+    setEditorHeight((editorHeight === "80vh") ? "60vh" : "80vh");
     setLowerSpaceVisible(!lowerSpaceVisible);
     setIsOpen(!isOpen);
   }
@@ -71,8 +71,8 @@ function demo() {
   const onSubmit = async () => {
     console.log(code);
     setConsoleData("Evaluating the code ...");
-    if(! isOpen){
-      setEditorHeight((editorHeight==="80vh")?"60vh":"80vh");
+    if (!isOpen) {
+      setEditorHeight((editorHeight === "80vh") ? "60vh" : "80vh");
       setLowerSpaceVisible(!lowerSpaceVisible);
       setIsOpen(true);
     }
@@ -92,7 +92,7 @@ function demo() {
       setConsoleData(result.data.message);
     })
       .catch((err) => {
-         setConsoleData(err.response.data.error);
+        setConsoleData(err.response.data.error);
       });
 
   };
@@ -106,7 +106,7 @@ function demo() {
         </div>
         <div style={code_editor}>
           <div className="mx-4">
-            <CodeEditor Code={code} setCode={setCode} ProblemId={problemId} EditorHeight={editorHeight}/>
+            <CodeEditor Code={code} setCode={setCode} ProblemId={problemId} EditorHeight={editorHeight} />
             <div style={button_area}>
               <button
                 className="btn btn-outline btn-success mt-6 mx-3"
@@ -120,7 +120,7 @@ function demo() {
             </div>
           </div>
           <div style={code_console}>
-            <ConsolePanel isOpen={isOpen} console_data={consoleData}/>
+            <ConsolePanel isOpen={isOpen} console_data={consoleData} />
           </div>
         </div>
       </div>
