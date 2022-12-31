@@ -12,14 +12,15 @@ function CodeEditor(props) {
     // console.log(props,"here in Code Editor");
     // let prevCode = localStorage.getItem(props.ProblemId, code);
     // props.setCode(prevCode);
+    console.log(props.EditorHeight);
   }, []);
 
   return (
     <div className="relative">
       <Editor
-        className=" border-2 border-green-700"
-        height="60vh"
-        width="43vw"
+        className="border-2 border-green-700"
+        height={props.EditorHeight}
+        width="58vw"
         defaultLanguage="cpp"
         value={props.Code}
         onChange={(value) => {

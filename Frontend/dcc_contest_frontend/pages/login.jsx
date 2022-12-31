@@ -5,7 +5,7 @@ import Lottie from "lottie-react";
 import axios from "axios";
 
 function login() {
-  const [email, setEmail] = useState("");
+  const [loginId, setloginId] = useState("");
   const [password, setPassword] = useState("");
 
   const onLogin = () => {
@@ -15,7 +15,7 @@ function login() {
       },
     };
     const data = {
-      email,
+      loginId,
       password,
     };
     axios
@@ -37,9 +37,9 @@ function login() {
           <input
             type="text"
             className="input text-xl rounded-lg my-4 bg-inherit input-success h-16 w-full max-w-lg"
-            value={email}
+            value={loginId}
             placeholder="Email or Username"
-            onChange={(e) => setEmail(e.target.value)}
+            onChange={(e) => setloginId(e.target.value)}
           />{" "}
           <input
             type="password"

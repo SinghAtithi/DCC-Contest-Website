@@ -67,6 +67,7 @@ function create_problem() {
         output: outputTestCase,
       },
     ]);
+
     setInputTestCase("");
     setOutputTestCase("");
   };

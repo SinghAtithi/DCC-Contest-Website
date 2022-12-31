@@ -4,11 +4,42 @@ import Navbar from "../../components/Navbar";
 import QuestionStatement from "../../components/QuestionStatement";
 import snippetCode from "../../components/snippet";
 import axios from "axios";
+import ConsolePanel from "../../components/floating_panel";
+
+
+const problem_container = {
+  "display": "flex",
+}
+
+const question_area = {
+  height: "90vh",
+  width: "40%",
+  overflowY: "scroll"
+}
+
+const code_editor = {
+  height: "90vh",
+  width: "60%",
+}
+
+
+const button_area = {
+  display: "flex"
+}
+
+
 
 function demo() {
   const [problemId, setProblemId] = React.useState("");
   const [code, setCode] = React.useState("");
+  const [isOpen, setIsOpen] = React.useState(false);
+  const [lowerSpaceVisible, setLowerSpaceVisible] = React.useState(false);
+  const [editorHeight, setEditorHeight] = React.useState("80vh");
+  const [consoleData, setConsoleData] = React.useState("Nothing to display on console");
 
+  const code_console = {
+    display: lowerSpaceVisible ? 'block' : 'none'
+  }
   useEffect(() => {
     (() => {
       try {
@@ -30,8 +61,21 @@ function demo() {
     setCode(prevCode);
   }, [problemId]);
 
+
+  const controlConsole = () => {
+    setEditorHeight((editorHeight === "80vh") ? "60vh" : "80vh");
+    setLowerSpaceVisible(!lowerSpaceVisible);
+    setIsOpen(!isOpen);
+  }
+
   const onSubmit = async () => {
     console.log(code);
+    setConsoleData("Evaluating the code ...");
+    if (!isOpen) {
+      setEditorHeight((editorHeight === "80vh") ? "60vh" : "80vh");
+      setLowerSpaceVisible(!lowerSpaceVisible);
+      setIsOpen(true);
+    }
 
     const url = "http://localhost:5000/question/submit";
     const config = {
@@ -45,10 +89,10 @@ function demo() {
     params.append("ques_no", problemId);
 
     axios.post(url, params, config).then((result) => {
-      alert(`${result.data.message} , ${result.data.time}`);
+      setConsoleData(result.data.message);
     })
       .catch((err) => {
-        console.log(err.response.data.error);
+        setConsoleData(err.response.data.error);
       });
 
   };
@@ -56,18 +100,28 @@ function demo() {
   return (
     <div>
       <Navbar />
-      <div className="flex justify-between mt-6 px-6">
-        <div className="overflow-auto px-4">
+      <div style={problem_container}>
+        <div className="px-4" style={question_area}>
           <QuestionStatement problemId={problemId} />
         </div>
-        <div className="flex flex-col items-center mt-32 px-4">
-          <CodeEditor Code={code} setCode={setCode} ProblemId={problemId} />
-          <button
-            className="btn btn-outline btn-success mt-6"
-            onClick={onSubmit}
-          >
-            Submit
-          </button>
+        <div style={code_editor}>
+          <div className="mx-4">
+            <CodeEditor Code={code} setCode={setCode} ProblemId={problemId} EditorHeight={editorHeight} />
+            <div style={button_area}>
+              <button
+                className="btn btn-outline btn-success mt-6 mx-3"
+                onClick={onSubmit}
+              >
+                Submit
+              </button>
+              <button className="btn btn-outline btn-success mt-6" onClick={controlConsole}>
+                Console
+              </button>
+            </div>
+          </div>
+          <div style={code_console}>
+            <ConsolePanel isOpen={isOpen} console_data={consoleData} />
+          </div>
         </div>
       </div>
     </div>

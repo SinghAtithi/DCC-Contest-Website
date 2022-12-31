@@ -17,6 +17,7 @@ router.post("/submit", async (req, res) => {
   const user_id = 1; // To be defined later
 
   var to_delete = [];
+  var failedTestCase;
 
   // If no code is sent
   if (code === undefined) {
@@ -45,6 +46,7 @@ router.post("/submit", async (req, res) => {
       const ques = await Question.findOne({ ques_no: ques_no }).exec();
       var error = false;
 
+      var time_taken=0;
       // Loop over the test cases, execute and give verdict
       for (var i = 0; i < ques.no_of_private_test_cases; i++) {
         // Path of the pre defined input file for this test case
@@ -63,6 +65,7 @@ router.post("/submit", async (req, res) => {
         ); // path of code file, user_id, path of input file, time_limit
 
         ans = resp.stdout;
+        time_taken = time_taken + resp.difference;
         // ans = ans.replace(/(\r)/gm, ""); // Windows by default adds \r before every \n. This was causing an issue with file comparison. So removed all \r from output.
         // Create a file for the result obtained by the code which was executed.
         const resultFilePath = await generateResultFile(
@@ -86,6 +89,7 @@ router.post("/submit", async (req, res) => {
         // Check for verdict
         if (!getVerdict(resultFilePath, outPath)) {
           error = true;
+          failedTestCase = ques.private_test_cases[i];
           break;
         }
       }
@@ -94,18 +98,29 @@ router.post("/submit", async (req, res) => {
       deleteFile(to_delete);
 
       if (!error) {
-        res.status(200).json({ message: "Passed", time: resp.difference });
+        res.status(200).json({ message: `Verdict : Passed \nTotal Time Taken : ${time_taken} seconds` });
       } else {
-        res.status(406).json({ error: "Incorrect Output", message: "Failed" });
+        res.status(406).json({ error: `Verdict : Incorrect Output\n\nLast Failed Test Case :\ninput : ${failedTestCase.input}\noutput : ${failedTestCase.output}\nYour Output : ${ans}`});
       }
     } catch (error) {
-      // console.log(error);
-      // console.log("In catch : ",to_delete);
-      deleteFile(to_delete);
-      res.status(508).json({ error: error });
+        deleteFile(to_delete);
+        // console.log(error)
+
+        let err;
+        if(error.stderr){
+          const searchString = to_delete[0]+":"
+          err=error.stderr.split(searchString).join("");
+        }
+        else if(error.error){
+          err = `Verdict : ${error.error}\nTotal Time Taken : ${error.difference} seconds`;
+        }
+        else if(error.err){
+          err = error.err.code;
+        }
+        res.status(508).json({ error: err });
     }
   } else {
-    return res.status(505).send({ error: "Something Went Wrong" });
+    return res.status(505).send({ error: "Something Went Wrong. Please refresh the page and try again." });
   }
 });
 

@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
 import axios from "axios";
 
+
 function QuestionStatement(props) {
   const [question, setQuestion] = React.useState({
     name: "",
@@ -9,7 +10,7 @@ function QuestionStatement(props) {
     input_format: "",
     output_format: "",
     topics: "",
-    public_test_cases: "",
+    public_test_cases: null,
   });
 
   useEffect(() => {
@@ -33,9 +34,10 @@ function QuestionStatement(props) {
       })
       // Catch errors and redirect
   }, [question]);
-
+  console.log(question);
   return (
-    <div className="flex flex-col w-full justify-start ">
+    question.name && (
+      <div className="flex flex-col w-full justify-start ">
       <div className="flex flex-col w-full items-center justify-center">
         <h1 className="text-2xl">{question.name}</h1>
         <p className="text-sm mt-1 italic">Time Limit : 1 Sec</p>
@@ -45,18 +47,35 @@ function QuestionStatement(props) {
         <p className="mt-12">{question.description}</p>
       </div>
       <div>
-        <h1 className="text-xl mt-8">Constraints : </h1>
-        <p>{question.constraints}</p>
+        <h1 className="text-xl mt-8 font-serif">Constraints : </h1>
+        <pre>{question.constraints}</pre>
       </div>
       <div>
-        <h1 className="text-xl mt-8">Input : </h1>
+        <h1 className="text-xl mt-8 font-serif">Input Format : </h1>
         <p>{question.input_format}</p>
       </div>
       <div>
-        <h1 className="text-xl mt-8">Output : </h1>
+        <h1 className="text-xl mt-8 font-serif">Output Format: </h1>
         <p>{question.output_format}</p>
       </div>
+      <div>
+        {question.public_test_cases.map((public_test_case,index)=>(
+          <div>
+            <br></br>
+            <div key={index} >
+              <h1 className="text-xl mt-8 font-serif">Example {index+1} :</h1>
+              <div className="bg-slate-700 ">
+                <pre><span className="font-mono font-bold">Input</span><br></br>{public_test_case.input}</pre>
+                <pre><span className="font-mono font-bold">Output</span><br></br>{public_test_case.output}</pre>
+              </div>
+            </div>
+          </div>
+        ))}
+        
+      </div>
     </div>
+    )
+    
   );
 }
 
