@@ -1,7 +1,8 @@
 const express = require("express");
 const bcrypt = require("bcrypt");
 const User = require("../models/user.js");
-
+const ImageKit = require("imagekit");
+const uuid = require('uuid');
 
 
 const router = express.Router();
@@ -107,6 +108,25 @@ router.post("/login",async (req,res)=>{
     }
 })
 
+router.get('/imagekitAuth',async(req,res)=>{
+    try{
+        console.log("Yeah Reached here")
+        var imagekit = new ImageKit({
+            publicKey : process.env.IMAGEKIT_PUBLIC_KEY,
+            privateKey : process.env.IMAGEKIT_PRIVATE_KEY,
+            urlEndpoint : "https://ik.imagekit.io/pqymxdgbi/Code-DCC"
+        });
+        
+        const token = req.query.t || uuid.v4();
+        const expiration = req.query.expire || parseInt(Date.now()/1000)+ (60 * 10); // Default expiration in 10 mins
 
+        const signatureObj = imagekit.getAuthenticationParameters(token, expiration);
+
+        res.status(200).send(signatureObj);
+    }
+    catch(error){
+        res.status(500).send({ error: error });
+    }
+})
 
 module.exports = router;

@@ -55,6 +55,7 @@ router.get("/:ques_no", (req, res) => {
                     res.status(404).send({ error: "Not Found" });
                 }
                 else{
+                    console.log(result);
                     res.status(200).json(result);
 
                 }
