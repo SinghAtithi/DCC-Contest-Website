@@ -1,7 +1,8 @@
 const express = require("express");
 const bcrypt = require("bcrypt");
 const User = require("../models/user.js");
-const jwt = require("jsonwebtoken");
+const ImageKit = require("imagekit");
+const uuid = require('uuid');
 
 
 const router = express.Router();
@@ -12,36 +13,43 @@ router.post('/register', async (req, res) => {
         const { name, email, password, confirmPassword, userName, githubURL = "", linkedinURL = "", codeforcesURL = "", codechefURL = "", bio = "" } = req.body;
         if (name) {
             if (email) {
-                if (userName) {
-                    if (password) {
-                        if (confirmPassword) {
-                            if (password == confirmPassword) {
-                                const hashedPassword = await bcrypt.hash(password, 10);
-                                // console.log(hashedPassword);
-                                const user = await new User({ name, email, password: hashedPassword, userName, githubURL, linkedinURL, codeforcesURL, codechefURL, bio }).save();
+                if (email.includes("@") && email.includes(".", email.indexOf("@"))) {
+                    if (userName) {
+                        if (!userName.includes("@") && !userName.includes(".")) {
+                            if (password) {
+                                if (confirmPassword) {
+                                    if (password == confirmPassword) {
+                                        const hashedPassword = await bcrypt.hash(password, Number(process.env.SECRET_PASSWORD_SALT_NUMBER));
+                                        const user = await new User({ name, email, password: hashedPassword, userName, githubURL, linkedinURL, codeforcesURL, codechefURL, bio }).save();
+                                        console.log(user)
 
-                                console.log(user)
+                                        res.status(200).json("Successfully registered. Please confirm your email before further process.");
 
-                                res.status(200).json("Successfully registered. Please confirm your email before further process.");
+                                    }
+                                    else {
+                                        res.status(400).send({ error: "Password and Confirm Password must match." });
+                                    }
+                                }
+                                else {
+                                    res.status(400).send({ error: "Password Confirmation is compulsory." });
+                                }
 
                             }
                             else {
-                                res.status(400).send({ error: "Password and Confirm Password must match." });
+                                res.status(400).send({ error: "Password is compulsory." });
                             }
                         }
                         else {
-                            res.status(400).send({ error: "Password Confirmation is compulsory." });
+                            res.status(400).send({ error: "USername cannot contain @ or ." });
                         }
-
                     }
                     else {
-                        res.status(400).send({ error: "Password is compulsory." });
+                        res.status(400).send({ error: "UserName is compulsory." });
                     }
                 }
                 else {
-                    res.status(400).send({ error: "UserName is compulsory." });
+                    res.status(400).send({ error: "Provide a valid email." });
                 }
-
             }
             else {
                 res.status(400).send({ error: "Email is compulsory." });
@@ -61,26 +69,29 @@ router.post('/register', async (req, res) => {
 
 router.post("/login", async (req, res) => {
     try {
-        const { email, password } = req.body;
-        const jwtTocken = jwt.sign({ email: email }, process.env.JWT_SECRET_KEY);
-        if (email) {
+        const { loginId, password } = req.body;
+        if (loginId) {
             if (password) {
-                const userByEmail = await User.findOne({ email: email }, 'password').exec();
-                const userByUserName = await User.findOne({ userName: email }, 'password').exec();
-                const user = userByEmail || userByUserName;
+                let user;
+                if (loginId.includes("@") && loginId.includes(".", loginId.indexOf("@"))) {
+                    user = await User.findOne({ email: loginId }, 'password').exec();
+                }
+                else {
+                    user = await User.findOne({ userName: loginId }, 'password').exec();
+                }
+
                 if (user) {
                     const valid = await bcrypt.compare(password, user.password);
 
                     if (valid) {
-                        console.log(user)
-                        res.status(200).send(jwtTocken);
+                        res.status(200).send("Logged In");
                     }
                     else {
                         res.status(400).send({ error: "Incorrect Password." });
                     }
                 }
                 else {
-                    res.status(400).send({ error: "Invalid User Name." });
+                    res.status(400).send({ error: "Invalid User Name or email." });
                 }
             }
             else {
@@ -88,7 +99,7 @@ router.post("/login", async (req, res) => {
             }
         }
         else {
-            res.status(400).send({ error: "Username is compulsory." });
+            res.status(400).send({ error: "Username or email is compulsory." });
         }
 
     }
@@ -97,6 +108,25 @@ router.post("/login", async (req, res) => {
     }
 })
 
+router.get('/imagekitAuth', async (req, res) => {
+    try {
+        console.log("Yeah Reached here")
+        var imagekit = new ImageKit({
+            publicKey: process.env.IMAGEKIT_PUBLIC_KEY,
+            privateKey: process.env.IMAGEKIT_PRIVATE_KEY,
+            urlEndpoint: "https://ik.imagekit.io/pqymxdgbi/Code-DCC"
+        });
 
+        const token = req.query.t || uuid.v4();
+        const expiration = req.query.expire || parseInt(Date.now() / 1000) + (60 * 10); // Default expiration in 10 mins
+
+        const signatureObj = imagekit.getAuthenticationParameters(token, expiration);
+
+        res.status(200).send(signatureObj);
+    }
+    catch (error) {
+        res.status(500).send({ error: error });
+    }
+})
 
 module.exports = router;
