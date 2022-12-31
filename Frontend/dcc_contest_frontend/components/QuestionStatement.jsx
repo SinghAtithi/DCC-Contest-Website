@@ -14,11 +14,10 @@ function QuestionStatement(props) {
   });
 
   useEffect(() => {
-    console.log(props);
+    console.log("props : ",props);
     axios
       .get(`http://localhost:5000/question/${props.problemId}`)
       .then((res) => {
-        console.log(res.data);
         if(question.name != res.data.name){
           setQuestion({
             name: res.data.name,
@@ -34,7 +33,6 @@ function QuestionStatement(props) {
       })
       // Catch errors and redirect
   }, [question]);
-  console.log(question);
   return (
     question.name && (
       <div className="flex flex-col w-full justify-start ">
@@ -52,11 +50,11 @@ function QuestionStatement(props) {
       </div>
       <div>
         <h1 className="text-xl mt-8 font-serif">Input Format : </h1>
-        <p>{question.input_format}</p>
+        <pre>{question.input_format}</pre>
       </div>
       <div>
         <h1 className="text-xl mt-8 font-serif">Output Format: </h1>
-        <p>{question.output_format}</p>
+        <pre>{question.output_format}</pre>
       </div>
       <div>
         {question.public_test_cases.map((public_test_case,index)=>(
