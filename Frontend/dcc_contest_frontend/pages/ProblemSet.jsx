@@ -1,6 +1,6 @@
 import React from "react";
 import Navbar from "../components/Navbar";
-import ProblemSetIndex from "./ProblemSet/ProblemSetIndex";
+import ProblemSetIndex from "./problemset/ProblemSetIndex";
 
 function ProblemSet() {
   return (

@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import axios from "axios";
-
+import Router from "next/router";
 
 function QuestionStatement(props) {
   const [question, setQuestion] = React.useState({
@@ -30,7 +30,10 @@ function QuestionStatement(props) {
           });
 
         }
-      })
+      }).catch((err) => {
+        console.log(err);
+        Router.push("/404");
+      });
       // Catch errors and redirect
   }, [question]);
   return (
