@@ -2,7 +2,6 @@ import axios from "axios";
 import React from "react";
 import Navbar from "../components/Navbar";
 import TextArea from "../components/TextArea";
-import Editor_Space from "../components/rich_text_editor";
 
 function create_problem() {
   const [name, setName] = React.useState("");
@@ -85,10 +84,8 @@ function create_problem() {
           <h1 className="text-2xl">Time Limit : </h1>
           <TextArea value={time_limit} setValue={setTimeLimit} />
           <h1 className="text-2xl">Description : </h1>
-          {/* <TextArea value={description} setValue={setDescription} /> */}
-          <div className=" textarea rounded-lg my-4 bg-inherit input-success h-auto w-full max-w-lg" >
-            <Editor_Space />
-          </div>
+          <TextArea value={description} setValue={setDescription} />
+          
           <h1 className="text-2xl">Constraints : </h1>
           <TextArea value={constraints} setValue={setConstraints} />
           <h1 className="text-2xl">Input Format : </h1>
