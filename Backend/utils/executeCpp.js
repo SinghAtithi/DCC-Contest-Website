@@ -41,7 +41,7 @@ const executeCpp = async (filePath, user_id, inPath, time_limit) => {
         console.log(stdout);
         let start = new Date();
         // fs.writeFileSync(path.join(userDir, outFileName), "its working");
-        exec(`cd UsersCodes && cd codeFiles && cd ${user_id}  && ./${outFileName} < ${inPath}`, (err, std_out, std_err) => {
+        exec(`cd UsersCodes && cd codeFiles && cd ${user_id}  && ${outFileName} < ${inPath}`, (err, std_out, std_err) => {
           let end = new Date();
           console.log(err, std_err);
 
