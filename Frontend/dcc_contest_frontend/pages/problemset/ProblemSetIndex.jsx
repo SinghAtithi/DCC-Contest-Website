@@ -1,6 +1,6 @@
 import axios from "axios";
-import Link from "next/link";
 import React, { useEffect } from "react";
+import ProblemRow from "../../components/problemRow";
 
 function ProblemSetIndex() {
   const [problems, setProblems] = React.useState([]);
@@ -19,18 +19,7 @@ function ProblemSetIndex() {
       </div>
       <div className="flex flex-col w-full px-16 mt-10 text-lg">
         {problems.map((problem) => (
-          <div className="border flex justify-between items-center h-22 py-4 border-gray-500">
-            <div className="flex flex-col px-6  ">{problem.name}</div>
-            <div className="flex flex-col px-6  max-w-sm  ">{problem.name}</div>
-            <div className="flex flex-col px-6  max-w-sm  ">{problem.name}</div>
-            <Link href={`/problems/${problem.ques_no}`} target= "_blank">
-              <div className="flex flex-col px-6  max-w-sm  ">
-                <button className="btn btn-outline btn-success w-40">
-                  Solve{" "}
-                </button>
-              </div>
-            </Link>
-          </div>
+          <ProblemRow props={{name:problem.name,ques_no:problem.ques_no,topics:problem.topics}}/>
         ))}
       </div>
     </>
