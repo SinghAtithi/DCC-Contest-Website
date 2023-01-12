@@ -14,7 +14,7 @@ const { addJob } = require("../utils/jobQueue.js");
 const router = express.Router();
 
 router.post("/submit", async (req, res) => {
-  addJob(1);
+  // addJob(1);
   const { lang = "cpp", code, ques_no } = req.body;
   const user_id = 1; // To be defined later
 

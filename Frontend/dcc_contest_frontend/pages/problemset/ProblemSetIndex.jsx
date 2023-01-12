@@ -1,6 +1,7 @@
 import axios from "axios";
 import React, { useEffect } from "react";
 import ProblemRow from "../../components/problemRow";
+import Link from "next/link";
 
 function ProblemSetIndex() {
   const [problems, setProblems] = React.useState([]);
@@ -13,16 +14,24 @@ function ProblemSetIndex() {
   }, []);
 
   return (
-    <>
-      <div className="text-3xl m-4 flex w-full items-center justify-center">
+    <div className="mx-20">
+      <div className="text-3xl m-4 flex items-center justify-center font-mono">
         Problem Set
       </div>
-      <div className="flex flex-col w-full px-16 mt-10 text-lg">
-        {problems.map((problem) => (
-          <ProblemRow props={{name:problem.name,ques_no:problem.ques_no,topics:problem.topics}}/>
-        ))}
+      {/* Heading of the problems page */}
+      <div className="grid grid-cols-7 gap-4 text-lg font-serif text-slate-50 py-2 my-2 border-b-2 border-slate-500" style={{"boxShadow": "green 0px 30px 60px -12px inset, rgba(0, 0, 0, 0.3) 0px 18px 36px -18px inset;"}}>
+        <div className="px-6">Status</div>
+        <div className="px-6 text-left">Question No</div>
+        <div className="col-span-3 px-6">Question Name</div>
+        <div className="px-6">Topics</div>
+        <div className="px-6">Actions</div>
       </div>
-    </>
+
+      {/* Question data */}
+      {problems.map((problem) => (
+        <ProblemRow props={{ name: problem.name, ques_no: problem.ques_no, topics: problem.topics, ques_status:"False"}} />
+      ))}
+    </div>
   );
 }
 
