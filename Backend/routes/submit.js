@@ -9,10 +9,12 @@ const { generateResultFile } = require("../utils/generateResultFile.js");
 const { getVerdict } = require("../utils/verdict.js");
 const { saveCodes } = require("../utils/save_codes.js");
 const { deleteFile } = require("../utils/deleteFiles.js");
+const { addJob } = require("../utils/jobQueue.js");
 
 const router = express.Router();
 
 router.post("/submit", async (req, res) => {
+  // addJob(1);
   const { lang = "cpp", code, ques_no } = req.body;
   const user_id = 1; // To be defined later
 
