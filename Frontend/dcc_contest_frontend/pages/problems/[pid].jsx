@@ -4,7 +4,7 @@ import Navbar from "../../components/Navbar";
 import QuestionStatement from "../../components/QuestionStatement";
 import snippetCode from "../../components/snippet";
 import axios from "axios";
-import ConsolePanel from "../../components/floating_panel";
+import ConsolePanel from "../../components/console_panel";
 
 
 const problem_container = {

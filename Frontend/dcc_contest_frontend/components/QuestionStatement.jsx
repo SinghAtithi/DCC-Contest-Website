@@ -45,11 +45,11 @@ function QuestionStatement(props) {
         <p className="text-sm italic">Space Limit : 256 MB</p>
       </div>
       <div>
-        <p className="mt-12">{question.description}</p>
+        <p className="mt-12 ck-content" dangerouslySetInnerHTML={{ __html: question.description }}></p>
       </div>
       <div>
         <h1 className="text-xl mt-8 font-serif">Constraints : </h1>
-        <pre>{question.constraints}</pre>
+        <p className="mt-2 ck-content" dangerouslySetInnerHTML={{ __html: question.constraints}}></p>
       </div>
       <div>
         <h1 className="text-xl mt-8 font-serif">Input Format : </h1>
