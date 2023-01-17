@@ -2,6 +2,7 @@
 // It defines the schema for this collection.
 
 const mongoose = require("mongoose");
+const paginate = require("mongoose-paginate-v2");
 
 const QuesSchema = mongoose.Schema({
   ques_no: {
@@ -56,6 +57,8 @@ const QuesSchema = mongoose.Schema({
     required: false,
   },
 });
+
+QuesSchema.plugin(paginate);
 
 const Question = new mongoose.model("question", QuesSchema);
 module.exports = Question;

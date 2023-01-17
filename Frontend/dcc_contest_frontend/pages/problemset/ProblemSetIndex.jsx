@@ -7,7 +7,12 @@ function ProblemSetIndex() {
   const [problems, setProblems] = React.useState([]);
 
   useEffect(() => {
-    axios.get("http://localhost:5000/question").then((res) => {
+    let page_no = 1;
+    try{
+      page_no = +(window.location.href.split("?page=")[1]);
+    }
+    catch{}
+    axios.get(`http://localhost:5000/question?page=${page_no}`).then((res) => {
       console.log(res.data);
       setProblems(res.data);
     });
