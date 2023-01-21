@@ -8,7 +8,7 @@ import ConsolePanel from "../../components/console_panel";
 
 
 const problem_container = {
-  "display": "flex",
+  "display": "flex"
 }
 
 const question_area = {
@@ -29,7 +29,7 @@ const button_area = {
 
 
 
-function demo() {
+function problemPage() {
   const [problemId, setProblemId] = React.useState("");
   const [code, setCode] = React.useState("");
   const [isOpen, setIsOpen] = React.useState(false);
@@ -40,6 +40,7 @@ function demo() {
   const code_console = {
     display: lowerSpaceVisible ? 'block' : 'none'
   }
+
   useEffect(() => {
     (() => {
       try {
@@ -106,21 +107,21 @@ function demo() {
         </div>
         <div style={code_editor}>
           <div className="mx-4">
-            <CodeEditor Code={code} setCode={setCode} ProblemId={problemId} EditorHeight={editorHeight} />
+            <CodeEditor Code={code} setCode={setCode} ProblemId={problemId} EditorHeight={editorHeight} EditorWidth="58vw"/>
             <div style={button_area}>
               <button
-                className="btn btn-outline btn-success mt-6 mx-3"
+                className="btn btn-outline btn-success mt-4 mx-3"
                 onClick={onSubmit}
               >
                 Submit
               </button>
-              <button className="btn btn-outline btn-success mt-6" onClick={controlConsole}>
+              <button className="btn btn-outline btn-success mt-4" onClick={controlConsole}>
                 Console
               </button>
             </div>
           </div>
           <div style={code_console}>
-            <ConsolePanel isOpen={isOpen} console_data={consoleData} />
+            <ConsolePanel isOpen={isOpen} console_data={consoleData} width="60%" />
           </div>
         </div>
       </div>
@@ -128,4 +129,4 @@ function demo() {
   );
 }
 
-export default demo;
+export default problemPage;

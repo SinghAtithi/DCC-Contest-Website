@@ -20,7 +20,7 @@ function CodeEditor(props) {
       <Editor
         className="border-2 border-green-700"
         height={props.EditorHeight}
-        width="58vw"
+        width={props.EditorWidth}
         defaultLanguage="cpp"
         value={props.Code}
         onChange={(value) => {

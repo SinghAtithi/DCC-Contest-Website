@@ -1,7 +1,6 @@
 import axios from "axios";
 import React, { useEffect } from "react";
 import ProblemRow from "../../components/problemRow";
-import Link from "next/link";
 
 function ProblemSetIndex() {
   const [problems, setProblems] = React.useState([]);
