@@ -6,6 +6,8 @@ import QuestionStatement from "../../../components/QuestionStatement";
 import snippetCode from "../../../components/snippet";
 import axios from "axios";
 import ConsolePanel from "../../../components/console_panel";
+import CodeAreaSkeleton from '../../../skeleton/CodeAreaSkeleton';
+import ConsoleSkeleton from '../../../skeleton/ConsoleSkeleton';
 
 const contest_container = {
     "display": "flex",
@@ -13,31 +15,32 @@ const contest_container = {
 
 const side_bar = {
     height: "90vh",
-    width: "4%"
+    width: "4%",
+    border: "2px green",
+    "border-style": "solid"
 }
 
 const question_area = {
     height: "90vh",
     width: "40%",
-    overflowY: "scroll"
+    overflowY: "scroll",
+    border: "2px green",
+    "border-style": "solid"
 }
 
 
 const code_editor = {
     height: "80vh",
     width: "56%",
-  }
-  
-  
-  const button_area = {
-    display: "flex"
-  }
-  
+}
+
+
+
+
 
 const contestPage = () => {
     const router = useRouter();
-    const { cid ,pid} = router.query;
-    console.log(cid,pid);
+    const { cid, pid } = router.query;
 
     const [problemId, setProblemId] = React.useState("");
     const [code, setCode] = React.useState("");
@@ -45,6 +48,8 @@ const contestPage = () => {
     const [lowerSpaceVisible, setLowerSpaceVisible] = React.useState(false);
     const [editorHeight, setEditorHeight] = React.useState("80vh");
     const [consoleData, setConsoleData] = React.useState("Nothing to display on console");
+    const [loader, setLoader] = React.useState(false);
+    const [consoleLoader, setConsoleLoader] = React.useState(false);
 
     const code_console = {
         display: lowerSpaceVisible ? 'block' : 'none'
@@ -60,6 +65,11 @@ const contestPage = () => {
     }, []);
 
     useEffect(() => {
+        setEditorHeight("80vh");
+        setLowerSpaceVisible(false);
+        setIsOpen(false);
+        setConsoleData("Nothing to display on console");
+
         let prevCode = localStorage.getItem(problemId, snippetCode);
         if (prevCode === null) {
             prevCode = snippetCode;
@@ -71,21 +81,15 @@ const contestPage = () => {
         setCode(prevCode);
     }, [problemId]);
 
-
-    const controlConsole = () => {
-        setEditorHeight((editorHeight === "80vh") ? "60vh" : "80vh");
-        setLowerSpaceVisible(!lowerSpaceVisible);
-        setIsOpen(!isOpen);
-    }
-
     const onSubmit = async () => {
-        console.log(code);
         setConsoleData("Evaluating the code ...");
         if (!isOpen) {
             setEditorHeight((editorHeight === "80vh") ? "60vh" : "80vh");
             setLowerSpaceVisible(!lowerSpaceVisible);
             setIsOpen(true);
         }
+
+        setConsoleLoader(true);
 
         const url = "http://localhost:5000/question/submit";
         const config = {
@@ -100,39 +104,46 @@ const contestPage = () => {
 
         axios.post(url, params, config).then((result) => {
             setConsoleData(result.data.message);
+            setConsoleLoader(false);
         })
             .catch((err) => {
                 setConsoleData(err.response.data.error);
+                setConsoleLoader(false);
             });
 
     };
+    const controlConsole = () => {
+        setEditorHeight((editorHeight === "80vh") ? "60vh" : "80vh");
+        setLowerSpaceVisible(!lowerSpaceVisible);
+        setIsOpen(!isOpen);
+    }
+
     return (
         <>
             <Navbar />
             <div style={contest_container}>
-                <div className="px-4" style={side_bar}>
-                    Hello
+                <div style={side_bar}>
+                    <ul className="menu bg-base-500">
+                        <li><button className="bg-green-500 hover:bg-blue-700 text-white font-bold py-2 px-3 my-2 rounded-full" onClick={() => { router.push(`/contest/${cid}/Trial-03`); setProblemId("Trial-03"); }}>
+                            Q1
+                        </button></li>
+                        <li><button className="bg-green-500 hover:bg-blue-700 text-white font-bold py-2 px-3 my-2 rounded-full" onClick={() => { router.push(`/contest/${cid}/Trial-04`); setProblemId("Trial-04"); }}>
+                            Q2
+                        </button></li>
+                        <li><button className="bg-green-500 hover:bg-blue-700 text-white font-bold py-2 px-3 my-2 rounded-full" onClick={() => { router.push(`/contest/${cid}/Trial-05`); setProblemId("Trial-05"); }}>
+                            Q3
+                        </button></li>
+                    </ul>
                 </div>
-                <div className="px-4" style={question_area}>
-                    <QuestionStatement problemId={problemId} />
+                <div className="px-4 mx-2" style={question_area}>
+                    <QuestionStatement problemId={problemId} loader={loader} setLoader={setLoader} />
                 </div>
                 <div style={code_editor}>
                     <div className="mx-4">
-                        <CodeEditor Code={code} setCode={setCode} ProblemId={problemId} EditorHeight={editorHeight} EditorWidth="54vw" />
-                        <div style={button_area}>
-                            <button
-                                className="btn btn-outline btn-success mt-4 mx-3"
-                                onClick={onSubmit}
-                            >
-                                Submit
-                            </button>
-                            <button className="btn btn-outline btn-success mt-4" onClick={controlConsole}>
-                                Console
-                            </button>
-                        </div>
+                        <CodeEditor loader={loader} Code={code} setCode={setCode} ProblemId={problemId} EditorHeight={editorHeight} EditorWidth="54vw" controlConsole={controlConsole} onSubmit={onSubmit} />
                     </div>
                     <div style={code_console}>
-                        <ConsolePanel isOpen={isOpen} console_data={consoleData} width="56vw"/>
+                        <ConsolePanel consoleLoader={consoleLoader} isOpen={isOpen} console_data={consoleData} width="56vw" />
                     </div>
                 </div>
             </div>
