@@ -9,10 +9,12 @@ const { generateResultFile } = require("../utils/generateResultFile.js");
 const { getVerdict } = require("../utils/verdict.js");
 const { saveCodes } = require("../utils/save_codes.js");
 const { deleteFile } = require("../utils/deleteFiles.js");
+// const {addJob} = require("../utils/jobQueue.js");
 
 const router = express.Router();
 
 router.post("/submit", async (req, res) => {
+  // addJob(1);
   const { lang = "cpp", code, ques_no } = req.body;
   const user_id = 1; // To be defined later
 
@@ -29,7 +31,7 @@ router.post("/submit", async (req, res) => {
 
   if (response.status_code == 200) {
     const attempt_no = response.details.codes.length;
-    
+
     // Generate Code file for the code that is received.
     const { codeFilePath, inPath } = await generateCodeFile(
       lang,
@@ -46,7 +48,7 @@ router.post("/submit", async (req, res) => {
       const ques = await Question.findOne({ ques_no: ques_no }).exec();
       var error = false;
 
-      var time_taken=0;
+      var time_taken = 0;
       // Loop over the test cases, execute and give verdict
       for (var i = 0; i < ques.no_of_private_test_cases; i++) {
         // Path of the pre defined input file for this test case
@@ -100,24 +102,25 @@ router.post("/submit", async (req, res) => {
       if (!error) {
         res.status(200).json({ message: `Verdict : Passed \nTotal Time Taken : ${time_taken} seconds` });
       } else {
-        res.status(406).json({ error: `Verdict : Incorrect Output\n\nLast Failed Test Case :\ninput : ${failedTestCase.input}\noutput : ${failedTestCase.output}\nYour Output : ${ans}`});
+        res.status(406).json({ error: `Verdict : Incorrect Output\n\nLast Failed Test Case :\ninput : ${failedTestCase.input}\noutput : ${failedTestCase.output}\nYour Output : ${ans}` });
       }
     } catch (error) {
-        deleteFile(to_delete);
-        // console.log(error)
+      deleteFile(to_delete);
+      // console.log(error)
 
-        let err;
-        if(error.stderr){
-          const searchString = to_delete[0]+":"
-          err=error.stderr.split(searchString).join("");
-        }
-        else if(error.error){
-          err = `Verdict : ${error.error}\nTotal Time Taken : ${error.difference} seconds`;
-        }
-        else if(error.err){
-          err = error.err.code;
-        }
-        res.status(508).json({ error: err });
+      let err;
+      if (error.stderr) {
+        const searchString = to_delete[0] + ":"
+        err = error.stderr.split(searchString).join("");
+      }
+      else if (error.error) {
+        err = `Verdict : ${error.error}\nTotal Time Taken : ${error.difference} seconds`;
+      }
+      else if (error.err) {
+        err = error.err.code;
+      }
+      console.log(error);
+      res.status(508).json({ error: err });
     }
   } else {
     return res.status(505).send({ error: "Something Went Wrong. Please refresh the page and try again." });

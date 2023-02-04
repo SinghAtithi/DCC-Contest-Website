@@ -38,12 +38,12 @@ const executeCpp = async (filePath, user_id, inPath, time_limit) => {
         rej({ error, stderr });
       }
       else {
-        console.log(stdout);
+        // console.log(stdout);
         let start = new Date();
         // fs.writeFileSync(path.join(userDir, outFileName), "its working");
         exec(`cd UsersCodes && cd codeFiles && cd ${user_id}  && ./${outFileName} < ${inPath}`, (err, std_out, std_err) => {
           let end = new Date();
-          console.log(err, std_err);
+          // console.log(err, std_err);
 
           var to_delete = [];
           to_delete.push(outPath);

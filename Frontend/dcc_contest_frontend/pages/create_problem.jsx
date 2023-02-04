@@ -146,11 +146,11 @@ function create_problem() {
                 <div className="w-72 m-4">
                   <h1 className="text-2xl">Private TC </h1>
                   <h1 className="text-2xl">Input : </h1>
-                  <p className="text-lg">{test.input}</p>
+                  <p className="text-lg whitespace-pre">{test.input}</p>
                 </div>
                 <div className="w-72 m-4">
                   <h1 className="text-2xl">Output : </h1>
-                  <p className="text-lg">{test.output}</p>
+                  <p className="text-lg whitespace-pre">{test.output}</p>
                 </div>
                 <button
                   className="btn btn-error"
