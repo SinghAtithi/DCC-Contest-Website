@@ -2,7 +2,6 @@ const express = require("express");
 const Question = require("../models/question");
 const { generateTestCaseFiles } = require("../utils/generateTestCaseFiles.js");
 const router = express.Router();
-
 // Get the list of ques_no,name and topics page by page as specified by query parameter
 router.get("/", (req, res) => {
     const options = {
@@ -45,10 +44,11 @@ router.post("/createQuestion/create", async (req, res) => {
         res.status(500).json(error);
     }
 });
+
 // Get question by ques_no
 router.get("/:ques_no", (req, res) => {
     try {
-        Question.findOne({ ques_no: req.params.ques_no }, (error, result) => {
+        Question.findOne({ ques_no: req.params.ques_no }, 'ques_no name description constraints input_format output_format time_limit public_test_cases',(error, result) => {
             if (error) {
                 res.status(404).json({ error: error });
             }

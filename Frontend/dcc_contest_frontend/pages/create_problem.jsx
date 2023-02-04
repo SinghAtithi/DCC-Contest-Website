@@ -6,7 +6,10 @@ import { AiOutlineDelete } from "react-icons/ai";
 import { AiOutlineClose } from "react-icons/ai";
 import { BsPencilSquare } from "react-icons/bs";
 import dynamic from "next/dynamic";
-
+import { useState } from "react";
+import store from "../store/baseStore";
+import Router from "next/router";
+import checkToken from "../utils/checkToken";
 
 const questionAreaStyle = {
   height: "90vh",
@@ -31,7 +34,9 @@ const toastCross = {
 }
 
 const CKEditor = dynamic(() => import("../components/RichTextEditor"), { ssr: false });
+
 function create_problem() {
+
   const [name, setName] = React.useState("");
   const [nameError, setNameError] = React.useState(null);
   const [description, setDescription] = React.useState("");
@@ -47,10 +52,19 @@ function create_problem() {
   const [problemIDError, setProblemIDError] = React.useState(null);
   const [inputTestCase, setInputTestCase] = React.useState("");
   const [outputTestCase, setOutputTestCase] = React.useState("");
+  const [explanation, setExplanation] = React.useState("");
+
   const [toastActive, setToastActive] = React.useState(false);
   const [toastMessage, setToastMessage] = React.useState("");
   const [toastClass, setToastClass] = React.useState("alert alert-error relative");
 
+  useEffect(()=>{
+    checkToken();
+
+    if(! store.getState().login.loggedIn){
+      Router.push('/login?next=create_problem');
+    }
+  },[]);
 
   const reinitialiseQuestionState = () => {
     setName("");
@@ -68,9 +82,10 @@ function create_problem() {
     setProblemIDError("");
     setInputTestCase("");
     setOutputTestCase("");
+    setExplanation("");
 
   }
-
+  
   const scroll2El = elID => {
     window.scrollTo({
       top: document.getElementById(elID).offsetTop - 60,
@@ -159,10 +174,12 @@ function create_problem() {
       {
         input: inputTestCase,
         output: outputTestCase,
+        explanation: explanation
       },
     ]);
     setInputTestCase("");
     setOutputTestCase("");
+    setExplanation("");
   };
 
   const onAddPrivateTestCase = () => {
@@ -220,17 +237,20 @@ function create_problem() {
           <h1 className="text-2xl pt-6">Constraints : </h1>
           <CKEditor value={constraints} setValue={setConstraints} />
 
-          <h1 className="text-2xl">Input Format : </h1>
-          <TextArea value={input_format} setValue={setInputFormat} height={20} />
+          <h1 className="text-2xl pt-6">Input Format : </h1>
+          <CKEditor value={input_format} setValue={setInputFormat} />
 
           <h1 className="text-2xl">Output Format : </h1>
-          <TextArea value={output_format} setValue={setOutputFormat} height={20} />
+          <CKEditor value={output_format} setValue={setOutputFormat} />
 
-          <h1 className="text-2xl" id="testCases">Input Test Cases : </h1>
+          <h1 className="text-2xl pt-6" id="testCases">Input Test Case : </h1>
           <TextArea value={inputTestCase} setValue={setInputTestCase} height={20} />
 
-          <h1 className="text-2xl">Output Test Cases : </h1>
+          <h1 className="text-2xl pt-6">Output Test Case : </h1>
           <TextArea value={outputTestCase} setValue={setOutputTestCase} height={20} />
+
+          <h1 className="text-2xl">Explanation : </h1>
+          <CKEditor value={explanation} setValue={setExplanation} />
 
           <div className="flex w-full items-center justify-center">
             <div>
@@ -312,6 +332,7 @@ function create_problem() {
                     <BsPencilSquare size={25} onClick={() => {
                       setInputTestCase(public_test_cases[index].input);
                       setOutputTestCase(public_test_cases[index].output);
+                      setExplanation(public_test_cases[index].explanation);
                       setTimeout(() => {
                         scroll2El("testCases");
                       }, 100);
@@ -324,6 +345,8 @@ function create_problem() {
                     <pre><span className="font-mono font-bold">Input</span><br></br>{public_test_case.input}</pre>
                     <hr></hr>
                     <pre><span className="font-mono font-bold">Output</span><br></br>{public_test_case.output}</pre>
+                    <hr></hr>
+                    <pre><span className="font-mono font-bold">Explanation</span><br></br><p className="ck-content" dangerouslySetInnerHTML={{ __html: public_test_case.explanation }}></p></pre>
                   </div>
                 </div>
               ))}

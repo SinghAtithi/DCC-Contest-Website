@@ -79,6 +79,7 @@ function QuestionStatement(props) {
                   <div className="bg-slate-700 ">
                     <pre><span className="font-mono font-bold">Input</span><br></br>{public_test_case.input}</pre>
                     <pre><span className="font-mono font-bold">Output</span><br></br>{public_test_case.output}</pre>
+                    {public_test_case.explanation && <pre><span className="font-mono font-bold">Explanation</span><br></br><p className="ck-content" dangerouslySetInnerHTML={{ __html: public_test_case.explanation }}></p></pre>}
                   </div>
                 </div>
               </div>
