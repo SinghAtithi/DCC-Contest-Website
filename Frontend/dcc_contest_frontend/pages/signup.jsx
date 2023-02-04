@@ -1,9 +1,12 @@
-import React from "react";
+import React,{useEffect} from "react";
 import Navbar from "../components/Navbar";
 import signupQues from "../components/signupQues";
 import heroSignupLottie from "../public/heroSignupLottie.json";
 import Lottie from "lottie-react";
 import axios from "axios";
+import checkToken from "../utils/checkToken";
+import store from "../store/baseStore";
+import Router from "next/router";
 
 function signup() {
   const [quesInd, setQuesInd] = React.useState(0);
@@ -18,6 +21,11 @@ function signup() {
   const [codechefURL, setCodechefURL] = React.useState("");
   const [bio, setBio] = React.useState("");
   const [text, setText] = React.useState("");
+
+  useEffect(()=>{
+    checkToken();
+    if(store.getState().login.loggedIn) Router.push("/ProblemSet");
+  })
 
   const onSubmit = () => {
     const data = {
