@@ -11,22 +11,14 @@ const ProblemRow = ({ props }) => {
 
     return (
         <>
-            <div className="border-b-2 border-slate-500 grid grid-cols-7 gap-4 justify-between items-center py-1 text-slate-50">
+            <div className="border-b-2 border-slate-500 grid grid-cols-7 h-20 gap-4 justify-between items-center py-1 text-slate-50">
                 {status == "True" ? <div className="px-6 text-left">
-
-
-
                     <input type="checkbox" checked className="checkbox checkbox-success" disabled />
-
-
-
                 </div>
                     : <div className="px-6 text-left">
 
 
                         <input type="checkbox" className="checkbox" disabled />
-
-
                     </div>}
                 <div className="px-6 text-left">{props.ques_no}</div>
                 <div className="col-span-3 px-6  hover:text-green-500">{props.name}</div>
