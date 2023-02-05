@@ -2,22 +2,23 @@ const express = require("express");
 const Question = require("../models/question");
 const { generateTestCaseFiles } = require("../utils/generateTestCaseFiles.js");
 const router = express.Router();
-
-// Get the list of ques_no,name and topics of all questions
+// Get the list of ques_no,name and topics page by page as specified by query parameter
 router.get("/", (req, res) => {
-    Question.find({}, 'ques_no name topics', (err, result) => {
-        if (err) {
-            res.status(404).send({ error: err });
-        }
+    const options = {
+        select : 'ques_no name topics',
+        page : (req.query.page)?req.query.page:1,
+        limit : 100000,
+        collation : {
+            locale : 'en',
+        },
+    }
+
+    Question.paginate({},options,(err,result)=>{
+        if(err) res.status(404).send({ error: err });
         else {
-            // console.log(eval(result[0]["public_test_cases"])); // TO convert string in JSON
-            if (result === null || result === undefined) {
-                res.status(404).send({ error: "Not Found" });
-            }
-            else{
-                res.status(200).json(result);
-            }
-        }
+            if(result.docs.length==0) res.status(404).send({ error: "Not Found" });
+            else res.status(200).json(result.docs);
+        }      
     })
 });
 
@@ -43,10 +44,11 @@ router.post("/createQuestion/create", async (req, res) => {
         res.status(500).json(error);
     }
 });
+
 // Get question by ques_no
 router.get("/:ques_no", (req, res) => {
     try {
-        Question.findOne({ ques_no: req.params.ques_no }, (error, result) => {
+        Question.findOne({ ques_no: req.params.ques_no }, 'ques_no name description constraints input_format output_format time_limit public_test_cases',(error, result) => {
             if (error) {
                 res.status(404).json({ error: error });
             }

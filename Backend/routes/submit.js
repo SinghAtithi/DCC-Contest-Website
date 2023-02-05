@@ -9,7 +9,6 @@ const { generateResultFile } = require("../utils/generateResultFile.js");
 const { getVerdict } = require("../utils/verdict.js");
 const { saveCodes } = require("../utils/save_codes.js");
 const { deleteFile } = require("../utils/deleteFiles.js");
-// const {addJob} = require("../utils/jobQueue.js");
 
 const router = express.Router();
 
