@@ -1,15 +1,12 @@
 import axios from "axios";
-import React, { useEffect } from "react";
+import React from "react";
 import Navbar from "../components/Navbar";
 import TextArea from "../components/TextArea";
 import { AiOutlineDelete } from "react-icons/ai";
 import { AiOutlineClose } from "react-icons/ai";
 import { BsPencilSquare } from "react-icons/bs";
 import dynamic from "next/dynamic";
-import { useState } from "react";
-import store from "../store/baseStore";
-import Router from "next/router";
-import checkToken from "../utils/checkToken";
+import { withPageAuthRequired } from '@auth0/nextjs-auth0';
 
 const questionAreaStyle = {
   height: "90vh",
@@ -58,14 +55,6 @@ function create_problem() {
   const [toastMessage, setToastMessage] = React.useState("");
   const [toastClass, setToastClass] = React.useState("alert alert-error relative");
 
-  useEffect(()=>{
-    checkToken();
-
-    if(! store.getState().login.loggedIn){
-      Router.push('/login?next=create_problem');
-    }
-  },[]);
-
   const reinitialiseQuestionState = () => {
     setName("");
     setNameError(null);
@@ -85,7 +74,7 @@ function create_problem() {
     setExplanation("");
 
   }
-  
+
   const scroll2El = elID => {
     window.scrollTo({
       top: document.getElementById(elID).offsetTop - 60,
@@ -194,7 +183,6 @@ function create_problem() {
     setInputTestCase("");
     setOutputTestCase("");
   };
-
 
   return (
     <div >
@@ -387,42 +375,12 @@ function create_problem() {
 
           </div>
         </div>
-<<<<<<< HEAD
-        <div>
-          {private_test_cases.map((test, index) => {
-            return (
-              <div key={index} className="flex flex-col w-3/5 m-6 border">
-                <div className="w-72 m-4">
-                  <h1 className="text-2xl">Private TC </h1>
-                  <h1 className="text-2xl">Input : </h1>
-                  <p className="text-lg whitespace-pre">{test.input}</p>
-                </div>
-                <div className="w-72 m-4">
-                  <h1 className="text-2xl">Output : </h1>
-                  <p className="text-lg whitespace-pre">{test.output}</p>
-                </div>
-                <button
-                  className="btn btn-error"
-                  onClick={() => {
-                    setPrivateTestCases(
-                      private_test_cases.filter((_, i) => i !== index)
-                    );
-                  }}
-                >
-                  Delete
-                </button>
-              </div>
-            );
-          })}
-        </div>
-        <button className="btn btn-outline btn-success mt-6" onClick={onSubmit}>
-          Submit
-        </button>
-=======
->>>>>>> 5a93ac925f1e18e5a8650978de946f711b17d28c
       </div>
     </div>
   );
 }
 
 export default create_problem;
+
+
+export const getServerSideProps = withPageAuthRequired();

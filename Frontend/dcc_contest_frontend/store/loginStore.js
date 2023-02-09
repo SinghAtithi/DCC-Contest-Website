@@ -8,6 +8,7 @@ const login = createSlice({
   initialState,
   reducers: {
     loginUser(state,actions) {
+      console.log("Inside Login user");
       console.log(actions)
       state.loggedIn = true;
       state.userName = actions.payload;

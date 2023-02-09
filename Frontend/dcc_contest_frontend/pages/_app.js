@@ -2,7 +2,7 @@ import "../styles/globals.css";
 import dynamic from "next/dynamic";
 import { Provider } from "react-redux";
 import store from "../store/baseStore";
-
+import { UserProvider } from "@auth0/nextjs-auth0/client";
 
 const AnimatedCursor = dynamic(() => import("react-animated-cursor"), {
   ssr: false,
@@ -10,8 +10,16 @@ const AnimatedCursor = dynamic(() => import("react-animated-cursor"), {
 export default function App({ Component, pageProps }) {
   return (
     <>
-      <Provider store={store}>
-        {/* <AnimatedCursor
+      {/* <Auth0Provider
+        domain="dcc-nita.us.auth0.com"
+        clientId="2j0gMvxqLVAMtufQAIpEzaNc9i0GsYE5"
+        authorizationParams={{
+          redirect_uri: window.location.origin,
+        }}
+      > */}
+      <UserProvider>
+        <Provider store={store}>
+          {/* <AnimatedCursor
           innerSize={12}
           outerSize={10}
           color='255, 255, 255'
@@ -19,8 +27,10 @@ export default function App({ Component, pageProps }) {
           innerScale={0.7}
           outerScale={4}
         /> */}
-        <Component {...pageProps} />
-      </Provider>
+          <Component {...pageProps} />
+        </Provider>
+      </UserProvider>
+      {/* </Auth0Provider> */}
     </>
   );
 }

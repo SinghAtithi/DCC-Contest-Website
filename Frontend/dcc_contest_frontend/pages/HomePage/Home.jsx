@@ -1,7 +1,14 @@
 import React from "react";
 import HeroLottie from "./HeroLottie";
+import { useUser } from '@auth0/nextjs-auth0/client';
+
 
 function HomePage() {
+  const { user, error, isLoading } = useUser();
+  console.log(user);
+
+
+
   return (
     <div className="hero min-h-screen bg-inherit pl-16">
       <div className="hero-content flex-col lg:flex-row-reverse">

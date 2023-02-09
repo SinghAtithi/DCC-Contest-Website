@@ -101,7 +101,7 @@ function problemPage() {
       setConsoleLoader(false);
     })
       .catch((err) => {
-        setConsoleData(err.response.data.error);
+        setConsoleData(err);
         setConsoleLoader(false);
       });
   };
