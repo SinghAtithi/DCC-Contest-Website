@@ -8,7 +8,9 @@ import { BsPencilSquare } from "react-icons/bs";
 import dynamic from "next/dynamic";
 import checkToken from "../../utils/checkToken";
 import Router from "next/router";
-import Head from 'next/head'
+import Head from 'next/head';
+import moment from 'moment';
+
 
 const questionAreaStyle = {
   height: "90vh",
@@ -32,6 +34,28 @@ const toastCross = {
   right: "2px",
 }
 
+function validateDateTimeString(dateTime) {
+  try {
+    const arr = dateTime.split(" ");
+    if (arr.length != 3) return false;
+
+    let result = moment(arr[0], 'DD/MM/YYYY', true).isValid();
+    if (!result) return false;
+
+    let hour = parseInt(arr[1].split(':')[0]);
+    let min = parseInt(arr[1].split(':')[1]);
+
+    if (hour > 12 || hour < 0) return false;
+    if (min >= 60 || min < 0) return false;
+
+    if (arr[2] != "am" && arr[2] != "pm") return false;
+    return true;
+  }
+  catch (error) {
+    return false;
+  }
+}
+
 function create_problem() {
 
   const [contestName, setContestName] = React.useState("");
@@ -41,7 +65,12 @@ function create_problem() {
   const [contestIDError, setContestIDError] = React.useState(null);
 
   const [startTime, setStartTime] = React.useState("");
+  const [startTimeError, setStartTimeError] = React.useState(null);
+
   const [endTime, setEndTime] = React.useState("");
+  const [endTimeError, setEndTimeError] = React.useState(null);
+
+  const [timeError, setTimeError] = React.useState(null);
 
   const [toastActive, setToastActive] = React.useState(false);
   const [toastMessage, setToastMessage] = React.useState("");
@@ -55,6 +84,12 @@ function create_problem() {
     checkToken().then((status) => {
       if (status) {
         setIsLoading(false);
+
+        const currDate = moment(new Date()).format('DD/MM/YYYY HH:mm a');
+        const nextDate = moment(new Date()).add(2, 'hours').format('DD/MM/YYYY HH:mm a');
+        setStartTime(currDate.toString());
+        setEndTime(nextDate.toString());
+
       }
       else {
         Router.push("/login?next=admin/create_contest");
@@ -62,12 +97,32 @@ function create_problem() {
     });
   }, [])
 
-  useEffect(()=>{
+  useEffect(() => {
     console.log(contestID);
-    if(contestID.indexOf(' ')>=0) setContestIDError("Contest ID cannot contain space.");
+
+    if (contestID.indexOf(' ') >= 0) setContestIDError("Contest ID cannot contain space.");
     else setContestIDError(null);
 
-  },[contestID])
+  }, [contestID])
+
+  useEffect(() => {
+    if (startTime != "" && !validateDateTimeString(startTime)) {
+      setStartTimeError("Please enter the date and time as per the format");
+    }
+    else setStartTimeError(null);
+
+    if (endTime != "" && !validateDateTimeString(endTime)) {
+      setEndTimeError("Please enter the date and time as per the format");
+    }
+    else setEndTimeError(null);
+
+    if (!(startTime === "" || endTime === "")) {
+      if (startTime >= endTime) setTimeError("Start time cannot be greater than end time");
+      else setTimeError(null);
+    }
+    else setTimeError(null);
+  }, [startTime, endTime]);
+
 
   const reinitialiseQuestionState = () => {
     setContestName("");
@@ -90,7 +145,7 @@ function create_problem() {
       .post(
         "http://localhost:5000/contest/create",
         {
-          contestName, contestID,startTime,endTime
+          contestName, contestID, startTime, endTime
         },
         {
           headers: {
@@ -184,14 +239,21 @@ function create_problem() {
           {contestNameError && <h4 className="whitespace-pre text-sm text-red-600">{contestNameError}</h4>}
           <TextArea value={contestName} setValue={setContestName} height={10} />
 
+          {timeError && <h4 className="whitespace-pre text-sm text-red-600">{timeError}</h4>}
+
           <h1 className="text-2xl">Contest Start Time : </h1>
+          <h4 className="whitespace-pre text-sm">{"Example : 12/01/2023 08:00 am"}</h4>
+          {startTimeError && <h4 className="whitespace-pre text-sm text-red-600">{startTimeError}</h4>}
           <TextArea value={startTime} setValue={setStartTime} height={10} />
 
           <h1 className="text-2xl">Contest End Time : </h1>
+          <h4 className="whitespace-pre text-sm">{"Example : 12/01/2023 08:00 am"}</h4>
+          {endTimeError && <h4 className="whitespace-pre text-sm text-red-600">{endTimeError}</h4>}
           <TextArea value={endTime} setValue={setEndTime} height={10} />
 
+
           <div className="flex w-full items-center justify-center">
-            {(contestID && contestName && startTime && endTime) ? <button className="btn btn-outline btn-success mt-3 mx-2 mb-9" onClick={onSubmit}>Submit</button> : <button className="btn btn-outline btn-error mt-3 mx-2 mb-9 btn-disabled" style={{ "cursor": "not-allowed" }}>Submit</button>}
+            {(contestID && contestName && startTime && endTime && !contestNameError && !contestIDError && !startTimeError && !endTimeError && !timeError) ? <button className="btn btn-outline btn-success mt-3 mx-2 mb-9" onClick={onSubmit}>Submit</button> : <button className="btn btn-outline btn-error mt-3 mx-2 mb-9 btn-disabled" style={{ "cursor": "not-allowed" }}>Submit</button>}
           </div>
         </div>
       </div>
