@@ -6,7 +6,6 @@ import { AiOutlineDelete } from "react-icons/ai";
 import { AiOutlineClose } from "react-icons/ai";
 import { BsPencilSquare } from "react-icons/bs";
 import dynamic from "next/dynamic";
-import { withPageAuthRequired } from '@auth0/nextjs-auth0';
 
 const questionAreaStyle = {
   height: "90vh",
@@ -381,6 +380,3 @@ function create_problem() {
 }
 
 export default create_problem;
-
-
-export const getServerSideProps = withPageAuthRequired();

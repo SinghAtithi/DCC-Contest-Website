@@ -4,7 +4,7 @@ import LoginLottie from "../public/loginLottie.json";
 import Lottie from "lottie-react";
 import axios from "axios";
 import store from "../store/baseStore";
-import Router, { useRouter} from "next/router";
+import Router, { useRouter } from "next/router";
 import { loginUser } from "../store/loginStore";
 import checkToken from "../utils/checkToken";
 
@@ -15,13 +15,13 @@ function login() {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
 
-  useEffect(()=>{
+  useEffect(() => {
     // console.log("From login useeffect : ", store.getState().login.loggedIn);
     // checkToken();
     // var next="/ProblemSet";
     // if(router.query["next"]) next = router.query["next"];
     // if(store.getState().login.loggedIn) Router.push(next);
-  },[])
+  }, [])
 
   const onLogin = () => {
     const config = {
@@ -36,13 +36,13 @@ function login() {
     axios
       .post("http://localhost:5000/auth/login", data, config)
       .then((res) => {
-        var next="/ProblemSet"
+        var next = "/ProblemSet"
         console.log(res.data);
         localStorage.setItem('token', res.data.token);
-        localStorage.setItem('userName',res.data.userName);
+        localStorage.setItem('userName', res.data.userName);
         store.dispatch(loginUser(res.data.userName));
         console.log(store.getState().login.loggedIn);
-        if(router.query["next"]) next = router.query["next"];
+        if (router.query["next"]) next = router.query["next"];
         Router.push(next);
 
       })
