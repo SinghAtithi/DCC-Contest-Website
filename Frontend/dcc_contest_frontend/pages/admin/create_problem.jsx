@@ -1,13 +1,14 @@
 import axios from "axios";
 import React, { useEffect } from "react";
-import Navbar from "../components/Navbar";
-import TextArea from "../components/TextArea";
+import Navbar from "../../components/Navbar";
+import TextArea from "../../components/TextArea";
 import { AiOutlineDelete } from "react-icons/ai";
 import { AiOutlineClose } from "react-icons/ai";
 import { BsPencilSquare } from "react-icons/bs";
 import dynamic from "next/dynamic";
-import checkToken from "../utils/checkToken";
+import checkToken from "../../utils/checkToken";
 import Router from "next/router";
+import Head from 'next/head'
 
 const questionAreaStyle = {
   height: "90vh",
@@ -31,7 +32,7 @@ const toastCross = {
   right: "2px",
 }
 
-const CKEditor = dynamic(() => import("../components/RichTextEditor"), { ssr: false });
+const CKEditor = dynamic(() => import("../../components/RichTextEditor"), { ssr: false });
 
 function create_problem() {
 
@@ -66,7 +67,7 @@ function create_problem() {
         setIsLoading(false);
       }
       else {
-        Router.push("/login?next=create_problem")
+        Router.push("/login?next=admin/create_problem")
       }
     });
   }, [])
@@ -205,6 +206,11 @@ function create_problem() {
 
   return (
     <div >
+      <div>
+        <Head>
+          <title>Create Question</title>
+        </Head>
+      </div>
       <Navbar />
 
       <div className="font-serif p-8 w-auto">
