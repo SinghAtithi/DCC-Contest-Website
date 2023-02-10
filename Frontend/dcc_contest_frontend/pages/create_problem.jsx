@@ -1,11 +1,13 @@
 import axios from "axios";
-import React from "react";
+import React, { useEffect } from "react";
 import Navbar from "../components/Navbar";
 import TextArea from "../components/TextArea";
 import { AiOutlineDelete } from "react-icons/ai";
 import { AiOutlineClose } from "react-icons/ai";
 import { BsPencilSquare } from "react-icons/bs";
 import dynamic from "next/dynamic";
+import checkToken from "../utils/checkToken";
+import Router from "next/router";
 
 const questionAreaStyle = {
   height: "90vh",
@@ -53,6 +55,22 @@ function create_problem() {
   const [toastActive, setToastActive] = React.useState(false);
   const [toastMessage, setToastMessage] = React.useState("");
   const [toastClass, setToastClass] = React.useState("alert alert-error relative");
+  const [isLoading, setIsLoading] = React.useState(true);
+
+
+  useEffect(() => {
+    setIsLoading(true);
+
+    checkToken().then((status) => {
+      if (status) {
+        setIsLoading(false);
+      }
+      else {
+        Router.push("/login?next=create_problem")
+      }
+    });
+  }, [])
+
 
   const reinitialiseQuestionState = () => {
     setName("");
@@ -182,6 +200,8 @@ function create_problem() {
     setInputTestCase("");
     setOutputTestCase("");
   };
+
+  if (isLoading) return (<div>Loading...</div>)
 
   return (
     <div >

@@ -1,7 +1,4 @@
-// import { loginUser, logoutUser } from "../store/loginStore";
-// import store from "../store/baseStore";
-// import axios from "axios";
-// import { verify } from "jsonwebtoken";
+import axios from 'axios';
 
 const checkToken = async () => {
   if (localStorage.getItem("token")) {
@@ -10,17 +7,18 @@ const checkToken = async () => {
         token: localStorage.getItem("token"),
       },
     };
+    var status = false;
     await axios
       .get("http://localhost:5000/auth/verifyToken", config)
       .then((res) => {
         console.log("Verified yet again");
-        return true;
+        status = true;
       })
       .catch((err) => {
         console.log("Not Verified");
-
-        return false;
       });
+      return status;
+
   } else return false;
 };
 
