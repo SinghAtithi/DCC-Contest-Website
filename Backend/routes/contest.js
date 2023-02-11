@@ -25,7 +25,6 @@ router.get("/", (req, res) => {
 router.post("/create", async (req, res) => {
   const { contestName, contestID, ques_ids, startTime, endTime } = req.body;
   try {
-    console.log(req.body);
     const contest = await new Contest({
       contestName: contestName,
       contestId: contestID,
@@ -36,8 +35,8 @@ router.post("/create", async (req, res) => {
 
     for (var i = 0; i < ques_ids.length; i++) {
       await Question.findOneAndUpdate(
-        { ques_id: ques_ids[0] },
-        { displayAfter: startTime }
+        { ques_no: ques_ids[i] },
+        { displayAfter: startTime, assigned: true}
       );
     }
 

@@ -2,9 +2,9 @@ import axios from "axios";
 import React, { useEffect } from "react";
 import Navbar from "../../components/Navbar";
 import TextArea from "../../components/TextArea";
-import { AiOutlineDelete } from "react-icons/ai";
+import { FcSearch } from "react-icons/fc";
+import { MdAddCircle } from "react-icons/md";
 import { AiOutlineClose } from "react-icons/ai";
-import { BsPencilSquare } from "react-icons/bs";
 import dynamic from "next/dynamic";
 import checkToken from "../../utils/checkToken";
 import Router from "next/router";
@@ -64,6 +64,8 @@ function create_problem() {
   const [contestID, setContestID] = React.useState("");
   const [contestIDError, setContestIDError] = React.useState(null);
 
+  const [ques_ids, setQues_ids] = React.useState([]);
+
   const [startTime, setStartTime] = React.useState("");
   const [startTimeError, setStartTimeError] = React.useState(null);
 
@@ -73,7 +75,8 @@ function create_problem() {
   const [timeError, setTimeError] = React.useState(null);
 
   const [quesIDs, setQuesIDs] = React.useState([]);
-
+  const [searchString, setSearchString] = React.useState("");
+  const [searchedList, setSearchedList] = React.useState([]);
 
   const [toastActive, setToastActive] = React.useState(false);
   const [toastMessage, setToastMessage] = React.useState("");
@@ -113,6 +116,21 @@ function create_problem() {
   }, [])
 
   useEffect(() => {
+    if (searchString == "") setSearchedList([]);
+    else {
+      setSearchedList(quesIDs.filter(id => {
+        const notToBeIncluded = new Set(ques_ids);
+        if (!notToBeIncluded.has(id))
+          return id.toLowerCase().includes(searchString.toLowerCase());
+      }));
+    }
+
+  }, [searchString])
+
+
+
+
+  useEffect(() => {
     console.log(contestID);
 
     if (contestID.indexOf(' ') >= 0) setContestIDError("Contest ID cannot contain space.");
@@ -139,15 +157,33 @@ function create_problem() {
   }, [startTime, endTime]);
 
 
-  const reinitialiseQuestionState = () => {
+  const reinitialiseContestState = () => {
     setContestName("");
     setContestNameError(null);
     setContestID("");
     setContestIDError("");
     setStartTime("");
+    setStartTimeError(null);
     setEndTime("");
-  }
+    setEndTimeError(null);
+    setTimeError(null);
+    setSearchString("");
+    setSearchedList([]);
+    
+    
+    setQuesIDs(quesIDs.filter(id => {
+      const notToBeIncluded = new Set(ques_ids);
+      if (!notToBeIncluded.has(id))
+        return id;
+    }));
+    
+    setQues_ids([]);
 
+
+
+
+  }
+  
   const scroll2El = (elID) => {
     window.scrollTo({
       top: document.getElementById(elID).offsetTop - 60,
@@ -160,7 +196,7 @@ function create_problem() {
       .post(
         "http://localhost:5000/contest/create",
         {
-          contestName, contestID, startTime, endTime
+          contestName, contestID, startTime, endTime, ques_ids
         },
         {
           headers: {
@@ -169,7 +205,7 @@ function create_problem() {
         }
       )
       .then((result) => {
-        reinitialiseQuestionState();
+        reinitialiseContestState();
         setToastClass("alert alert-success relative");
         setToastMessage("Contest Successfully created.");
         setToastActive(true);
@@ -268,26 +304,50 @@ function create_problem() {
 
 
           <div className="flex w-full items-center justify-center">
-            {(contestID && contestName && startTime && endTime && !contestNameError && !contestIDError && !startTimeError && !endTimeError && !timeError) ? <button className="btn btn-outline btn-success mt-3 mx-2 mb-9" onClick={onSubmit}>Submit</button> : <button className="btn btn-outline btn-error mt-3 mx-2 mb-9 btn-disabled" style={{ "cursor": "not-allowed" }}>Submit</button>}
+            {(contestID && contestName && startTime && endTime && !contestNameError && !contestIDError && !startTimeError && !endTimeError && !timeError) ? <button className="btn btn-outline btn-success mt-2 mx-2 mb-2" onClick={onSubmit}>Submit</button> : <button className="btn btn-outline btn-error mt-2 mx-2 mb-2 btn-disabled" style={{ "cursor": "not-allowed" }}>Submit</button>}
           </div>
         </div>
 
         <div className="previewArea float-right px-10 " style={questionAreaStyle}>
 
           <div className="flex flex-col w-full items-center justify-center">
-            <h1 className="text-xl ">Add Problems </h1>
-            <br></br>
+            <h1 className="text-2xl ">Add Problems </h1>
             <br></br>
           </div>
 
-          {/* <div className="flex flex-col">
+          <div className="flex flex-col">
 
-            <div className="flex flex-col w-full items-center justify-center">
-              {problemID && <h1 className="text-2xl">{problemID}</h1>}
-              {name && <h1 className="text-2xl">{name}</h1>}
-              {time_limit && <p className="text-sm mt-1 italic">Time Limit : {time_limit} Sec</p>}
-            </div>
-          </div> */}
+            <FcSearch size={30} />
+            <TextArea value={searchString} setValue={setSearchString} height={10} />
+
+
+            {searchedList.length != 0 && <div>
+              {searchedList.map((value, index) => (
+                <div className="tooltip tooltip-warning" data-tip="Add">
+                  <div className="bg-slate-700 my-1 py-1 mx-1 hover:text-green-500" onClick={() => {
+                    setQues_ids([...ques_ids, searchedList[index]]);
+                    setSearchedList(searchedList.filter((_, i) => i !== index));
+                  }}>
+                    <span className="font-mono font-bold px-3">{value}</span>
+                  </div><hr></hr></div>))}
+            </div>}
+
+            {ques_ids.length != 0 && <div>
+              <br></br>
+              <span className="font-mono font-bold">Added Problems</span><br></br>
+              {ques_ids.map((value, index) => (
+                <div className="tooltip tooltip-warning" data-tip="Remove">
+                  <div className="bg-slate-700 my-1 py-1 mx-1 hover:text-red-500" onClick={() => {
+                    if (searchString) setSearchedList([...searchedList, ques_ids[index]]);
+                    setQues_ids(ques_ids.filter((_, i) => i != index));
+                  }}>
+                    <span className="font-mono font-bold px-3">{value}</span>
+                  </div>
+                  <hr></hr>
+                </div>
+              ))}
+            </div>}
+          </div>
         </div>
       </div>
     </div>

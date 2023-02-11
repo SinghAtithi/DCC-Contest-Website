@@ -59,6 +59,10 @@ const QuesSchema = mongoose.Schema({
   displayAfter : {
     type : String,
     required : true
+  },
+  assigned : {
+    type : Boolean,
+    default : false
   }
 });
 

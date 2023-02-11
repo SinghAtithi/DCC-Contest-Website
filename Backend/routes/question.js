@@ -6,15 +6,24 @@ const router = express.Router();
 
 // Get the list of ques_no,name and topics page by page as specified by query parameter
 router.get("/", async (req, res) => {
+  // const ques = await Question.find({});
+  // // console.log(ques);
+  // for(var i=0;i<ques.length;i++){
+  //   var ques1 = await Question.findOneAndUpdate({ques_no:ques[i].ques_no},{assigned : false});
+  //   // console.log(ques1);
+  // }
   const currDate = moment(new Date()).format("DD/MM/YYYY HH:mm").toString();
-  const allQues = await Question.find({displayAfter : {$lt : currDate}}, "ques_no name topics");
+  const allQues = await Question.find(
+    { displayAfter: { $lt: currDate }, assigned: true },
+    "ques_no name topics"
+  );
   res.status(200).json(allQues);
 });
 
 router.get("/getQuesNo", async (req, res) => {
-    const allQues = await Question.find({}, "ques_no");
-    res.status(200).json(allQues);
-  });
+  const allQues = await Question.find({ assigned: false }, "ques_no");
+  res.status(200).json(allQues);
+});
 
 router.post("/createQuestion/create", async (req, res) => {
   const {
@@ -37,7 +46,10 @@ router.post("/createQuestion/create", async (req, res) => {
     var no_of_public_test_cases = public_tc.length;
     var no_of_private_test_cases = private_tc.length;
 
-    var displayAfter = moment(new Date()).add(10,'days').format("DD/MM/YYYY HH:mm").toString();
+    var displayAfter = moment(new Date())
+      .add(10, "days")
+      .format("DD/MM/YYYY HH:mm")
+      .toString();
     const ques = await new Question({
       name,
       description,
@@ -67,7 +79,11 @@ router.get("/:ques_no", (req, res) => {
   const currDate = moment(new Date()).format("DD/MM/YYYY HH:mm").toString();
   try {
     Question.findOne(
-      { ques_no: req.params.ques_no, displayAfter: { $lt: currDate } },
+      {
+        ques_no: req.params.ques_no,
+        displayAfter: { $lt: currDate },
+        assigned: true,
+      },
 
       "ques_no name description constraints input_format output_format time_limit public_test_cases",
       (error, result) => {
