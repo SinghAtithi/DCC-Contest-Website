@@ -6,8 +6,8 @@ import QuestionStatement from "../../components/QuestionStatement";
 import snippetCode from "../../components/snippet";
 import axios from "axios";
 import ConsolePanel from "../../components/console_panel";
-import CodeAreaSkeleton from '../../skeleton/CodeAreaSkeleton';
-import ConsoleSkeleton from "../../skeleton/ConsoleSkeleton";
+
+
 const problem_container = {
   "display": "flex"
 }

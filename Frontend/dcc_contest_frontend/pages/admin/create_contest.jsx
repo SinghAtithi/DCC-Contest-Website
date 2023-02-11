@@ -3,30 +3,26 @@ import React, { useEffect } from "react";
 import Navbar from "../../components/Navbar";
 import TextArea from "../../components/TextArea";
 import { FcSearch } from "react-icons/fc";
-import { MdAddCircle } from "react-icons/md";
 import { AiOutlineClose } from "react-icons/ai";
-import dynamic from "next/dynamic";
 import checkToken from "../../utils/checkToken";
 import Router from "next/router";
 import Head from 'next/head';
 import moment from 'moment';
 import { baseUrl } from "../../utils/constants";
 
+const contest_container = {
+  "display": "flex",
+}
 
-const questionAreaStyle = {
+const contest_details_area = {
   height: "90vh",
   width: "50%",
+  overflowY: "scroll"
 }
 
-const deleteIcon = {
-  position: "absolute",
-  top: "0px",
-  right: "10px",
-}
-const editIcon = {
-  position: "absolute",
-  top: "4px",
-  right: "50px",
+const add_problem_area = {
+  height: "90vh",
+  width: "50%",
 }
 
 const toastCross = {
@@ -169,21 +165,21 @@ function create_problem() {
     setTimeError(null);
     setSearchString("");
     setSearchedList([]);
-    
-    
+
+
     setQuesIDs(quesIDs.filter(id => {
       const notToBeIncluded = new Set(ques_ids);
       if (!notToBeIncluded.has(id))
         return id;
     }));
-    
+
     setQues_ids([]);
 
 
 
 
   }
-  
+
   const scroll2El = (elID) => {
     window.scrollTo({
       top: document.getElementById(elID).offsetTop - 60,
@@ -265,10 +261,11 @@ function create_problem() {
           <title>Create Contest</title>
         </Head>
       </div>
-      <Navbar />
 
-      <div className="font-serif p-8 w-auto">
-        <div className="questionArea float-left" style={questionAreaStyle}>
+
+      <Navbar />
+      <div className="font-serif" style={contest_container}>
+        <div className="questionArea w-auto px-5" style={contest_details_area}>
           {toastActive && <div className="toast toast-start">
             <div className={toastClass}>
               <div>
@@ -308,7 +305,7 @@ function create_problem() {
           </div>
         </div>
 
-        <div className="previewArea float-right px-10 " style={questionAreaStyle}>
+        <div className="previewArea float-right px-10 pt-5" style={add_problem_area}>
 
           <div className="flex flex-col w-full items-center justify-center">
             <h1 className="text-2xl ">Add Problems </h1>
