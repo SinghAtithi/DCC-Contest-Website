@@ -56,6 +56,10 @@ const QuesSchema = mongoose.Schema({
     type: String,
     required: false,
   },
+  displayAfter : {
+    type : String,
+    required : true
+  }
 });
 
 QuesSchema.plugin(paginate);

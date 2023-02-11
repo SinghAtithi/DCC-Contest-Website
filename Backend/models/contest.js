@@ -9,7 +9,7 @@ const ContestSchema = mongoose.Schema({
         type: String,
         required: true
     },
-    ques_id : {
+    ques_ids : {
         type: Array
     },
     startTime : {

@@ -10,6 +10,7 @@ import checkToken from "../../utils/checkToken";
 import Router from "next/router";
 import Head from 'next/head';
 import moment from 'moment';
+import { baseUrl } from "../../utils/constants";
 
 
 const questionAreaStyle = {
@@ -37,7 +38,7 @@ const toastCross = {
 function validateDateTimeString(dateTime) {
   try {
     const arr = dateTime.split(" ");
-    if (arr.length != 3) return false;
+    if (arr.length != 2) return false;
 
     let result = moment(arr[0], 'DD/MM/YYYY', true).isValid();
     if (!result) return false;
@@ -45,10 +46,9 @@ function validateDateTimeString(dateTime) {
     let hour = parseInt(arr[1].split(':')[0]);
     let min = parseInt(arr[1].split(':')[1]);
 
-    if (hour > 12 || hour < 0) return false;
+    if (hour >= 24 || hour < 0) return false;
     if (min >= 60 || min < 0) return false;
 
-    if (arr[2] != "am" && arr[2] != "pm") return false;
     return true;
   }
   catch (error) {
@@ -72,6 +72,9 @@ function create_problem() {
 
   const [timeError, setTimeError] = React.useState(null);
 
+  const [quesIDs, setQuesIDs] = React.useState([]);
+
+
   const [toastActive, setToastActive] = React.useState(false);
   const [toastMessage, setToastMessage] = React.useState("");
   const [toastClass, setToastClass] = React.useState("alert alert-error relative");
@@ -85,10 +88,22 @@ function create_problem() {
       if (status) {
         setIsLoading(false);
 
-        const currDate = moment(new Date()).format('DD/MM/YYYY HH:mm a');
-        const nextDate = moment(new Date()).add(2, 'hours').format('DD/MM/YYYY HH:mm a');
+        const currDate = moment(new Date()).format('DD/MM/YYYY HH:mm');
+        const nextDate = moment(new Date()).add(2, 'hours').format('DD/MM/YYYY HH:mm');
         setStartTime(currDate.toString());
         setEndTime(nextDate.toString());
+
+        // Get ques ids to choose from in search
+        axios.get(`${baseUrl}/question/getQuesNo`).then((res) => {
+          var ques_ids = []
+          for (var i = 0; i < res.data.length; i++) {
+            ques_ids.push(res.data[i].ques_no);
+          }
+          console.log(ques_ids);
+          setQuesIDs(ques_ids);
+        }).catch((err) => {
+          console.log(err);
+        })
 
       }
       else {
@@ -242,12 +257,12 @@ function create_problem() {
           {timeError && <h4 className="whitespace-pre text-sm text-red-600">{timeError}</h4>}
 
           <h1 className="text-2xl">Contest Start Time : </h1>
-          <h4 className="whitespace-pre text-sm">{"Example : 12/01/2023 08:00 am"}</h4>
+          <h4 className="whitespace-pre text-sm">{"Example : 12/01/2023 08:00"}</h4>
           {startTimeError && <h4 className="whitespace-pre text-sm text-red-600">{startTimeError}</h4>}
           <TextArea value={startTime} setValue={setStartTime} height={10} />
 
           <h1 className="text-2xl">Contest End Time : </h1>
-          <h4 className="whitespace-pre text-sm">{"Example : 12/01/2023 08:00 am"}</h4>
+          <h4 className="whitespace-pre text-sm">{"Example : 12/01/2023 20:00"}</h4>
           {endTimeError && <h4 className="whitespace-pre text-sm text-red-600">{endTimeError}</h4>}
           <TextArea value={endTime} setValue={setEndTime} height={10} />
 
@@ -255,6 +270,24 @@ function create_problem() {
           <div className="flex w-full items-center justify-center">
             {(contestID && contestName && startTime && endTime && !contestNameError && !contestIDError && !startTimeError && !endTimeError && !timeError) ? <button className="btn btn-outline btn-success mt-3 mx-2 mb-9" onClick={onSubmit}>Submit</button> : <button className="btn btn-outline btn-error mt-3 mx-2 mb-9 btn-disabled" style={{ "cursor": "not-allowed" }}>Submit</button>}
           </div>
+        </div>
+
+        <div className="previewArea float-right px-10 " style={questionAreaStyle}>
+
+          <div className="flex flex-col w-full items-center justify-center">
+            <h1 className="text-xl ">Add Problems </h1>
+            <br></br>
+            <br></br>
+          </div>
+
+          {/* <div className="flex flex-col">
+
+            <div className="flex flex-col w-full items-center justify-center">
+              {problemID && <h1 className="text-2xl">{problemID}</h1>}
+              {name && <h1 className="text-2xl">{name}</h1>}
+              {time_limit && <p className="text-sm mt-1 italic">Time Limit : {time_limit} Sec</p>}
+            </div>
+          </div> */}
         </div>
       </div>
     </div>
