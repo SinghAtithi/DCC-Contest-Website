@@ -1,19 +1,38 @@
 import axios from "axios";
 import React, { useEffect } from "react";
-import Navbar from "../components/Navbar";
-import TextArea from "../components/TextArea";
+import Navbar from "../../components/Navbar";
+import TextArea from "../../components/TextArea";
 import { AiOutlineDelete } from "react-icons/ai";
 import { AiOutlineClose } from "react-icons/ai";
 import { BsPencilSquare } from "react-icons/bs";
 import dynamic from "next/dynamic";
-import { useState } from "react";
-import store from "../store/baseStore";
+import checkToken from "../../utils/checkToken";
 import Router from "next/router";
-import checkToken from "../utils/checkToken";
+import Head from 'next/head'
 
-const questionAreaStyle = {
+
+const question_container = {
+  "display": "flex"
+}
+
+const question_details_area = {
   height: "90vh",
   width: "50%",
+  overflowY: "scroll"
+}
+
+const question_preview_area = {
+  height: "90vh",
+  width: "50%",
+  overflowY: "scroll",
+  "overflow-wrap": "break-word"
+}
+
+const test_case_area = {
+  height : "auto",
+  width:"100%",
+  // overflowY : "scroll",
+  overflowX : "scroll"
 }
 
 const deleteIcon = {
@@ -33,7 +52,7 @@ const toastCross = {
   right: "2px",
 }
 
-const CKEditor = dynamic(() => import("../components/RichTextEditor"), { ssr: false });
+const CKEditor = dynamic(() => import("../../components/RichTextEditor"), { ssr: false });
 
 function create_problem() {
 
@@ -57,14 +76,22 @@ function create_problem() {
   const [toastActive, setToastActive] = React.useState(false);
   const [toastMessage, setToastMessage] = React.useState("");
   const [toastClass, setToastClass] = React.useState("alert alert-error relative");
+  const [isLoading, setIsLoading] = React.useState(true);
 
-  useEffect(()=>{
-    checkToken();
 
-    if(! store.getState().login.loggedIn){
-      Router.push('/login?next=create_problem');
-    }
-  },[]);
+  useEffect(() => {
+    setIsLoading(true);
+
+    checkToken().then((status) => {
+      if (status) {
+        setIsLoading(false);
+      }
+      else {
+        Router.push("/login?next=admin/create_problem")
+      }
+    });
+  }, [])
+
 
   const reinitialiseQuestionState = () => {
     setName("");
@@ -85,8 +112,9 @@ function create_problem() {
     setExplanation("");
 
   }
-  
+
   const scroll2El = elID => {
+    console.log(document.getElementById(elID));
     window.scrollTo({
       top: document.getElementById(elID).offsetTop - 60,
       behavior: 'smooth',
@@ -195,13 +223,19 @@ function create_problem() {
     setOutputTestCase("");
   };
 
+  if (isLoading) return (<div>Loading...</div>)
 
   return (
     <div >
+      <div>
+        <Head>
+          <title>Create Question</title>
+        </Head>
+      </div>
       <Navbar />
 
-      <div className="font-serif p-8 w-auto">
-        <div className="questionArea float-left" style={questionAreaStyle}>
+      <div className="font-serif w-auto" style={question_container}>
+        <div className="questionArea px-5 pt-2 float-left" style={question_details_area}>
           {toastActive && <div className="toast toast-start">
             <div className={toastClass}>
               <div>
@@ -276,7 +310,7 @@ function create_problem() {
           </div>
         </div>
 
-        <div className="previewArea float-right px-10 " style={questionAreaStyle}>
+        <div className="previewArea float-right px-10 " style={question_preview_area}>
 
           <div className="flex flex-col w-full items-center justify-center">
             <h1 className="text-xl ">Preview of the Question </h1>
@@ -297,18 +331,18 @@ function create_problem() {
             </div>
 
             {constraints && <div>
-              <h1 className="text-xl mt-8 font-serif ck-content">Constraints : </h1>
-              <p className="mt-2" dangerouslySetInnerHTML={{ __html: constraints }}></p>
+              <h1 className="text-xl mt-8 font-serif">Constraints : </h1>
+              <p className="mt-2 ck-content" dangerouslySetInnerHTML={{ __html: constraints }}></p>
             </div>}
 
             {input_format && <div>
               <h1 className="text-xl mt-8 font-serif">Input Format : </h1>
-              <pre>{input_format}</pre>
+              <p className="mt-2 ck-content" dangerouslySetInnerHTML={{ __html: input_format }}></p>
             </div>}
 
             {output_format && <div>
               <h1 className="text-xl mt-8 font-serif">Output Format : </h1>
-              <pre>{output_format}</pre>
+              <p className="mt-2 ck-content" dangerouslySetInnerHTML={{ __html: output_format }}></p>
             </div>}
 
             {topics && <div>
@@ -341,12 +375,12 @@ function create_problem() {
                       );
                     }} />
                   </div>
-                  <div className="bg-slate-700">
-                    <pre><span className="font-mono font-bold">Input</span><br></br>{public_test_case.input}</pre>
+                  <div className="bg-slate-700 mb-4" style={test_case_area}>
+                    <pre><span className="font-mono font-bold text-lime-600">Input</span><br></br>{public_test_case.input}</pre>
                     <hr></hr>
-                    <pre><span className="font-mono font-bold">Output</span><br></br>{public_test_case.output}</pre>
+                    <pre><span className="font-mono font-bold text-lime-600">Output</span><br></br>{public_test_case.output}</pre>
                     <hr></hr>
-                    <pre><span className="font-mono font-bold">Explanation</span><br></br><p className="ck-content" dangerouslySetInnerHTML={{ __html: public_test_case.explanation }}></p></pre>
+                    {public_test_case.explanation && <pre><span className="font-mono font-bold text-lime-600">Explanation</span><br></br><p className="ck-content" dangerouslySetInnerHTML={{ __html: public_test_case.explanation }}></p></pre>}
                   </div>
                 </div>
               ))}
@@ -376,10 +410,10 @@ function create_problem() {
                       );
                     }} />
                   </div>
-                  <div className="bg-slate-700">
-                    <pre><span className="font-mono font-bold">Input</span><br></br>{private_test_case.input}</pre>
+                  <div className="bg-slate-700 mb-4" style={test_case_area}>
+                    <pre><span className="font-mono font-bold text-lime-600">Input</span><br></br>{private_test_case.input}</pre>
                     <hr></hr>
-                    <pre><span className="font-mono font-bold">Output</span><br></br>{private_test_case.output}</pre>
+                    <pre><span className="font-mono font-bold text-lime-600">Output</span><br></br>{private_test_case.output}</pre>
                   </div>
                 </div>
               ))}
@@ -387,39 +421,6 @@ function create_problem() {
 
           </div>
         </div>
-<<<<<<< HEAD
-        <div>
-          {private_test_cases.map((test, index) => {
-            return (
-              <div key={index} className="flex flex-col w-3/5 m-6 border">
-                <div className="w-72 m-4">
-                  <h1 className="text-2xl">Private TC </h1>
-                  <h1 className="text-2xl">Input : </h1>
-                  <p className="text-lg whitespace-pre">{test.input}</p>
-                </div>
-                <div className="w-72 m-4">
-                  <h1 className="text-2xl">Output : </h1>
-                  <p className="text-lg whitespace-pre">{test.output}</p>
-                </div>
-                <button
-                  className="btn btn-error"
-                  onClick={() => {
-                    setPrivateTestCases(
-                      private_test_cases.filter((_, i) => i !== index)
-                    );
-                  }}
-                >
-                  Delete
-                </button>
-              </div>
-            );
-          })}
-        </div>
-        <button className="btn btn-outline btn-success mt-6" onClick={onSubmit}>
-          Submit
-        </button>
-=======
->>>>>>> 5a93ac925f1e18e5a8650978de946f711b17d28c
       </div>
     </div>
   );

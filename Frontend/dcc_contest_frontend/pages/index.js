@@ -15,6 +15,7 @@ export default function Home() {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
         <link rel="stylesheet" href="path/to/assets/content-styles.css" type="text/css"/>
+        <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
       </Head>
       <Navbar />
       <HomePage/>

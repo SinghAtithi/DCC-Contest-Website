@@ -1,7 +1,9 @@
 import React from "react";
 import HeroLottie from "./HeroLottie";
 
+
 function HomePage() {
+
   return (
     <div className="hero min-h-screen bg-inherit pl-16">
       <div className="hero-content flex-col lg:flex-row-reverse">
