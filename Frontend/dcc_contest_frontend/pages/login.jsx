@@ -44,7 +44,7 @@ function login() {
     axios
       .post("http://localhost:5000/auth/login", data, config)
       .then((res) => {
-        var next = "/ProblemSet"
+        var next = "/dashboard"
         console.log(res.data);
         localStorage.setItem('token', res.data.token);
         localStorage.setItem('userName', res.data.userName);

@@ -28,6 +28,7 @@
     "prop-types": "^15.8.1",
     "react": "18.2.0",
     "react-animated-cursor": "^2.5.2",
+    "react-chartjs-2": "^5.2.0",
     "react-datepicker": "^4.10.0",
     "react-dom": "18.2.0",
     "react-draft-wysiwyg": "^1.15.0",

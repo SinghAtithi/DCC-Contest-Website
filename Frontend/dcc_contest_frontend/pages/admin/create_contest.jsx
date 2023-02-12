@@ -333,7 +333,7 @@ function create_problem() {
               <br></br>
               <span className="font-mono font-bold">Added Problems</span><br></br>
               {ques_ids.map((value, index) => (
-                <div className="tooltip tooltip-warning" data-tip="Remove">
+                <div className="tooltip tooltip-error" data-tip="Remove">
                   <div className="bg-slate-700 my-1 py-1 mx-1 hover:text-red-500" onClick={() => {
                     if (searchString) setSearchedList([...searchedList, ques_ids[index]]);
                     setQues_ids(ques_ids.filter((_, i) => i != index));
