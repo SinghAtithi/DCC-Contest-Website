@@ -58,7 +58,7 @@ router.post("/submit", async (req, res) => {
           ),
           `${i}_in.txt`
         );
-        var resp = await executeCpp(
+      var resp = await executeCpp(
           codeFilePath,
           user_id,
           inPath,

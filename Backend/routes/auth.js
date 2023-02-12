@@ -88,6 +88,7 @@ router.post("/register", async (req, res) => {
 
 router.post("/login", async (req, res) => {
   try {
+    console.log(req.body);
     const { loginId, password } = req.body;
     if (loginId) {
       if (password) {
@@ -124,8 +125,8 @@ router.post("/login", async (req, res) => {
   }
 });
 
-router.get("/verifyToken",verifyGeneralUser,(req, res)=>{
-    res.status(200).send({validation:"Success"});
+router.get("/verifyToken", verifyGeneralUser, (req, res) => {
+  res.status(200).send({ validation: "Success" });
 })
 
 router.get("/imagekitAuth", async (req, res) => {
