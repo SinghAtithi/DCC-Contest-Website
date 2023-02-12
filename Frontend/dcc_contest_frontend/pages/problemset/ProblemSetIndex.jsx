@@ -44,7 +44,7 @@ function ProblemSetIndex() {
       <div className="my-4 flex justify-center">
         <button
           className={`btn mx-1`}
-          onClick={() => setPage(Math.max(0, page - 1))}
+          onClick={() => setPage(Math.max(1, page - 1))}
         >
           Prev
         </button>

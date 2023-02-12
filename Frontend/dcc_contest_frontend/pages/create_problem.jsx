@@ -387,39 +387,6 @@ function create_problem() {
 
           </div>
         </div>
-<<<<<<< HEAD
-        <div>
-          {private_test_cases.map((test, index) => {
-            return (
-              <div key={index} className="flex flex-col w-3/5 m-6 border">
-                <div className="w-72 m-4">
-                  <h1 className="text-2xl">Private TC </h1>
-                  <h1 className="text-2xl">Input : </h1>
-                  <p className="text-lg whitespace-pre">{test.input}</p>
-                </div>
-                <div className="w-72 m-4">
-                  <h1 className="text-2xl">Output : </h1>
-                  <p className="text-lg whitespace-pre">{test.output}</p>
-                </div>
-                <button
-                  className="btn btn-error"
-                  onClick={() => {
-                    setPrivateTestCases(
-                      private_test_cases.filter((_, i) => i !== index)
-                    );
-                  }}
-                >
-                  Delete
-                </button>
-              </div>
-            );
-          })}
-        </div>
-        <button className="btn btn-outline btn-success mt-6" onClick={onSubmit}>
-          Submit
-        </button>
-=======
->>>>>>> 5a93ac925f1e18e5a8650978de946f711b17d28c
       </div>
     </div>
   );

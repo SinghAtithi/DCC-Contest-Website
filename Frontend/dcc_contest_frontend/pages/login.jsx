@@ -13,17 +13,13 @@ function login() {
 
   const [loginId, setloginId] = useState("");
   const [password, setPassword] = useState("");
-<<<<<<< HEAD
- 
-=======
   const [error, setError] = useState("");
 
-  useEffect(()=>{
-    console.log("From login useeffect : ", store.getState().login.loggedIn);
-    if(store.getState().login.loggedIn) Router.push("/ProblemSet");
-  })
+  // useEffect(()=>{
+  //   console.log("From login useeffect : ", store.getState().login.loggedIn);
+  //   if(store.getState().login.loggedIn) Router.push("/ProblemSet");
+  // },[])
 
->>>>>>> 5a93ac925f1e18e5a8650978de946f711b17d28c
   const onLogin = () => {
     const config = {
       headers: {
@@ -41,14 +37,14 @@ function login() {
         console.log(res);
         localStorage.setItem('token', res.data.token);
         localStorage.setItem('userName',res.data.userName);
-        store.dispatch(loginUser(res.data.userName));
-        console.log(store.getState().login.loggedIn);
+        // store.dispatch(loginUser(res.data.userName));
+        // console.log(store.getState().login.loggedIn);
         if(router.query["next"]) next = router.query["next"];
         Router.push(next);
 
       })
       .catch((err) => {
-        // console.log(err);
+        console.log(err);
         setError(err.response.data.error);
       });
   };
