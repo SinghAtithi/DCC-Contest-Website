@@ -276,3 +276,14 @@
     transform: rotate(0deg);
   }
 }
+
+
+
+/* Dashboard CSS */
+/* 
+.dashboard{
+  font-family: serif;
+  display: grid;
+  flex-direction: row;
+  margin: 2px;
+} */

@@ -6,6 +6,10 @@ module.exports = {
   ],
   theme: {
     extend: {},
+    height :{
+      '95.5%' : "95.5%"
+    }
+    
   },
   plugins: [require("daisyui")],
   daisyui: {
