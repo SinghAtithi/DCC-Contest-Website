@@ -1095,3 +1095,102 @@ ck-rounded-corners .ck.ck-editor__main>.ck-editor__editable, .ck.ck-editor__main
     flex-direction: column;
   }
 }
+
+
+/* Problem Page */
+
+.problem-page{
+  position: relative;
+  top:65px;
+  display: flex;
+}
+
+.problem-page-left{
+  height: 90vh;
+  width:40%;
+  padding: 8px;
+  overflow-y: scroll;
+}
+
+.problem-page-right{
+  height:90vh;
+  width:60%;
+}
+
+.problem-page-right-top{
+  margin-left: 1rem/* 16px */;
+  margin-right: 1rem/* 16px */;
+}
+
+@media screen and (max-width:1000px){
+  .problem-page{
+    flex-direction: column;
+    height : auto;
+  }
+
+  .problem-page-left{
+    overflow-y: hidden;
+    overflow-x: hidden;
+    height: auto;
+    width:100%;
+    padding:15px;
+  }
+
+  .problem-page-right{
+    width:100%;
+    margin-top: 16px;
+  }
+}
+
+/* Question Component */
+
+.question-component{
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  justify-content: flex-start;
+}
+
+.question-component-question-meta-data{
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  align-items: center;
+  justify-content: center;
+}
+
+
+/* Code editor */
+
+.code-editor-area{
+  position: relative;
+  
+}
+
+.code-editor{
+  border-width: 2px;
+  border-color: rgb(21 128 61);
+}
+
+.code-editor-area-button-area{
+  display: flex;
+  padding-top:12px;
+  padding-bottom:12px;
+  align-items: center;
+  justify-content: left;
+  /* margin: 4px; */
+}
+
+#button-below{
+  margin:4px;
+}
+
+.console-area{
+  position: absolute;
+  bottom: 0;
+  height: 16vh; 
+  /* width is custom set by javascript */
+  overflow-y: scroll;
+  background: inherit;
+  padding-left: 16px;
+}
