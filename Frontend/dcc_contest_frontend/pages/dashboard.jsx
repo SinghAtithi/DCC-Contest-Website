@@ -211,14 +211,14 @@ function dashboard() {
             </Head>
 
 
-            {/* <Navbar /> */}
+            <Navbar />
             <div className="dashboard">
                 <div className="summary_area">
                     <p className="dashboard_title_div">Statistics</p>
                     <div className="dashboard_left_top">
                         <div className="dashboard_profile_info">
                             <img src="https://ik.imagekit.io/pqymxdgbi/trial_bzYervpMN.jpg?tr=h-90%2Cw-90" style={{ "border-radius": "50%" }} ></img>
-                            <div>
+                            <div className="dashboard-profile-user">
                                 <p>Ritik Kaushal</p>
                                 <p>Current Rating : 1200</p>
                                 <p>(Max: 1500)</p>
