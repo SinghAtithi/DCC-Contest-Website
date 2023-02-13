@@ -24,16 +24,16 @@ function Navbar() {
 
         <ul className="custom-navbar-items" >
           <li>
-            <Link href="/">Contest</Link>
+            <Link href="/contest">Contest</Link>
           </li>
           <li>
             <Link href="/ProblemSet">Problem Set</Link>
           </li>
           <li>
-            <Link href="/Blogs">Blogs</Link>
+            <Link href="/blogs">Blogs</Link>
           </li>
           <li>
-            <Link href="/">About</Link>
+            <Link href="/about">About</Link>
           </li>
           <UserMenu />
         </ul>

@@ -5,10 +5,7 @@ module.exports = {
     "./components/**/*.{js,ts,jsx,tsx}",
   ],
   theme: {
-    extend: {},
-    height :{
-      '95.5%' : "95.5%"
-    }
+    extend: {}
     
   },
   plugins: [require("daisyui")],
