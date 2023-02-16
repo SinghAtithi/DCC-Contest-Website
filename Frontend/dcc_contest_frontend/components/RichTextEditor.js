@@ -59,10 +59,10 @@ const MyCKEditor = (props) => {
     }
 
   return (
-    <div>
+    <div className="editor-div">
       {editorLoaded ? (
         <CKEditor
-          className="mt-3 wrap-ckeditor"
+          className="wrap-ckeditor"
           editor={ClassicEditor}
           config={{ removePlugins: ['Heading'], extraPlugins: [uploadPlugin] }}
           onChange={(event,editor) => {

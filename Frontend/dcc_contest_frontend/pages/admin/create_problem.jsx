@@ -10,36 +10,25 @@ import checkToken from "../../utils/checkToken";
 import Router from "next/router";
 import Head from 'next/head'
 
+// const question_details_area = {
+//   height: "90vh",
+//   width: "50%",
+//   overflowY: "scroll"
+// }
 
-const question_container = {
-  "display": "flex"
-}
 
-const question_details_area = {
-  height: "90vh",
-  width: "50%",
-  overflowY: "scroll"
-}
+// const test_case_area = {
+//   height : "auto",
+//   width:"100%",
+//   // overflowY : "scroll",
+//   overflowX : "scroll"
+// }
 
-const question_preview_area = {
-  height: "90vh",
-  width: "50%",
-  overflowY: "scroll",
-  "overflow-wrap": "break-word"
-}
-
-const test_case_area = {
-  height : "auto",
-  width:"100%",
-  // overflowY : "scroll",
-  overflowX : "scroll"
-}
-
-const deleteIcon = {
-  position: "absolute",
-  top: "0px",
-  right: "10px",
-}
+// const deleteIcon = {
+//   position: "absolute",
+//   top: "0px",
+//   right: "10px",
+// }
 const editIcon = {
   position: "absolute",
   top: "4px",
@@ -113,12 +102,14 @@ function create_problem() {
 
   }
 
-  const scroll2El = elID => {
-    console.log(document.getElementById(elID));
-    window.scrollTo({
-      top: document.getElementById(elID).offsetTop - 60,
-      behavior: 'smooth',
-    });
+  const scrollToTestCase = (elID) => {
+    const test_case = document.getElementById(elID);
+    console.log(test_case.offsetTop)
+    test_case.scrollIntoView({behavior: "smooth"});
+    // window.scrollTo({
+    //   top: test_case.offsetTop - 60,
+    //   behavior: 'smooth',
+    // });
   };
 
   const onSubmit = () => {
@@ -234,8 +225,8 @@ function create_problem() {
       </div>
       <Navbar />
 
-      <div className="font-serif w-auto" style={question_container}>
-        <div className="questionArea px-5 pt-2 float-left" style={question_details_area}>
+      <div className="question_container">
+        <div className="question_details_area">
           {toastActive && <div className="toast toast-start">
             <div className={toastClass}>
               <div>
@@ -248,172 +239,192 @@ function create_problem() {
           </div>}
 
 
-          <h1 className="text-2xl">Problem ID : </h1>
-          <h4 className="whitespace-pre text-sm">{"Format : contestId_questionNo\nDo not use space."}</h4>
-          {problemIDError && <h4 className="whitespace-pre text-sm text-red-600">{problemIDError}</h4>}
-          <TextArea value={problemID} setValue={setProblemID} height={10} />
+          <div id="question_area_section">
+            <h1 className="text-2xl">Problem ID : </h1>
+            <h4 className="whitespace-pre text-sm">{"Format : contestId_questionNo\nDo not use space."}</h4>
+            {problemIDError && <h4 className="whitespace-pre text-sm text-red-600">{problemIDError}</h4>}
+            <TextArea value={problemID} setValue={setProblemID} height={10} />
+          </div>
 
-          <h1 className="text-2xl">Problem Name : </h1>
-          {nameError && <h4 className="whitespace-pre text-sm text-red-600">{nameError}</h4>}
-          <TextArea value={name} setValue={setName} height={10} />
+          <div id="question_area_section">
+            <h1 className="text-2xl">Problem Name : </h1>
+            {nameError && <h4 className="whitespace-pre text-sm text-red-600">{nameError}</h4>}
+            <TextArea value={name} setValue={setName} height={10} />
+          </div>
 
-          <h1 className="text-2xl">Time Limit : </h1>
-          <h4 className="whitespace-pre text-sm">{"An integer representing time in seconds"}</h4>
-          {time_limitError && <h4 className="whitespace-pre text-sm text-red-600">{time_limitError}</h4>}
-          <TextArea value={time_limit} setValue={setTimeLimit} height={10} />
+          <div id="question_area_section">
+            <h1 className="text-2xl">Time Limit : </h1>
+            <h4 className="whitespace-pre text-sm">{"An integer representing time in seconds"}</h4>
+            {time_limitError && <h4 className="whitespace-pre text-sm text-red-600">{time_limitError}</h4>}
+            <TextArea value={time_limit} setValue={setTimeLimit} height={10} />
+          </div>
 
-          <h1 className="text-2xl">Topics : </h1>
-          <TextArea value={topics} setValue={setTopics} height={10} />
+          <div id="question_area_section">
+            <h1 className="text-2xl">Topics : </h1>
+            <TextArea value={topics} setValue={setTopics} height={10} />
+          </div>
 
-          <h1 className="text-2xl">Description : </h1>
-          <CKEditor value={description} setValue={setDescription} />
+          <div id="question_area_section">
+            <h1 className="text-2xl">Description : </h1>
+            <CKEditor value={description} setValue={setDescription} />
+          </div>
 
-          <h1 className="text-2xl pt-6">Constraints : </h1>
-          <CKEditor value={constraints} setValue={setConstraints} />
+          <div id="question_area_section">
+            <h1 className="text-2xl">Constraints : </h1>
+            <CKEditor value={constraints} setValue={setConstraints} />
+          </div>
 
-          <h1 className="text-2xl pt-6">Input Format : </h1>
-          <CKEditor value={input_format} setValue={setInputFormat} />
+          <div id="question_area_section">
+            <h1 className="text-2xl">Input Format : </h1>
+            <CKEditor value={input_format} setValue={setInputFormat} />
+          </div>
 
-          <h1 className="text-2xl">Output Format : </h1>
-          <CKEditor value={output_format} setValue={setOutputFormat} />
+          <div id="testCases"></div> {/* This is just a dummy div, a place to which it will automatically scroll when needed */}
 
-          <h1 className="text-2xl pt-6" id="testCases">Input Test Case : </h1>
-          <TextArea value={inputTestCase} setValue={setInputTestCase} height={20} />
+          <div id="question_area_section">
+            <h1 className="text-2xl">Output Format : </h1>
+            <CKEditor value={output_format} setValue={setOutputFormat} />
+          </div>
+          <div id="question_area_section">
+            <h1 className="text-2xl" >Input Test Case : </h1>
+            <TextArea value={inputTestCase} setValue={setInputTestCase} height={20} />
+          </div>
 
-          <h1 className="text-2xl pt-6">Output Test Case : </h1>
-          <TextArea value={outputTestCase} setValue={setOutputTestCase} height={20} />
+          <div id="question_area_section">
+            <h1 className="text-2xl">Output Test Case : </h1>
+            <TextArea value={outputTestCase} setValue={setOutputTestCase} height={20} />
+          </div>
 
-          <h1 className="text-2xl">Explanation : </h1>
-          <CKEditor value={explanation} setValue={setExplanation} />
+          <div id="question_area_section">
+            <h1 className="text-2xl">Explanation : </h1>
+            <CKEditor value={explanation} setValue={setExplanation} />
+          </div>
 
-          <div className="flex w-full items-center justify-center">
-            <div>
+          <div id="question_area_section" className="button_area">
+            <div id="button-div">
               <button
-                className="btn btn-outline btn-success mt-3 mx-2"
+                className="btn btn-outline btn-success"
                 onClick={onAddPublicTestCase}
               >
                 Add Public Test Case
               </button>
             </div>
 
-            <div>
+            <div id="button-div">
               <button
-                className="btn btn-outline btn-success mt-3"
+                className="btn btn-outline btn-success "
                 onClick={onAddPrivateTestCase}
               >
                 Add Private Test Case
               </button>
             </div>
           </div>
-          <div className="flex w-full items-center justify-center">
-            {(name && description && constraints && input_format && output_format && problemID && time_limit && public_test_cases.length != 0 && private_test_cases.length != 0) ? <button className="btn btn-outline btn-success mt-3 mx-2 mb-9" onClick={onSubmit}>Submit</button> : <button className="btn btn-outline btn-error mt-3 mx-2 mb-9 btn-disabled" style={{ "cursor": "not-allowed" }}>Submit</button>}
+          <div className="button_area" id="question_area_section">
+            {(name && description && constraints && input_format && output_format && problemID && time_limit && public_test_cases.length != 0 && private_test_cases.length != 0) ? <div id="buttom-div"><button className="btn btn-outline btn-success" onClick={onSubmit}>Submit</button></div> : <div id="button-div"><button className="btn btn-outline btn-error btn-disabled cursor-not-allowed">Submit</button></div>}
           </div>
         </div>
 
-        <div className="previewArea float-right px-10 " style={question_preview_area}>
+        <div className="question_preview_area">
 
-          <div className="flex flex-col w-full items-center justify-center">
-            <h1 className="text-xl ">Preview of the Question </h1>
-            <br></br>
-            <br></br>
+          <div className="preview-heading">
+            <h1>Preview of the Question </h1>
           </div>
 
-          <div className="flex flex-col">
-
-            <div className="flex flex-col w-full items-center justify-center">
+          <div className="preview-content">
+            <div className="question-metadata-preview">
               {problemID && <h1 className="text-2xl">{problemID}</h1>}
               {name && <h1 className="text-2xl">{name}</h1>}
               {time_limit && <p className="text-sm mt-1 italic">Time Limit : {time_limit} Sec</p>}
             </div>
 
-            <div>
-              {description && <p className="mt-12 ck-content" dangerouslySetInnerHTML={{ __html: description }}></p>}
+            <div id="question-preview-data">
+              {description && <p className="ck-content" dangerouslySetInnerHTML={{ __html: description }}></p>}
             </div>
 
-            {constraints && <div>
-              <h1 className="text-xl mt-8 font-serif">Constraints : </h1>
-              <p className="mt-2 ck-content" dangerouslySetInnerHTML={{ __html: constraints }}></p>
+            {constraints && <div id="question-preview-data">
+              <h1 >Constraints : </h1>
+              <p className="ck-content" dangerouslySetInnerHTML={{ __html: constraints }}></p>
             </div>}
 
-            {input_format && <div>
-              <h1 className="text-xl mt-8 font-serif">Input Format : </h1>
-              <p className="mt-2 ck-content" dangerouslySetInnerHTML={{ __html: input_format }}></p>
+            {input_format && <div id="question-preview-data">
+              <h1 >Input Format : </h1>
+              <p className="ck-content" dangerouslySetInnerHTML={{ __html: input_format }}></p>
             </div>}
 
-            {output_format && <div>
-              <h1 className="text-xl mt-8 font-serif">Output Format : </h1>
-              <p className="mt-2 ck-content" dangerouslySetInnerHTML={{ __html: output_format }}></p>
+            {output_format && <div id="question-preview-data">
+              <h1 >Output Format : </h1>
+              <p className="ck-content" dangerouslySetInnerHTML={{ __html: output_format }}></p>
             </div>}
 
-            {topics && <div>
-              <h1 className="text-xl mt-8 font-serif">Topics : </h1>
-              <pre>{topics}</pre>
+            {topics && <div id="question-preview-data">
+              <h1 >Topics : </h1>
+              <p>{topics}</p>
             </div>}
 
-            {public_test_cases.length != 0 && <div>
-              <h1 className="text-xl mt-8 font-serif">Public Test Cases : </h1>
+            {public_test_cases.length != 0 && <div id="question-preview-data">
+              <h1 >Public Test Cases : </h1>
               {public_test_cases.map((public_test_case, index) => (
-                <div key={index} className="relative" >
-                  <h1 className="text-xl mt-8 font-serif">Test Case : {index}</h1>
-                  <div style={deleteIcon} className="tooltip tooltip-error" data-tip="Delete">
+                <div key={index} className="question-preview-data-icon" >
+                  <h1 >Test Case : {index}</h1>
+                  <div className="question-preview-delete-icon tooltip tooltip-error" data-tip="Delete">
                     <AiOutlineDelete size={32} onClick={() => {
                       setPublicTestCases(
                         public_test_cases.filter((_, i) => i !== index)
                       );
                     }} />
                   </div>
-                  <div style={editIcon} className="tooltip tooltip-warning" data-tip="Edit">
-                    <BsPencilSquare size={25} onClick={() => {
+                  <div className="question-preview-edit-icon tooltip tooltip-warning" data-tip="Edit">
+                    <BsPencilSquare size={28} onClick={() => {
                       setInputTestCase(public_test_cases[index].input);
                       setOutputTestCase(public_test_cases[index].output);
                       setExplanation(public_test_cases[index].explanation);
                       setTimeout(() => {
-                        scroll2El("testCases");
+                        scrollToTestCase("testCases");
                       }, 100);
                       setPublicTestCases(
                         public_test_cases.filter((_, i) => i !== index)
                       );
                     }} />
                   </div>
-                  <div className="bg-slate-700 mb-4" style={test_case_area}>
-                    <pre><span className="font-mono font-bold text-lime-600">Input</span><br></br>{public_test_case.input}</pre>
+                  <div className="test-case-preview-area">
+                    <p><span>Input</span><br></br>{public_test_case.input}</p>
                     <hr></hr>
-                    <pre><span className="font-mono font-bold text-lime-600">Output</span><br></br>{public_test_case.output}</pre>
+                    <p><span>Output</span><br></br>{public_test_case.output}</p>
                     <hr></hr>
-                    {public_test_case.explanation && <pre><span className="font-mono font-bold text-lime-600">Explanation</span><br></br><p className="ck-content" dangerouslySetInnerHTML={{ __html: public_test_case.explanation }}></p></pre>}
+                    {public_test_case.explanation && <div><span>Explanation</span><br></br><p className="ck-content" dangerouslySetInnerHTML={{ __html: public_test_case.explanation }}></p></div>}
                   </div>
                 </div>
               ))}
             </div>}
 
-            {private_test_cases.length != 0 && <div>
-              <h1 className="text-xl mt-8 font-serif">Private Test Cases : </h1>
+            {private_test_cases.length != 0 && <div id="question-preview-data">
+              <h1 >Private Test Cases : </h1>
               {private_test_cases.map((private_test_case, index) => (
-                <div key={index} className="relative" >
-                  <h1 className="text-xl mt-8 font-serif">Test Case : {index}</h1>
-                  <div style={deleteIcon} className="tooltip tooltip-error" data-tip="Delete">
+                <div key={index} className="question-preview-data-icon" >
+                  <h1> Test Case : {index}</h1>
+                  <div className="question-preview-delete-icon tooltip tooltip-error" data-tip="Delete">
                     <AiOutlineDelete size={32} onClick={() => {
                       setPrivateTestCases(
                         private_test_cases.filter((_, i) => i !== index)
                       );
                     }} />
                   </div>
-                  <div style={editIcon} className="tooltip tooltip-warning" data-tip="Edit">
-                    <BsPencilSquare size={25} onClick={() => {
+                  <div className="question-preview-edit-icon tooltip tooltip-warning" data-tip="Edit">
+                    <BsPencilSquare size={28} onClick={() => {
                       setInputTestCase(private_test_cases[index].input);
                       setOutputTestCase(private_test_cases[index].output);
                       setTimeout(() => {
-                        scroll2El("testCases");
+                        scrollToTestCase("testCases");
                       }, 100);
                       setPrivateTestCases(
                         private_test_cases.filter((_, i) => i !== index)
                       );
                     }} />
                   </div>
-                  <div className="bg-slate-700 mb-4" style={test_case_area}>
-                    <pre><span className="font-mono font-bold text-lime-600">Input</span><br></br>{private_test_case.input}</pre>
+                  <div className="test-case-preview-area">
+                    <p><span>Input</span><br></br>{private_test_case.input}</p>
                     <hr></hr>
-                    <pre><span className="font-mono font-bold text-lime-600">Output</span><br></br>{private_test_case.output}</pre>
+                    <p><span>Output</span><br></br>{private_test_case.output}</p>
                   </div>
                 </div>
               ))}

@@ -17,7 +17,6 @@ function Navbar() {
               alt="Picture of the author"
               width={100}
               height={0}
-            // className="z-20"
             />
           </Link>
         </div>
@@ -57,7 +56,7 @@ function Navbar() {
           <Link href="/">About</Link>
         </li>
         <li>
-          <Link href="/">Profile</Link>
+          <Link href="/dashboard">Dashboard</Link>
         </li>
         <li>
           <Link href="/">Settings</Link>
@@ -65,7 +64,7 @@ function Navbar() {
         <li>
           <Link href="/">Logout</Link>
         </li>
-        
+
       </ul>
 
       <div className="custom-backdrop"></div>
@@ -86,16 +85,13 @@ function UserMenu() {
         className="custom-navbar-avtar-pop menu menu-compact dropdown-content mt-3 p-2 shadow bg-base-100 rounded-box w-52"
       >
         <li>
-          <Link href="/" className="justify-between">
-            Profile
-            <span className="badge">New</span>
-          </Link>
+          <Link href="/dashboard">Dashboard</Link>
         </li>
         <li>
-          <a>Settings</a>
+          <Link href="/settings">Settings</Link>
         </li>
         <li>
-          <a>Logout</a>
+          <Link href="/logout">Logout</Link>
         </li>
       </ul>
     </div>
