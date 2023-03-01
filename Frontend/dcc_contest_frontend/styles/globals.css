@@ -1406,3 +1406,17 @@ ol,li{
     width: 100%;
   }
 }
+
+
+/* Admin Dashboard */
+
+.admin-dashboard-container{
+  position: relative;
+  top:65px;
+  margin:8px;
+}
+
+
+
+
+/*  */

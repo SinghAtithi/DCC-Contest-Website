@@ -16,6 +16,7 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
         <link rel="stylesheet" href="path/to/assets/content-styles.css" type="text/css"/>
         <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
+        <script src="https://kit.fontawesome.com/5d9d1ab027.js" crossorigin="anonymous"></script>
       </Head>
       <Navbar />
       <HomePage/>
