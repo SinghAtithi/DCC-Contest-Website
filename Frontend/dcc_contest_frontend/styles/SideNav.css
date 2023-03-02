@@ -3,7 +3,7 @@
     top:64px;
     left:0px;
     height:90vh;
-    width:25vw;
+    width:20vw;
     background-color: var(--navbar-background);
     padding:32px;
     z-index: 50;
@@ -41,6 +41,12 @@
     margin:4px;
 }
 
+#nav-items span.active{
+    color:white;
+}
+
+
+
 #nav-li{
     margin-bottom:8px;
 }
@@ -54,14 +60,33 @@
 
 .data-area{
     position: relative;
-    top:65px;
-    left:26vw;
-    max-width:72vw;
-    overflow-y: auto;
+    left:20vw;
+    max-width:79vw;
+    /* overflow-y: auto; */
 }
 
 .side-navbar-hamburger{
     display: none;
+}
+
+@media screen and (max-width:1300px){
+    .SideNav-container{
+        width : 25vw;
+    }
+    .data-area{
+        left:25vw;
+        max-width: 74vw;
+    }
+}
+
+@media screen and (max-width:1040px){
+    .SideNav-container{
+        width : 30vw;
+    }
+    .data-area{
+        left:30vw;
+        max-width: 69vw;
+    }
 }
 
 @media screen and (max-width:900px) {
@@ -91,7 +116,7 @@
     }
 }
 
-@media screen and (max-width:580px) {
+@media screen and (max-width:670px) {
     .SideNav-container{
         left:100vw;
     }

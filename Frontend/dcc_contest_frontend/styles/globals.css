@@ -1341,7 +1341,7 @@ ol,li{
   white-space: pre; 
 }
 
-@media screen and (max-width:1000px) {
+@media screen and (max-width:1040px) {
   .question_container{
     flex-direction: column;
   }
@@ -1391,7 +1391,7 @@ ol,li{
   float: right;
 }
 
-@media screen and (max-width:1000px) {
+@media screen and (max-width:1040px) {
   .contest_container{
     flex-direction: column;
   }

@@ -1,14 +1,15 @@
 import axios from "axios";
 import React, { useEffect } from "react";
-import Navbar from "../../components/Navbar";
-import TextArea from "../../components/TextArea";
+import Navbar from "../../../components/Navbar";
+import TextArea from "../../../components/TextArea";
 import { FcSearch } from "react-icons/fc";
 import { AiOutlineClose } from "react-icons/ai";
-import checkToken from "../../utils/checkToken";
+import checkToken from "../../../utils/checkToken";
 import Router from "next/router";
 import Head from 'next/head';
 import moment from 'moment';
-import { baseUrl } from "../../utils/constants";
+import { AdminSideNavMap, baseUrl } from "../../../utils/constants";
+import SideNav from "../../../components/SideNavAdmin";
 
 
 const add_problem_area = {
@@ -71,36 +72,36 @@ function create_problem() {
   const [isLoading, setIsLoading] = React.useState(true);
 
 
-  useEffect(() => {
-    setIsLoading(true);
+//   useEffect(() => {
+//     setIsLoading(true);
 
-    checkToken().then((status) => {
-      if (status) {
-        setIsLoading(false);
+//     checkToken().then((status) => {
+//       if (status) {
+//         setIsLoading(false);
 
-        const currDate = moment(new Date()).format('DD/MM/YYYY HH:mm');
-        const nextDate = moment(new Date()).add(2, 'hours').format('DD/MM/YYYY HH:mm');
-        setStartTime(currDate.toString());
-        setEndTime(nextDate.toString());
+//         const currDate = moment(new Date()).format('DD/MM/YYYY HH:mm');
+//         const nextDate = moment(new Date()).add(2, 'hours').format('DD/MM/YYYY HH:mm');
+//         setStartTime(currDate.toString());
+//         setEndTime(nextDate.toString());
 
-        // Get ques ids to choose from in search
-        axios.get(`${baseUrl}/question/getQuesNo`).then((res) => {
-          var ques_ids = []
-          for (var i = 0; i < res.data.length; i++) {
-            ques_ids.push(res.data[i].ques_no);
-          }
-          console.log(ques_ids);
-          setQuesIDs(ques_ids);
-        }).catch((err) => {
-          console.log(err);
-        })
+//         // Get ques ids to choose from in search
+//         axios.get(`${baseUrl}/question/getQuesNo`).then((res) => {
+//           var ques_ids = []
+//           for (var i = 0; i < res.data.length; i++) {
+//             ques_ids.push(res.data[i].ques_no);
+//           }
+//           console.log(ques_ids);
+//           setQuesIDs(ques_ids);
+//         }).catch((err) => {
+//           console.log(err);
+//         })
 
-      }
-      else {
-        Router.push("/login?next=admin/create_contest");
-      }
-    });
-  }, [])
+//       }
+//       else {
+//         Router.push("/login?next=admin/create_contest");
+//       }
+//     });
+//   }, [])
 
   useEffect(() => {
     if (searchString == "") setSearchedList([]);
@@ -243,104 +244,91 @@ function create_problem() {
       });
   };
 
-  if (isLoading) return (<div>Loading...</div>)
+//   if (isLoading) return (<div>Loading...</div>)
 
   return (
     <div >
-      <div>
         <Head>
           <title>Create Contest</title>
         </Head>
-      </div>
 
 
-      <Navbar />
-      <div className="contest_container">
-        <div className="contest_details_area">
-          {toastActive && <div className="toast toast-start">
-            <div className={toastClass}>
-              <div>
-                <span>{toastMessage}</span>
+      <SideNav role="SuperAdmin" highlight={AdminSideNavMap.create_contest}/>
+      <div className="data-area">
+          <div className="contest_container">
+            <div className="contest_details_area">
+              {toastActive && <div className="toast toast-start">
+                <div className={toastClass}>
+                  <div>
+                    <span>{toastMessage}</span>
+                  </div>
+                  <div style={toastCross}>
+                    <AiOutlineClose onClick={() => { setToastActive(false); }} />
+                  </div>
+                </div>
+              </div>}
+              <div id="contest-details-section">
+                <h1 className="text-2xl">Contest ID : </h1>
+                <h4 className="whitespace-pre text-sm">{"Do not use space."}</h4>
+                {contestIDError && <h4 className="whitespace-pre text-sm text-red-600">{contestIDError}</h4>}
+                <TextArea value={contestID} setValue={setContestID} height={10} />
               </div>
-              <div style={toastCross}>
-                <AiOutlineClose onClick={() => { setToastActive(false); }} />
+              <div id="contest-details-section">
+                <h1 className="text-2xl">Contest Name : </h1>
+                {contestNameError && <h4 className="whitespace-pre text-sm text-red-600">{contestNameError}</h4>}
+                <TextArea value={contestName} setValue={setContestName} height={10} />
+              </div>
+              <div id="contest-details-section">
+                {timeError && <h4 className="whitespace-pre text-sm text-red-600">{timeError}</h4>}
+                <h1 className="text-2xl">Contest Start Time : </h1>
+                <h4 className="whitespace-pre text-sm">{"Example : 12/01/2023 08:00"}</h4>
+                {startTimeError && <h4 className="whitespace-pre text-sm text-red-600">{startTimeError}</h4>}
+                <TextArea value={startTime} setValue={setStartTime} height={10} />
+                <h1 className="text-2xl">Contest End Time : </h1>
+                <h4 className="whitespace-pre text-sm">{"Example : 12/01/2023 20:00"}</h4>
+                {endTimeError && <h4 className="whitespace-pre text-sm text-red-600">{endTimeError}</h4>}
+                <TextArea value={endTime} setValue={setEndTime} height={10} />
+              </div>
+              <div className="flex w-full items-center justify-center">
+                {(contestID && contestName && startTime && endTime && !contestNameError && !contestIDError && !startTimeError && !endTimeError && !timeError) ? <button className="btn btn-outline btn-success mt-2 mx-2 mb-2" onClick={onSubmit}>Submit</button> : <button className="btn btn-outline btn-error mt-2 mx-2 mb-2 btn-disabled" style={{ "cursor": "not-allowed" }}>Submit</button>}
               </div>
             </div>
-          </div>}
-
-
-          <div id="contest-details-section">
-            <h1 className="text-2xl">Contest ID : </h1>
-            <h4 className="whitespace-pre text-sm">{"Do not use space."}</h4>
-            {contestIDError && <h4 className="whitespace-pre text-sm text-red-600">{contestIDError}</h4>}
-            <TextArea value={contestID} setValue={setContestID} height={10} />
+            <div className="add_problem_area px-10 pt-5">
+              <div className="flex flex-col w-full items-center justify-center">
+                <h1 className="text-2xl ">Add Problems </h1>
+                <br></br>
+              </div>
+              <div className="flex flex-col">
+                <FcSearch size={30} />
+                <TextArea value={searchString} setValue={setSearchString} height={10} />
+                {searchedList.length != 0 && <div>
+                  {searchedList.map((value, index) => (
+                    <div className="tooltip tooltip-warning" data-tip="Add">
+                      <div className="bg-slate-700 my-1 py-1 mx-1 hover:text-green-500" onClick={() => {
+                        setQues_ids([...ques_ids, searchedList[index]]);
+                        setSearchedList(searchedList.filter((_, i) => i !== index));
+                      }}>
+                        <span className="font-mono font-bold px-3">{value}</span>
+                      </div><hr></hr></div>))}
+                </div>}
+                {ques_ids.length != 0 && <div>
+                  <br></br>
+                  <span className="font-mono font-bold">Added Problems</span><br></br>
+                  {ques_ids.map((value, index) => (
+                    <div className="tooltip tooltip-error" data-tip="Remove">
+                      <div className="bg-slate-700 my-1 py-1 mx-1 hover:text-red-500" onClick={() => {
+                        if (searchString) setSearchedList([...searchedList, ques_ids[index]]);
+                        setQues_ids(ques_ids.filter((_, i) => i != index));
+                      }}>
+                        <span className="font-mono font-bold px-3">{value}</span>
+                      </div>
+                      <hr></hr>
+                    </div>
+                  ))}
+                </div>}
+              </div>
+            </div>
           </div>
-
-          <div id="contest-details-section">
-            <h1 className="text-2xl">Contest Name : </h1>
-            {contestNameError && <h4 className="whitespace-pre text-sm text-red-600">{contestNameError}</h4>}
-            <TextArea value={contestName} setValue={setContestName} height={10} />
-          </div>
-
-          <div id="contest-details-section">
-            {timeError && <h4 className="whitespace-pre text-sm text-red-600">{timeError}</h4>}
-            <h1 className="text-2xl">Contest Start Time : </h1>
-            <h4 className="whitespace-pre text-sm">{"Example : 12/01/2023 08:00"}</h4>
-            {startTimeError && <h4 className="whitespace-pre text-sm text-red-600">{startTimeError}</h4>}
-            <TextArea value={startTime} setValue={setStartTime} height={10} />
-            <h1 className="text-2xl">Contest End Time : </h1>
-            <h4 className="whitespace-pre text-sm">{"Example : 12/01/2023 20:00"}</h4>
-            {endTimeError && <h4 className="whitespace-pre text-sm text-red-600">{endTimeError}</h4>}
-            <TextArea value={endTime} setValue={setEndTime} height={10} />
-          </div>
-
-
-          <div className="flex w-full items-center justify-center">
-            {(contestID && contestName && startTime && endTime && !contestNameError && !contestIDError && !startTimeError && !endTimeError && !timeError) ? <button className="btn btn-outline btn-success mt-2 mx-2 mb-2" onClick={onSubmit}>Submit</button> : <button className="btn btn-outline btn-error mt-2 mx-2 mb-2 btn-disabled" style={{ "cursor": "not-allowed" }}>Submit</button>}
-          </div>
-        </div>
-
-        <div className="add_problem_area px-10 pt-5">
-
-          <div className="flex flex-col w-full items-center justify-center">
-            <h1 className="text-2xl ">Add Problems </h1>
-            <br></br>
-          </div>
-
-          <div className="flex flex-col">
-
-            <FcSearch size={30} />
-            <TextArea value={searchString} setValue={setSearchString} height={10} />
-
-
-            {searchedList.length != 0 && <div>
-              {searchedList.map((value, index) => (
-                <div className="tooltip tooltip-warning" data-tip="Add">
-                  <div className="bg-slate-700 my-1 py-1 mx-1 hover:text-green-500" onClick={() => {
-                    setQues_ids([...ques_ids, searchedList[index]]);
-                    setSearchedList(searchedList.filter((_, i) => i !== index));
-                  }}>
-                    <span className="font-mono font-bold px-3">{value}</span>
-                  </div><hr></hr></div>))}
-            </div>}
-
-            {ques_ids.length != 0 && <div>
-              <br></br>
-              <span className="font-mono font-bold">Added Problems</span><br></br>
-              {ques_ids.map((value, index) => (
-                <div className="tooltip tooltip-error" data-tip="Remove">
-                  <div className="bg-slate-700 my-1 py-1 mx-1 hover:text-red-500" onClick={() => {
-                    if (searchString) setSearchedList([...searchedList, ques_ids[index]]);
-                    setQues_ids(ques_ids.filter((_, i) => i != index));
-                  }}>
-                    <span className="font-mono font-bold px-3">{value}</span>
-                  </div>
-                  <hr></hr>
-                </div>
-              ))}
-            </div>}
-          </div>
-        </div>
       </div>
     </div>
   );
