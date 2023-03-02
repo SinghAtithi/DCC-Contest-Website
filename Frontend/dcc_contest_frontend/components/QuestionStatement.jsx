@@ -37,7 +37,7 @@ function QuestionStatement(props) {
               public_test_cases: res.data.public_test_cases,
             });
           }
-          console.log("Setting loader false, current it is ",props.loader);
+          console.log("Setting loader false, current it is ", props.loader);
           props.setLoader(false);
         }).catch((err) => {
           console.log(err);
@@ -49,8 +49,8 @@ function QuestionStatement(props) {
   return (
     props.loader ? <QuestionSkeleton /> :
       question.name && (
-        <div className="flex flex-col w-full justify-start ">
-          <div className="flex flex-col w-full items-center justify-center">
+        <div className="question-component">
+          <div className="question-component-question-meta-data">
             <h1 className="text-2xl">{question.name}</h1>
             <p className="text-sm mt-1 italic">Time Limit : {question.time_limit} per test case</p>
             <p className="text-sm italic">Space Limit : 256 MB</p>
@@ -62,20 +62,21 @@ function QuestionStatement(props) {
             <h1 className="text-xl mt-8 font-serif">Constraints : </h1>
             <p className="mt-2 ck-content" dangerouslySetInnerHTML={{ __html: question.constraints }}></p>
           </div>
-          <div>
+          <div className="abc">
             <h1 className="text-xl mt-8 font-serif">Input Format : </h1>
-            <pre>{question.input_format}</pre>
+            <p className="mt-2 ck-content" dangerouslySetInnerHTML={{ __html: question.input_format }}></p>
           </div>
           <div>
             <h1 className="text-xl mt-8 font-serif">Output Format: </h1>
-            <pre>{question.output_format}</pre>
+            <p className="mt-2 ck-content" dangerouslySetInnerHTML={{ __html: question.output_format }}></p>
+
           </div>
           <div>
             {question.public_test_cases.map((public_test_case, index) => (
               <div>
                 <br></br>
                 <div key={index} >
-                  <h1 className="text-xl mt-8 font-serif">Example {index + 1} :</h1>
+                  <h1 className="text-xl font-serif">Example {index + 1} :</h1>
                   <div className="bg-slate-700 ">
                     <pre><span className="font-mono font-bold">Input</span><br></br>{public_test_case.input}</pre>
                     <pre><span className="font-mono font-bold">Output</span><br></br>{public_test_case.output}</pre>

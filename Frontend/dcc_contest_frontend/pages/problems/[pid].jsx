@@ -7,21 +7,16 @@ import snippetCode from "../../components/snippet";
 import axios from "axios";
 import ConsolePanel from "../../components/console_panel";
 
+// const question_area = {
+//   height: "90vh",
+//   width: "40%",
+//   overflowY: "scroll"
+// }
 
-const problem_container = {
-  "display": "flex"
-}
-
-const question_area = {
-  height: "90vh",
-  width: "40%",
-  overflowY: "scroll"
-}
-
-const code_editor = {
-  height: "90vh",
-  width: "60%",
-}
+// const code_editor = {
+//   height: "90vh",
+//   width: "60%",
+// }
 
 
 const button_area = {
@@ -36,7 +31,7 @@ function problemPage() {
   const [code, setCode] = React.useState("");
   const [isOpen, setIsOpen] = React.useState(false);
   const [lowerSpaceVisible, setLowerSpaceVisible] = React.useState(false);
-  const [editorHeight, setEditorHeight] = React.useState("80vh");
+  const [editorHeight, setEditorHeight] = React.useState("78vh");
   const [consoleData, setConsoleData] = React.useState("Nothing to display on console");
   const [consoleLoader, setConsoleLoader] = React.useState(false);
   const [loader, setLoader] = React.useState(false);
@@ -69,7 +64,7 @@ function problemPage() {
 
 
   const controlConsole = () => {
-    setEditorHeight((editorHeight === "80vh") ? "60vh" : "80vh");
+    setEditorHeight((editorHeight === "78vh") ? "60vh" : "78vh");
     setLowerSpaceVisible(!lowerSpaceVisible);
     setIsOpen(!isOpen);
   }
@@ -109,16 +104,16 @@ function problemPage() {
   return (
     <div>
       <Navbar />
-      <div style={problem_container}>
-        <div className="px-4 mx-2" style={question_area}>
+      <div className="problem-page">
+        <div className="problem-page-left">
           <QuestionStatement problemId={problemId} loader={loader} setLoader={setLoader} />
         </div>
-        <div style={code_editor}>
-          <div className="mx-4">
+        <div className="problem-page-right">
+          <div className="problem-page-right-top">
             <CodeEditor loader={loader} Code={code} setCode={setCode} ProblemId={problemId} EditorHeight={editorHeight} EditorWidth="58vw" controlConsole={controlConsole} onSubmit={onSubmit} />
           </div>
-          <div style={code_console}>
-            <ConsolePanel consoleLoader={consoleLoader} isOpen={isOpen} console_data={consoleData} width="59vw" />
+          <div className="problem-page-right-bottom" style={code_console}>
+            <ConsolePanel consoleLoader={consoleLoader} isOpen={isOpen} console_data={consoleData} width="60vw" />
           </div>
         </div>
       </div>
