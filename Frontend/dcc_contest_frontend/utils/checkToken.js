@@ -1,25 +1,25 @@
-import { loginUser, logoutUser } from "../store/loginStore";
-import store from "../store/baseStore";
-import axios from "axios";
+import axios from 'axios';
 
-const checkToken = () => {
-  if (localStorage.getItem("token")){
+const checkToken = async () => {
+  if (localStorage.getItem("token")) {
     const config = {
       headers: {
-        "token" : localStorage.getItem('token')
-      }
+        token: localStorage.getItem("token"),
+      },
     };
-    axios
-      .get("http://localhost:5000/auth/verifyToken", config)
+    var status = false;
+    await axios
+      .get("http://localhost:5000/auth/verifyToken/admin", config)
       .then((res) => {
-        console.log("Verified");
-        return true;
+        console.log("Verified yet again");
+        status = true;
       })
       .catch((err) => {
         console.log("Not Verified");
-        return false;
       });
-  }
-  else return false;
+      return status;
+
+  } else return false;
 };
+
 export default checkToken;

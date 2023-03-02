@@ -42,9 +42,9 @@ const UserSchema = mongoose.Schema({
   questions_solved: {
     type: Array,
   },
-  isAdmin: {
-    type: Boolean,
-    default: false,
+  role: {
+    type: String,
+    default: "endUser",
   },
 });
 

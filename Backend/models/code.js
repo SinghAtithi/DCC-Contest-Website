@@ -7,7 +7,7 @@ const CodeSchema = mongoose.Schema({
     codes: {
         type: Array
     },
-    ques_no: {
+    ques_no: { 
         type: String,
         required: true
     },

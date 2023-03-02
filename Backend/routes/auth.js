@@ -4,7 +4,7 @@ const User = require("../models/user.js");
 const ImageKit = require("imagekit");
 const uuid = require("uuid");
 const { generateLoginToken } = require("../utils/generateToken.js");
-const verifyGeneralUser = require("../middlewares/verifyToken.js");
+const { verifyGeneralUser, verifyAdmin } = require("../middlewares/verifyToken.js");
 const router = express.Router();
 
 router.post("/register", async (req, res) => {
@@ -101,12 +101,12 @@ router.post("/login", async (req, res) => {
         } else {
           user = await User.findOne({ userName: loginId }, "userName password").exec();
         }
-
         if (user) {
           const valid = await bcrypt.compare(password, user.password);
 
           if (valid) {
             const token = generateLoginToken(user._id);
+            console.log(user);
             res.status(200).send({ token: token, userName: user.userName });
           } else {
             res.status(400).send({ error: "Incorrect Password." });
@@ -125,7 +125,7 @@ router.post("/login", async (req, res) => {
   }
 });
 
-router.get("/verifyToken", verifyGeneralUser, (req, res) => {
+router.get("/verifyToken/admin", verifyAdmin, (req, res) => {
   res.status(200).send({ validation: "Success" });
 })
 

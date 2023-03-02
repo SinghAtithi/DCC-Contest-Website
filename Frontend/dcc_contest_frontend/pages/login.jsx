@@ -3,10 +3,9 @@ import Navbar from "../components/Navbar";
 import LoginLottie from "../public/loginLottie.json";
 import Lottie from "lottie-react";
 import axios from "axios";
-import store from "../store/baseStore";
-import Router, { useRouter} from "next/router";
-import { loginUser } from "../store/loginStore";
+import Router, { useRouter } from "next/router";
 import checkToken from "../utils/checkToken";
+
 
 function login() {
   const router = useRouter();
@@ -14,11 +13,23 @@ function login() {
   const [loginId, setloginId] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const [isLoading, setIsLoading] = useState(true);
 
-  // useEffect(()=>{
-  //   console.log("From login useeffect : ", store.getState().login.loggedIn);
-  //   if(store.getState().login.loggedIn) Router.push("/ProblemSet");
-  // },[])
+  useEffect(() => {
+    setIsLoading(true);
+    var next = "ProblemSet";
+    if (router.query["next"]) next = router.query["next"];
+
+    checkToken().then((status) => {
+      console.log(status);
+      if (status) {
+        Router.push("/"+next);
+      }
+      else {
+        setIsLoading(false);
+      }
+    });
+  }, [])
 
   const onLogin = () => {
     const config = {
@@ -33,21 +44,20 @@ function login() {
     axios
       .post("http://localhost:5000/auth/login", data, config)
       .then((res) => {
-        var next="/ProblemSet"
-        console.log(res);
+        var next = "/dashboard"
+        console.log(res.data);
         localStorage.setItem('token', res.data.token);
-        localStorage.setItem('userName',res.data.userName);
-        // store.dispatch(loginUser(res.data.userName));
-        // console.log(store.getState().login.loggedIn);
-        if(router.query["next"]) next = router.query["next"];
+        localStorage.setItem('userName', res.data.userName);
+        if (router.query["next"]) next = router.query["next"];
         Router.push(next);
 
       })
       .catch((err) => {
-        console.log(err);
-        setError(err.response.data.error);
+        // setError(err.response.data.error);
       });
   };
+
+  if (isLoading) return (<div>Loading...</div>)
 
   return (
     <div>

@@ -8,7 +8,7 @@ const generateLoginToken = (id) => {
   };
 
   const token = jwt.sign(data, jwtSecretKey,{ expiresIn: '20m' });
-
+  
   return token;
 };
 
