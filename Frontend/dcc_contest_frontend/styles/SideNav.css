@@ -1,0 +1,144 @@
+.SideNav-container{
+    position:fixed;
+    top:64px;
+    left:0px;
+    height:90vh;
+    width:20vw;
+    background-color: var(--navbar-background);
+    padding:32px;
+    z-index: 50;
+    overflow-y: scroll;
+}
+
+.navbar-top{
+    position: fixed;
+    top: 0;
+    right: 0;
+    display: flex;
+    align-items: center;
+    padding: var(--navbar-padding, 0.5rem);
+    min-height: 4rem/* 64px */;
+    width: 100%;
+    background-color: var(--navbar-background);
+    z-index: 50;
+}
+
+#nav-heading{
+    color: rgb(179, 170, 170);
+    font-weight: bold;
+    font-size: small;
+    margin:4px
+}
+
+#nav-items{
+    display:flex;
+    align-items: center;
+    position:initial ;
+    color:rgba(188, 187, 187, 0.642);
+}
+
+#nav-items span{
+    margin:4px;
+}
+
+#nav-items span.active{
+    color:white;
+}
+
+
+
+#nav-li{
+    margin-bottom:8px;
+}
+
+.nav-divider hr{
+    height: 1px;
+    background-color:#8a8282;
+    border: none;
+    margin-bottom: 16px;
+}
+
+.data-area{
+    position: relative;
+    left:20vw;
+    max-width:79vw;
+    /* overflow-y: auto; */
+}
+
+.side-navbar-hamburger{
+    display: none;
+}
+
+@media screen and (max-width:1300px){
+    .SideNav-container{
+        width : 25vw;
+    }
+    .data-area{
+        left:25vw;
+        max-width: 74vw;
+    }
+}
+
+@media screen and (max-width:1040px){
+    .SideNav-container{
+        width : 30vw;
+    }
+    .data-area{
+        left:30vw;
+        max-width: 69vw;
+    }
+}
+
+@media screen and (max-width:900px) {
+    .SideNav-container{
+        left:100vw;
+    }
+    .data-area{
+        left:2vw;
+        max-width:98vw;
+        overflow-y: auto;
+      }
+    
+    .side-navbar-hamburger{
+        display: block;
+        border: var(--navbar-item-border) 2px solid;
+        margin-right:8px;
+    }
+
+    .side-navbar-hamburger :hover{
+        background: #3d3d3e ;
+    }
+
+    .side-navbar-items-offscreen.active{
+        left:60vw;
+        width:40vw;
+        z-index: 30;
+    }
+}
+
+@media screen and (max-width:670px) {
+    .SideNav-container{
+        left:100vw;
+    }
+    .data-area{
+        left:2vw;
+        max-width:98vw;
+        overflow-y: auto;
+      }
+    
+    .side-navbar-hamburger{
+        display: block;
+        border: var(--navbar-item-border) 2px solid;
+        margin-right:8px;
+    }
+
+    .side-navbar-hamburger :hover{
+        background: #3d3d3e ;
+    }
+
+    .side-navbar-items-offscreen.active{
+        left:40vw;
+        width:60vw;
+        z-index: 30;
+    }
+}

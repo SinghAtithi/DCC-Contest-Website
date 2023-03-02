@@ -1,12 +1,12 @@
-import React,{useEffect} from "react";
+import React, { useEffect } from "react";
 import Navbar from "../components/Navbar";
 import signupQues from "../components/signupQues";
 import heroSignupLottie from "../public/heroSignupLottie.json";
 import Lottie from "lottie-react";
 import axios from "axios";
-import checkToken from "../utils/checkToken";
 import store from "../store/baseStore";
 import Router from "next/router";
+import { BiArrowToRight, BiArrowToLeft } from "react-icons/bi";
 
 function signup() {
   const [quesInd, setQuesInd] = React.useState(0);
@@ -21,11 +21,6 @@ function signup() {
   const [codechefURL, setCodechefURL] = React.useState("");
   const [bio, setBio] = React.useState("");
   const [text, setText] = React.useState("");
-
-  useEffect(()=>{
-    checkToken();
-    if(store.getState().login.loggedIn) Router.push("/ProblemSet");
-  })
 
   const onSubmit = () => {
     const data = {
@@ -140,22 +135,26 @@ function signup() {
     setText("");
   };
 
+  function uploadImage(file) {
+    console.log(file);
+  }
+
   return (
     <div className="">
       <Navbar />
       <div className="container min-w-full mt-16 flex justify-around items-center">
         <Lottie animationData={heroSignupLottie} className="w-4/12" />
         <div className={`${quesInd < signupQues.length - 1 ? "" : "hidden"}`}>
-          <div className="heroForm mt-8 mx-24 text-3xl">
+          <div className="heroForm mt-8 mx-24 text-3xl justify-center flex">
             {signupQues[quesInd].question}
           </div>
           <div className="flex justify-center items-center">
-            <button
+            {(quesInd > 0) ? (<button
               className="btn btn-outline btn-success rounded-full mx-6"
               onClick={onBackClick}
             >
-              {"|<"}
-            </button>
+              <BiArrowToLeft size={30} />
+            </button>) : (<></>)}
             <input
               type="text"
               className="input text-2xl rounded-lg my-4 bg-inherit input-success h-16 w-full max-w-lg"
@@ -169,26 +168,46 @@ function signup() {
               className="btn btn-outline btn-success rounded-full mx-6"
               onClick={onNextClick}
             >
-              {">|"}
+              <BiArrowToRight size={30} />
             </button>
           </div>
         </div>
+        {/* <div className={`${quesInd === signupQues.length - 2
+          ? "flex justify-center items-center flex-col"
+          : "hidden"
+          }`}>
+          <p className="text-xl my-5">
+            Upload your Profile Image
+          </p>
+          <input type="file" className="file-input file-input-bordered file-input-success w-full max-w-xs" onChange={(e) => uploadImage(e.target.event.srcElement.files)}
+            onKeyDown={(e) => {
+              if (e.key === "Enter") onNextClick();
+            }} />
+        </div> */}
         <div
-          className={`${
-            quesInd === signupQues.length - 1
-              ? "flex justify-center items-center flex-col"
-              : "hidden"
-          }`}
+          className={`${quesInd === signupQues.length - 1
+            ? "flex justify-center items-center flex-col"
+            : "hidden"
+            }`}
         >
           <p className="text-xl my-5">
             By clicking on the button you accept to our terms and conditions!
           </p>
-          <button
-            className="btn btn-outline btn-success rounded-full mx-6"
-            onClick={onSubmit}
-          >
-            {"Yay Lets Go!"}
-          </button>
+          <div className="flex justify-center items-center">
+            <button
+              className="btn btn-outline btn-success rounded-full mx-6"
+              onClick={onBackClick}
+            >
+              <BiArrowToLeft size={30} />
+            </button>
+            <button
+              className="btn btn-outline btn-success rounded-full mx-6"
+              onClick={onSubmit}
+            >
+              {"Yay Lets Go!"}
+            </button>
+          </div>
+
         </div>
       </div>
     </div>

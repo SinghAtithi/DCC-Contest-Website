@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
+import EditorSkeleton from "../skeleton/EditorSkeleton";
 import ImageKit from "imagekit-javascript";
 
 const MyCKEditor = (props) => {
@@ -59,10 +60,10 @@ const MyCKEditor = (props) => {
     }
 
   return (
-    <div>
+    <div className="editor-div">
       {editorLoaded ? (
         <CKEditor
-          className="mt-3 wrap-ckeditor"
+          className="wrap-ckeditor"
           editor={ClassicEditor}
           config={{ removePlugins: ['Heading'], extraPlugins: [uploadPlugin] }}
           onChange={(event,editor) => {
@@ -74,7 +75,7 @@ const MyCKEditor = (props) => {
             
         />
       ) : (
-        "loading..."
+        <EditorSkeleton/>
       )}
     </div>
   );

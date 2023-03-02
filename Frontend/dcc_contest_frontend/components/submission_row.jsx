@@ -12,7 +12,7 @@ const submissionRow = {
 export default function SubmissionRow(props){
     const router = useRouter();
     return(
-        <div className="bg-slate-600 m-1 h-8 p-1 grid grid-cols-6 hover:text-green-700 hover:cursor-pointer" style={submissionRow} onClick={()=>{
+        <div className="dashboard_submission_row" style={submissionRow} onClick={()=>{
             router.push(`/submissions/${props.submission_id}`);
         }}> 
             <div>{props.submission_id}</div>

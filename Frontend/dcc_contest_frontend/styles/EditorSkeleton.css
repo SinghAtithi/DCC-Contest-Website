@@ -1,0 +1,20 @@
+.EditorSkeleton-container{
+    display:flex;
+    flex-direction: column;
+    max-height: 130px;
+    border:2px solid green;
+    border-radius: 6px;
+    margin:4px;
+}
+
+.EditorSkeleton-header{
+    margin:4px;
+    min-height: 30px;
+}
+
+.EditorSkeleton-body{
+    margin:4px;
+    min-height: 75px;
+}
+
+
