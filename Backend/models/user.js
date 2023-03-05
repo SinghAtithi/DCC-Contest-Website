@@ -17,7 +17,7 @@ const UserSchema = mongoose.Schema({
     type: String,
     required: true,
   },
-  userName: {
+  username: {
     type: String,
     required: true,
     unique: true,
@@ -46,6 +46,21 @@ const UserSchema = mongoose.Schema({
     type: String,
     default: "endUser",
   },
+  profile_pic: {
+    type: String,
+  },
+  current_rating: {
+    type: Number,
+    default: 0,
+  },
+  max_rating: {
+    type: Number,
+    default: 0,
+  },
+  total_contests: {
+    type: Array,
+    default: 0,
+  }
 });
 
 

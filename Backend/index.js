@@ -10,6 +10,7 @@ const { Question } = require("./models/question.js");
 const { User } = require("./models/user.js");
 const { Code } = require("./models/code.js");
 const { Contest } = require("./models/contest.js");
+const { Submission } = require("./models/submission.js");
 
 const RunRoutes = require("./routes/run.js");
 const QuesRoutes = require("./routes/question.js");

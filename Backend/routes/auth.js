@@ -14,8 +14,8 @@ router.post("/register", async (req, res) => {
       name,
       email,
       password,
-      confirmPassword,
-      userName,
+      confirm_password,
+      username,
       githubURL = "",
       linkedinURL = "",
       codeforcesURL = "",
@@ -25,11 +25,11 @@ router.post("/register", async (req, res) => {
     if (name) {
       if (email) {
         if (email.includes("@") && email.includes(".", email.indexOf("@"))) {
-          if (userName) {
+          if (username) {
             if (!userName.includes("@") && !userName.includes(".")) {
               if (password) {
                 if (confirmPassword) {
-                  if (password == confirmPassword) {
+                  if (password == confirm_password) {
                     const hashedPassword = await bcrypt.hash(
                       password,
                       Number(process.env.SECRET_PASSWORD_SALT_NUMBER)
@@ -38,7 +38,7 @@ router.post("/register", async (req, res) => {
                       name,
                       email,
                       password: hashedPassword,
-                      userName,
+                      username,
                       githubURL,
                       linkedinURL,
                       codeforcesURL,
@@ -105,7 +105,7 @@ router.post("/login", async (req, res) => {
           const valid = await bcrypt.compare(password, user.password);
 
           if (valid) {
-            const token = generateLoginToken(user._id);
+            const token = generateLoginToken(user._id, user.role);
             console.log(user);
             res.status(200).send({ token: token, userName: user.userName });
           } else {
