@@ -43,26 +43,27 @@ const QuesSchema = mongoose.Schema({
     type: Array,
     required: true,
   },
-  no_of_public_test_cases: {
-    type: Number,
-    // required: true,
-  },
-  no_of_private_test_cases: {
-    type: Number,
-    // required: true,
-  },
   // topics is a comma separated string
   topics: {
     type: String,
     required: false,
   },
-  displayAfter : {
+  display_after : {
     type : String,
     required : true
   },
   assigned : {
     type : Boolean,
     default : false
+  },
+  is_draft : {
+    type : Boolean,
+    default : true
+  },
+  // user name
+  creator : {
+    type : String,
+    default : true
   }
 });
 

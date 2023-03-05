@@ -38,18 +38,20 @@ const UserSchema = mongoose.Schema({
     type: String,
     default: "Jai Mahakal",
   },
+  role: {
+    type: String,
+    default: "end_user",
+  },
+  questions_solved: {
+    type: Array,
+  },
   // Array of ques_no
   questions_solved: {
     type: Array,
   },
-  isAdmin: {
-    type: Boolean,
-    default: false,
-  },
 });
 
-
-UserSchema.plugin(require('mongoose-beautiful-unique-validation'));
+UserSchema.plugin(require("mongoose-beautiful-unique-validation"));
 
 const User = new mongoose.model("user", UserSchema);
 module.exports = User;

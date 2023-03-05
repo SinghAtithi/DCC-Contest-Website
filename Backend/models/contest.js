@@ -1,26 +1,36 @@
 const mongoose = require("mongoose")
 
 const ContestSchema = mongoose.Schema({
-    contestName: {
+    contest_name: {
         type: String,
-        required : true
+        required : true,
+        unique: true
     },
-    contestId: { 
+    contest_id: { 
         type: String,
-        required: true
+        required: true,
+        unique: true
     },
     ques_ids : {
         type: Array
     },
-    startTime : {
+    start_time : {
         type: String,
         required: true
     },
-    endTime : {
+    end_time : {
         type: String,
         required: true
     },
-    
+    // user_name
+    creator : {
+        type : String,
+        required: true
+    },
+    // user_names
+    collaborators : {
+        type : Array
+    },
 
 });
 
