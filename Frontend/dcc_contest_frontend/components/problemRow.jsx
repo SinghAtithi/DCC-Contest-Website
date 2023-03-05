@@ -1,7 +1,5 @@
 import Link from "next/link";
 import React, { useEffect } from "react";
-// import { CgToggleOff } from "react-icons/cg";
-// import { CgToggleOn } from "react-icons/cg";
 const ProblemRow = ({ props }) => {
     const [status, setStatus] = React.useState("False");
     useEffect(() => {
