@@ -2,7 +2,6 @@ import axios from "axios";
 import React, { useEffect } from "react";
 import { useState } from "react";
 import ProblemRow from "../../components/problemRow";
-import ReactPaginate from "react-paginate";
 
 function ProblemSetIndex() {
   const [problems, setProblems] = React.useState([]);

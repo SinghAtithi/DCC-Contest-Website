@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-const initialState = { loggedIn: false, userName: "", isLoading: true, isAdmin: false, isSuperAdmin: false };
+const initialState = { loggedIn: false, isLoading: true, role: undefined };
 
 const login = createSlice({
   name: "login",
@@ -8,14 +8,12 @@ const login = createSlice({
   reducers: {
     loginUser(state, actions) {
       state.loggedIn = true;
-      state.userName = actions.payload;
+      state.isLoading = false;
+      state.role = actions.payload;
     },
     logoutUser(state) {
-      alert("Logged Out");
       state.loggedIn = false;
       localStorage.removeItem("token");
-      state.userName = "";
-      localStorage.removeItem("userName");
     },
   },
 });

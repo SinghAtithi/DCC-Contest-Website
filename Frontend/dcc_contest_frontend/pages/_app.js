@@ -7,6 +7,7 @@ import store from "../store/baseStore";
 import Auth from "../components/Auth";
 
 export default function App({ Component, pageProps }) {
+  console.log("Hello from _app.js");
   return (
     <>
       <Provider store={store}>

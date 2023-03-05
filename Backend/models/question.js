@@ -5,10 +5,14 @@ const mongoose = require("mongoose");
 const paginate = require("mongoose-paginate-v2");
 
 const QuesSchema = mongoose.Schema({
-  ques_no: {
+  ques_id: {
     type: String,
-    required: true, 
+    required: true,
     unique: true
+  },
+  contest_id: {
+    type: String,
+    required: false
   },
   name: {
     type: String,
@@ -48,22 +52,21 @@ const QuesSchema = mongoose.Schema({
     type: String,
     required: false,
   },
-  display_after : {
-    type : String,
-    required : true
+  display_after: {
+    type: String,
+    required: true
   },
-  assigned : {
-    type : Boolean,
-    default : false
+  assigned: {
+    type: Boolean,
+    default: false
   },
-  is_draft : {
-    type : Boolean,
-    default : true
+  is_draft: {
+    type: Boolean,
+    default: true,
   },
-  // user name
-  creator : {
-    type : String,
-    default : true
+  author: {
+    type: String,
+    required: true,
   }
 });
 

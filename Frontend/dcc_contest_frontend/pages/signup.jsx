@@ -13,8 +13,8 @@ function signup() {
   const [name, setName] = React.useState("");
   const [email, setEmail] = React.useState("");
   const [password, setPassword] = React.useState("");
-  const [confirmPassword, setConfirmPassword] = React.useState("");
-  const [userName, setUserName] = React.useState("");
+  const [confirm_password, setconfirm_password] = React.useState("");
+  const [username, setusername] = React.useState("");
   const [githubURL, setGithubURL] = React.useState("");
   const [linkedinURL, setLinkedinURL] = React.useState("");
   const [codeforcesURL, setCodeforcesURL] = React.useState("");
@@ -27,8 +27,8 @@ function signup() {
       name,
       email,
       password,
-      confirmPassword,
-      userName,
+      confirm_password,
+      username,
       githubURL,
       linkedinURL,
       codeforcesURL,
@@ -60,7 +60,7 @@ function signup() {
         setText(name);
         break;
       case 1:
-        setText(userName);
+        setText(username);
         break;
       case 2:
         setText(email);
@@ -69,7 +69,7 @@ function signup() {
         setText(password);
         break;
       case 4:
-        setText(confirmPassword);
+        setText(confirm_password);
       case 5:
         setText(githubURL);
         break;
@@ -101,7 +101,7 @@ function signup() {
         setName(text);
         break;
       case 1:
-        setUserName(text);
+        setusername(text);
         break;
       case 2:
         setEmail(text);
@@ -110,7 +110,7 @@ function signup() {
         setPassword(text);
         break;
       case 4:
-        setConfirmPassword(text);
+        setconfirm_password(text);
       case 5:
         setGithubURL(text);
         break;

@@ -17,7 +17,7 @@ const UserSchema = mongoose.Schema({
     type: String,
     required: true,
   },
-  userName: {
+  username: {
     type: String,
     required: true,
     unique: true,
@@ -49,13 +49,21 @@ const UserSchema = mongoose.Schema({
   questions_solved: {
     type: Array,
   },
-<<<<<<< HEAD
-=======
-  role: {
+  profile_pic: {
     type: String,
-    default: "endUser",
   },
->>>>>>> 72b46fe0885096cf409d1a877a32208a9c270afd
+  current_rating: {
+    type: Number,
+    default: 0,
+  },
+  max_rating: {
+    type: Number,
+    default: 0,
+  },
+  total_contests: {
+    type: Array,
+    default: 0,
+  },
 });
 
 UserSchema.plugin(require("mongoose-beautiful-unique-validation"));

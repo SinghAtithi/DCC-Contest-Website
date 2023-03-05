@@ -13,6 +13,8 @@ import {
 } from 'chart.js';
 import { useRouter } from "next/router";
 
+import store from "../store/baseStore";
+
 // const dashboard_container = {
 //     // "display": "flex",
 //     // "height": "90vh",
@@ -203,6 +205,7 @@ function dashboard() {
     const router = useRouter();
 
     useEffect(() => {
+        console.log("From Dashboard useEffect - ", store.getState().login.isLoading);
     })
     return (
         <div>

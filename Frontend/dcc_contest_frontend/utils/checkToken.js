@@ -1,4 +1,6 @@
 import axios from 'axios';
+import store from '../store/baseStore';
+import { loginUser } from '../store/loginStore';
 
 const checkToken = async () => {
   if (localStorage.getItem("token")) {
@@ -7,19 +9,21 @@ const checkToken = async () => {
         token: localStorage.getItem("token"),
       },
     };
-    var status = false;
+    var response = {verified : false};
     await axios
-      .get("http://localhost:5000/auth/verifyToken/admin", config)
+      .get("http://localhost:5000/auth/verifyToken", config)
       .then((res) => {
-        console.log("Verified yet again");
-        status = true;
+        store.dispatch(loginUser(res.data.role));
+        response.verified = true;
+        response.role = res.data.role;
       })
       .catch((err) => {
+        console.log(err);
         console.log("Not Verified");
       });
-      return status;
-
-  } else return false;
+      return response;
+  } else return {verified : false};
 };
 
 export default checkToken;
+

@@ -12,9 +12,11 @@ router.get("/", async (req, res) => {
   //   var ques1 = await Question.findOneAndUpdate({ques_no:ques[i].ques_no},{assigned : false});
   //   // console.log(ques1);
   // }
+  console.log("at route question /")
   const currDate = moment(new Date()).format("DD/MM/YYYY HH:mm").toString();
   const allQues = await Question.find(
-    { displayAfter: { $lt: currDate }, assigned: true },
+    {assigned:true},
+    // { displayAfter: { $lt: currDate }, assigned: true },
     "ques_no name topics"
   );
   res.status(200).json(allQues);
