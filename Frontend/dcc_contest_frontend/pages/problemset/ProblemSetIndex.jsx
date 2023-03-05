@@ -2,6 +2,7 @@ import axios from "axios";
 import React, { useEffect } from "react";
 import { useState } from "react";
 import ProblemRow from "../../components/problemRow";
+import ReactPaginate from "react-paginate";
 
 function ProblemSetIndex() {
   const [problems, setProblems] = React.useState([]);
@@ -44,16 +45,15 @@ function ProblemSetIndex() {
       <div className="my-4 flex justify-center">
         <button
           className={`btn mx-1`}
-          onClick={() => setPage(Math.max(0, page - 1))}
+          onClick={() => setPage(Math.max(1, page - 1))}
         >
           Prev
         </button>
         {Array.from({ length: totalPages }, (_, index) => index + 1).map(
           (num) => (
             <button
-              className={`btn btn-success mx-1 ${
-                num == page ? "btn-outline" : ""
-              }`}
+              className={`btn btn-success mx-1 ${num == page ? "btn-outline" : ""
+                }`}
               onClick={() => setPage(num)}
             >
               {num}

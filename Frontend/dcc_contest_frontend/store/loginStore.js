@@ -1,14 +1,12 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-const initialState = { loggedIn: false, userName: "", isLoading: true };
+const initialState = { loggedIn: false, userName: "", isLoading: true, isAdmin: false, isSuperAdmin: false };
 
 const login = createSlice({
   name: "login",
   initialState,
   reducers: {
     loginUser(state, actions) {
-      console.log("Inside Login user");
-      console.log(actions);
       state.loggedIn = true;
       state.userName = actions.payload;
     },

@@ -49,6 +49,13 @@ const UserSchema = mongoose.Schema({
   questions_solved: {
     type: Array,
   },
+<<<<<<< HEAD
+=======
+  role: {
+    type: String,
+    default: "endUser",
+  },
+>>>>>>> 72b46fe0885096cf409d1a877a32208a9c270afd
 });
 
 UserSchema.plugin(require("mongoose-beautiful-unique-validation"));

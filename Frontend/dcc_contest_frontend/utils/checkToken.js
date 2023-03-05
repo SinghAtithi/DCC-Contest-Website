@@ -9,7 +9,7 @@ const checkToken = async () => {
     };
     var status = false;
     await axios
-      .get("http://localhost:5000/auth/verifyToken", config)
+      .get("http://localhost:5000/auth/verifyToken/admin", config)
       .then((res) => {
         console.log("Verified yet again");
         status = true;

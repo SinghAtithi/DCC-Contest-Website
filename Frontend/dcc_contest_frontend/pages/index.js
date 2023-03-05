@@ -2,7 +2,7 @@ import Head from 'next/head'
 import Image from 'next/image'
 import Navbar from '../components/Navbar'
 
-import HomePage from './HomePage/Home' 
+import HomePage from './HomePage/Home'
 
 
 
@@ -19,7 +19,7 @@ export default function Home() {
         <script src="https://kit.fontawesome.com/5d9d1ab027.js" crossorigin="anonymous"></script>
       </Head>
       <Navbar />
-      <HomePage/>
+      <HomePage />
     </>
   )
 }

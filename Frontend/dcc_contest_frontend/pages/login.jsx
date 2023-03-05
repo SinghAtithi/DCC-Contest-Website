@@ -53,7 +53,7 @@ function login() {
 
       })
       .catch((err) => {
-        setError(err.response.data.error);
+        // setError(err.response.data.error);
       });
   };
 
