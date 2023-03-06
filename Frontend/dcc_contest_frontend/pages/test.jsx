@@ -48,6 +48,7 @@ const problems = [
 export default function test() {
     return (
         <>
+            
             <Navbar />
             <div className="TableDiv bg-white">
                 <table className="table w-full ">
@@ -79,3 +80,5 @@ export default function test() {
 
     )
 }
+
+

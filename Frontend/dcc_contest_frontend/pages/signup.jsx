@@ -4,12 +4,19 @@ import signupQues from "../components/signupQues";
 import heroSignupLottie from "../public/heroSignupLottie.json";
 import Lottie from "lottie-react";
 import axios from "axios";
-import store from "../store/baseStore";
 import Router from "next/router";
 import { BiArrowToRight, BiArrowToLeft } from "react-icons/bi";
-import { LOGIN_ENDPOINT_FRONTEND } from "../utils/constants";
+import  {BASE_URL,SIGNUP_ENDPOINT_BACKEND, ADMIN,SUPER_ADMIN,ADMIN_DASHBOARD,USER_DASHBOARD} from "../utils/constants";
+import SignUpConfirmaionModal from "../components/SignUpConfirmationModal";
+import { useRouter } from "next/router";
+import { useSelector } from "react-redux";
+import toggleLoaderBackdrop from "../utils/toggleCustomBackdrop";
+import checkToken from "../utils/checkToken";
 
 function signup() {
+  const router = useRouter();
+  const { loggedIn, role } = useSelector(state => state.login);
+
   const [quesInd, setQuesInd] = React.useState(0);
   const [name, setName] = React.useState("");
   const [email, setEmail] = React.useState("");
@@ -24,8 +31,39 @@ function signup() {
   const [text, setText] = React.useState("");
   const [error, setError] = React.useState(null);
 
+
+  useEffect(() => {
+    // setIsLoading(true);
+    toggleLoaderBackdrop();
+    var next = null;
+    if (router.query["next"]) next = router.query["next"];
+
+    if (!loggedIn) {
+      checkToken().then((status) => {
+        if (status.verified) {
+          if (next) Router.push(`/${next}`);
+          else if (status.role === ADMIN) Router.push(ADMIN_DASHBOARD);
+          else if (status.role === SUPER_ADMIN) Router.push(ADMIN_DASHBOARD);
+          else Router.push(USER_DASHBOARD);
+        }
+        else {
+          // setIsLoading(false);
+          toggleLoaderBackdrop();
+        }
+      });
+    }
+    else {
+      if (next) Router.push(`/${next}`);
+      else if (role === ADMIN) Router.push(ADMIN_DASHBOARD);
+      else if (role === SUPER_ADMIN) Router.push(ADMIN_DASHBOARD);
+      else Router.push(USER_DASHBOARD);
+    };
+  }, [])
+
+  
   const onSubmit = () => {
     document.querySelector(".custom-backdrop-loader").classList.toggle("active");
+
     const data = {
       name,
       email,
@@ -45,16 +83,16 @@ function signup() {
       },
     };
     axios
-      .post("http://localhost:5000/auth/register", data, config)
+      .post(BASE_URL + SIGNUP_ENDPOINT_BACKEND, data, config)
       .then((res) => {
         console.log(res.data);
-        Router.push(LOGIN_ENDPOINT_FRONTEND);
+        document.querySelector(".modal").classList.toggle("modal-open");
       })
       .catch((err) => {
         document.querySelector(".custom-backdrop-loader").classList.toggle("active");
         console.log(err);
         if (err.code == "ERR_NETWORK") {
-          setError("Something went wrong. Please check your Internet Commection.");
+          setError("Something went wrong. Please check your Internet or Please refresh. If the problem persists, contact the adminstrator.");
           setQuesInd(0);
         }
         else if (err.code == "ERR_BAD_RESPONSE" || err.code == "ERR_BAD_REQUEST") {
@@ -62,7 +100,7 @@ function signup() {
           setQuesInd(err.response.data.seq);
         }
         else {
-          setError("Something went wrong. Please refresh. If the problem persists, contact the adminstrator.");
+          setError("Something went wrong. Please check your Internet or Please refresh. If the problem persists, contact the adminstrator.");
           setQuesInd(0);
         }
 
@@ -160,6 +198,7 @@ function signup() {
   return (
     <div className="">
       <Navbar />
+      <SignUpConfirmaionModal />
       <div className="container min-w-full mt-16 flex justify-around items-center">
         <Lottie animationData={heroSignupLottie} className="w-4/12" />
 

@@ -2,15 +2,15 @@ import { useRouter } from "next/router";
 import Navbar from "../../components/Navbar";
 import Head from "next/head";
 import { useEffect, useState } from "react";
+import toggleLoaderBackdrop from "../../utils/toggleCustomBackdrop";
 import { baseUrl } from "../../utils/constants";
 import axios from "axios";
 
 const contestPage = () => {
   const router = useRouter();
 
-  const [isLoading, setIsLoading] = useState(true);
   useEffect(() => {
-    setIsLoading(true);
+    toggleLoaderBackdrop();
 
     axios
       .get(`${baseUrl}/contest`)
@@ -18,15 +18,17 @@ const contestPage = () => {
         // divide as upcoming, ongoing and past contests and display on the screen
         console.log(res);
         console.log("Here at contest folder");
-        setIsLoading(false);
+        toggleLoaderBackdrop();
       })
       .catch((err) => {
         // do something based on error
         console.log(err);
+        console.log(123);
+        toggleLoaderBackdrop();
       });
+
   }, []);
 
-  if (isLoading) return <div>Loading...</div>;
   return (
     <>
       <div>

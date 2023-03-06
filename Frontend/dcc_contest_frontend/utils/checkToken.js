@@ -1,6 +1,6 @@
 import axios from 'axios';
 import store from '../store/baseStore';
-import { loginUser } from '../store/loginStore';
+import { loginUser, setLoading } from '../store/loginStore';
 
 const checkToken = async () => {
   if (localStorage.getItem("token")) {
@@ -20,6 +20,7 @@ const checkToken = async () => {
       .catch((err) => {
         console.log(err);
         console.log("Not Verified");
+        store.dispatch(setLoading(false));
       });
       return response;
   } else return {verified : false};

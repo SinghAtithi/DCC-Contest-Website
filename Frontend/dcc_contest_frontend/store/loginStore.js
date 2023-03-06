@@ -12,11 +12,17 @@ const login = createSlice({
       state.role = actions.payload;
     },
     logoutUser(state) {
-      state.loggedIn = false;
+      state.loggedIn= false
+      state.isLoading= false
+      state.role= undefined
       localStorage.removeItem("token");
     },
+    setLoading(state,actions){
+      state.isLoading = actions.payload;
+      console.log(state.isLoading);
+    }
   },
 });
 
-export const { loginUser, logoutUser } = login.actions;
+export const { loginUser, logoutUser, setLoading } = login.actions;
 export default login.reducer;

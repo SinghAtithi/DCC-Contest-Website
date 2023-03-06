@@ -29,10 +29,18 @@ export const ADMIN = "admin";
 export const SUPER_ADMIN = "super_admin";
 export const END_USER = "end_user";
 
-export const PROBLEM_SET_PAGE = "/ProblemSet";
 export const USER_DASHBOARD = "/dashboard";
 export const ADMIN_DASHBOARD = "/admin/dashboard";
 
 export const BASE_URL = "http://localhost:5000";
 export const LOGIN_ENDPOINT_BACKEND = "/auth/login";
-export const LOGIN_ENDPOINT_FRONTEND = "/login";
+export const SIGNUP_ENDPOINT_BACKEND = "/auth/register";
+
+export const HOME_PAGE = "/"
+export const LOGIN_PAGE = "/login";
+export const SIGNUP_PAGE = "/signup";
+export const PROBLEM_SET_PAGE = "/ProblemSet";
+export const CONTEST_PAGE = "/contest"
+export const BLOGS_PAGE = "/blogs"
+export const ABOUT_PAGE = "/about"
+export const SETTINGS_PAGE = "/settings"

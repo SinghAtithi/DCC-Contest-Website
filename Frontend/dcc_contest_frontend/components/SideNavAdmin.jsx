@@ -1,17 +1,53 @@
 import Link from "next/link";
 import Image from "next/image";
-import { SUPER_ADMIN, ADMIN } from "../utils/constants";
+import { SUPER_ADMIN, ADMIN,SETTINGS_PAGE,HOME_PAGE } from "../utils/constants";
+import toggleLoaderBackdrop from "../utils/toggleCustomBackdrop";
 
 import { GiHamburgerMenu } from "react-icons/gi";
+import { useRouter } from "next/router";
+import BackdropLoader from "./BackdropLoader";
+import store from "../store/baseStore";
+import { logoutUser } from "../store/loginStore";
+
+function UserMenu(props) {
+    return (
+      <div className="dropdown dropdown-end">
+        <label tabIndex={0} className="btn btn-ghost btn-circle avatar">
+          <div className="w-10 rounded-full">
+            <img src="https://placeimg.com/80/80/people" />
+          </div>
+        </label>
+        <ul
+          tabIndex={0}
+          className="custom-navbar-avtar-pop menu menu-compact dropdown-content mt-3 p-2 shadow bg-base-100 rounded-box w-52"
+        >
+          <li onClick={() => {
+            toggleLoaderBackdrop(props.asPath, SETTINGS_PAGE);
+          }}>
+            <Link href={SETTINGS_PAGE}>Settings</Link>
+          </li>
+          <li onClick={() => {
+            toggleLoaderBackdrop(props.asPath, HOME_PAGE);
+          }}>
+            <Link href={HOME_PAGE} onClick={()=>{
+                store.dispatch(logoutUser());
+              }}>Logout</Link>
+          </li>
+        </ul>
+      </div>
+    );
+  }
 
 export default function SideNav(props) {
     // useEffect(()=>{
     //     document.querySelector.className()
     // },[])
+    const {asPath} = useRouter();
     return (
         <>
-            <div className="navbar-top">
-                <div className="navbar-logo">
+            <BackdropLoader/>
+            <div className="navbar-top-side">
+                <div className="navbar-logo-side">
                     <Link
                         href="/"
                     >
@@ -23,12 +59,15 @@ export default function SideNav(props) {
                         />
                     </Link>
                 </div>
+                <div className="custom-navbar-items">
+                    <UserMenu asPath={asPath}/>
+                </div>
                 <div className="side-navbar-hamburger" onClick={() => {
                     document.querySelector(".side-navbar-items-offscreen").classList.toggle("active");
                     document.querySelector(".custom-backdrop").classList.toggle("active");
                 }}><GiHamburgerMenu size={35} /></div>
             </div>
-            <nav >
+            <nav>
                 <ul className="SideNav-container side-navbar-items-offscreen">
                     <li id="nav-li">
                         <div id="nav-heading">
