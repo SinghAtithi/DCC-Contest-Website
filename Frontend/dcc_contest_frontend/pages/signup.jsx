@@ -7,6 +7,7 @@ import axios from "axios";
 import store from "../store/baseStore";
 import Router from "next/router";
 import { BiArrowToRight, BiArrowToLeft } from "react-icons/bi";
+import { LOGIN_ENDPOINT_FRONTEND } from "../utils/constants";
 
 function signup() {
   const [quesInd, setQuesInd] = React.useState(0);
@@ -21,8 +22,10 @@ function signup() {
   const [codechefURL, setCodechefURL] = React.useState("");
   const [bio, setBio] = React.useState("");
   const [text, setText] = React.useState("");
+  const [error, setError] = React.useState(null);
 
   const onSubmit = () => {
+    document.querySelector(".custom-backdrop-loader").classList.toggle("active");
     const data = {
       name,
       email,
@@ -45,9 +48,24 @@ function signup() {
       .post("http://localhost:5000/auth/register", data, config)
       .then((res) => {
         console.log(res.data);
+        Router.push(LOGIN_ENDPOINT_FRONTEND);
       })
       .catch((err) => {
+        document.querySelector(".custom-backdrop-loader").classList.toggle("active");
         console.log(err);
+        if (err.code == "ERR_NETWORK") {
+          setError("Something went wrong. Please check your Internet Commection.");
+          setQuesInd(0);
+        }
+        else if (err.code == "ERR_BAD_RESPONSE" || err.code == "ERR_BAD_REQUEST") {
+          setError(err.response.data.error);
+          setQuesInd(err.response.data.seq);
+        }
+        else {
+          setError("Something went wrong. Please refresh. If the problem persists, contact the adminstrator.");
+          setQuesInd(0);
+        }
+
       });
   };
 
@@ -60,10 +78,10 @@ function signup() {
         setText(name);
         break;
       case 1:
-        setText(username);
+        setText(email);
         break;
       case 2:
-        setText(email);
+        setText(username);
         break;
       case 3:
         setText(password);
@@ -101,10 +119,10 @@ function signup() {
         setName(text);
         break;
       case 1:
-        setusername(text);
+        setEmail(text);
         break;
       case 2:
-        setEmail(text);
+        setusername(text);
         break;
       case 3:
         setPassword(text);
@@ -144,7 +162,14 @@ function signup() {
       <Navbar />
       <div className="container min-w-full mt-16 flex justify-around items-center">
         <Lottie animationData={heroSignupLottie} className="w-4/12" />
+
         <div className={`${quesInd < signupQues.length - 1 ? "" : "hidden"}`}>
+          {error && <div className="alert alert-error shadow-lg">
+            <div>
+              <svg xmlns="http://www.w3.org/2000/svg" className="stroke-current flex-shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+              <span>{error}</span>
+            </div>
+          </div>}
           <div className="heroForm mt-8 mx-24 text-3xl justify-center flex">
             {signupQues[quesInd].question}
           </div>
@@ -172,18 +197,6 @@ function signup() {
             </button>
           </div>
         </div>
-        {/* <div className={`${quesInd === signupQues.length - 2
-          ? "flex justify-center items-center flex-col"
-          : "hidden"
-          }`}>
-          <p className="text-xl my-5">
-            Upload your Profile Image
-          </p>
-          <input type="file" className="file-input file-input-bordered file-input-success w-full max-w-xs" onChange={(e) => uploadImage(e.target.event.srcElement.files)}
-            onKeyDown={(e) => {
-              if (e.key === "Enter") onNextClick();
-            }} />
-        </div> */}
         <div
           className={`${quesInd === signupQues.length - 1
             ? "flex justify-center items-center flex-col"

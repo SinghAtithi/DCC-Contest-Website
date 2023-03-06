@@ -9,7 +9,7 @@ export default function Auth(props) {
     useEffect(() => {
         if(!loggedIn){
             checkToken().then((res) => {
-                alert("From useEffect of Auth");
+                // alert("From useEffect of Auth");
                 console.log(Date());
             });
         }

@@ -1,6 +1,8 @@
 import React, { useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
+import GeneralLoading from "../public/GeneralLoading.json";
+import Lottie from "lottie-react";
 
 import { GiHamburgerMenu } from "react-icons/gi";
 
@@ -68,6 +70,9 @@ function Navbar() {
       </ul>
 
       <div className="custom-backdrop"></div>
+      <div className="custom-backdrop-loader">
+        <Lottie animationData={GeneralLoading} className="w-1/4"/>
+      </div>
     </nav>
   );
 }

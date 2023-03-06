@@ -53,40 +53,54 @@ router.post("/register", async (req, res) => {
 
                     res
                       .status(200)
-                      .json(
-                        "Successfully registered. Please confirm your email before further process."
-                      );
+                      .send({
+                        message : "Successfully registered. Please confirm your email before further process.",
+
+                      });
                   } else {
                     res.status(400).send({
                       error: "Password and Confirm Password must match.",
+                      seq: 4
                     });
                   }
                 } else {
                   res
                     .status(400)
-                    .send({ error: "Password Confirmation is compulsory." });
+                    .send({ error: "Password Confirmation is compulsory.", seq: 4 });
                 }
               } else {
-                res.status(400).send({ error: "Password is compulsory." });
+                res.status(400).send({ error: "Password is compulsory.", seq: 3 });
               }
             } else {
-              res.status(400).send({ error: "username cannot contain @ or ." });
+              res.status(400).send({ error: "username cannot contain @ or .",  seq : 2 });
             }
           } else {
-            res.status(400).send({ error: "username is compulsory." });
+            res.status(400).send({ error: "username is compulsory.",  seq : 2 });
           }
         } else {
-          res.status(400).send({ error: "Provide a valid email." });
+          res.status(400).send({ error: "Provide a valid email.", seq : 1 });
         }
       } else {
-        res.status(400).send({ error: "Email is compulsory." });
+        res.status(400).send({ error: "Email is compulsory.", seq : 1 });
       }
     } else {
-      res.status(400).send({ error: "Name is compulsory." });
+      res.status(400).send({ error: "Name is compulsory.", seq : 0 });
     }
-  } catch (error) {
-    console.log(error);
-    res.status(500).send({ error: error });
+  } catch (err) {
+    console.log(err);
+    let error = "Something went wrong.", seq = 0;
+    if(err.code == 11000){
+      key = Object.keys(err.keyPattern);
+      if(key[0]=="email"){
+        error = "This email is already taken. Please use a different one.";
+        seq = 1;
+      }
+      else if(key[0]=="username"){
+        error = "This username is already taken. Please use a different one.";
+        seq = 2;
+      }
+    }
+    res.status(500).send({ error: error, seq: seq });
   }
 });
 
