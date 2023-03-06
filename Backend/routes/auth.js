@@ -26,9 +26,9 @@ router.post("/register", async (req, res) => {
       if (email) {
         if (email.includes("@") && email.includes(".", email.indexOf("@"))) {
           if (username) {
-            if (!userName.includes("@") && !userName.includes(".")) {
+            if (!username.includes("@") && !username.includes(".")) {
               if (password) {
-                if (confirmPassword) {
+                if (confirm_password) {
                   if (password == confirm_password) {
                     const hashedPassword = await bcrypt.hash(
                       password,
@@ -66,10 +66,10 @@ router.post("/register", async (req, res) => {
                 res.status(400).send({ error: "Password is compulsory." });
               }
             } else {
-              res.status(400).send({ error: "USername cannot contain @ or ." });
+              res.status(400).send({ error: "username cannot contain @ or ." });
             }
           } else {
-            res.status(400).send({ error: "UserName is compulsory." });
+            res.status(400).send({ error: "username is compulsory." });
           }
         } else {
           res.status(400).send({ error: "Provide a valid email." });
@@ -97,9 +97,9 @@ router.post("/login", async (req, res) => {
           loginId.includes("@") &&
           loginId.includes(".", loginId.indexOf("@"))
         ) {
-          user = await User.findOne({ email: loginId }, "userName password").exec();
+          user = await User.findOne({ email: loginId }, "username password").exec();
         } else {
-          user = await User.findOne({ userName: loginId }, "userName password").exec();
+          user = await User.findOne({ username: loginId }, "username password").exec();
         }
         if (user) {
           const valid = await bcrypt.compare(password, user.password);
@@ -107,7 +107,7 @@ router.post("/login", async (req, res) => {
           if (valid) {
             const token = generateLoginToken(user._id, user.role);
             console.log(user);
-            res.status(200).send({ token: token, userName: user.userName });
+            res.status(200).send({ token: token, username: user.username });
           } else {
             res.status(400).send({ error: "Incorrect Password." });
           }
@@ -118,7 +118,7 @@ router.post("/login", async (req, res) => {
         res.status(400).send({ error: "Password is compulsory." });
       }
     } else {
-      res.status(400).send({ error: "Username or email is compulsory." });
+      res.status(400).send({ error: "username or email is compulsory." });
     }
   } catch (error) {
     res.status(500).send({ error: error });

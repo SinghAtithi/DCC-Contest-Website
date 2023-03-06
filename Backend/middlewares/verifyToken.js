@@ -24,11 +24,11 @@ const verifyAdmin = async (req, res, next) => {
         const verified = jwt.verify(token, process.env.JWT_SECRET_KEY);
         req.user = verified;
         const role = await User.findOne({ _id: verified.userId }, "role").exec();
-        if (role == "endUser") {
-            res.status(400).send({ error: "User is Unauthorized to perform this action, contact admins" });
+        if (role == "admin") {
+            next();
         }
+        res.status(400).send({ error: "User is Unauthorized to perform this action, contact admins" });
         console.log("Verified", verified);
-        next();
     }
     catch (error) {
         console.log("Could not Verify");
