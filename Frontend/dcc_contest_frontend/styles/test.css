@@ -1,0 +1,11 @@
+.TableDiv{
+    position: relative;
+    top: 65px;
+    margin : 25px;
+    overflow-x: auto;
+    padding:1px;
+}
+
+tr{
+    border: solid #ffffff 1px;
+  }

@@ -4,31 +4,72 @@ import signupQues from "../components/signupQues";
 import heroSignupLottie from "../public/heroSignupLottie.json";
 import Lottie from "lottie-react";
 import axios from "axios";
-import store from "../store/baseStore";
 import Router from "next/router";
 import { BiArrowToRight, BiArrowToLeft } from "react-icons/bi";
+import  {BASE_URL,SIGNUP_ENDPOINT_BACKEND, ADMIN,SUPER_ADMIN,ADMIN_DASHBOARD,USER_DASHBOARD} from "../utils/constants";
+import SignUpConfirmaionModal from "../components/SignUpConfirmationModal";
+import { useRouter } from "next/router";
+import { useSelector } from "react-redux";
+import toggleLoaderBackdrop from "../utils/toggleCustomBackdrop";
+import checkToken from "../utils/checkToken";
 
 function signup() {
+  const router = useRouter();
+  const { loggedIn, role } = useSelector(state => state.login);
+
   const [quesInd, setQuesInd] = React.useState(0);
   const [name, setName] = React.useState("");
   const [email, setEmail] = React.useState("");
   const [password, setPassword] = React.useState("");
-  const [confirmPassword, setConfirmPassword] = React.useState("");
-  const [userName, setUserName] = React.useState("");
+  const [confirm_password, setconfirm_password] = React.useState("");
+  const [username, setusername] = React.useState("");
   const [githubURL, setGithubURL] = React.useState("");
   const [linkedinURL, setLinkedinURL] = React.useState("");
   const [codeforcesURL, setCodeforcesURL] = React.useState("");
   const [codechefURL, setCodechefURL] = React.useState("");
   const [bio, setBio] = React.useState("");
   const [text, setText] = React.useState("");
+  const [error, setError] = React.useState(null);
 
+
+  useEffect(() => {
+    // setIsLoading(true);
+    toggleLoaderBackdrop();
+    var next = null;
+    if (router.query["next"]) next = router.query["next"];
+
+    if (!loggedIn) {
+      checkToken().then((status) => {
+        if (status.verified) {
+          if (next) Router.push(`/${next}`);
+          else if (status.role === ADMIN) Router.push(ADMIN_DASHBOARD);
+          else if (status.role === SUPER_ADMIN) Router.push(ADMIN_DASHBOARD);
+          else Router.push(USER_DASHBOARD);
+        }
+        else {
+          // setIsLoading(false);
+          toggleLoaderBackdrop();
+        }
+      });
+    }
+    else {
+      if (next) Router.push(`/${next}`);
+      else if (role === ADMIN) Router.push(ADMIN_DASHBOARD);
+      else if (role === SUPER_ADMIN) Router.push(ADMIN_DASHBOARD);
+      else Router.push(USER_DASHBOARD);
+    };
+  }, [])
+
+  
   const onSubmit = () => {
+    document.querySelector(".custom-backdrop-loader").classList.toggle("active");
+
     const data = {
       name,
       email,
       password,
-      confirmPassword,
-      userName,
+      confirm_password,
+      username,
       githubURL,
       linkedinURL,
       codeforcesURL,
@@ -42,12 +83,27 @@ function signup() {
       },
     };
     axios
-      .post("http://localhost:5000/auth/register", data, config)
+      .post(BASE_URL + SIGNUP_ENDPOINT_BACKEND, data, config)
       .then((res) => {
         console.log(res.data);
+        document.querySelector(".modal").classList.toggle("modal-open");
       })
       .catch((err) => {
+        document.querySelector(".custom-backdrop-loader").classList.toggle("active");
         console.log(err);
+        if (err.code == "ERR_NETWORK") {
+          setError("Something went wrong. Please check your Internet or Please refresh. If the problem persists, contact the adminstrator.");
+          setQuesInd(0);
+        }
+        else if (err.code == "ERR_BAD_RESPONSE" || err.code == "ERR_BAD_REQUEST") {
+          setError(err.response.data.error);
+          setQuesInd(err.response.data.seq);
+        }
+        else {
+          setError("Something went wrong. Please check your Internet or Please refresh. If the problem persists, contact the adminstrator.");
+          setQuesInd(0);
+        }
+
       });
   };
 
@@ -60,16 +116,16 @@ function signup() {
         setText(name);
         break;
       case 1:
-        setText(userName);
+        setText(email);
         break;
       case 2:
-        setText(email);
+        setText(username);
         break;
       case 3:
         setText(password);
         break;
       case 4:
-        setText(confirmPassword);
+        setText(confirm_password);
       case 5:
         setText(githubURL);
         break;
@@ -101,16 +157,16 @@ function signup() {
         setName(text);
         break;
       case 1:
-        setUserName(text);
+        setEmail(text);
         break;
       case 2:
-        setEmail(text);
+        setusername(text);
         break;
       case 3:
         setPassword(text);
         break;
       case 4:
-        setConfirmPassword(text);
+        setconfirm_password(text);
       case 5:
         setGithubURL(text);
         break;
@@ -142,9 +198,17 @@ function signup() {
   return (
     <div className="">
       <Navbar />
+      <SignUpConfirmaionModal />
       <div className="container min-w-full mt-16 flex justify-around items-center">
         <Lottie animationData={heroSignupLottie} className="w-4/12" />
+
         <div className={`${quesInd < signupQues.length - 1 ? "" : "hidden"}`}>
+          {error && <div className="alert alert-error shadow-lg">
+            <div>
+              <svg xmlns="http://www.w3.org/2000/svg" className="stroke-current flex-shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+              <span>{error}</span>
+            </div>
+          </div>}
           <div className="heroForm mt-8 mx-24 text-3xl justify-center flex">
             {signupQues[quesInd].question}
           </div>
@@ -172,18 +236,6 @@ function signup() {
             </button>
           </div>
         </div>
-        {/* <div className={`${quesInd === signupQues.length - 2
-          ? "flex justify-center items-center flex-col"
-          : "hidden"
-          }`}>
-          <p className="text-xl my-5">
-            Upload your Profile Image
-          </p>
-          <input type="file" className="file-input file-input-bordered file-input-success w-full max-w-xs" onChange={(e) => uploadImage(e.target.event.srcElement.files)}
-            onKeyDown={(e) => {
-              if (e.key === "Enter") onNextClick();
-            }} />
-        </div> */}
         <div
           className={`${quesInd === signupQues.length - 1
             ? "flex justify-center items-center flex-col"

@@ -10,7 +10,7 @@
     overflow-y: scroll;
 }
 
-.navbar-top{
+.navbar-top-side{
     position: fixed;
     top: 0;
     right: 0;
@@ -22,6 +22,12 @@
     background-color: var(--navbar-background);
     z-index: 50;
 }
+
+.navbar-logo-side{
+    flex: 1 1 0%;
+    margin:4px;
+}
+
 
 #nav-heading{
     color: rgb(179, 170, 170);

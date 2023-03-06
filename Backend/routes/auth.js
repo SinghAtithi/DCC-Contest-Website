@@ -4,7 +4,11 @@ const User = require("../models/user.js");
 const ImageKit = require("imagekit");
 const uuid = require("uuid");
 const { generateLoginToken } = require("../utils/generateToken.js");
-const { verifyGeneralUser, verifyAdmin } = require("../middlewares/verifyToken.js");
+const {
+  verifyGeneralUser,
+  verifyAdmin,
+  verifyToken,
+} = require("../middlewares/verifyToken.js");
 const router = express.Router();
 
 router.post("/register", async (req, res) => {
@@ -26,9 +30,9 @@ router.post("/register", async (req, res) => {
       if (email) {
         if (email.includes("@") && email.includes(".", email.indexOf("@"))) {
           if (username) {
-            if (!userName.includes("@") && !userName.includes(".")) {
+            if (!username.includes("@") && !username.includes(".")) {
               if (password) {
-                if (confirmPassword) {
+                if (confirm_password) {
                   if (password == confirm_password) {
                     const hashedPassword = await bcrypt.hash(
                       password,
@@ -49,40 +53,54 @@ router.post("/register", async (req, res) => {
 
                     res
                       .status(200)
-                      .json(
-                        "Successfully registered. Please confirm your email before further process."
-                      );
+                      .send({
+                        message : "Successfully registered. Please confirm your email before further process.",
+
+                      });
                   } else {
                     res.status(400).send({
                       error: "Password and Confirm Password must match.",
+                      seq: 4
                     });
                   }
                 } else {
                   res
                     .status(400)
-                    .send({ error: "Password Confirmation is compulsory." });
+                    .send({ error: "Password Confirmation is compulsory.", seq: 4 });
                 }
               } else {
-                res.status(400).send({ error: "Password is compulsory." });
+                res.status(400).send({ error: "Password is compulsory.", seq: 3 });
               }
             } else {
-              res.status(400).send({ error: "USername cannot contain @ or ." });
+              res.status(400).send({ error: "username cannot contain @ or .",  seq : 2 });
             }
           } else {
-            res.status(400).send({ error: "UserName is compulsory." });
+            res.status(400).send({ error: "username is compulsory.",  seq : 2 });
           }
         } else {
-          res.status(400).send({ error: "Provide a valid email." });
+          res.status(400).send({ error: "Provide a valid email.", seq : 1 });
         }
       } else {
-        res.status(400).send({ error: "Email is compulsory." });
+        res.status(400).send({ error: "Email is compulsory.", seq : 1 });
       }
     } else {
-      res.status(400).send({ error: "Name is compulsory." });
+      res.status(400).send({ error: "Name is compulsory.", seq : 0 });
     }
-  } catch (error) {
-    console.log(error);
-    res.status(500).send({ error: error });
+  } catch (err) {
+    console.log(err);
+    let error = "Something went wrong.", seq = 0;
+    if(err.code == 11000){
+      key = Object.keys(err.keyPattern);
+      if(key[0]=="email"){
+        error = "This email is already taken. Please use a different one.";
+        seq = 1;
+      }
+      else if(key[0]=="username"){
+        error = "This username is already taken. Please use a different one.";
+        seq = 2;
+      }
+    }
+    res.status(500).send({ error: error, seq: seq });
   }
 });
 
@@ -97,17 +115,22 @@ router.post("/login", async (req, res) => {
           loginId.includes("@") &&
           loginId.includes(".", loginId.indexOf("@"))
         ) {
-          user = await User.findOne({ email: loginId }, "userName password").exec();
+          user = await User.findOne(
+            { email: loginId },
+            "username password role"
+          ).exec();
         } else {
-          user = await User.findOne({ userName: loginId }, "userName password").exec();
+          user = await User.findOne(
+            { username: loginId },
+            "username password role"
+          ).exec();
         }
         if (user) {
           const valid = await bcrypt.compare(password, user.password);
 
           if (valid) {
             const token = generateLoginToken(user._id, user.role);
-            console.log(user);
-            res.status(200).send({ token: token, userName: user.userName });
+            res.status(200).send({ token: token, role: user.role });
           } else {
             res.status(400).send({ error: "Incorrect Password." });
           }
@@ -118,16 +141,17 @@ router.post("/login", async (req, res) => {
         res.status(400).send({ error: "Password is compulsory." });
       }
     } else {
-      res.status(400).send({ error: "Username or email is compulsory." });
+      res.status(400).send({ error: "username or email is compulsory." });
     }
   } catch (error) {
-    res.status(500).send({ error: error });
+    res.status(500).send({ error: "Something went wrong." });
   }
 });
 
-router.get("/verifyToken/admin", verifyAdmin, (req, res) => {
-  res.status(200).send({ validation: "Success" });
-})
+router.get("/verifyToken", verifyToken, (req, res) => {
+  console.log(req.user);
+  res.status(200).send({ role: req.user.role });
+});
 
 router.get("/imagekitAuth", async (req, res) => {
   try {

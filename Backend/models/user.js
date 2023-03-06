@@ -38,13 +38,16 @@ const UserSchema = mongoose.Schema({
     type: String,
     default: "Jai Mahakal",
   },
-  // Array of ques_no
+  role: {
+    type: String,
+    default: "end_user",
+  },
   questions_solved: {
     type: Array,
   },
-  role: {
-    type: String,
-    default: "endUser",
+  // Array of ques_no
+  questions_solved: {
+    type: Array,
   },
   profile_pic: {
     type: String,
@@ -60,11 +63,10 @@ const UserSchema = mongoose.Schema({
   total_contests: {
     type: Array,
     default: 0,
-  }
+  },
 });
 
-
-UserSchema.plugin(require('mongoose-beautiful-unique-validation'));
+UserSchema.plugin(require("mongoose-beautiful-unique-validation"));
 
 const User = new mongoose.model("user", UserSchema);
 module.exports = User;

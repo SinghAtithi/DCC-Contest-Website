@@ -1,16 +1,35 @@
-import React, { useEffect } from "react";
+import React from "react";
 import Link from "next/link";
 import Image from "next/image";
+import toggleLoaderBackdrop from "../utils/toggleCustomBackdrop";
+import { useRouter } from "next/router";
 
 import { GiHamburgerMenu } from "react-icons/gi";
+import { ABOUT_PAGE, ADMIN, ADMIN_DASHBOARD, BLOGS_PAGE, CONTEST_PAGE, HOME_PAGE, LOGIN_PAGE, PROBLEM_SET_PAGE, SETTINGS_PAGE, SIGNUP_PAGE, SUPER_ADMIN, USER_DASHBOARD } from "../utils/constants";
+import { useSelector } from "react-redux";
+import { logoutUser } from "../store/loginStore";
+import store from "../store/baseStore";
+import BackdropLoader from "./BackdropLoader";
+
+function getPath(role) {
+  return (role === ADMIN || role === SUPER_ADMIN) ? ADMIN_DASHBOARD : USER_DASHBOARD;
+}
 
 function Navbar() {
+  const { asPath } = useRouter();
+  const {role,loggedIn}  = useSelector(state => state.login);
+
+
   return (
+
     <nav>
       <div className="custom-navbar">
         <div className="navbar-logo">
           <Link
             href="/"
+            onClick={() => {
+              toggleLoaderBackdrop(asPath, "/");
+            }}
           >
             <Image
               src="/DCC_LOGO01.png"
@@ -22,19 +41,39 @@ function Navbar() {
         </div>
 
         <ul className="custom-navbar-items" >
-          <li>
-            <Link href="/contest">Contest</Link>
+          <li onClick={() => {
+            toggleLoaderBackdrop(asPath, CONTEST_PAGE);
+          }}>
+            <Link href={CONTEST_PAGE} >Contest</Link>
           </li>
-          <li>
-            <Link href="/ProblemSet">Problem Set</Link>
+          <li onClick={() => {
+            toggleLoaderBackdrop(asPath, PROBLEM_SET_PAGE);
+          }}>
+            <Link href={PROBLEM_SET_PAGE} >Problem Set</Link>
           </li>
-          <li>
-            <Link href="/blogs">Blogs</Link>
+          <li onClick={() => {
+            toggleLoaderBackdrop(asPath, BLOGS_PAGE);
+          }}>
+            <Link href={BLOGS_PAGE} >Blogs</Link>
           </li>
-          <li>
-            <Link href="/about">About</Link>
+          <li onClick={() => {
+            toggleLoaderBackdrop(asPath, ABOUT_PAGE);
+          }}>
+            <Link href={ABOUT_PAGE}>About</Link>
           </li>
-          <UserMenu />
+          {loggedIn && <UserMenu role={role} asPath={asPath}/>}
+          {!loggedIn && <>
+            <li onClick={() => {
+              toggleLoaderBackdrop(asPath, LOGIN_PAGE);
+            }}>
+              <Link href={LOGIN_PAGE} >Login</Link>
+            </li>
+            <li onClick={() => {
+              toggleLoaderBackdrop(asPath, SIGNUP_PAGE);
+            }}>
+              <Link href={SIGNUP_PAGE}>SignUp</Link>
+            </li>
+          </>}
         </ul>
         <div className="custom-navbar-hamburger" onClick={() => {
           document.querySelector(".custom-navbar-items-offscreen").classList.toggle("active");
@@ -43,36 +82,65 @@ function Navbar() {
 
       </div>
       <ul className="custom-navbar-items-offscreen" >
-        <li>
-          <Link href="/">Contest</Link>
+        <li onClick={() => {
+          toggleLoaderBackdrop(asPath, CONTEST_PAGE);
+        }}>
+          <Link href={CONTEST_PAGE}>Contest</Link>
         </li>
-        <li>
-          <Link href="/ProblemSet">Problem Set</Link>
+        <li onClick={() => {
+          toggleLoaderBackdrop(asPath, PROBLEM_SET_PAGE);
+        }}>
+          <Link href={PROBLEM_SET_PAGE}>Problem Set</Link>
         </li>
-        <li>
-          <Link href="/Blogs">Blogs</Link>
+        <li onClick={() => {
+          toggleLoaderBackdrop(asPath, BLOGS_PAGE);
+        }}>
+          <Link href={BLOGS_PAGE}>Blogs</Link>
         </li>
-        <li>
-          <Link href="/">About</Link>
+        <li onClick={() => {
+          toggleLoaderBackdrop(asPath, ABOUT_PAGE);
+        }}>
+          <Link href={ABOUT_PAGE}>About</Link>
         </li>
-        <li>
-          <Link href="/dashboard">Dashboard</Link>
+        {loggedIn && <><li onClick={() => {
+          toggleLoaderBackdrop(asPath, getPath(role));
+        }}>
+          <Link href={getPath(role)}>Dashboard</Link>
         </li>
-        <li>
-          <Link href="/">Settings</Link>
-        </li>
-        <li>
-          <Link href="/">Logout</Link>
-        </li>
+          <li onClick={() => {
+            toggleLoaderBackdrop(asPath, SETTINGS_PAGE);
+          }}>
+            <Link href={SETTINGS_PAGE}>Settings</Link>
+          </li>
+          <li onClick={() => {
+            toggleLoaderBackdrop(asPath, HOME_PAGE);
+          }}>
+            <Link href={HOME_PAGE} onClick={()=>{
+              store.dispatch(logoutUser());
+            }}>Logout</Link>
+          </li></>}
+        {!loggedIn && <>
+          <li onClick={() => {
+            toggleLoaderBackdrop(asPath, LOGIN_PAGE);
+          }}>
+            <Link href={LOGIN_PAGE} >Login</Link>
+          </li>
+          <li onClick={() => {
+            toggleLoaderBackdrop(asPath, SIGNUP_PAGE);
+          }}>
+            <Link href={SIGNUP_PAGE}>SignUp</Link>
+          </li>
+        </>}
 
       </ul>
 
       <div className="custom-backdrop"></div>
+          <BackdropLoader/>
     </nav>
   );
 }
 
-function UserMenu() {
+function UserMenu(props) {
   return (
     <div className="dropdown dropdown-end">
       <label tabIndex={0} className="btn btn-ghost btn-circle avatar">
@@ -84,14 +152,22 @@ function UserMenu() {
         tabIndex={0}
         className="custom-navbar-avtar-pop menu menu-compact dropdown-content mt-3 p-2 shadow bg-base-100 rounded-box w-52"
       >
-        <li>
-          <Link href="/dashboard">Dashboard</Link>
+        <li onClick={() => {
+          toggleLoaderBackdrop(props.asPath, getPath(props.role));
+        }}>
+          <Link href={getPath(props.role)}>Dashboard</Link>
         </li>
-        <li>
-          <Link href="/settings">Settings</Link>
+        <li onClick={() => {
+          toggleLoaderBackdrop(props.asPath, SETTINGS_PAGE);
+        }}>
+          <Link href={SETTINGS_PAGE}>Settings</Link>
         </li>
-        <li>
-          <Link href="/logout">Logout</Link>
+        <li onClick={() => {
+          toggleLoaderBackdrop(props.asPath, HOME_PAGE);
+        }}>
+          <Link href={HOME_PAGE} onClick={()=>{
+              store.dispatch(logoutUser());
+            }}>Logout</Link>
         </li>
       </ul>
     </div>

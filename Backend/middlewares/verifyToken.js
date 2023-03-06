@@ -1,6 +1,21 @@
 const jwt = require('jsonwebtoken');
 const User = require("../models/user")
 
+const verifyToken = (req,res,next)=>{
+    const token = req.header("token");
+    if (!token) return res.status(404).send({ error: "Token is Missing" });
+
+    try {
+        const verified = jwt.verify(token, process.env.JWT_SECRET_KEY);
+        req.user = verified;
+        console.log(verified);
+        next();
+    }
+    catch (error) {
+        res.status(400).send({ error: "Invalid Token" });
+    }
+}
+
 const verifyGeneralUser = (req, res, next) => {
     const token = req.header("token");
     if (!token) return res.status(404).send({ error: "Token is Missing" });
@@ -36,4 +51,4 @@ const verifyAdmin = async (req, res, next) => {
     }
 }
 
-module.exports = { verifyGeneralUser, verifyAdmin };
+module.exports = { verifyGeneralUser, verifyAdmin , verifyToken};

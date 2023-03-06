@@ -1,0 +1,9 @@
+.rabbit-loader{
+    width:40%;
+}
+
+@media screen and (max-width:650px){
+    .rabbit-loader{
+        width:75%;
+    }
+}
