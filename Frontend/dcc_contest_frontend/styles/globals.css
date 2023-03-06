@@ -1203,7 +1203,7 @@ ck-rounded-corners .ck.ck-editor__main>.ck-editor__editable, .ck.ck-editor__main
   width: auto;
   display:flex;
   position: relative;
-  top:65px;
+  /* top:65px; */
 }
 
 .question_details_area{
@@ -1369,7 +1369,7 @@ ol,li{
 
 .contest_container{
   position: relative;
-  top:65px;
+  /* top:65px; */
   display: flex;
   font-family: ui-serif, Georgia, Cambria, "Times New Roman", Times, serif;
 

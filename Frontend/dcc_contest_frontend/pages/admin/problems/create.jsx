@@ -1,6 +1,5 @@
 import axios from "axios";
 import React, { useEffect } from "react";
-import Navbar from "../../../components/Navbar";
 import TextArea from "../../../components/TextArea";
 import { AiOutlineDelete } from "react-icons/ai";
 import { AiOutlineClose } from "react-icons/ai";
@@ -10,32 +9,10 @@ import checkToken from "../../../utils/checkToken";
 import Router from "next/router";
 import Head from 'next/head'
 import SideNav from "../../../components/SideNavAdmin";
-import { AdminSideNavMap } from "../../../utils/constants";
+import { AdminSideNavMap, ADMIN, SUPER_ADMIN,END_USER,USER_DASHBOARD,LOGIN_PAGE } from "../../../utils/constants";
+import toggleLoaderBackdrop from "../../../utils/toggleCustomBackdrop";
+import { useSelector } from "react-redux";
 
-// const question_details_area = {
-//   height: "90vh",
-//   width: "50%",
-//   overflowY: "scroll"
-// }
-
-
-// const test_case_area = {
-//   height : "auto",
-//   width:"100%",
-//   // overflowY : "scroll",
-//   overflowX : "scroll"
-// }
-
-// const deleteIcon = {
-//   position: "absolute",
-//   top: "0px",
-//   right: "10px",
-// }
-const editIcon = {
-    position: "absolute",
-    top: "4px",
-    right: "50px",
-}
 
 const toastCross = {
     position: "absolute",
@@ -46,6 +23,7 @@ const toastCross = {
 const CKEditor = dynamic(() => import("../../../components/RichTextEditor"), { ssr: false });
 
 function create_problem() {
+    const {role , isLoading, loggedIn} = useSelector(state=>state.login);
 
     const [name, setName] = React.useState("");
     const [nameError, setNameError] = React.useState(null);
@@ -67,22 +45,27 @@ function create_problem() {
     const [toastActive, setToastActive] = React.useState(false);
     const [toastMessage, setToastMessage] = React.useState("");
     const [toastClass, setToastClass] = React.useState("alert alert-error relative");
-    const [isLoading, setIsLoading] = React.useState(true);
 
 
-    // useEffect(() => {
-    //     setIsLoading(true);
+    useEffect(()=>{
+        toggleLoaderBackdrop();
+        if(loggedIn && (role===ADMIN || role === SUPER_ADMIN)) toggleLoaderBackdrop();
+        else if(loggedIn && role===END_USER) Router.push(USER_DASHBOARD);
+        else{
+            checkToken().then((status)=>{
+                if (status.verified) {
+                    if(status.role===ADMIN || status.role === SUPER_ADMIN) {
 
-    //     checkToken().then((status) => {
-    //         if (status) {
-    //             setIsLoading(false);
-    //         }
-    //         else {
-    //             Router.push("/login?next=admin/create_problem")
-    //         }
-    //     });
-    // }, [])
+                        // FETCH data here
 
+                        toggleLoaderBackdrop();
+                    }
+                    else Router.push(USER_DASHBOARD);
+                }
+                else Router.push(LOGIN_PAGE+"?next=admin/problems/create");
+            })
+        }
+    },[])
 
     const reinitialiseQuestionState = () => {
         setName("");
@@ -108,10 +91,6 @@ function create_problem() {
         const test_case = document.getElementById(elID);
         console.log(test_case.offsetTop)
         test_case.scrollIntoView({ behavior: "smooth" });
-        // window.scrollTo({
-        //   top: test_case.offsetTop - 60,
-        //   behavior: 'smooth',
-        // });
     };
 
     const onSubmit = () => {
@@ -215,8 +194,6 @@ function create_problem() {
         setInputTestCase("");
         setOutputTestCase("");
     };
-
-    // if (isLoading) return (<div>Loading...</div>)
 
     return (
         <div >

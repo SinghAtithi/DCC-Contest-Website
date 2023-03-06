@@ -6,7 +6,7 @@
     width:20vw;
     background-color: var(--navbar-background);
     padding:32px;
-    z-index: 50;
+    z-index: 45;
     overflow-y: scroll;
 }
 
@@ -20,7 +20,7 @@
     min-height: 4rem/* 64px */;
     width: 100%;
     background-color: var(--navbar-background);
-    z-index: 50;
+    z-index: 45;
 }
 
 .navbar-logo-side{
@@ -66,6 +66,7 @@
 
 .data-area{
     position: relative;
+    top:65px;
     left:20vw;
     max-width:79vw;
     /* overflow-y: auto; */
@@ -80,6 +81,7 @@
         width : 25vw;
     }
     .data-area{
+        top:65px;
         left:25vw;
         max-width: 74vw;
     }
@@ -100,6 +102,7 @@
         left:100vw;
     }
     .data-area{
+        top:65px;
         left:2vw;
         max-width:98vw;
         overflow-y: auto;
@@ -127,6 +130,7 @@
         left:100vw;
     }
     .data-area{
+        top:65px;
         left:2vw;
         max-width:98vw;
         overflow-y: auto;

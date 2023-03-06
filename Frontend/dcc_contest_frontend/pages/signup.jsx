@@ -34,7 +34,7 @@ function signup() {
 
   useEffect(() => {
     // setIsLoading(true);
-    toggleLoaderBackdrop();
+    toggleLoaderBackdrop(1,2);
     var next = null;
     if (router.query["next"]) next = router.query["next"];
 
@@ -48,7 +48,7 @@ function signup() {
         }
         else {
           // setIsLoading(false);
-          toggleLoaderBackdrop();
+          toggleLoaderBackdrop(1,2);
         }
       });
     }

@@ -28,7 +28,7 @@ function Navbar() {
           <Link
             href="/"
             onClick={() => {
-              toggleLoaderBackdrop(asPath, "/");
+              toggleLoaderBackdrop(asPath, HOME_PAGE);
             }}
           >
             <Image
@@ -135,7 +135,7 @@ function Navbar() {
       </ul>
 
       <div className="custom-backdrop"></div>
-          <BackdropLoader/>
+      <BackdropLoader/>
     </nav>
   );
 }

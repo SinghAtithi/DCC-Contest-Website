@@ -1,13 +1,13 @@
 import Router, { useRouter } from "next/router";
 import { useEffect } from "react";
 import { useSelector } from "react-redux";
-import SideNav from "../../components/SideNavAdmin";
-import checkToken from "../../utils/checkToken";
-import { ADMIN, END_USER, LOGIN_PAGE, SUPER_ADMIN, USER_DASHBOARD, ADMIN_DASHBOARD, AdminSideNavMap } from "../../utils/constants";
-import toggleLoaderBackdrop from "../../utils/toggleCustomBackdrop";
+import SideNav from "../../../components/SideNavAdmin";
+import checkToken from "../../../utils/checkToken";
+import { ADMIN, END_USER, LOGIN_PAGE, SUPER_ADMIN, USER_DASHBOARD, ADMIN_DASHBOARD, AdminSideNavMap } from "../../../utils/constants";
+import toggleLoaderBackdrop from "../../../utils/toggleCustomBackdrop";
 
 
-const admin_dashboad = ()=>{
+const EditContest = ()=>{
     const {role , isLoading, loggedIn} = useSelector(state=>state.login);
 
     const {asPath} = useRouter();
@@ -26,19 +26,19 @@ const admin_dashboad = ()=>{
                     }
                     else Router.push(USER_DASHBOARD);
                 }
-                else Router.push(LOGIN_PAGE+"?next=admin/dashboard");
+                else Router.push(LOGIN_PAGE+"?next=admin/problems/edit");
             })
         }
     },[])
 
     return (
         <>
-            <SideNav role={role} highlight={AdminSideNavMap["dashboard"]}/>
+            <SideNav role={role} highlight={AdminSideNavMap.edit_contest}/>
             <div className="data-area">
-                Hello from admin dashboard
+                Hello from Edit Contest Page
             </div>
         </>
     )
 }
 
-export default admin_dashboad;
+export default EditContest;
