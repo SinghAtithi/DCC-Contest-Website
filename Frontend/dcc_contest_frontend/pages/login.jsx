@@ -5,33 +5,50 @@ import Lottie from "lottie-react";
 import axios from "axios";
 import Router, { useRouter } from "next/router";
 import checkToken from "../utils/checkToken";
-
+import { ADMIN, SUPER_ADMIN, USER_DASHBOARD, ADMIN_DASHBOARD, BASE_URL, LOGIN_ENDPOINT_BACKEND } from "../utils/constants";
+import { loginUser } from "../store/loginStore";
+import store from "../store/baseStore";
+import { useSelector } from "react-redux";
+import toggleLoaderBackdrop from "../utils/toggleCustomBackdrop";
 
 function login() {
   const router = useRouter();
+  const { loggedIn, role } = useSelector(state => state.login);
 
   const [loginId, setloginId] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
-  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    setIsLoading(true);
-    var next = "ProblemSet";
+    // setIsLoading(true);
+    toggleLoaderBackdrop();
+    var next = null;
     if (router.query["next"]) next = router.query["next"];
 
-    checkToken().then((status) => {
-      console.log(status);
-      if (status) {
-        Router.push("/"+next);
-      }
-      else {
-        setIsLoading(false);
-      }
-    });
+    if (!loggedIn) {
+      checkToken().then((status) => {
+        if (status.verified) {
+          if (next) Router.push(`/${next}`);
+          else if (status.role === ADMIN) Router.push(ADMIN_DASHBOARD);
+          else if (status.role === SUPER_ADMIN) Router.push(ADMIN_DASHBOARD);
+          else Router.push(USER_DASHBOARD);
+        }
+        else {
+          // setIsLoading(false);
+          toggleLoaderBackdrop();
+        }
+      });
+    }
+    else {
+      if (next) Router.push(`/${next}`);
+      else if (role === ADMIN) Router.push(ADMIN_DASHBOARD);
+      else if (role === SUPER_ADMIN) Router.push(ADMIN_DASHBOARD);
+      else Router.push(USER_DASHBOARD);
+    };
   }, [])
 
   const onLogin = () => {
+    document.querySelector(".custom-backdrop-loader").classList.toggle("active");
     const config = {
       headers: {
         "Content-Type": "application/json",
@@ -42,22 +59,34 @@ function login() {
       password,
     };
     axios
-      .post("http://localhost:5000/auth/login", data, config)
+      .post(BASE_URL + LOGIN_ENDPOINT_BACKEND, data, config)
       .then((res) => {
-        var next = "/dashboard"
-        console.log(res.data);
+
+        store.dispatch(loginUser(res.data.role));
         localStorage.setItem('token', res.data.token);
-        localStorage.setItem('userName', res.data.userName);
-        if (router.query["next"]) next = router.query["next"];
-        Router.push(next);
+
+        if (router.query["next"]) Router.push(`/${router.query["next"]}`);
+        else if (res.data.role === ADMIN) Router.push(ADMIN_DASHBOARD);
+        else if (res.data.role === SUPER_ADMIN) Router.push(ADMIN_DASHBOARD);
+        else Router.push(USER_DASHBOARD);
 
       })
       .catch((err) => {
+        document.querySelector(".custom-backdrop-loader").classList.toggle("active");
         // setError(err.response.data.error);
+        if (err.code == "ERR_NETWORK") {
+          setError("Something went wrong. Please check your Internet or Please refresh. If the problem persists, contact the adminstrator.");
+        }
+        else if (err.code == "ERR_BAD_RESPONSE" || err.code == "ERR_BAD_REQUEST") {
+          setError(err.response.data.error);
+        }
+        else {
+          setError("Something went wrong. Please check your Internet or Please refresh. If the problem persists, contact the adminstrator.");
+        }
       });
   };
 
-  if (isLoading) return (<div>Loading...</div>)
+  // if (isLoading) return (<div>Loading...</div>)
 
   return (
     <div>
@@ -94,6 +123,7 @@ function login() {
         </div>
         <div className="lottie">
           <Lottie animationData={LoginLottie} className="w-10/12" />
+
         </div>
       </div>
     </div>

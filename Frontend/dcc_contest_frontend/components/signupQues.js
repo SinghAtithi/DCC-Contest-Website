@@ -5,14 +5,14 @@ const signupQues = [
             state: "name",
       },
       {
-            question: "Select an UserName",
-            skippable: false,
-            state: "username",
-      },
-      {
             question: "Enter Your Email",
             skippable: false,
             state: "email",
+      },
+      {
+            question: "Select an UserName",
+            skippable: false,
+            state: "username",
       },
       {
             question: "Type your password",

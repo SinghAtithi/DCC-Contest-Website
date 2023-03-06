@@ -3,7 +3,8 @@ const mongoose = require("mongoose")
 const ContestSchema = mongoose.Schema({
     contest_name: {
         type: String,
-        required: true
+        required: true,
+        unique: true
     },
     contest_id: {
         type: String,
