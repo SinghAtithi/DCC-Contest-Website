@@ -10,12 +10,11 @@ async function calculateElo(rankings, kFactor = 70) {
                   if (i !== j) {
                         const opponentRating = rankings[j].rating;
                         expectedScore += await _calculateExpectedScore(rating, opponentRating) / (n - 1);
-                        // console.log(expectedScore)
                   }
             }
             expectedScores[i] = expectedScore;
 
-            const actualScore = (n - rankings[i].standing - 1) / (n - 1);
+            let actualScore = (n - rankings[i].standing) / (n - 1);
             const newRating = rating + kFactor * (actualScore - expectedScore);
 
             newRankings.push({
