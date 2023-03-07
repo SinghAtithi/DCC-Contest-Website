@@ -36,9 +36,13 @@ const ContestSchema = mongoose.Schema({
         type: Array
     },
     result: {
-        type: Map,
-        of: String
-    }
+        type: Array,
+        // {username:coder_ravan, points:754}
+    },
+    ratings_updated: {
+        type: Boolean,
+        default: false
+    },
 });
 
 
