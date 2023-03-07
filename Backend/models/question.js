@@ -12,7 +12,8 @@ const QuesSchema = mongoose.Schema({
   },
   contest_id: {
     type: String,
-    required: false
+    required: false,
+    default:""
   },
   name: {
     type: String,

@@ -8,13 +8,14 @@ import { useRouter } from "next/router";
 import BackdropLoader from "./BackdropLoader";
 import store from "../store/baseStore";
 import { logoutUser } from "../store/loginStore";
+import { useSelector } from "react-redux";
 
 function UserMenu(props) {
     return (
       <div className="dropdown dropdown-end">
         <label tabIndex={0} className="btn btn-ghost btn-circle avatar">
           <div className="w-10 rounded-full">
-            <img src="https://placeimg.com/80/80/people" />
+            <img src={props.profile_pic} />
           </div>
         </label>
         <ul
@@ -42,6 +43,7 @@ export default function SideNav(props) {
     // useEffect(()=>{
     //     document.querySelector.className()
     // },[])
+    const {profile_pic} = useSelector(state=>state.login);
     const {asPath} = useRouter();
     return (
         <>
@@ -63,7 +65,7 @@ export default function SideNav(props) {
                     </Link>
                 </div>
                 <div className="custom-navbar-items">
-                    <UserMenu asPath={asPath}/>
+                    <UserMenu asPath={asPath} profile_pic={profile_pic}/>
                 </div>
                 <div className="side-navbar-hamburger" onClick={() => {
                     document.querySelector(".side-navbar-items-offscreen").classList.toggle("active");

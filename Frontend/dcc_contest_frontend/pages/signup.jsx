@@ -6,7 +6,7 @@ import Lottie from "lottie-react";
 import axios from "axios";
 import Router from "next/router";
 import { BiArrowToRight, BiArrowToLeft } from "react-icons/bi";
-import  {BASE_URL,SIGNUP_ENDPOINT_BACKEND, ADMIN,SUPER_ADMIN,ADMIN_DASHBOARD,USER_DASHBOARD} from "../utils/constants";
+import { BASE_URL, SIGNUP_ENDPOINT_BACKEND, ADMIN, SUPER_ADMIN, ADMIN_DASHBOARD, USER_DASHBOARD } from "../utils/constants";
 import SignUpConfirmaionModal from "../components/SignUpConfirmationModal";
 import { useRouter } from "next/router";
 import { useSelector } from "react-redux";
@@ -34,7 +34,7 @@ function signup() {
 
   useEffect(() => {
     // setIsLoading(true);
-    toggleLoaderBackdrop(1,2);
+    toggleLoaderBackdrop(1, 2);
     var next = null;
     if (router.query["next"]) next = router.query["next"];
 
@@ -48,7 +48,7 @@ function signup() {
         }
         else {
           // setIsLoading(false);
-          toggleLoaderBackdrop(1,2);
+          toggleLoaderBackdrop(1, 2);
         }
       });
     }
@@ -60,7 +60,7 @@ function signup() {
     };
   }, [])
 
-  
+
   const onSubmit = () => {
     document.querySelector(".custom-backdrop-loader").classList.toggle("active");
 
@@ -92,7 +92,7 @@ function signup() {
         document.querySelector(".custom-backdrop-loader").classList.toggle("active");
         console.log(err);
         if (err.code == "ERR_NETWORK") {
-          setError("Something went wrong. Please check your Internet or Please refresh. If the problem persists, contact the adminstrator.");
+          setError("Something went wrong. Please check your Internet or refresh. If the problem persists, contact the adminstrator.");
           setQuesInd(0);
         }
         else if (err.code == "ERR_BAD_RESPONSE" || err.code == "ERR_BAD_REQUEST") {
@@ -100,7 +100,7 @@ function signup() {
           setQuesInd(err.response.data.seq);
         }
         else {
-          setError("Something went wrong. Please check your Internet or Please refresh. If the problem persists, contact the adminstrator.");
+          setError("Something went wrong. Please check your Internet or refresh. If the problem persists, contact the adminstrator.");
           setQuesInd(0);
         }
 

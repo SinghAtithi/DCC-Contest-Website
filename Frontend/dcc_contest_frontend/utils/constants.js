@@ -25,6 +25,11 @@ export const AdminSideNavMap = {
   ban_users: 18,
 };
 
+
+
+export const PROBLEM_SEARCH = [ "ques_id", "contest_id","name","display_after","assigned","is_draft"]
+
+
 export const ADMIN = "admin";
 export const SUPER_ADMIN = "super_admin";
 export const END_USER = "end_user";
@@ -35,6 +40,8 @@ export const ADMIN_DASHBOARD = "/admin/dashboard";
 export const BASE_URL = "http://localhost:5000";
 export const LOGIN_ENDPOINT_BACKEND = "/auth/login";
 export const SIGNUP_ENDPOINT_BACKEND = "/auth/register";
+export const CREATE_QUESTION_ENDPOINT_BACKEND = "/question/create";
+export const SEARCH_QUESIONS_ENDPOINT_BACKEND = "/question/search";
 
 export const HOME_PAGE = "/";
 export const LOGIN_PAGE = "/login";

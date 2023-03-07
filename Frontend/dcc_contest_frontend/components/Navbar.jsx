@@ -17,8 +17,7 @@ function getPath(role) {
 
 function Navbar() {
   const { asPath } = useRouter();
-  const {role,loggedIn}  = useSelector(state => state.login);
-
+  const {role,loggedIn, profile_pic}  = useSelector(state => state.login);
 
   return (
 
@@ -61,7 +60,7 @@ function Navbar() {
           }}>
             <Link href={ABOUT_PAGE}>About</Link>
           </li>
-          {loggedIn && <UserMenu role={role} asPath={asPath}/>}
+          {loggedIn && <UserMenu role={role} asPath={asPath} profile_pic={profile_pic}/>}
           {!loggedIn && <>
             <li onClick={() => {
               toggleLoaderBackdrop(asPath, LOGIN_PAGE);
@@ -145,7 +144,7 @@ function UserMenu(props) {
     <div className="dropdown dropdown-end">
       <label tabIndex={0} className="btn btn-ghost btn-circle avatar">
         <div className="w-10 rounded-full">
-          <img src="https://placeimg.com/80/80/people" />
+          <img src={props.profile_pic} />
         </div>
       </label>
       <ul

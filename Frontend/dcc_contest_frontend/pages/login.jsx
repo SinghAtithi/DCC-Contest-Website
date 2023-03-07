@@ -48,7 +48,7 @@ function login() {
   }, [])
 
   const onLogin = () => {
-    document.querySelector(".custom-backdrop-loader").classList.toggle("active");
+    toggleLoaderBackdrop();
     const config = {
       headers: {
         "Content-Type": "application/json",
@@ -62,7 +62,7 @@ function login() {
       .post(BASE_URL + LOGIN_ENDPOINT_BACKEND, data, config)
       .then((res) => {
 
-        store.dispatch(loginUser(res.data.role));
+        store.dispatch(loginUser({role:res.data.role, profile_pic:res.data.profile_pic}));
         localStorage.setItem('token', res.data.token);
 
         if (router.query["next"]) Router.push(`/${router.query["next"]}`);
@@ -72,16 +72,17 @@ function login() {
 
       })
       .catch((err) => {
-        document.querySelector(".custom-backdrop-loader").classList.toggle("active");
+        console.log(err);
+        toggleLoaderBackdrop();
         // setError(err.response.data.error);
         if (err.code == "ERR_NETWORK") {
-          setError("Something went wrong. Please check your Internet or Please refresh. If the problem persists, contact the adminstrator.");
+          setError("Something went wrong. Please check your Internet or refresh. If the problem persists, contact the adminstrator.");
         }
         else if (err.code == "ERR_BAD_RESPONSE" || err.code == "ERR_BAD_REQUEST") {
           setError(err.response.data.error);
         }
         else {
-          setError("Something went wrong. Please check your Internet or Please refresh. If the problem persists, contact the adminstrator.");
+          setError("Something went wrong. Please check your Internet or refresh. If the problem persists, contact the adminstrator.");
         }
       });
   };
