@@ -13,7 +13,7 @@ const checkToken = async () => {
     await axios
       .get("http://localhost:5000/auth/verifyToken", config)
       .then((res) => {
-        store.dispatch(loginUser(res.data.role));
+        store.dispatch(loginUser({role:res.data.role, profile_pic:res.data.profile_pic}));
         response.verified = true;
         response.role = res.data.role;
       })

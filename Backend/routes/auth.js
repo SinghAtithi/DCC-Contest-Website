@@ -38,16 +38,18 @@ router.post("/register", async (req, res) => {
                       password,
                       Number(process.env.SECRET_PASSWORD_SALT_NUMBER)
                     );
+                    const profile_pic = `https://ui-avatars.com/api/?name=${name}&size=128&background=random`;
                     const user = await new User({
-                      name,
-                      email,
+                      name :name,
+                      email : email,
                       password: hashedPassword,
-                      username,
-                      githubURL,
-                      linkedinURL,
-                      codeforcesURL,
-                      codechefURL,
-                      bio,
+                      username : username,
+                      githubURL : githubURL,
+                      linkedinURL : linkedinURL,
+                      codeforcesURL : codeforcesURL,
+                      codechefURL:codechefURL,
+                      bio:bio,
+                      profile_pic : profile_pic
                     }).save();
                     console.log(user);
 
@@ -117,7 +119,7 @@ router.post("/login", async (req, res) => {
         ) {
           user = await User.findOne(
             { email: loginId },
-            "username password role"
+            "username password role profile_pic"
           ).exec();
         } else {
           user = await User.findOne(
@@ -129,8 +131,8 @@ router.post("/login", async (req, res) => {
           const valid = await bcrypt.compare(password, user.password);
 
           if (valid) {
-            const token = generateLoginToken(user._id, user.role);
-            res.status(200).send({ token: token, role: user.role });
+            const token = generateLoginToken(user._id, user.role, user.profile_pic);
+            res.status(200).send({ token: token, role: user.role, profile_pic:user.profile_pic });
           } else {
             res.status(400).send({ error: "Incorrect Password." });
           }
@@ -149,8 +151,8 @@ router.post("/login", async (req, res) => {
 });
 
 router.get("/verifyToken", verifyToken, (req, res) => {
-  console.log(req.user);
-  res.status(200).send({ role: req.user.role });
+  // console.log(req.user);
+  res.status(200).send({ role: req.user.role, profile_pic: req.user.profile_pic });
 });
 
 router.get("/imagekitAuth", async (req, res) => {

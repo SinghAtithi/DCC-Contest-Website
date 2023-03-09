@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-const initialState = { loggedIn: false, isLoading: true, role: undefined };
+const initialState = { loggedIn: false, isLoading: true, role: undefined, profile_pic: "https://ik.imagekit.io/pqymxdgbi/avtar.png"};
 
 const login = createSlice({
   name: "login",
@@ -9,7 +9,9 @@ const login = createSlice({
     loginUser(state, actions) {
       state.loggedIn = true;
       state.isLoading = false;
-      state.role = actions.payload;
+      state.role = actions.payload.role;
+      if(actions.payload.profile_pic)
+        state.profile_pic = actions.payload.profile_pic
     },
     logoutUser(state) {
       state.loggedIn= false

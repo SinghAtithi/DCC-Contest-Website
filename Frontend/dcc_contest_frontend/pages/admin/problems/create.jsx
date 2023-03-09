@@ -1,6 +1,5 @@
 import axios from "axios";
 import React, { useEffect } from "react";
-import Navbar from "../../../components/Navbar";
 import TextArea from "../../../components/TextArea";
 import { AiOutlineDelete } from "react-icons/ai";
 import { AiOutlineClose } from "react-icons/ai";
@@ -10,32 +9,10 @@ import checkToken from "../../../utils/checkToken";
 import Router from "next/router";
 import Head from 'next/head'
 import SideNav from "../../../components/SideNavAdmin";
-import { AdminSideNavMap } from "../../../utils/constants";
+import { AdminSideNavMap, ADMIN, SUPER_ADMIN, END_USER, USER_DASHBOARD, LOGIN_PAGE, BASE_URL, CREATE_QUESTION_ENDPOINT_BACKEND } from "../../../utils/constants";
+import toggleLoaderBackdrop from "../../../utils/toggleCustomBackdrop";
+import { useSelector } from "react-redux";
 
-// const question_details_area = {
-//   height: "90vh",
-//   width: "50%",
-//   overflowY: "scroll"
-// }
-
-
-// const test_case_area = {
-//   height : "auto",
-//   width:"100%",
-//   // overflowY : "scroll",
-//   overflowX : "scroll"
-// }
-
-// const deleteIcon = {
-//   position: "absolute",
-//   top: "0px",
-//   right: "10px",
-// }
-const editIcon = {
-    position: "absolute",
-    top: "4px",
-    right: "50px",
-}
 
 const toastCross = {
     position: "absolute",
@@ -46,9 +23,9 @@ const toastCross = {
 const CKEditor = dynamic(() => import("../../../components/RichTextEditor"), { ssr: false });
 
 function create_problem() {
+    const { role, isLoading, loggedIn } = useSelector(state => state.login);
 
     const [name, setName] = React.useState("");
-    const [nameError, setNameError] = React.useState(null);
     const [description, setDescription] = React.useState("");
     const [constraints, setConstraints] = React.useState("");
     const [input_format, setInputFormat] = React.useState("");
@@ -57,32 +34,36 @@ function create_problem() {
     const [public_test_cases, setPublicTestCases] = React.useState([]);
     const [private_test_cases, setPrivateTestCases] = React.useState([]);
     const [time_limit, setTimeLimit] = React.useState("");
-    const [time_limitError, setTimeLimitError] = React.useState(null);
     const [problemID, setProblemID] = React.useState("");
-    const [problemIDError, setProblemIDError] = React.useState(null);
     const [inputTestCase, setInputTestCase] = React.useState("");
     const [outputTestCase, setOutputTestCase] = React.useState("");
     const [explanation, setExplanation] = React.useState("");
+    const [is_draft, setIsDraft] = React.useState(false);
 
     const [toastActive, setToastActive] = React.useState(false);
     const [toastMessage, setToastMessage] = React.useState("");
-    const [toastClass, setToastClass] = React.useState("alert alert-error relative");
-    const [isLoading, setIsLoading] = React.useState(true);
+    const [toastClass, setToastClass] = React.useState("alert left-16 alert-error relative");
 
 
-    // useEffect(() => {
-    //     setIsLoading(true);
+    useEffect(() => {
+        toggleLoaderBackdrop();
+        if (loggedIn && (role === ADMIN || role === SUPER_ADMIN)) toggleLoaderBackdrop();
+        else if (loggedIn && role === END_USER) Router.push(USER_DASHBOARD);
+        else {
+            checkToken().then((status) => {
+                if (status.verified) {
+                    if (status.role === ADMIN || status.role === SUPER_ADMIN) {
 
-    //     checkToken().then((status) => {
-    //         if (status) {
-    //             setIsLoading(false);
-    //         }
-    //         else {
-    //             Router.push("/login?next=admin/create_problem")
-    //         }
-    //     });
-    // }, [])
+                        // FETCH data here
 
+                        toggleLoaderBackdrop();
+                    }
+                    else Router.push(USER_DASHBOARD);
+                }
+                else Router.push(LOGIN_PAGE + "?next=admin/problems/create");
+            })
+        }
+    }, [])
 
     const reinitialiseQuestionState = () => {
         setName("");
@@ -108,83 +89,88 @@ function create_problem() {
         const test_case = document.getElementById(elID);
         console.log(test_case.offsetTop)
         test_case.scrollIntoView({ behavior: "smooth" });
-        // window.scrollTo({
-        //   top: test_case.offsetTop - 60,
-        //   behavior: 'smooth',
-        // });
     };
 
     const onSubmit = () => {
+        const data = {
+            name: name,
+            description: description,
+            constraints: constraints,
+            input_format: input_format,
+            output_format: output_format,
+            topics: topics,
+            public_test_cases: public_test_cases,
+            private_test_cases: private_test_cases,
+            time_limit: time_limit,
+            ques_id: problemID,
+            is_draft: is_draft
+        }
+        const url = BASE_URL + CREATE_QUESTION_ENDPOINT_BACKEND
+        const options = {
+            headers: {
+                "Content-Type": "application/json",
+                "token": localStorage.getItem("token")
+            },
+        }
         axios
-            .post(
-                "http://localhost:5000/question/createQuestion/create/",
-                {
-                    name,
-                    description,
-                    constraints,
-                    input_format,
-                    output_format,
-                    topics,
-                    public_test_cases,
-                    private_test_cases,
-                    time_limit,
-                    problemID,
-                },
-                {
-                    headers: {
-                        "Content-Type": "application/json",
-                    },
-                }
-            )
+            .post(url, data, options)
             .then((result) => {
                 reinitialiseQuestionState();
-                setToastClass("alert alert-success relative");
+                setToastClass("alert left-16 alert-success relative");
                 setToastMessage("Question Successfully created.");
                 setToastActive(true);
             })
             .catch((err) => {
-                setTimeLimitError("");
-                if (err.response.data.message) {
-                    let err_msg = err.response.data.message.substr(28).split(',');
-                    console.log(err_msg[0].split(':'));
-                    let err_list = err_msg[0].split(':');
-                    if (err_list[0] == "time_limit") {
-                        setTimeLimitError("Time limit must be Integer.");
-                        setToastClass("alert alert-error relative");
-                        setToastMessage("Time limit must be Integer.");
-                        setToastActive(true);
+                console.log(err);
+                if (err.response) {
+                    if (err.response.data) {
+                        if (err.response.data.message) {
+                            let err_msg = err.response.data.message.substr(28).split(',');
+                            console.log(err_msg[0].split(':'));
+                            let err_list = err_msg[0].split(':');
+                            if (err_list[0] == "time_limit") {
+                                setToastClass("alert left-16 alert-error relative");
+                                setToastMessage("Time limit must be Integer.");
+                                setToastActive(true);
+                            }
+                            else {
+                                setToastClass("alert left-16 alert-error relative");
+                                setToastMessage("Something went wrong. Please refresh and try again. If problem persists, contact the developer.");
+                                setToastActive(true);
+                            }
+                        }
+                        else if (err.response.data.code) {
+                            const err_tag = err.response.data.keyValue;
+                            console.log(err_tag);
+                            const key = Object.keys(err_tag);
+                            if (key[0] == "ques_id") {
+                                setToastClass("alert left-20 alert-error relative");
+                                setToastMessage("Question with this ID already exists.");
+                                setToastActive(true);
+                            }
+                            else {
+                                setToastClass("alert left-16 alert-error relative");
+                                setToastMessage("Question with this name already exists.");
+                                setToastActive(true);
+                            }
+                        }
+                        else {
+                            setToastClass("alert left-16 alert-error relative");
+                            setToastMessage("Something went wrong. Please refresh and try again. If problem persists, contact the developer.");
+                            setToastActive(true);
+                        }
                     }
                     else {
-                        setToastClass("alert alert-error relative");
+                        setToastClass("alert left-16 alert-error relative");
                         setToastMessage("Something went wrong. Please refresh and try again. If problem persists, contact the developer.");
                         setToastActive(true);
                     }
-
                 }
-
-                else if (err.response.data.code) {
-                    setProblemIDError("");
-                    setNameError("");
-                    const err_tag = err.response.data.keyValue;
-                    console.log(err_tag);
-                    const key = Object.keys(err_tag);
-                    if (key[0] == "ques_no") {
-                        setProblemIDError("Question with this ID already exists.");
-                        setToastClass("alert alert-error relative");
-                        setToastMessage("Question with this ID already exists.");
-                        setToastActive(true);
-                    }
-                    else {
-                        setNameError("Question with this name already exists.");
-                        setToastClass("alert alert-error relative");
-                        setToastMessage("Question with this name already exists.");
-                        setToastActive(true);
-                    }
+                else {
+                    setToastClass("alert left-16 alert-error relative");
+                    setToastMessage("Something went wrong. Please refresh and try again. If problem persists, contact the developer.");
+                    setToastActive(true);
                 }
-
-                else
-                    console.log(err);
-
 
             });
     };
@@ -216,8 +202,6 @@ function create_problem() {
         setOutputTestCase("");
     };
 
-    // if (isLoading) return (<div>Loading...</div>)
-
     return (
         <div >
             <Head>
@@ -228,7 +212,7 @@ function create_problem() {
             <div className="data-area">
                 <div className="question_container">
                     <div className="question_details_area">
-                        {toastActive && <div className="toast toast-start">
+                        {toastActive && <div className="toast toast-start z-50">
                             <div className={toastClass}>
                                 <div>
                                     <span>{toastMessage}</span>
@@ -241,18 +225,17 @@ function create_problem() {
                         <div id="question_area_section">
                             <h1 className="text-2xl">Problem ID : </h1>
                             <h4 className="whitespace-pre text-sm">{"Format : contestId_questionNo\nDo not use space."}</h4>
-                            {problemIDError && <h4 className="whitespace-pre text-sm text-red-600">{problemIDError}</h4>}
+
                             <TextArea value={problemID} setValue={setProblemID} height={10} />
                         </div>
                         <div id="question_area_section">
                             <h1 className="text-2xl">Problem Name : </h1>
-                            {nameError && <h4 className="whitespace-pre text-sm text-red-600">{nameError}</h4>}
+
                             <TextArea value={name} setValue={setName} height={10} />
                         </div>
                         <div id="question_area_section">
                             <h1 className="text-2xl">Time Limit : </h1>
                             <h4 className="whitespace-pre text-sm">{"An integer representing time in seconds"}</h4>
-                            {time_limitError && <h4 className="whitespace-pre text-sm text-red-600">{time_limitError}</h4>}
                             <TextArea value={time_limit} setValue={setTimeLimit} height={10} />
                         </div>
                         <div id="question_area_section">
@@ -290,23 +273,31 @@ function create_problem() {
                         </div>
                         <div id="question_area_section" className="button_area">
                             <div id="button-div">
-                                <button
+                                {inputTestCase.trim() !== "" && outputTestCase.trim() !== "" ? <button
                                     className="btn btn-outline btn-success"
                                     onClick={onAddPublicTestCase}
                                 >
                                     Add Public Test Case
-                                </button>
+                                </button> : <button className="btn btn-outline btn-error btn-disabled">Add Public Test Case</button>}
                             </div>
                             <div id="button-div">
-                                <button
-                                    className="btn btn-outline btn-success "
+                                {inputTestCase.trim() !== "" && outputTestCase.trim() !== "" ? <button
+                                    className="btn btn-outline btn-success"
                                     onClick={onAddPrivateTestCase}
                                 >
                                     Add Private Test Case
-                                </button>
+                                </button> : <button className="btn btn-outline btn-error btn-disabled">Add Private Test Case</button>}
                             </div>
                         </div>
                         <div className="button_area" id="question_area_section">
+                            <div className="form-control">
+                                <label className="cursor-pointer label">
+                                    <input type="checkbox" className="checkbox checkbox-error" onChange={(event) => {
+                                        setIsDraft(event.target.checked);
+                                    }} />
+                                    <span className="label-text mx-2">Save as draft ?</span>
+                                </label>
+                            </div>
                             {(name && description && constraints && input_format && output_format && problemID && time_limit && public_test_cases.length != 0 && private_test_cases.length != 0) ? <div id="buttom-div"><button className="btn btn-outline btn-success" onClick={onSubmit}>Submit</button></div> : <div id="button-div"><button className="btn btn-outline btn-error btn-disabled cursor-not-allowed">Submit</button></div>}
                         </div>
                     </div>

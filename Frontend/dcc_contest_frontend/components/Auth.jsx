@@ -7,14 +7,14 @@ import { useSelector } from "react-redux";
 export default function Auth(props) {
     const loggedIn = useSelector(state=>state.login.loggedIn);
     useEffect(() => {
-        if(!loggedIn){
-            checkToken().then((res) => {
-                // alert("From useEffect of Auth");
-                console.log(Date());
-            }).catch((err)=>{
-                console.log(err);
+        // if(!loggedIn){
+        //     checkToken().then((res) => {
+        //         console.log("From useEffect of Auth");
+        //         console.log(Date());
+        //     }).catch((err)=>{
+        //         console.log(err);
                 
-            })};
+        //     })};
         })
 
     return (<>{props.children}</>)
