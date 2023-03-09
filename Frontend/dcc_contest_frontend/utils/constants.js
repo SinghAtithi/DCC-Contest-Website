@@ -25,6 +25,11 @@ export const AdminSideNavMap = {
   ban_users: 18,
 };
 
+
+
+export const PROBLEM_SEARCH = [ "ques_id", "contest_id","name","display_after","assigned","is_draft"]
+
+
 export const ADMIN = "admin";
 export const SUPER_ADMIN = "super_admin";
 export const END_USER = "end_user";
@@ -35,12 +40,35 @@ export const ADMIN_DASHBOARD = "/admin/dashboard";
 export const BASE_URL = "http://localhost:5000";
 export const LOGIN_ENDPOINT_BACKEND = "/auth/login";
 export const SIGNUP_ENDPOINT_BACKEND = "/auth/register";
+export const CREATE_QUESTION_ENDPOINT_BACKEND = "/question/create";
+export const SEARCH_QUESIONS_ENDPOINT_BACKEND = "/question/search";
 
-export const HOME_PAGE = "/"
+export const HOME_PAGE = "/";
 export const LOGIN_PAGE = "/login";
 export const SIGNUP_PAGE = "/signup";
 export const PROBLEM_SET_PAGE = "/ProblemSet";
-export const CONTEST_PAGE = "/contest"
-export const BLOGS_PAGE = "/blogs"
-export const ABOUT_PAGE = "/about"
-export const SETTINGS_PAGE = "/settings"
+export const CONTEST_PAGE = "/contest";
+export const BLOGS_PAGE = "/blogs";
+export const ABOUT_PAGE = "/about";
+
+export const SETTINGS_PAGE = "/settings";
+
+export const ASSIGN_REVOKE_ROLES_PAGE = "/super_admin/roles";
+export const CHANGE_EMAIL_REQUEST_PAGE = "/super_admin/changeemail";
+
+export const VIEW_PROBLEMS_CREATED_PAGE = "/admin/problems/view";
+export const CREATE_PROBLEM_PAGE = "/admin/problems/create";
+export const EDIT_PROBLEM_PAGE = "/admin/problems/edit";
+export const DELETE_PROBLEM_PAGE = "/admin/problems/delete";
+
+export const VIEW_CONTESTS_CREATED_PAGE = "/admin/contest/view";
+export const CREATE_CONTEST_PAGE = "/admin/contest/create";
+export const EDIT_CONTEST_PAGE = "/admin/contest/edit";
+export const DELETE_CONTEST_PAGE = "/admin/contest/delete";
+export const LAUNCH_CONTEST_PAGE = "/admin/contest/launch";
+export const VIEW_CONTEST_REGISTRATIONS_PAGE = "/admin/contest/registrations";
+export const VIEW_CONTEST_SUBMISSIONS_PAGE = "/admin/contest/submissions";
+export const VIEW_CONTEST_RESULT_PAGE = "/admin/contest/results";
+
+export const REPORT_VIOLATIONS= "/admin/report";
+export const BAN_USERS = "/super_admin/banusers";

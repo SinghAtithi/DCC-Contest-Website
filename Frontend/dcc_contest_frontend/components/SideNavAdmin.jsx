@@ -1,6 +1,6 @@
 import Link from "next/link";
 import Image from "next/image";
-import { SUPER_ADMIN, ADMIN,SETTINGS_PAGE,HOME_PAGE } from "../utils/constants";
+import { SUPER_ADMIN, ADMIN,SETTINGS_PAGE,HOME_PAGE, ADMIN_DASHBOARD, ASSIGN_REVOKE_ROLES_PAGE, CHANGE_EMAIL_REQUEST_PAGE, VIEW_PROBLEMS_CREATED_PAGE, CREATE_PROBLEM_PAGE, EDIT_PROBLEM_PAGE, DELETE_PROBLEM_PAGE, VIEW_CONTESTS_CREATED_PAGE, CREATE_CONTEST_PAGE, EDIT_CONTEST_PAGE, DELETE_CONTEST_PAGE, LAUNCH_CONTEST_PAGE, VIEW_CONTEST_REGISTRATIONS_PAGE, VIEW_CONTEST_SUBMISSIONS_PAGE, VIEW_CONTEST_RESULT_PAGE, REPORT_VIOLATIONS, BAN_USERS } from "../utils/constants";
 import toggleLoaderBackdrop from "../utils/toggleCustomBackdrop";
 
 import { GiHamburgerMenu } from "react-icons/gi";
@@ -8,13 +8,14 @@ import { useRouter } from "next/router";
 import BackdropLoader from "./BackdropLoader";
 import store from "../store/baseStore";
 import { logoutUser } from "../store/loginStore";
+import { useSelector } from "react-redux";
 
 function UserMenu(props) {
     return (
       <div className="dropdown dropdown-end">
         <label tabIndex={0} className="btn btn-ghost btn-circle avatar">
           <div className="w-10 rounded-full">
-            <img src="https://placeimg.com/80/80/people" />
+            <img src={props.profile_pic} />
           </div>
         </label>
         <ul
@@ -42,6 +43,7 @@ export default function SideNav(props) {
     // useEffect(()=>{
     //     document.querySelector.className()
     // },[])
+    const {profile_pic} = useSelector(state=>state.login);
     const {asPath} = useRouter();
     return (
         <>
@@ -49,7 +51,10 @@ export default function SideNav(props) {
             <div className="navbar-top-side">
                 <div className="navbar-logo-side">
                     <Link
-                        href="/"
+                        href={HOME_PAGE}
+                        onClick={() => {
+                            toggleLoaderBackdrop(asPath, HOME_PAGE);
+                          }}
                     >
                         <Image
                             src="/DCC_LOGO01.png"
@@ -60,7 +65,7 @@ export default function SideNav(props) {
                     </Link>
                 </div>
                 <div className="custom-navbar-items">
-                    <UserMenu asPath={asPath}/>
+                    <UserMenu asPath={asPath} profile_pic={profile_pic}/>
                 </div>
                 <div className="side-navbar-hamburger" onClick={() => {
                     document.querySelector(".side-navbar-items-offscreen").classList.toggle("active");
@@ -75,7 +80,9 @@ export default function SideNav(props) {
                         </div>
                     </li>
                     <li id="nav-li">
-                        <Link href="/">
+                        <Link href={HOME_PAGE} onClick={() => {
+                            toggleLoaderBackdrop(asPath, HOME_PAGE);
+                          }}>
                             <span id="nav-items">
                                 <span>
                                     <svg
@@ -96,7 +103,9 @@ export default function SideNav(props) {
                         </Link>
                     </li>
                     <li id="nav-li">
-                        <Link href="/admin/dashboard">
+                        <Link href={ADMIN_DASHBOARD} onClick={() => {
+                            toggleLoaderBackdrop(asPath, ADMIN_DASHBOARD);
+                          }}>
                             <span id="nav-items">
                                 <span>
                                     <svg
@@ -131,7 +140,9 @@ export default function SideNav(props) {
                         </div>
                     </li>
                         <li id="nav-li">
-                            <Link href="/super_admin/roles">
+                            <Link href={ASSIGN_REVOKE_ROLES_PAGE} onClick={() => {
+                            toggleLoaderBackdrop(asPath, ASSIGN_REVOKE_ROLES_PAGE);
+                          }}>
                                 <span id="nav-items">
                                     <span>
                                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill={props.highlight === 3 ? "white" : "gray"} className="bi bi-clipboard-check" viewBox="0 0 16 16">
@@ -145,7 +156,9 @@ export default function SideNav(props) {
                             </Link>
                         </li>
                         <li id="nav-li">
-                            <Link href="/super_admin/changeemail">
+                            <Link href={CHANGE_EMAIL_REQUEST_PAGE} onClick={() => {
+                            toggleLoaderBackdrop(asPath, CHANGE_EMAIL_REQUEST_PAGE);
+                          }}>
                                 <span id="nav-items">
                                     <span>
                                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill={props.highlight === 4 ? "white" : "gray"} className="bi bi-envelope-at" viewBox="0 0 16 16">
@@ -170,7 +183,9 @@ export default function SideNav(props) {
                         </div>
                     </li>
                     <li id="nav-li">
-                        <Link href="/admin/problems/view">
+                        <Link href={VIEW_PROBLEMS_CREATED_PAGE} onClick={() => {
+                            toggleLoaderBackdrop(asPath, VIEW_PROBLEMS_CREATED_PAGE);
+                          }}>
                             <span id="nav-items">
                                 <span>
                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill={props.highlight === 5 ? "white" : "gray"} className="bi bi-eye" viewBox="0 0 16 16">
@@ -183,7 +198,9 @@ export default function SideNav(props) {
                         </Link>
                     </li>
                     <li id="nav-li">
-                        <Link href="/admin/problems/create">
+                        <Link href={CREATE_PROBLEM_PAGE} onClick={() => {
+                            toggleLoaderBackdrop(asPath, CREATE_PROBLEM_PAGE);
+                          }}>
                             <span id="nav-items">
                                 <span>
                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill={props.highlight === 6 ? "white" : "gray"} className="bi bi-lightbulb" viewBox="0 0 16 16">
@@ -195,7 +212,9 @@ export default function SideNav(props) {
                         </Link>
                     </li>
                     <li id="nav-li">
-                        <Link href="/admin/problems/edit">
+                        <Link href={EDIT_PROBLEM_PAGE} onClick={() => {
+                            toggleLoaderBackdrop(asPath, EDIT_PROBLEM_PAGE);
+                          }}>
                             <span id="nav-items">
                                 <span>
                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill={props.highlight === 7 ? "white" : "gray"} className="bi bi-pencil-square" viewBox="0 0 16 16">
@@ -208,7 +227,9 @@ export default function SideNav(props) {
                         </Link>
                     </li>
                     <li id="nav-li">
-                        <Link href="/admin/problems/delete">
+                        <Link href={DELETE_PROBLEM_PAGE} onClick={() => {
+                            toggleLoaderBackdrop(asPath, DELETE_PROBLEM_PAGE);
+                          }}>
                             <span id="nav-items">
                                 <span>
                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill={props.highlight === 8 ? "white" : "gray"} className="bi bi-trash3" viewBox="0 0 16 16">
@@ -231,7 +252,9 @@ export default function SideNav(props) {
                         </div>
                     </li>
                     <li id="nav-li">
-                        <Link href="/admin/contest/view">
+                        <Link href={VIEW_CONTESTS_CREATED_PAGE} onClick={() => {
+                            toggleLoaderBackdrop(asPath, VIEW_PROBLEMS_CREATED_PAGE);
+                          }}>
                             <span id="nav-items">
                                 <span>
                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill={props.highlight === 9 ? "white" : "gray"} className="bi bi-eye" viewBox="0 0 16 16">
@@ -244,7 +267,9 @@ export default function SideNav(props) {
                         </Link>
                     </li>
                     <li id="nav-li">
-                        <Link href="/admin/contest/create">
+                        <Link href={CREATE_CONTEST_PAGE} onClick={() => {
+                            toggleLoaderBackdrop(asPath, CREATE_CONTEST_PAGE);
+                          }}>
                             <span id="nav-items">
                                 <span>
                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill={props.highlight === 10 ? "white" : "gray"} className="bi bi-lightbulb" viewBox="0 0 16 16">
@@ -256,7 +281,9 @@ export default function SideNav(props) {
                         </Link>
                     </li>
                     <li id="nav-li">
-                        <Link href="/admin/contest/edit">
+                        <Link href={EDIT_CONTEST_PAGE} onClick={() => {
+                            toggleLoaderBackdrop(asPath, EDIT_CONTEST_PAGE);
+                          }}>
                             <span id="nav-items">
                                 <span>
                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill={props.highlight === 11 ? "white" : "gray"} className="bi bi-pencil-square" viewBox="0 0 16 16">
@@ -269,7 +296,9 @@ export default function SideNav(props) {
                         </Link>
                     </li>
                     <li id="nav-li">
-                        <Link href="/admin/contest/delete">
+                        <Link href={DELETE_CONTEST_PAGE} onClick={() => {
+                            toggleLoaderBackdrop(asPath, DELETE_CONTEST_PAGE);
+                          }}>
                             <span id="nav-items">
                                 <span>
                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill={props.highlight === 12 ? "white" : "gray"} className="bi bi-trash3" viewBox="0 0 16 16">
@@ -281,7 +310,9 @@ export default function SideNav(props) {
                         </Link>
                     </li>
                     <li id="nav-li">
-                        <Link href="/admin/contest/launch">
+                        <Link href={LAUNCH_CONTEST_PAGE} onClick={() => {
+                            toggleLoaderBackdrop(asPath, LAUNCH_CONTEST_PAGE);
+                          }}>
                             <span id="nav-items">
                                 <span>
                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill={props.highlight === 13 ? "white" : "gray"} className="bi bi-rocket-takeoff" viewBox="0 0 16 16">
@@ -295,7 +326,9 @@ export default function SideNav(props) {
                         </Link>
                     </li>
                     <li id="nav-li">
-                        <Link href="/admin/contest/registrations">
+                        <Link href={VIEW_CONTEST_REGISTRATIONS_PAGE} onClick={() => {
+                            toggleLoaderBackdrop(asPath, VIEW_CONTEST_REGISTRATIONS_PAGE);
+                          }}>
                             <span id="nav-items">
                                 <span>
                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill={props.highlight === 14 ? "white" : "gray"} className="bi bi-person-badge" viewBox="0 0 16 16">
@@ -308,7 +341,9 @@ export default function SideNav(props) {
                         </Link>
                     </li>
                     <li id="nav-li">
-                        <Link href="/admin/contest/submissions">
+                        <Link href={VIEW_CONTEST_SUBMISSIONS_PAGE} onClick={() => {
+                            toggleLoaderBackdrop(asPath, VIEW_CONTEST_SUBMISSIONS_PAGE);
+                          }}>
                             <span id="nav-items">
                                 <span>
                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill={props.highlight === 15 ? "white" : "gray"} className="bi bi-send-check" viewBox="0 0 16 16">
@@ -321,7 +356,9 @@ export default function SideNav(props) {
                         </Link>
                     </li>
                     <li id="nav-li">
-                        <Link href="/admin/contest/results">
+                        <Link href={VIEW_CONTEST_RESULT_PAGE} onClick={() => {
+                            toggleLoaderBackdrop(asPath, VIEW_CONTEST_RESULT_PAGE);
+                          }}>
                             <span id="nav-items">
                                 <span>
                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill={props.highlight === 16 ? "white" : "gray"} className="bi bi-bar-chart" viewBox="0 0 16 16">
@@ -344,7 +381,9 @@ export default function SideNav(props) {
                         </div>
                     </li>
                     {props.role === ADMIN ? (<li id="nav-li">
-                        <Link href="/admin/report">
+                        <Link href={REPORT_VIOLATIONS} onClick={() => {
+                            toggleLoaderBackdrop(asPath, REPORT_VIOLATIONS);
+                          }}>
                             <span id="nav-items">
                                 <span>
                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill={props.highlight === 17 ? "white" : "gray"} className="bi bi-eye" viewBox="0 0 16 16">
@@ -357,7 +396,9 @@ export default function SideNav(props) {
                         </Link>
                     </li>) : <></>}
                     {props.role === SUPER_ADMIN ? (<li id="nav-li">
-                        <Link href="/super_admin/banusers">
+                        <Link href={BAN_USERS} onClick={() => {
+                            toggleLoaderBackdrop(asPath, BAN_USERS);
+                          }}>
                             <span id="nav-items">
                                 <span>
                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill={props.highlight === 18 ? "white" : "gray"} className="bi bi-person-slash" viewBox="0 0 16 16">

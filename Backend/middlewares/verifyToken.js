@@ -32,20 +32,23 @@ const verifyGeneralUser = (req, res, next) => {
     }
 }
 
-const verifyAdmin = async (req, res, next) => {
+const verifyAdmin = (req, res, next) => {
     const token = req.header("token");
-    if (!token) return res.status(404).send({ error: "Token is Missing" });
+    if (!token) return res.status(404).send({ error: "Token is Missing." });
     try {
         const verified = jwt.verify(token, process.env.JWT_SECRET_KEY);
         req.user = verified;
-        const role = await User.findOne({ _id: verified.userId }, "role").exec();
-        if (role == "admin") {
+        if (verified.role == "admin" || verified.role == "super_admin") {
+            console.log(verified);
             next();
         }
-        res.status(400).send({ error: "User is Unauthorized to perform this action, contact admins" });
-        console.log("Verified", verified);
+        else{
+            res.status(400).send({ error: "User is Unauthorized to perform this action, contact admins." });
+            console.log("Verified", verified);
+        }
     }
     catch (error) {
+        console.log("Error from verifyAdmin",error);
         console.log("Could not Verify");
         res.status(400).send({ error: "Invalid Token" });
     }
