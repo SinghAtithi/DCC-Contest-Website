@@ -27,5 +27,8 @@
     "mongoose-beautiful-unique-validation": "^7.1.1",
     "mongoose-paginate-v2": "^1.7.1",
     "turbodepot-node": "^7.0.3"
+  },
+  "devDependencies": {
+    "autocannon": "^7.10.0"
   }
 }
