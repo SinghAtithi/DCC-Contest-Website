@@ -5,7 +5,7 @@ const SubmissionSchema = mongoose.Schema({
             type: String,
             required: true
       },
-      user_id: {
+      username: {
             type: String,
             required: true
       },
@@ -14,15 +14,15 @@ const SubmissionSchema = mongoose.Schema({
             required: true
       },
       code: {
-            type: Array,
+            type: String,
             required: true
       },
       verdict: {
-            type: Array,
+            type: String,
             required: true
       },
       time_stamp: {
-            type: Array,
+            type: String,
             required: true
       },
       // memory: {

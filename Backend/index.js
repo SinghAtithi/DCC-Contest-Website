@@ -19,6 +19,7 @@ const CodeRoutes = require("./routes/code.js");
 const AuthRoutes = require("./routes/auth.js");
 const ContestRoutes = require("./routes/contest.js");
 const UpdateRating = require("./routes/updateRating.js");
+const DashboardRoutes = require("./routes/dashboard.js");
 
 const app = express();
 
@@ -35,6 +36,7 @@ app.use("/code", CodeRoutes);
 app.use("/auth", AuthRoutes);
 app.use("/contest", ContestRoutes);
 app.use("/", UpdateRating);
+app.use("/dashboard",DashboardRoutes);
 
 // ------------- database connection and starting the server --------------
 const PORT = process.env.PORT || 5000;

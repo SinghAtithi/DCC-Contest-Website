@@ -42,6 +42,7 @@ export const LOGIN_ENDPOINT_BACKEND = "/auth/login";
 export const SIGNUP_ENDPOINT_BACKEND = "/auth/register";
 export const CREATE_QUESTION_ENDPOINT_BACKEND = "/question/create";
 export const SEARCH_QUESIONS_ENDPOINT_BACKEND = "/question/search";
+export const GET_DASHBOARD_DATA = "/dashboard";
 
 export const HOME_PAGE = "/";
 export const LOGIN_PAGE = "/login";

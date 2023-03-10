@@ -8,8 +8,10 @@ const ContestSchema = mongoose.Schema({
     },
     contest_id: {
         type: String,
-        required: true
+        required: true,
+        unique: true
     },
+    // Array of ques_id for the contest
     ques_ids: {
         type: Array
     },
@@ -32,6 +34,8 @@ const ContestSchema = mongoose.Schema({
         type: Boolean,
         default: true
     },
+
+    // [user_id]
     registrations: {
         type: Array
     },

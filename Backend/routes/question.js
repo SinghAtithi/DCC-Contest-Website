@@ -34,8 +34,8 @@ router.post("/search",verifyAdmin, async(req,res)=>{
   else if(searchFilter==1) search_params.contest_id = {$regex: searchString, $options: 'i'};
   else if(searchFilter==2) search_params.name = {$regex: searchString, $options: 'i'};
   else if(searchFilter==3) search_params.display_after = searchString;
-  else if(searchFilter==4) search_params.assigned = searchString.toLowerCase()==='true'?true:false;
-  if(searchFilter==5) search_params.is_draft = searchString.toLowerCase()==='true'?true:false;
+  else if(searchFilter==4) search_params.assigned = String(searchString).toLowerCase()==='true'?true:false;
+  if(searchFilter==5) search_params.is_draft = String(searchString).toLowerCase()==='true'?true:false;
 
   console.log(search_params);
 

@@ -12,6 +12,10 @@ const { deleteFile } = require("../utils/deleteFiles.js");
 
 const router = express.Router();
 
+
+
+// PENDING TASKS
+// 1. If it is users first submit of a contest, update unattempted to attempted in user model.
 router.post("/submit", async (req, res) => {
   
   const { lang = "cpp", code, ques_no } = req.body;
