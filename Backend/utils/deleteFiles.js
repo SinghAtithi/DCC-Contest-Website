@@ -10,7 +10,7 @@ const deleteFile = (pathList)=>{
         try{
             fs.unlinkSync(to_delete);
         }catch(error){
-            console.log(error);
+            // console.log(error);
         }
     }
 }

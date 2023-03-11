@@ -13,7 +13,7 @@ const generateResultFile = async (codeFilePath, ans, user_id, id) => {
   }_${id}_out.txt`;
   const outTextFilePath = path.join(userDir, outTextFileName);
 
-  await fs.writeFileSync(outTextFilePath, ans);
+  fs.writeFileSync(outTextFilePath, ans);
 
   return outTextFilePath;
 };

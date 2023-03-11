@@ -5,6 +5,7 @@ const bodyParser = require("body-parser");
 const dotenv = require("dotenv");
 const mongoose = require("mongoose");
 const jwt = require("jsonwebtoken");
+require("./queue/ExecuteQueue/index.js");
 
 const { Question } = require("./models/question.js");
 const { User } = require("./models/user.js");

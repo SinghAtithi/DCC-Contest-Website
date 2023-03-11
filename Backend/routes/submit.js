@@ -1,5 +1,6 @@
 const express = require("express");
 const path = require("path");
+const moment = require("moment");
 
 const { generateCodeFile } = require("../utils/generateCodeFile.js");
 const { executeCpp } = require("../utils/executeCpp.js");
@@ -9,124 +10,75 @@ const { generateResultFile } = require("../utils/generateResultFile.js");
 const { getVerdict } = require("../utils/verdict.js");
 const { saveCodes } = require("../utils/save_codes.js");
 const { deleteFile } = require("../utils/deleteFiles.js");
+const { ExecuteQueue } = require("../queue/ExecuteQueue/index.js");
+const Submission = require("../models/submission.js");
+const { verifyGeneralUser } = require("../middlewares/verifyToken.js");
+const User = require("../models/user.js");
 
 const router = express.Router();
 
-
-
 // PENDING TASKS
 // 1. If it is users first submit of a contest, update unattempted to attempted in user model.
-router.post("/submit", async (req, res) => {
-  
-  const { lang = "cpp", code, ques_no } = req.body;
-  const user_id = 1; // To be defined later
+router.post("/submit", verifyGeneralUser, async (req, res) => {
+  try {
+    // Get user_id from token
+    const user_id = req.user.userId;
+    const user = await User.findOne({ _id: user_id }, "username").exec();
+    if (user) {
+      // Get the code and the question no
+      const { lang = "cpp", code, ques_id } = req.body;
 
-  var to_delete = [];
-  var failedTestCase;
-
-  // If no code is sent
-  if (code === undefined) {
-    res.status(400).json({ error: "Empty code cannot be executed." });
-  }
-
-  // Save the code to the database
-  const response = await saveCodes(ques_no, user_id, code, lang);
-
-  if (response.status_code == 200) {
-    const attempt_no = response.details.codes.length;
-
-    // Generate Code file for the code that is received.
-    const { codeFilePath, inPath } = await generateCodeFile(
-      lang,
-      code,
-      undefined,
-      user_id,
-      attempt_no
-    ); // language, code, input(if any), user_id, attempt_no.
-
-    to_delete.push(codeFilePath);
-    // Try to execute the file created and deliver the verdict
-    try {
-      // For pre defined Private Test Cases
-      const ques = await Question.findOne({ ques_no: ques_no }).exec();
-      var error = false;
-
-      var time_taken = 0;
-      // Loop over the test cases, execute and give verdict
-      for (var i = 0; i < ques.no_of_private_test_cases; i++) {
-        // Path of the pre defined input file for this test case
-        const inPath = path.join(
-          path.join(
-            path.join(path.join(basePath(), "TestCases"), `${ques._id}`),
-            "private"
-          ),
-          `${i}_in.txt`
-        );
-      var resp = await executeCpp(
-          codeFilePath,
-          user_id,
-          inPath,
-          ques.time_limit
-        ); // path of code file, user_id, path of input file, time_limit
-
-        ans = resp.stdout;
-        time_taken = time_taken + resp.difference;
-        // ans = ans.replace(/(\r)/gm, ""); // Windows by default adds \r before every \n. This was causing an issue with file comparison. So removed all \r from output.
-        // Create a file for the result obtained by the code which was executed.
-        const resultFilePath = await generateResultFile(
-          codeFilePath,
-          ans,
-          user_id,
-          i
-        );
-
-        to_delete.push(resultFilePath);
-
-        // Path of the pre defined output file for this test case
-        const outPath = path.join(
-          path.join(
-            path.join(path.join(basePath(), "TestCases"), `${ques._id}`),
-            "private"
-          ),
-          `${i}_out.txt`
-        );
-
-        // Check for verdict
-        if (!getVerdict(resultFilePath, outPath)) {
-          error = true;
-          failedTestCase = ques.private_test_cases[i];
-          break;
-        }
-      }
-
-      // console.log("In try : ",to_delete);
-      deleteFile(to_delete);
-
-      if (!error) {
-        res.status(200).json({ message: `Verdict : Passed \nTotal Time Taken : ${time_taken} seconds` });
+      // If no code is sent
+      if (code === undefined) {
+        res
+          .status(400)
+          .json({
+            error_code: "ECCBE",
+            error: "Empty code cannot be executed.",
+          });
       } else {
-        res.status(406).json({ error: `Verdict : Incorrect Output\n\nLast Failed Test Case :\ninput : ${failedTestCase.input}\noutput : ${failedTestCase.output}\nYour Output : ${ans}` });
-      }
-    } catch (error) {
-      deleteFile(to_delete);
-      // console.log(error)
+        const currDate = moment(new Date())
+          .format("DD/MM/YYYY HH:mm")
+          .toString();
 
-      let err;
-      if (error.stderr) {
-        const searchString = to_delete[0] + ":"
-        err = error.stderr.split(searchString).join("");
+        // Save the code in the database
+        const submission = await new Submission({
+          ques_id: ques_id,
+          username: user.username,
+          language: lang,
+          code: code,
+          time_stamp: currDate,
+        }).save();
+
+        // Add this to the queue
+        ExecuteQueue.add({ submission_id: submission._id })
+          .then(() => {
+            console.log("Successfully added to the queue");
+            res
+              .status(200)
+              .send({ message: "Successfully added to the queue" });
+          })
+          .catch((err) => {
+            console.log("From first catch ", err);
+            res
+              .status(400)
+              .json({
+                error_code: "SWR",
+                error: "Something went wrong. Please try again.",
+              });
+          });
       }
-      else if (error.error) {
-        err = `Verdict : ${error.error}\nTotal Time Taken : ${error.difference} seconds`;
-      }
-      else if (error.err) {
-        err = error.err.code;
-      }
-      console.log(error);
-      res.status(508).json({ error: err });
+    } else {
+      res.status(404).json({ error_code: "UNF", error: "User not found." });
     }
-  } else {
-    return res.status(505).send({ error: "Something Went Wrong. Please refresh the page and try again." });
+  } catch (error) {
+    console.log("From last catch ", error);
+    res
+      .status(400)
+      .json({
+        error_code: "SWR",
+        error: "Something went wrong. Please try again.",
+      });
   }
 });
 
