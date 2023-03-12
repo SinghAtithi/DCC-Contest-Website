@@ -29,5 +29,8 @@
     "nodemailer": "^6.9.1",
     "nodemailer-express-handlebars": "^6.1.0",
     "turbodepot-node": "^7.0.3"
+  },
+  "devDependencies": {
+    "autocannon": "^7.10.0"
   }
 }
