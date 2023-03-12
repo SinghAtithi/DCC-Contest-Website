@@ -24,7 +24,6 @@ const ContestRoutes = require("./routes/contest.js");
 const UpdateRating = require("./routes/updateRating.js");
 const DashboardRoutes = require("./routes/dashboard.js");
 const TestRoutes = require("./routes/test.js");
-const VerifyEmailRoutes = require("./routes/verifyEmail.js");
 
 const app = express();
 
@@ -43,7 +42,6 @@ app.use("/contest", ContestRoutes);
 app.use("/", UpdateRating);
 app.use("/dashboard", DashboardRoutes);
 app.use('/',TestRoutes);
-app.use('/',VerifyEmailRoutes);
 
 
 // ------------- database connection and starting the server --------------

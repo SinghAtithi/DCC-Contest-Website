@@ -5,11 +5,12 @@ import Lottie from "lottie-react";
 import axios from "axios";
 import Router, { useRouter } from "next/router";
 import checkToken from "../utils/checkToken";
-import { ADMIN, SUPER_ADMIN, USER_DASHBOARD, ADMIN_DASHBOARD, BASE_URL, LOGIN_ENDPOINT_BACKEND } from "../utils/constants";
+import { ADMIN, SUPER_ADMIN, USER_DASHBOARD, ADMIN_DASHBOARD, BASE_URL, LOGIN_ENDPOINT_BACKEND, SIGNUP_PAGE, FORGET_PASSWORD_PAGE } from "../utils/constants";
 import { loginUser } from "../store/loginStore";
 import store from "../store/baseStore";
 import { useSelector } from "react-redux";
 import toggleLoaderBackdrop from "../utils/toggleCustomBackdrop";
+import Link from "next/link";
 
 function login() {
   const router = useRouter();
@@ -62,7 +63,7 @@ function login() {
       .post(BASE_URL + LOGIN_ENDPOINT_BACKEND, data, config)
       .then((res) => {
 
-        store.dispatch(loginUser({role:res.data.role, profile_pic:res.data.profile_pic}));
+        store.dispatch(loginUser({ role: res.data.role, profile_pic: res.data.profile_pic }));
         localStorage.setItem('token', res.data.token);
 
         if (router.query["next"]) Router.push(`/${router.query["next"]}`);
@@ -121,10 +122,15 @@ function login() {
           >
             Login
           </button>
+          <Link href={FORGET_PASSWORD_PAGE} onClick={() => {
+            toggleLoaderBackdrop();
+          }} className="py-4" >Forgot Password?</Link>
+          <Link href={SIGNUP_PAGE} onClick={() => {
+            toggleLoaderBackdrop();
+          }}>Don't have an account? Create one now</Link>
         </div>
         <div className="lottie">
           <Lottie animationData={LoginLottie} className="w-10/12" />
-
         </div>
       </div>
     </div>

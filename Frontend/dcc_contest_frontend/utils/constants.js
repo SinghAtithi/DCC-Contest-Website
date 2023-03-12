@@ -25,10 +25,14 @@ export const AdminSideNavMap = {
   ban_users: 18,
 };
 
-
-
-export const PROBLEM_SEARCH = [ "ques_id", "contest_id","name","display_after","assigned","is_draft"]
-
+export const PROBLEM_SEARCH = [
+  "ques_id",
+  "contest_id",
+  "name",
+  "display_after",
+  "assigned",
+  "is_draft",
+];
 
 export const ADMIN = "admin";
 export const SUPER_ADMIN = "super_admin";
@@ -43,10 +47,15 @@ export const SIGNUP_ENDPOINT_BACKEND = "/auth/register";
 export const CREATE_QUESTION_ENDPOINT_BACKEND = "/question/create";
 export const SEARCH_QUESIONS_ENDPOINT_BACKEND = "/question/search";
 export const GET_DASHBOARD_DATA = "/dashboard";
-export const VERIFY_EMAIL_BACKEND = "/verifyEmail";
+export const VERIFY_EMAIL_BACKEND = "/auth/verifyEmail";
+export const FORGOT_PASSWORD_BACKEND = "/auth/forgotPassword";
+export const SEND_FORGOT_PASSWORD_EMAIL_BACKEND = "/auth/forgotPasswordEmail";
+export const RESEND_CONFIRMATION_EMAIL = "/auth/resendConfirmationEmail";
 
 export const HOME_PAGE = "/";
 export const LOGIN_PAGE = "/login";
+export const FORGET_PASSWORD_PAGE = "/forgotPassword";
+export const RESEND_CONFIRMATION_EMAIL_PAGE = "/confirmEmail";
 export const SIGNUP_PAGE = "/signup";
 export const PROBLEM_SET_PAGE = "/ProblemSet";
 export const CONTEST_PAGE = "/contest";
@@ -72,5 +81,5 @@ export const VIEW_CONTEST_REGISTRATIONS_PAGE = "/admin/contest/registrations";
 export const VIEW_CONTEST_SUBMISSIONS_PAGE = "/admin/contest/submissions";
 export const VIEW_CONTEST_RESULT_PAGE = "/admin/contest/results";
 
-export const REPORT_VIOLATIONS= "/admin/report";
+export const REPORT_VIOLATIONS = "/admin/report";
 export const BAN_USERS = "/super_admin/banusers";

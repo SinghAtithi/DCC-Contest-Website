@@ -1,6 +1,5 @@
 const jwt = require('jsonwebtoken');
 
-
 const verifyToken = (req,res,next)=>{
     const token = req.header("token");
     if (!token) return res.status(404).send({ error: "Token is Missing" });
