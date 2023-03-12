@@ -11,7 +11,7 @@ const ContestSchema = mongoose.Schema({
         required: true,
         unique: true
     },
-    // Array of ques_id for the contest
+    // [{ques_id = ques_id, points = points}]
     ques_ids: {
         type: Array
     },

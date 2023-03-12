@@ -9,9 +9,15 @@ const { executeCpp } = require("../../utils/executeCpp");
 const { generateResultFile } = require("../../utils/generateResultFile");
 const { getVerdict } = require("../../utils/verdict");
 const { deleteFile } = require("../../utils/deleteFiles");
+
+
+// Create a Queue object
 const ExecuteQueue = new Queue("execute");
 
 
+// This is the process every element in ExecuteQueue will do.
+// PENDING TASKS
+// 1. On successfull submission(line 145) , update the points in result field of contest model
 ExecuteQueue.process(async (job, done) => {
     try{
         const submission_id = job.data.submission_id;

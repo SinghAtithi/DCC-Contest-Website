@@ -6,6 +6,7 @@ const dotenv = require("dotenv");
 const mongoose = require("mongoose");
 const jwt = require("jsonwebtoken");
 require("./queue/ExecuteQueue/index.js");
+require("./queue/EmailQueue/index.js");
 
 const { Question } = require("./models/question.js");
 const { User } = require("./models/user.js");
@@ -37,7 +38,7 @@ app.use("/code", CodeRoutes);
 app.use("/auth", AuthRoutes);
 app.use("/contest", ContestRoutes);
 app.use("/", UpdateRating);
-app.use("/dashboard",DashboardRoutes);
+app.use("/dashboard", DashboardRoutes);
 
 // ------------- database connection and starting the server --------------
 const PORT = process.env.PORT || 5000;
