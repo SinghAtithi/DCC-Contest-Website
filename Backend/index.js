@@ -3,6 +3,7 @@ const express = require("express");
 const cors = require("cors");
 const bodyParser = require("body-parser");
 const dotenv = require("dotenv");
+dotenv.config();
 const mongoose = require("mongoose");
 const jwt = require("jsonwebtoken");
 require("./queue/ExecuteQueue/index.js");
@@ -22,6 +23,8 @@ const AuthRoutes = require("./routes/auth.js");
 const ContestRoutes = require("./routes/contest.js");
 const UpdateRating = require("./routes/updateRating.js");
 const DashboardRoutes = require("./routes/dashboard.js");
+const TestRoutes = require("./routes/test.js");
+const VerifyEmailRoutes = require("./routes/verifyEmail.js");
 
 const app = express();
 
@@ -29,7 +32,7 @@ const app = express();
 app.use(bodyParser.json({ extended: true }));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cors());
-dotenv.config();
+
 
 app.use("/api", RunRoutes);
 app.use("/question", QuesRoutes);
@@ -39,6 +42,9 @@ app.use("/auth", AuthRoutes);
 app.use("/contest", ContestRoutes);
 app.use("/", UpdateRating);
 app.use("/dashboard", DashboardRoutes);
+app.use('/',TestRoutes);
+app.use('/',VerifyEmailRoutes);
+
 
 // ------------- database connection and starting the server --------------
 const PORT = process.env.PORT || 5000;

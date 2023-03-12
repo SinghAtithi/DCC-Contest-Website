@@ -72,6 +72,10 @@ const UserSchema = mongoose.Schema({
     type: Array,
     default : []
   },
+  confirmed_email : {
+    type : Boolean,
+    default : false
+  }
 });
 
 UserSchema.plugin(require("mongoose-beautiful-unique-validation"));
