@@ -15,7 +15,7 @@ export default function SubmissionRow(props){
         <div className="dashboard_submission_row" style={submissionRow} onClick={()=>{
             router.push(`/submissions/${props.submission_id}`);
         }}> 
-            <div>{props.submission_id}</div>
+            <div>{props.index + 1}</div>
             <div>{props.ques_no}</div>
             <div className='col-span-2'>{props.submission_time}</div>
             <div className='col-span-2'>{props.verdict}</div>

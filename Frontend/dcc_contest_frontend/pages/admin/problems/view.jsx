@@ -13,7 +13,7 @@ import axios from "axios";
 const ViewProblems = () => {
 
     const [search_option, SetSearchOption] = useState(5);
-    const [search_text, setSearchText] = useState(false);
+    const [search_text, setSearchText] = useState(true);
     const [data, setData] = useState([]);
     /* {
           Entire question data including test cases that has been created by the user
@@ -38,9 +38,10 @@ const ViewProblems = () => {
     const { role, isLoading, loggedIn } = useSelector(state => state.login);
 
     const { asPath } = useRouter();
+
     useEffect(() => {
         toggleLoaderBackdrop();
-        if (loggedIn && (role === ADMIN || role === SUPER_ADMIN)) toggleLoaderBackdrop();
+        if (loggedIn && (role === ADMIN || role === SUPER_ADMIN)) search_problems(true);
         else if (loggedIn && role === END_USER) Router.push(USER_DASHBOARD);
         else {
             checkToken().then((status) => {
@@ -48,27 +49,7 @@ const ViewProblems = () => {
                     if (status.role === ADMIN || status.role === SUPER_ADMIN) {
 
                         // FETCH data here
-                        const url = BASE_URL + SEARCH_QUESIONS_ENDPOINT_BACKEND;
-                        const body = {
-                            searchFilter: search_option,
-                            searchString: true
-                        }
-                        const options = {
-                            headers: {
-                                "Content-Type": "application/json",
-                                "token": localStorage.getItem("token")
-                            },
-                        }
-                        axios
-                            .post(url, body, options)
-                            .then((result) => {
-                                // console.log(result);
-                                setData(result.data.data);
-                            }).catch((err) => {
-                                alert(err.response.data.error);
-                            })
-
-                        toggleLoaderBackdrop();
+                        search_problems(true);
                     }
                     else Router.push(USER_DASHBOARD);
                 }
@@ -77,10 +58,9 @@ const ViewProblems = () => {
         }
     }, [])
 
-    function search_problems() {
-        toggleLoaderBackdrop();
+    function search_problems(toggleLoader=false) {
+        if(!toggleLoader) toggleLoaderBackdrop();
         if (search_text && search_option) {
-            console.log(search_text, search_option);
             // Get the data from backend here.
 
             const url = BASE_URL + SEARCH_QUESIONS_ENDPOINT_BACKEND;
@@ -99,12 +79,13 @@ const ViewProblems = () => {
                 .then((result) => {
                     // console.log(result);
                     setData(result.data.data);
+                    toggleLoaderBackdrop();
                 }).catch((err) => {
-                    alert(err.response.data.error);
+
+                    // error handling here
+                    toggleLoaderBackdrop();
+                    alert("Something went wrong");
                 })
-
-
-            toggleLoaderBackdrop();
         } else {
             toggleLoaderBackdrop();
             alert("Cannot search with empty string or no filter.");
@@ -124,9 +105,9 @@ const ViewProblems = () => {
                         search_options={PROBLEM_SEARCH}
                         triggerSearch={search_problems}
                     />
-                    {data.length != 0 && (
+                    {data.length != 0 ? (
                         <DisplayData data={data} heading={PROBLEM_SEARCH[search_option]} />
-                    )}
+                    ):(<div>Nothing matches your current search.</div>)}
                 </div>
             </div>
         </>

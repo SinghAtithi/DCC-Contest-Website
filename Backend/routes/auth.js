@@ -9,6 +9,9 @@ const {
   verifyAdmin,
   verifyToken,
 } = require("../middlewares/verifyToken.js");
+const {
+  generateVerificationToken,
+} = require("../utils/generateVerificationToken.js");
 const router = express.Router();
 
 router.post("/register", async (req, res) => {
@@ -40,64 +43,92 @@ router.post("/register", async (req, res) => {
                     );
                     const profile_pic = `https://ui-avatars.com/api/?name=${name}&size=128&background=random`;
                     const user = await new User({
-                      name :name,
-                      email : email,
+                      name: name,
+                      email: email,
                       password: hashedPassword,
-                      username : username,
-                      githubURL : githubURL,
-                      linkedinURL : linkedinURL,
-                      codeforcesURL : codeforcesURL,
-                      codechefURL:codechefURL,
-                      bio:bio,
-                      profile_pic : profile_pic
+                      username: username,
+                      githubURL: githubURL,
+                      linkedinURL: linkedinURL,
+                      codeforcesURL: codeforcesURL,
+                      codechefURL: codechefURL,
+                      bio: bio,
+                      profile_pic: profile_pic,
                     }).save();
                     console.log(user);
 
-                    res
-                      .status(200)
-                      .send({
-                        message : "Successfully registered. Please confirm your email before further process.",
-
+                    const verification_token = generateVerificationToken(
+                      user._id
+                    );
+                    EmailQueue.add({
+                      receiver: user.email,
+                      message: {
+                        subject: "DCC : Verify your account",
+                        template: "confirmation",
+                        context: {
+                          username: user.name,
+                          confirmation_link: `http://localhost:3000/confirmEmail/${verification_token}`,
+                        },
+                      },
+                    })
+                      .then(() => {
+                        console.log("Added to email queue");
+                        res.status(200).send({
+                          message:
+                            "Successfully registered. Please confirm your email before further process.",
+                        });
+                      })
+                      .catch((err) => {
+                        console.log(err);
+                        res.status(400).send({
+                          error:
+                            "Could not send the email. Please re-initiate the process of sending email.",
+                          seq: 0,
+                        });
                       });
                   } else {
                     res.status(400).send({
                       error: "Password and Confirm Password must match.",
-                      seq: 4
+                      seq: 4,
                     });
                   }
                 } else {
-                  res
-                    .status(400)
-                    .send({ error: "Password Confirmation is compulsory.", seq: 4 });
+                  res.status(400).send({
+                    error: "Password Confirmation is compulsory.",
+                    seq: 4,
+                  });
                 }
               } else {
-                res.status(400).send({ error: "Password is compulsory.", seq: 3 });
+                res
+                  .status(400)
+                  .send({ error: "Password is compulsory.", seq: 3 });
               }
             } else {
-              res.status(400).send({ error: "username cannot contain @ or .",  seq : 2 });
+              res
+                .status(400)
+                .send({ error: "username cannot contain @ or .", seq: 2 });
             }
           } else {
-            res.status(400).send({ error: "username is compulsory.",  seq : 2 });
+            res.status(400).send({ error: "username is compulsory.", seq: 2 });
           }
         } else {
-          res.status(400).send({ error: "Provide a valid email.", seq : 1 });
+          res.status(400).send({ error: "Provide a valid email.", seq: 1 });
         }
       } else {
-        res.status(400).send({ error: "Email is compulsory.", seq : 1 });
+        res.status(400).send({ error: "Email is compulsory.", seq: 1 });
       }
     } else {
-      res.status(400).send({ error: "Name is compulsory.", seq : 0 });
+      res.status(400).send({ error: "Name is compulsory.", seq: 0 });
     }
   } catch (err) {
     console.log(err);
-    let error = "Something went wrong.", seq = 0;
-    if(err.code == 11000){
+    let error = "Something went wrong.",
+      seq = 0;
+    if (err.code == 11000) {
       key = Object.keys(err.keyPattern);
-      if(key[0]=="email"){
+      if (key[0] == "email") {
         error = "This email is already taken. Please use a different one.";
         seq = 1;
-      }
-      else if(key[0]=="username"){
+      } else if (key[0] == "username") {
         error = "This username is already taken. Please use a different one.";
         seq = 2;
       }
@@ -124,17 +155,31 @@ router.post("/login", async (req, res) => {
         } else {
           user = await User.findOne(
             { username: loginId },
-            "username password role"
+            "username password role confirmed_email"
           ).exec();
         }
         if (user) {
-          const valid = await bcrypt.compare(password, user.password);
+          if (user.confirmed_email) {
+            const valid = await bcrypt.compare(password, user.password);
 
-          if (valid) {
-            const token = generateLoginToken(user._id, user.role, user.profile_pic);
-            res.status(200).send({ token: token, role: user.role, profile_pic:user.profile_pic });
+            if (valid) {
+              const token = generateLoginToken(
+                user._id,
+                user.role,
+                user.profile_pic
+              );
+              res.status(200).send({
+                token: token,
+                role: user.role,
+                profile_pic: user.profile_pic,
+              });
+            } else {
+              res.status(400).send({ error: "Incorrect Password." });
+            }
           } else {
-            res.status(400).send({ error: "Incorrect Password." });
+            res
+              .status(400)
+              .send({ error: "Please confirm your email before login." });
           }
         } else {
           res.status(400).send({ error: "Invalid User Name or email." });
@@ -152,7 +197,9 @@ router.post("/login", async (req, res) => {
 
 router.get("/verifyToken", verifyToken, (req, res) => {
   // console.log(req.user);
-  res.status(200).send({ role: req.user.role, profile_pic: req.user.profile_pic });
+  res
+    .status(200)
+    .send({ role: req.user.role, profile_pic: req.user.profile_pic });
 });
 
 router.get("/imagekitAuth", async (req, res) => {
