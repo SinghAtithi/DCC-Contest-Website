@@ -28,5 +28,8 @@
     "mongoose-paginate-v2": "^1.7.1",
     "nodemailer": "^6.9.1",
     "turbodepot-node": "^7.0.3"
+  },
+  "devDependencies": {
+    "autocannon": "^7.10.0"
   }
 }

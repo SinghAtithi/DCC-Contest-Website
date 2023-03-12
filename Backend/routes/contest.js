@@ -3,13 +3,21 @@ const Contest = require("../models/contest.js");
 const Question = require("../models/question.js");
 const router = express.Router();
 
+let counter = 0;
+
 router.get("/", (req, res) => {
   try {
     Contest.find({}, (error, result) => {
       if (error) {
         res.status(404).json({ error: error });
       } else {
-        console.log(result);
+        // console.log(result);
+        let a = 0;
+        for (let i = 0; i < 2000000000; i++) {
+          a++;
+        }
+        console.log(a + counter);
+        counter++;
         if (result.length === 0) {
           res.status(404).send({ error: "No Contest" });
         } else {
@@ -36,7 +44,7 @@ router.post("/create", async (req, res) => {
     for (var i = 0; i < ques_ids.length; i++) {
       await Question.findOneAndUpdate(
         { ques_no: ques_ids[i] },
-        { displayAfter: startTime, assigned: true}
+        { displayAfter: startTime, assigned: true }
       );
     }
 
