@@ -51,6 +51,8 @@ export const VERIFY_EMAIL_BACKEND = "/auth/verifyEmail";
 export const FORGOT_PASSWORD_BACKEND = "/auth/forgotPassword";
 export const SEND_FORGOT_PASSWORD_EMAIL_BACKEND = "/auth/forgotPasswordEmail";
 export const RESEND_CONFIRMATION_EMAIL = "/auth/resendConfirmationEmail";
+export const SUBMIT_QUESTION = "/question/submit";
+export const GET_SUBMISSION = "/question/getSubmission";
 
 export const HOME_PAGE = "/";
 export const LOGIN_PAGE = "/login";

@@ -17,11 +17,8 @@ function QuestionStatement(props) {
 
 
   useEffect(() => {
-    console.log("Weclome here");
     props.setLoader(true);
-    console.log(" From here props : ", props);
     if (props.problemId) {
-      console.log("Inside");
       axios
         .get(`http://localhost:5000/question/${props.problemId}`)
         .then((res) => {
@@ -36,8 +33,9 @@ function QuestionStatement(props) {
               topics: res.data.topics,
               public_test_cases: res.data.public_test_cases,
             });
+            props.setQuestionId(res.data._id);
+            alert(res.data._id);
           }
-          console.log("Setting loader false, current it is ", props.loader);
           props.setLoader(false);
         }).catch((err) => {
           console.log(err);

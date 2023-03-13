@@ -164,7 +164,8 @@ router.post("/login", async (req, res) => {
               const token = generateLoginToken(
                 user._id,
                 user.role,
-                user.profile_pic
+                user.profile_pic,
+                user.username
               );
               res.status(200).send({
                 token: token,

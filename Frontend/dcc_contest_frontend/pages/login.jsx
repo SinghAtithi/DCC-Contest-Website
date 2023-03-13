@@ -63,7 +63,7 @@ function login() {
       .post(BASE_URL + LOGIN_ENDPOINT_BACKEND, data, config)
       .then((res) => {
 
-        store.dispatch(loginUser({ role: res.data.role, profile_pic: res.data.profile_pic }));
+        store.dispatch(loginUser({ role: res.data.role, profile_pic: res.data.profile_pic, username: res.data.username }));
         localStorage.setItem('token', res.data.token);
 
         if (router.query["next"]) Router.push(`/${router.query["next"]}`);

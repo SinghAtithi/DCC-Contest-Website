@@ -10,13 +10,15 @@ const login = createSlice({
       state.loggedIn = true;
       state.isLoading = false;
       state.role = actions.payload.role;
+      state.username = actions.payload.username;
       if(actions.payload.profile_pic)
         state.profile_pic = actions.payload.profile_pic
     },
     logoutUser(state) {
-      state.loggedIn= false
-      state.isLoading= false
-      state.role= undefined
+      state.loggedIn= false;
+      state.isLoading= false;
+      state.role= undefined;
+      state.username = undefined;
       localStorage.removeItem("token");
     },
     setLoading(state,actions){

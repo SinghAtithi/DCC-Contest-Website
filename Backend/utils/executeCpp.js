@@ -10,8 +10,8 @@ const dirCodeFiles = path.join(
   "codeFiles"
 );
 
-const executeCpp = async (filePath, user_id, inPath, time_limit) => {
-  const userDir = path.join(dirCodeFiles, `${user_id}`);
+const executeCpp = async (filePath, username, inPath, time_limit) => {
+  const userDir = path.join(dirCodeFiles, `${username}`);
   const outFileName = `${path.basename(filePath).split(".")[0]}.txt`;
   const outPath = path.join(userDir, outFileName);
 
@@ -24,7 +24,7 @@ const executeCpp = async (filePath, user_id, inPath, time_limit) => {
       else {
 
         let start = new Date();
-        exec(`cd UsersCodes && cd codeFiles && cd ${user_id}  && ${outFileName} < ${inPath}`, (err, std_out, std_err) => {
+        exec(`cd UsersCodes && cd codeFiles && cd ${username}  && ${outFileName} < ${inPath}`, (err, std_out, std_err) => {
         let end = new Date();
 
         var to_delete = [];
