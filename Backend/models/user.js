@@ -42,9 +42,6 @@ const UserSchema = mongoose.Schema({
     type: String,
     default: "end_user",
   },
-  questions_solved: {
-    type: Array,
-  },
   // Array of ques_no
   questions_solved: {
     type: Array,
@@ -52,18 +49,33 @@ const UserSchema = mongoose.Schema({
   profile_pic: {
     type: String,
   },
+
+  // [{time_stamp = "12/12/2001 10:42", contest_id = contest_id, rating = rating}]
+  rating_array : {
+    type : Array,
+    deafult : []
+  },
+
   current_rating: {
     type: Number,
     default: 0,
   },
+
+  
   max_rating: {
     type: Number,
     default: 0,
   },
+
+  // [{contest_id : contest_id, status : attempted/unattempted}]
   total_contests: {
     type: Array,
-    default: 0,
+    default : []
   },
+  confirmed_email : {
+    type : Boolean,
+    default : false
+  }
 });
 
 UserSchema.plugin(require("mongoose-beautiful-unique-validation"));

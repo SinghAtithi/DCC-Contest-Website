@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Confirm Email</title>
+    <style>
+        body {
+            font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+            width: 80%;
+            margin: auto;
+        }
+
+        .dcc-logo {
+            height: 25px;
+        }
+
+        .verify-button {
+            text-align: center;
+        }
+
+        .extra-message,
+        .extra-url {
+            text-align: center;
+            font-size: 0.7rem;
+        }
+
+        button {
+            background-color: green;
+            padding: 10px;
+            font-size: 1.25rem;
+            border: none;
+            box-shadow: 0 0px 2px 1.5px orangered;
+            border-radius: 10px;
+        }
+
+        .button-url {
+            text-decoration: none;
+            color: white;
+        }
+    </style>
+</head>
+
+<body>
+    <img src="templates/DCC_LOGO.png" alt="" class="dcc-logo">
+    <h3>Hii, {{ username }}</h3>
+    <p class="message">Please click the button below to verify your account.</p>
+    <br>
+    <div class="verify-button"><button><a href="{{ confirmation_link }}" class="button-url">Verify Account</a></button>
+    </div>
+    <br><br>
+    <p class="extra-message">Link is valid only for 20 minutes.</p>
+    <p class="extra-message">Please click on the below link if the above button doesn't work.</p>
+    <p class="extra-message"><a href="{{ confirmation_link }}">{{ confirmation_link }}</a></p>
+    <br><br>
+    <p class="extra-message"><strong>Developers and Coders Club, NIT Agartala</strong></p>
+</body>
+
+</html>
