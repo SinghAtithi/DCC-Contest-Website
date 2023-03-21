@@ -3,11 +3,15 @@ import Editor, { DiffEditor, useMonaco, loader } from "@monaco-editor/react";
 import code from "./snippet";
 import { setConfig } from "next/config";
 import CodeAreaSkeleton from "../skeleton/CodeAreaSkeleton";
+import { useSelector } from "react-redux";
 
 function CodeEditor(props) {
   /*
   props includes:  Code, setCode, ProblemId
 */
+  const {loggedIn} = useSelector(state=>state.login);
+
+  
   return (
     props.loader ? <CodeAreaSkeleton width={props.width} height="80vh" /> :
       (<div className="code-editor-area">
@@ -85,12 +89,16 @@ function CodeEditor(props) {
           />
         </div>
         <div className="code-editor-area-button-area">
-          <button
+          {loggedIn ? <button
             className="btn btn-outline btn-success"
             onClick={props.onSubmit}
           >
             Submit
-          </button>
+          </button> : <button
+            className="btn btn-outline btn-error disabled tooltip tooltip-warning" data-tip="You need to login to submit the code."
+          >
+            Submit
+          </button>}
           <button className="btn btn-outline btn-success" id="button-below" onClick={props.controlConsole}>
             Console
           </button>

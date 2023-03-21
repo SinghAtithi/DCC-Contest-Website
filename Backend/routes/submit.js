@@ -1,17 +1,13 @@
 const express = require("express");
-const path = require("path");
-
-const { generateCodeFile } = require("../utils/generateCodeFile.js");
-const { executeCpp } = require("../utils/executeCpp.js");
-const Question = require("../models/question.js");
-const { basePath } = require("../basePath.js");
-const { generateResultFile } = require("../utils/generateResultFile.js");
-const { getVerdict } = require("../utils/verdict.js");
-const { saveCodes } = require("../utils/save_codes.js");
-const { deleteFile } = require("../utils/deleteFiles.js");
+const moment = require("moment");
+const { ExecuteQueue } = require("../queue/ExecuteQueue/index.js");
+const Submission = require("../models/submission.js");
+const { verifyGeneralUser } = require("../middlewares/verifyToken.js");
+const User = require("../models/user.js");
 
 const router = express.Router();
 
+<<<<<<< HEAD
 router.post("/submit", async (req, res) => {
   // console.log("I entered");
   const { lang = "cpp", code = "", ques_no = '63a586b4ef49fd84fb5a1e94' } = req.body;
@@ -118,18 +114,68 @@ router.post("/submit", async (req, res) => {
       if (error.stderr) {
         const searchString = to_delete[0] + ":"
         err = error.stderr.split(searchString).join("");
+=======
+
+
+router.post("/submit", verifyGeneralUser, async (req, res) => {
+  try {
+    // Get user_id from token
+    const user_id = req.user.userId;
+    console.log(user_id);
+    const user = await User.findOne({ _id: user_id }, "username").exec();
+    if (user) {
+      // Get the code and the question no
+      const { lang = "cpp", code, ques_id } = req.body;
+
+      // If no code is sent
+      if (code === undefined) {
+        res.status(400).json({
+          error_code: "ECCBE",
+          error: "Empty code cannot be executed.",
+        });
+      } else {
+        const currDate = moment(new Date())
+          .format("DD/MM/YYYY HH:mm")
+          .toString();
+
+        // Save the code in the database
+        const submission = await new Submission({
+          ques_id: ques_id,
+          username: user.username,
+          language: lang,
+          code: code,
+          time_stamp: currDate,
+        }).save();
+
+        // Add this to the queue
+        ExecuteQueue.add({ submission_id: submission._id })
+          .then(() => {
+            console.log("Successfully added to the queue");
+            res
+              .status(200)
+              .send({
+                message: "Successfully added to the queue",
+                submission_id: submission._id,
+              });
+          })
+          .catch((err) => {
+            console.log("From first catch ", err);
+            res.status(400).json({
+              error_code: "SWR",
+              error: "Something went wrong. Please try again.",
+            });
+          });
+>>>>>>> 18b6529d893b849ae7add31ec2c02964876c2419
       }
-      else if (error.error) {
-        err = `Verdict : ${error.error}\nTotal Time Taken : ${error.difference} seconds`;
-      }
-      else if (error.err) {
-        err = error.err.code;
-      }
-      console.log(error);
-      res.status(508).json({ error: err });
+    } else {
+      res.status(404).json({ error_code: "UNF", error: "User not found." });
     }
-  } else {
-    return res.status(505).send({ error: "Something Went Wrong. Please refresh the page and try again." });
+  } catch (error) {
+    console.log("From last catch ", error);
+    res.status(400).json({
+      error_code: "SWR",
+      error: "Something went wrong. Please try again.",
+    });
   }
 });
 

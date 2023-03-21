@@ -809,6 +809,7 @@ ck-rounded-corners .ck.ck-editor__main>.ck-editor__editable, .ck.ck-editor__main
 }
 
 .dashboard_trendline {
+  min-height: 51vh;
   background-color: rgb(30 41 59);
   border-radius: 0.5rem;
 }
@@ -1445,3 +1446,21 @@ ol,li{
 
 
 
+
+
+#chartjs-tooltip{
+  background-color: black !important;
+  color: white;
+  font-size: small;
+  font-family:'Times New Roman', Times, serif;
+}
+
+#chartjs-tootlip table {
+  border: none;
+  border-collapse: collapse;
+} 
+
+
+.submission-details-dashboard{
+  min-height: 80vh;
+}
