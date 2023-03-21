@@ -13,15 +13,15 @@ const { deleteFile } = require("../utils/deleteFiles.js");
 const router = express.Router();
 
 router.post("/submit", async (req, res) => {
-  console.log("I entered");
+  // console.log("I entered");
   const { lang = "cpp", code = "", ques_no = '63a586b4ef49fd84fb5a1e94' } = req.body;
   const user_id = 1; // To be defined later
-
+  console.log(code);
   var to_delete = [];
   var failedTestCase;
 
   // If no code is sent
-  if (code === "") {
+  if (code.trim() === "") {
     res.status(400).json({ error: "Empty code cannot be executed." });
   }
 
@@ -68,6 +68,8 @@ router.post("/submit", async (req, res) => {
 
           ans = resp.stdout;
           console.log(j, i, resp.difference);
+          console.log("print nai hua")
+          // not printed
           time_taken = time_taken + resp.difference;
           // ans = ans.replace(/(\r)/gm, ""); // Windows by default adds \r before every \n. This was causing an issue with file comparison. So removed all \r from output.
           // Create a file for the result obtained by the code which was executed.
@@ -99,17 +101,19 @@ router.post("/submit", async (req, res) => {
       }
 
       // console.log("In try : ",to_delete);
-      deleteFile(to_delete);
+      // deleteFile(to_delete);
       console.log("Loop ended");
       if (!error) {
+        console.log("Sent 200");
         res.status(200).json({ message: `Verdict : Passed \nTotal Time Taken : ${time_taken} seconds` });
       } else {
+        console.log("Sent 406")
         res.status(406).json({ error: `Verdict : Incorrect Output\n\nLast Failed Test Case :\ninput : ${failedTestCase.input}\noutput : ${failedTestCase.output}\nYour Output : ${ans}` });
       }
     } catch (error) {
-      deleteFile(to_delete);
+      // deleteFile(to_delete);
       // console.log(error)
-
+      console.log("inerror");
       let err;
       if (error.stderr) {
         const searchString = to_delete[0] + ":"
