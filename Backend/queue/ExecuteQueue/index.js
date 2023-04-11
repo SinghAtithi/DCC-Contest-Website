@@ -18,9 +18,12 @@ const ExecuteQueue = new Queue("execute");
 // 1. On successfull submission(line 145) , update the points in result field of contest model
 ExecuteQueue.process(async (job, done) => {
   const submission_id = job.data.submission_id;
+  const contestRunning = job.data.contestRunning;
   console.log(submission_id);
   try {
-    const submission = await Submission.findOne({ _id: submission_id }).exec();
+    const submission = await Submission.findOne({
+      _id: submission_id,
+    }).exec();
     if (submission.verdict === "Queued") {
       // Generate Code file for the code.
 
@@ -35,7 +38,9 @@ ExecuteQueue.process(async (job, done) => {
       // Try to execute the file created and deliver the verdict
       try {
         // For pre defined Private Test Cases
-        const ques = await Question.findOne({ _id: submission.ques_id }).exec();
+        const ques = await Question.findOne({
+          _id: submission.ques_id,
+        }).exec();
 
         const n_pvt = ques.private_test_cases.length;
         const n_public = ques.public_test_cases.length;
@@ -50,7 +55,10 @@ ExecuteQueue.process(async (job, done) => {
           // Path of the pre defined input file for this test case
           const inPath = path.join(
             path.join(
-              path.join(path.join(basePath(), "TestCases"), `${ques._id}`),
+              path.join(
+                path.join(basePath(), "TestCases"),
+                `${ques._id}`
+              ),
               "public"
             ),
             `${i}_in.txt`
@@ -80,7 +88,10 @@ ExecuteQueue.process(async (job, done) => {
           // Path of the pre defined output file for this test case
           const outPath = path.join(
             path.join(
-              path.join(path.join(basePath(), "TestCases"), `${ques._id}`),
+              path.join(
+                path.join(basePath(), "TestCases"),
+                `${ques._id}`
+              ),
               "public"
             ),
             `${i}_out.txt`
@@ -101,7 +112,10 @@ ExecuteQueue.process(async (job, done) => {
           // Path of the pre defined input file for this test case
           const inPath = path.join(
             path.join(
-              path.join(path.join(basePath(), "TestCases"), `${ques._id}`),
+              path.join(
+                path.join(basePath(), "TestCases"),
+                `${ques._id}`
+              ),
               "private"
             ),
             `${i}_in.txt`
@@ -131,7 +145,10 @@ ExecuteQueue.process(async (job, done) => {
           // Path of the pre defined output file for this test case
           const outPath = path.join(
             path.join(
-              path.join(path.join(basePath(), "TestCases"), `${ques._id}`),
+              path.join(
+                path.join(basePath(), "TestCases"),
+                `${ques._id}`
+              ),
               "private"
             ),
             `${i}_out.txt`

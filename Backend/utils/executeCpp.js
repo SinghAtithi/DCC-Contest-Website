@@ -24,29 +24,30 @@ const executeCpp = async (filePath, username, inPath, time_limit) => {
       else {
 
         let start = new Date();
-        exec(`cd UsersCodes && cd codeFiles && cd ${username}  && ${outFileName} < ${inPath}`, (err, std_out, std_err) => {
-        let end = new Date();
+        // use ./ before ${outFileName} to run the file in the same directory in linux
+        exec(`cd UsersCodes && cd codeFiles && cd ${username}  && ./${outFileName} < ${inPath}`, (err, std_out, std_err) => {
+          let end = new Date();
 
-        var to_delete = [];
-        to_delete.push(outPath);
-        deleteFile(to_delete);
-        
-        if (err || std_err) {
-          rej({ err, std_err });
-        }
-        let dif = Math.abs(start - end) / 1000; // the time difference in seconds.
-        
-        if (dif > time_limit+2) {
-          rej({ "error": "Time Limit Exceeded", difference: dif });
-        }
-        else {
-          const response = {
-            stdout: std_out,
-            difference: dif,
+          var to_delete = [];
+          to_delete.push(outPath);
+          deleteFile(to_delete);
+
+          if (err || std_err) {
+            rej({ err, std_err });
           }
-          res(response);
-        }
-      })
+          let dif = Math.abs(start - end) / 1000; // the time difference in seconds.
+
+          if (dif > time_limit + 2) {
+            rej({ "error": "Time Limit Exceeded", difference: dif });
+          }
+          else {
+            const response = {
+              stdout: std_out,
+              difference: dif,
+            }
+            res(response);
+          }
+        })
 
       }
     })

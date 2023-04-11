@@ -5,6 +5,10 @@ const SubmissionSchema = mongoose.Schema({
     type: String,
     required: true,
   },
+  contest_id: {
+    type: String,
+    default: "",
+  },
   username: {
     type: String,
     required: true,
@@ -19,7 +23,7 @@ const SubmissionSchema = mongoose.Schema({
   },
   verdict: {
     type: String,
-    default : "Queued"
+    default: "Queued"
   },
   error: {
     type: String,

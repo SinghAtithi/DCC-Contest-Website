@@ -1107,6 +1107,8 @@ ck-rounded-corners .ck.ck-editor__main>.ck-editor__editable, .ck.ck-editor__main
 }
 
 .problem-page-left{
+  position:relative;
+  top:16px;
   height: 90vh;
   width:40%;
   padding: 8px;
@@ -1114,6 +1116,8 @@ ck-rounded-corners .ck.ck-editor__main>.ck-editor__editable, .ck.ck-editor__main
 }
 
 .problem-page-right{
+  position:relative;
+  top:16px;
   height:90vh;
   width:60%;
 }

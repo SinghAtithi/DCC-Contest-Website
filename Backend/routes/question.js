@@ -20,7 +20,7 @@ router.get("/", async (req, res) => {
   const allQues = await Question.find(
     { assigned: true },
     // { displayAfter: { $lt: currDate }, assigned: true },
-    "ques_no name topics"
+    "ques_id name topics"
   );
   res.status(200).json(allQues);
 });

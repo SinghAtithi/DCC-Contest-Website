@@ -3,7 +3,7 @@ const { request } = require("express")
 
 async function test() {
       const instance = autocannon({
-            url: "http://localhost:5000/question/submit",
+            url: "http://4.240.84.221:5000/question/submit",
             connections: 5,
             duration: 5,
             workers: 1,

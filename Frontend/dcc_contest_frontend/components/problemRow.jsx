@@ -18,10 +18,10 @@ const ProblemRow = ({ props }) => {
 
                         <input type="checkbox" className="checkbox" disabled />
                     </div>}
-                <div className="px-6 text-left">{props.ques_no}</div>
+                <div className="px-6 text-left">{props.ques_id}</div>
                 <div className="col-span-3 px-6  hover:text-green-500">{props.name}</div>
                 <div className="px-6">{props.topics}</div>
-                <Link href={`/problems/${props.ques_no}`} target="_blank">
+                <Link href={`/problems/${props.ques_id}`} target="_blank">
                     <div className="px-2">
                         <button className="btn btn-outline btn-success w-40">
                             Solve{" "}

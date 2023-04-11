@@ -11,7 +11,7 @@ const checkToken = async () => {
     };
     var response = {verified : false};
     await axios
-      .get("http://localhost:5000/auth/verifyToken", config)
+      .get("http://4.240.84.221:5000/auth/verifyToken", config)
       .then((res) => {
         store.dispatch(loginUser({role:res.data.role, profile_pic:res.data.profile_pic,username: res.data.username}));
         response.verified = true;

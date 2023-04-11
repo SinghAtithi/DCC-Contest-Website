@@ -1,5 +1,7 @@
 {
   "files.associations": {
     "iostream": "cpp"
-  }
+  },
+  // tab width 4
+  "editor.indentSize": 4,
 }
