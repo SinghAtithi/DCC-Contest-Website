@@ -15,49 +15,49 @@ const MyCKEditor = (props) => {
     setEditorLoaded(true);
   }, []);
 
-    var imagekit = new ImageKit({
-      publicKey: "public_/8n1ylBbpeZ+hb/0ttpwZxVDshE=",
-      urlEndpoint: "https://ik.imagekit.io/pqymxdgbi/Code-DCC",
-      authenticationEndpoint: "http://4.240.84.221:5000/auth/imagekitAuth",
-    });
+  var imagekit = new ImageKit({
+    publicKey: "public_/8n1ylBbpeZ+hb/0ttpwZxVDshE=",
+    urlEndpoint: "https://ik.imagekit.io/pqymxdgbi/Code-DCC",
+    authenticationEndpoint: "//4.240.84.221:5000/auth/imagekitAuth",
+  });
 
-    function uploadAdapter(loader) {
-      return {
-        upload: () => {
-          return new Promise((resolve, reject) => {
-            loader.file.then((file) => {
-              imagekit.upload(
-                {
-                  file: file,
-                  fileName: "trial.jpg",
-                },
-                function (err, result) {
-                  if (err) {
-                    console.log(err);
-                    reject(err);
-                  } else {
-                    const url = imagekit.url({
-                      src: result.url,
-                      transformation: [{ height: 200, width: 200 }],
-                    });
+  function uploadAdapter(loader) {
+    return {
+      upload: () => {
+        return new Promise((resolve, reject) => {
+          loader.file.then((file) => {
+            imagekit.upload(
+              {
+                file: file,
+                fileName: "trial.jpg",
+              },
+              function (err, result) {
+                if (err) {
+                  console.log(err);
+                  reject(err);
+                } else {
+                  const url = imagekit.url({
+                    src: result.url,
+                    transformation: [{ height: 200, width: 200 }],
+                  });
 
-                    resolve({ default: url });
-                  }
+                  resolve({ default: url });
                 }
-              );
-            });
+              }
+            );
           });
-        },
-      };
-    }
+        });
+      },
+    };
+  }
 
-    function uploadPlugin(editor) {
-      editor.plugins.get("FileRepository").createUploadAdapter = function (
-        loader
-      ) {
-        return new uploadAdapter(loader);
-      };
-    }
+  function uploadPlugin(editor) {
+    editor.plugins.get("FileRepository").createUploadAdapter = function (
+      loader
+    ) {
+      return new uploadAdapter(loader);
+    };
+  }
 
   return (
     <div className="editor-div">
@@ -66,16 +66,16 @@ const MyCKEditor = (props) => {
           className="wrap-ckeditor"
           editor={ClassicEditor}
           config={{ removePlugins: ['Heading'], extraPlugins: [uploadPlugin] }}
-          onChange={(event,editor) => {
+          onChange={(event, editor) => {
             const data = editor.getData();
             console.log(data);
             props.setValue(data);
           }}
           data={props.value}
-            
+
         />
       ) : (
-        <EditorSkeleton/>
+        <EditorSkeleton />
       )}
     </div>
   );

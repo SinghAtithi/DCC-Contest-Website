@@ -166,7 +166,7 @@ function create_problem() {
     const onSubmit = () => {
         axios
             .post(
-                "http://4.240.84.221:5000/contest/create",
+                "//4.240.84.221:5000/contest/create",
                 {
                     contestName,
                     contestID,

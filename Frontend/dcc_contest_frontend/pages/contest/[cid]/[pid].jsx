@@ -86,7 +86,7 @@ const contestPage = () => {
 
         setConsoleLoader(true);
 
-        const url = "http://4.240.84.221:5000/question/submit";
+        const url = "//4.240.84.221:5000/question/submit";
         const config = {
             headers: {
                 "Content-Type": "application/x-www-form-urlencoded",

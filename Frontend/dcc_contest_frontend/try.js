@@ -1472,7 +1472,7 @@
                               let e = { headers: { token: localStorage.getItem("token") } };
                               var t = { verified: !1 };
                               return (
-                                    await n.Z.get("http://4.240.84.221:5000/auth/verifyToken", e)
+                                    await n.Z.get("//4.240.84.221:5000/auth/verifyToken", e)
                                           .then((e) => {
                                                 o.Z.dispatch((0, i.pH)({ role: e.data.role, profile_pic: e.data.profile_pic, username: e.data.username })), (t.verified = !0), (t.role = e.data.role);
                                           })

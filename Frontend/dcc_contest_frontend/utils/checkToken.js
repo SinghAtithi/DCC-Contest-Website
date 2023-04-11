@@ -9,11 +9,11 @@ const checkToken = async () => {
         token: localStorage.getItem("token"),
       },
     };
-    var response = {verified : false};
+    var response = { verified: false };
     await axios
-      .get("http://4.240.84.221:5000/auth/verifyToken", config)
+      .get("//4.240.84.221:5000/auth/verifyToken", config)
       .then((res) => {
-        store.dispatch(loginUser({role:res.data.role, profile_pic:res.data.profile_pic,username: res.data.username}));
+        store.dispatch(loginUser({ role: res.data.role, profile_pic: res.data.profile_pic, username: res.data.username }));
         response.verified = true;
         response.role = res.data.role;
       })
@@ -22,8 +22,8 @@ const checkToken = async () => {
         console.log("Not Verified");
         store.dispatch(setLoading(false));
       });
-      return response;
-  } else return {verified : false};
+    return response;
+  } else return { verified: false };
 };
 
 export default checkToken;
