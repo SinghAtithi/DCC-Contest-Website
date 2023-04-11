@@ -3,15 +3,24 @@ import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import SideNav from "../../../components/SideNavAdmin";
 import checkToken from "../../../utils/checkToken";
-import { ADMIN, END_USER, LOGIN_PAGE, SUPER_ADMIN, USER_DASHBOARD, ADMIN_DASHBOARD, AdminSideNavMap, PROBLEM_SEARCH, BASE_URL, SEARCH_QUESIONS_ENDPOINT_BACKEND } from "../../../utils/constants";
+import {
+    ADMIN,
+    END_USER,
+    LOGIN_PAGE,
+    SUPER_ADMIN,
+    USER_DASHBOARD,
+    ADMIN_DASHBOARD,
+    AdminSideNavMap,
+    PROBLEM_SEARCH,
+    BASE_URL,
+    SEARCH_QUESIONS_ENDPOINT_BACKEND,
+} from "../../../utils/constants";
 import toggleLoaderBackdrop from "../../../utils/toggleCustomBackdrop";
 import DisplayData from "../../../components/DisplayData";
 import SearchBar from "../../../components/SearchBar";
 import axios from "axios";
 
-
 const ViewProblems = () => {
-
     const [search_option, SetSearchOption] = useState(5);
     const [search_text, setSearchText] = useState(true);
     const [data, setData] = useState([]);
@@ -35,57 +44,55 @@ const ViewProblems = () => {
           author: "coder_ravan"}
       */
 
-    const { role, isLoading, loggedIn } = useSelector(state => state.login);
+    const { role, isLoading, loggedIn } = useSelector((state) => state.login);
 
     const { asPath } = useRouter();
 
     useEffect(() => {
         toggleLoaderBackdrop();
-        if (loggedIn && (role === ADMIN || role === SUPER_ADMIN)) search_problems(true);
+        if (loggedIn && (role === ADMIN || role === SUPER_ADMIN))
+            search_problems(true);
         else if (loggedIn && role === END_USER) Router.push(USER_DASHBOARD);
         else {
             checkToken().then((status) => {
                 if (status.verified) {
                     if (status.role === ADMIN || status.role === SUPER_ADMIN) {
-
                         // FETCH data here
                         search_problems(true);
-                    }
-                    else Router.push(USER_DASHBOARD);
-                }
-                else Router.push(LOGIN_PAGE + "?next=admin/problems/view");
-            })
+                    } else Router.push(USER_DASHBOARD);
+                } else Router.push(LOGIN_PAGE + "?next=admin/problems/view");
+            });
         }
-    }, [])
+    }, []);
 
-    function search_problems(toggleLoader=false) {
-        if(!toggleLoader) toggleLoaderBackdrop();
+    function search_problems(toggleLoader = false) {
+        if (!toggleLoader) toggleLoaderBackdrop();
         if (search_text && search_option) {
             // Get the data from backend here.
 
             const url = BASE_URL + SEARCH_QUESIONS_ENDPOINT_BACKEND;
             const body = {
                 searchFilter: search_option,
-                searchString: search_text
-            }
+                searchString: search_text,
+            };
             const options = {
                 headers: {
                     "Content-Type": "application/json",
-                    "token": localStorage.getItem("token")
+                    token: localStorage.getItem("token"),
                 },
-            }
+            };
             axios
                 .post(url, body, options)
                 .then((result) => {
                     // console.log(result);
                     setData(result.data.data);
                     toggleLoaderBackdrop();
-                }).catch((err) => {
-
+                })
+                .catch((err) => {
                     // error handling here
                     toggleLoaderBackdrop();
                     alert("Something went wrong");
-                })
+                });
         } else {
             toggleLoaderBackdrop();
             alert("Cannot search with empty string or no filter.");
@@ -106,12 +113,17 @@ const ViewProblems = () => {
                         triggerSearch={search_problems}
                     />
                     {data.length != 0 ? (
-                        <DisplayData data={data} heading={PROBLEM_SEARCH[search_option]} />
-                    ):(<div>Nothing matches your current search.</div>)}
+                        <DisplayData
+                            data={data}
+                            heading={PROBLEM_SEARCH[search_option]}
+                        />
+                    ) : (
+                        <div>Nothing matches your current search.</div>
+                    )}
                 </div>
             </div>
         </>
     );
-}
+};
 
 export default ViewProblems;

@@ -1,10 +1,8 @@
 import React from "react";
-import {useRouter} from "next/router";
+import { useRouter } from "next/router";
 
-export default function particularSubmission(){
+export default function particularSubmission() {
     const router = useRouter();
-    const {pid} = router.query;
-    return(
-        <div>Particular Submission Page of submission id {pid}</div>
-    )
+    const { pid } = router.query;
+    return <div>Particular Submission Page of submission id {pid}</div>;
 }
