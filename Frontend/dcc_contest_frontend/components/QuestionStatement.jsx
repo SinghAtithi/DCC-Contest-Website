@@ -19,7 +19,7 @@ function QuestionStatement(props) {
         props.setLoader(true);
         if (props.problemId) {
             axios
-                .get(`//4.240.84.221:5000/question/${props.problemId}`)
+                .get(`http://4.240.84.221:5000/question/${props.problemId}`)
                 .then((res) => {
                     if (question.name != res.data.name) {
                         setQuestion({

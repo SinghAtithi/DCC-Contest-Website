@@ -9,7 +9,7 @@ function ProblemSetIndex() {
     const [totalPages, setTotalPages] = useState(0);
 
     useEffect(() => {
-        axios.get(`//4.240.84.221:5000/question`).then((res) => {
+        axios.get(`http://4.240.84.221:5000/question`).then((res) => {
             console.log(res.data);
             setTotalPages(Math.ceil(res.data.length / 10));
             setProblems(res.data);
