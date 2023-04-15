@@ -5,6 +5,8 @@ import "../styles/test.css";
 import "../styles/RabbitLoader.css";
 import "../styles/ViewProblems.css";
 import "../styles/SearchBar.css";
+import "../styles/ContestHomePage.css";
+
 import { Provider } from "react-redux";
 import store from "../store/baseStore";
 import Auth from "../components/Auth";

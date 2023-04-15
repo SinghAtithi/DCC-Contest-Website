@@ -1,5 +1,6 @@
 import { useRouter } from "next/router";
 import Navbar from "../../components/Navbar";
+import Head from "next/head";
 
 const contestPage = () => {
     const router = useRouter();
@@ -7,8 +8,14 @@ const contestPage = () => {
 
     return (
         <div>
+            <Head><title>Contest - {cid}</title></Head>
             <Navbar />
-            Contest Page - {cid}
+
+            <div className="main-nav-content-area">
+                Contest Page - {cid}
+                {/* Content goes here */}
+            </div>
+
         </div>
     );
 };

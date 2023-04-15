@@ -1468,3 +1468,12 @@ ol,li{
 .submission-details-dashboard{
   min-height: 80vh;
 }
+
+
+
+.main-nav-content-area{
+  position: relative;
+  top: 65px;
+  height: 90vh;
+  overflow-y: auto;
+}
