@@ -6,7 +6,8 @@ import toggleLoaderBackdrop from "../../utils/toggleCustomBackdrop";
 import { baseUrl } from "../../utils/constants";
 import axios from "axios";
 import Link from "next/link";
-
+import Countdown from "../../components/Countdown";
+import moment from "moment/moment";
 
 const contestPage = () => {
     const router = useRouter();
@@ -15,14 +16,14 @@ const contestPage = () => {
         {
             contestId: "A",
             name: "Contest A",
-            startTime: "April 15, 2023 10:00:00",
-            endTime: "April 20, 2023 18:00:00",
+            startTime: "16/04/2023 00:00",
+            endTime: "20/04/2023 18:00",
         },
         {
             contestId: "B",
             name: "Contest B",
-            startTime: "April 16, 2023 12:00:00",
-            endTime: "April 19, 2023 16:00:00",
+            startTime: "15/04/2023 00:00",
+            endTime: "21/04/2023 09:00",
         }
     ];
 
@@ -30,14 +31,14 @@ const contestPage = () => {
         {
             contestId: "C",
             name: "Contest C",
-            startTime: "April 22, 2023 09:00:00",
-            endTime: "April 25, 2023 17:00:00",
+            startTime: "22/04/2023 00:00",
+            endTime: "25/04/2023 00:00",
         },
         {
             contestId: "D",
             name: "Contest D",
-            startTime: "April 25, 2023 15:00:00",
-            endTime: "April 28, 2023 20:00:00",
+            startTime: "25/04/2023 00:00",
+            endTime: "28/04/2023 00:00",
         },
     ];
 
@@ -45,26 +46,26 @@ const contestPage = () => {
         {
             contestId: "E",
             name: "Contest E",
-            startTime: "April 10, 2023 08:00:00",
-            endTime: "April 15, 2023 12:00:00",
+            startTime: "10/04/2023 00:00",
+            endTime: "15/04/2023 00:00",
         },
         {
             contestId: "F",
             name: "Contest F",
-            startTime: "April 05, 2023 14:00:00",
-            endTime: "April 10, 2023 18:00:00",
+            startTime: "10/04/2023 00:00",
+            endTime: "15/04/2023 00:00",
         },
         {
             contestId: "G",
             name: "Contest G",
-            startTime: "April 10, 2023 08:00:00",
-            endTime: "April 15, 2023 12:00:00",
+            startTime: "10/04/2023 00:00",
+            endTime: "15/04/2023 00:00",
         },
         {
             contestId: "H",
             name: "Contest H",
-            startTime: "April 05, 2023 14:00:00",
-            endTime: "April 10, 2023 18:00:00",
+            startTime: "10/04/2023 00:00",
+            endTime: "15/04/2023 00:00",
         },
     ];
 
@@ -87,6 +88,21 @@ const contestPage = () => {
             });
     }, []);
 
+
+    function getDuration(startTime,endTime){
+        const end = moment(endTime,'DD/MM/YYYY h:mm:s');
+        const start = moment(startTime,'DD/MM/YYYY h:mm:s');
+        
+
+        const time = end.diff(start);
+
+        const days = (Math.floor(time / (1000 * 60 * 60 * 24)));
+        const hours = (Math.floor((time / (1000 * 60 * 60)) % 24));
+        const minutes = (Math.floor((time / 1000 / 60) % 60));
+
+        return `${("0" + days).slice(-2)}:${("0" + hours).slice(-2)}:${("0" + minutes).slice(-2)}`;
+
+    }
     return (
         <>
             <Head>
@@ -115,8 +131,8 @@ const contestPage = () => {
                                         <th>{index + 1}</th>
                                         <td>{contest.name}</td>
                                         <td>{contest.startTime}</td>
-                                        <td>02:00</td>
-                                        <td>01.45</td>
+                                        <td>{getDuration(contest.startTime,contest.endTime)}</td>
+                                        <td><Countdown deadline={contest.endTime} /></td>
                                     </tr>
                                 ))}
 
@@ -136,6 +152,7 @@ const contestPage = () => {
                                     <th>Contest Name</th>
                                     <th>Start</th>
                                     <th>Length</th>
+                                    <th>Registration Closes in</th>
                                     <th>Action</th>
                                 </tr>
                             </thead>
@@ -145,8 +162,9 @@ const contestPage = () => {
                                         <th>{index + 1}</th>
                                         <td>{contest.name}</td>
                                         <td>{contest.startTime}</td>
-                                        <td>02:00</td>
-                                        <td><button className="btn btn-outline btn-info min-h-8 h-8">Register</button></td> { /*create a register modal here*/ }
+                                        <td>{getDuration(contest.startTime,contest.endTime)}</td>
+                                        <td><Countdown deadline={contest.startTime} /></td>
+                                        <td><button className="btn btn-outline btn-info min-h-8 h-8">Register</button></td> { /*create a register modal here*/}
                                     </tr>
                                 ))}
 
@@ -175,8 +193,8 @@ const contestPage = () => {
                                         <th>{index + 1}</th>
                                         <td>{contest.name}</td>
                                         <td>{contest.startTime}</td>
-                                        <td>02:00</td>
-                                        <td><button className="btn btn-outline btn-success min-h-8 h-8" ><Link href={`/leaderboard/${contest.contestId}`}T>Leaderboard</Link></button> <button className="btn btn-outline btn-success min-h-8 h-8"><Link href={`/contest/${contest.contestId}`}>Problems</Link></button></td>
+                                        <td>{getDuration(contest.startTime,contest.endTime)}</td>
+                                        <td><button className="btn btn-outline btn-success min-h-8 h-8" ><Link href={`/leaderboard/${contest.contestId}`} T>Leaderboard</Link></button> <button className="btn btn-outline btn-success min-h-8 h-8"><Link href={`/contest/${contest.contestId}`}>Problems</Link></button></td>
                                     </tr>
                                 ))}
 
