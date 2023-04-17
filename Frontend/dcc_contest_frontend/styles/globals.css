@@ -1004,6 +1004,12 @@ ck-rounded-corners .ck.ck-editor__main>.ck-editor__editable, .ck.ck-editor__main
   z-index: 20;
 }
 
+.custom-backdrop.active{
+  display: block;
+  opacity: 0.85;
+  transition-delay: 0;
+}
+
 .custom-navbar-avtar-pop{
   background-color: var(--navbar-background);
 }

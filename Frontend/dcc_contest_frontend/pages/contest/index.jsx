@@ -8,9 +8,14 @@ import axios from "axios";
 import Link from "next/link";
 import Countdown from "../../components/Countdown";
 import moment from "moment/moment";
+import ContestRegisterModal from "../../components/ContestRegisterModal";
+
 
 const contestPage = () => {
     const router = useRouter();
+    const [open, setOpen] = useState(false);
+    const [name, setName] = useState("");
+    const [contestId, setContestId] = useState("");
 
     const ongoingContests = [
         {
@@ -89,10 +94,10 @@ const contestPage = () => {
     }, []);
 
 
-    function getDuration(startTime,endTime){
-        const end = moment(endTime,'DD/MM/YYYY h:mm:s');
-        const start = moment(startTime,'DD/MM/YYYY h:mm:s');
-        
+    function getDuration(startTime, endTime) {
+        const end = moment(endTime, 'DD/MM/YYYY h:mm:s');
+        const start = moment(startTime, 'DD/MM/YYYY h:mm:s');
+
 
         const time = end.diff(start);
 
@@ -108,8 +113,11 @@ const contestPage = () => {
             <Head>
                 <title>Contests</title>
             </Head>
+
             <Navbar />
+            
             <div className="contest-page">
+                <ContestRegisterModal open={open} setOpen={setOpen} contestId={contestId} name={name}/>
                 <h1 id="contest-main-heading">CONTESTS</h1>
                 <div id="contest-section">
                     <h2 id="contest-heading">Ongoing Contests</h2>
@@ -118,7 +126,7 @@ const contestPage = () => {
                             {/* head */}
                             <thead>
                                 <tr>
-                                    <th></th>
+                                    <th>S.N.</th>
                                     <th>Contest Name</th>
                                     <th>Start</th>
                                     <th>Length</th>
@@ -131,7 +139,7 @@ const contestPage = () => {
                                         <th>{index + 1}</th>
                                         <td>{contest.name}</td>
                                         <td>{contest.startTime}</td>
-                                        <td>{getDuration(contest.startTime,contest.endTime)}</td>
+                                        <td>{getDuration(contest.startTime, contest.endTime)}</td>
                                         <td><Countdown deadline={contest.endTime} /></td>
                                     </tr>
                                 ))}
@@ -148,7 +156,7 @@ const contestPage = () => {
                             {/* head */}
                             <thead>
                                 <tr>
-                                    <th></th>
+                                    <th>S.N.</th>
                                     <th>Contest Name</th>
                                     <th>Start</th>
                                     <th>Length</th>
@@ -162,9 +170,9 @@ const contestPage = () => {
                                         <th>{index + 1}</th>
                                         <td>{contest.name}</td>
                                         <td>{contest.startTime}</td>
-                                        <td>{getDuration(contest.startTime,contest.endTime)}</td>
+                                        <td>{getDuration(contest.startTime, contest.endTime)}</td>
                                         <td><Countdown deadline={contest.startTime} /></td>
-                                        <td><button className="btn btn-outline btn-info min-h-8 h-8">Register</button></td> { /*create a register modal here*/}
+                                        <td><button className="btn btn-outline btn-info min-h-8 h-8"onClick={()=>{setOpen(true); setName(contest.name); setContestId(contest.contestId)}}>Register</button></td> { /*create a register modal here*/}
                                     </tr>
                                 ))}
 
@@ -180,7 +188,7 @@ const contestPage = () => {
                             {/* head */}
                             <thead>
                                 <tr>
-                                    <th></th>
+                                    <th>Sl. No.</th>
                                     <th>Contest Name</th>
                                     <th>Start</th>
                                     <th>Length</th>
@@ -193,7 +201,7 @@ const contestPage = () => {
                                         <th>{index + 1}</th>
                                         <td>{contest.name}</td>
                                         <td>{contest.startTime}</td>
-                                        <td>{getDuration(contest.startTime,contest.endTime)}</td>
+                                        <td>{getDuration(contest.startTime, contest.endTime)}</td>
                                         <td><button className="btn btn-outline btn-success min-h-8 h-8" ><Link href={`/leaderboard/${contest.contestId}`} T>Leaderboard</Link></button> <button className="btn btn-outline btn-success min-h-8 h-8"><Link href={`/contest/${contest.contestId}`}>Problems</Link></button></td>
                                     </tr>
                                 ))}
