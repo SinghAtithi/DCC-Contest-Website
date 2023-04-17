@@ -12,6 +12,7 @@
     "@auth0/nextjs-auth0": "^2.2.1",
     "@ckeditor/ckeditor5-build-classic": "^35.4.0",
     "@ckeditor/ckeditor5-react": "^5.0.6",
+    "@headlessui/react": "^1.7.14",
     "@monaco-editor/react": "^4.4.6",
     "@next/font": "13.0.7",
     "@reduxjs/toolkit": "^1.9.1",
