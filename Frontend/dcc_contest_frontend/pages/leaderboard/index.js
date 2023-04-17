@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import Navbar from "../components/Navbar";
+import Navbar from "../../components/Navbar";
 
 // Dummy data for the ranklist
 const rankListData = [
@@ -70,9 +70,8 @@ function Leaderboard() {
         .slice((page - 1) * dataPerPage, page * dataPerPage)
         .map((item, index) => (
           <div
-            className={`bg-gray-800 grid grid-cols-4 gap-4 text-lg font-serif text-gray-200 py-2 my-2 border-b-2 border-gray-500 ${
-              index > -1 ? "font-bold" : ""
-            }`}
+            className={`bg-gray-800 grid grid-cols-4 gap-4 text-lg font-serif text-gray-200 py-2 my-2 border-b-2 border-gray-500 ${index > -1 ? "font-bold" : ""
+              }`}
             key={item.id}
           >
             <div className="px-6">{(page - 1) * dataPerPage + index + 1}</div>
@@ -101,9 +100,8 @@ function Leaderboard() {
         {Array.from({ length: totalPages }, (_, index) => index + 1).map(
           (num) => (
             <button
-              className={`btn btn-success mx-1 ${
-                num == page ? "btn-outline" : ""
-              }`}
+              className={`btn btn-success mx-1 ${num == page ? "btn-outline" : ""
+                }`}
               onClick={() => setPage(num)}
             >
               {num}
