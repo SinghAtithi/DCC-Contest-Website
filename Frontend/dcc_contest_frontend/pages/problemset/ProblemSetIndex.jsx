@@ -8,6 +8,7 @@ function ProblemSetIndex() {
     const [page, setPage] = useState(1);
     const [totalPages, setTotalPages] = useState(0);
 
+<<<<<<< Updated upstream
     useEffect(() => {
         axios.get(`http://4.240.84.221:5000/question`).then((res) => {
             console.log(res.data);
@@ -15,6 +16,15 @@ function ProblemSetIndex() {
             setProblems(res.data);
         });
     }, []);
+=======
+  useEffect(() => {
+    axios.get(`http://4.240.84.221:5000/question`).then((res) => {
+      console.log(res.data);
+      setTotalPages(Math.ceil(res.data.length / 10));
+      setProblems(res.data);
+    });
+  }, []);
+>>>>>>> Stashed changes
 
     return (
         <div className="mx-20">
@@ -30,6 +40,7 @@ function ProblemSetIndex() {
                 <div className="px-6">Actions</div>
             </div>
 
+<<<<<<< Updated upstream
             {/* Question data */}
             {problems.slice((page - 1) * 10, page * 10).map((problem) => (
                 <ProblemRow
@@ -70,6 +81,47 @@ function ProblemSetIndex() {
             </div>
         </div>
     );
+=======
+      {/* Question data */}
+      {problems.slice((page - 1) * 10, page * 10).map((problem) => (
+        <ProblemRow
+          props={{
+            name: problem.name,
+            ques_no: problem.ques_no,
+            topics: problem.topics,
+            ques_status: "False",
+          }}
+        />
+      ))}
+      <div className="my-4 flex justify-center">
+        <button
+          className={`btn mx-1`}
+          onClick={() => setPage(Math.max(1, page - 1))}
+        >
+          Prev
+        </button>
+        {Array.from({ length: totalPages }, (_, index) => index + 1).map(
+          (num) => (
+            <button
+              className={`btn btn-success mx-1 ${
+                num == page ? "btn-outline" : ""
+              }`}
+              onClick={() => setPage(num)}
+            >
+              {num}
+            </button>
+          )
+        )}
+        <button
+          className={`btn mx-1`}
+          onClick={() => setPage(Math.min(totalPages, page + 1))}
+        >
+          Next
+        </button>
+      </div>
+    </div>
+  );
+>>>>>>> Stashed changes
 }
 
 export default ProblemSetIndex;
