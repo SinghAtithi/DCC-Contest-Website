@@ -3,6 +3,7 @@ import Navbar from "../../components/Navbar";
 import ThreePicAbout from "./ThreePicAbout";
 import Ritik from "./Ritik";
 import Atithi from "./Atithi";
+import Stats from "./Stats";
 
 function About() {
   return (
@@ -11,6 +12,7 @@ function About() {
       <ThreePicAbout />
       <Ritik />
       <Atithi />
+      <Stats />
     </div>
   );
 }

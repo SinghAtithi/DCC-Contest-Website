@@ -7,7 +7,7 @@ import { ImInstagram, ImWhatsapp } from "react-icons/im";
 
 function Ritik() {
   return (
-    <div className="px-12 mt-16">
+    <div className="px-12 py-8 mt-16 bg-gray-800">
       <div className="overflow-hidden relative ">
         <div className="text-start w-1/2 py-12 px-4 sm:px-6 lg:py-16 lg:px-8 z-20">
           <h2 className="text-3xl font-extrabold text-black dark:text-white sm:text-4xl">
@@ -33,12 +33,12 @@ function Ritik() {
               <GrLinkedin size={50} color="#0077b5" />
             </button>
           </a>
-          <a href="https://twitter.com/coder_ravan" target="_blank">
+          <a href="https://twitter.com/ritik_kaushal01" target="_blank">
             <button className="mt-8 mx-2">
               <FaTwitter size={50} color="#1DA1F2" />
             </button>
           </a>
-          <a href="https://www.instagram.com/arey_hum_hai/" target="_blank">
+          <a href="https://www.instagram.com/ritik_kaushal01/" target="_blank">
             <button className="mt-8 mx-2">
               <FaInstagramSquare size={50} color="white" />
             </button>
