@@ -13,11 +13,13 @@ import Auth from "../components/Auth";
 import Head from "next/head";
 
 export default function App({ Component, pageProps }) {
-  console.log("Hello from _app.js");
   return (
     <>
       <Head>
-        <title>DCC - Dream Code Create!</title>
+        <meta
+          name="viewport"
+          content="width=device-width, initial-scale=1, user-scalable=no"
+        />
         <meta name="application-name" content="Code-DCC" />
         <meta
           name="description"
@@ -31,18 +33,14 @@ export default function App({ Component, pageProps }) {
         <meta name="msapplication-TileColor" content="#2B5797" />
         <meta name="msapplication-tap-highlight" content="no" />
         <meta name="theme-color" content="#000000" />
-        <meta
-          name="viewport"
-          content="width=device-width, initial-scale=1, user-scalable=no"
-        />
         <link
           rel="stylesheet"
           href="path/to/assets/content-styles.css"
           type="text/css"
         />
-        <link rel="apple-touch-icon" href="/icons/touch-icon-iphone.png" />
-        <link rel="apple-touch-icon" sizes="152x152" href="/DCC_LOGO.png" />
-        <link rel="icon" type="image/png" sizes="32x32" href="/DCC_LOGO.png" />
+        <link rel="apple-touch-icon" href="/DCC_LOGO_DARK.png" />
+        <link rel="apple-touch-icon" sizes="152x152" href="/DCC_LOGO_DARK.png" />
+        <link rel="icon" type="image/png" sizes="32x32" href="/DCC_LOGO_DARK.png" />
         <link rel="manifest" href="/manifest.json" />
 
         <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>

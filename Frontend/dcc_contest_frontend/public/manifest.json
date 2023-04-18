@@ -3,7 +3,7 @@
     "short_name": "Code-DCC",
     "icons": [
       {
-        "src": "/DCC_LOGO001.png",
+        "src": "/DCC_LOGO_DARK.png",
         "sizes": "192x192",
         "type": "image/png"
       }

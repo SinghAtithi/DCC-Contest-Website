@@ -9,12 +9,17 @@ import Link from "next/link";
 import Countdown from "../../components/Countdown";
 import moment from "moment/moment";
 import ContestRegisterModal from "../../components/ContestRegisterModal";
+import PastContestRegistrationModal from "../../components/PastContestProblemModal";
+
 
 const contestPage = () => {
   const router = useRouter();
   const [open, setOpen] = useState(false);
   const [name, setName] = useState("");
   const [contestId, setContestId] = useState("");
+
+  const [openPast, setOpenPast] = useState(false);
+  const [problems, setProblems] = useState([]);
 
   const ongoingContests = [
     {
@@ -52,24 +57,28 @@ const contestPage = () => {
       name: "Contest E",
       startTime: "10/04/2023 00:00",
       endTime: "15/04/2023 00:00",
+      problems: [{ name: "P1", problemId: "P1" }, { name: "P2", problemId: "P2" }, { name: "P3", problemId: "P3" }, { name: "P4", problemId: "P4" }, { name: "P4", problemId: "P4" }]
     },
     {
       contestId: "F",
       name: "Contest F",
       startTime: "10/04/2023 00:00",
       endTime: "15/04/2023 00:00",
+      problems: [{ name: "P1", problemId: "P1" }, { name: "P2", problemId: "P2" }, { name: "P3", problemId: "P3" }, { name: "P4", problemId: "P4" }, { name: "P4", problemId: "P4" }]
     },
     {
       contestId: "G",
       name: "Contest G",
       startTime: "10/04/2023 00:00",
       endTime: "15/04/2023 00:00",
+      problems: [{ name: "P1", problemId: "P1" }, { name: "P2", problemId: "P2" }, { name: "P3", problemId: "P3" }, { name: "P4", problemId: "P4" }, { name: "P4", problemId: "P4" }]
     },
     {
       contestId: "H",
       name: "Contest H",
       startTime: "10/04/2023 00:00",
       endTime: "15/04/2023 00:00",
+      problems: [{ name: "P1", problemId: "P1" }, { name: "P2", problemId: "P2" }, { name: "P3", problemId: "P3" }, { name: "P4", problemId: "P4" }, { name: "P4", problemId: "P4" }]
     },
   ];
 
@@ -121,6 +130,7 @@ const contestPage = () => {
           contestId={contestId}
           name={name}
         />
+        <PastContestRegistrationModal open={openPast} setOpen={setOpenPast} name={name} problems={problems} />
         <h1 id="contest-main-heading">CONTESTS</h1>
         <div id="contest-section">
           <h2 id="contest-heading">Ongoing Contests</h2>
@@ -129,7 +139,7 @@ const contestPage = () => {
               {/* head */}
               <thead>
                 <tr>
-                  <th>S.N.</th>
+                  <th>SL. NO.</th>
                   <th>Contest Name</th>
                   <th>Start</th>
                   <th>Length</th>
@@ -150,13 +160,9 @@ const contestPage = () => {
                     <td>
                       <button
                         className="btn btn-outline btn-info min-h-8 h-8"
-                        onClick={() => {
-                          setOpen(true);
-                          setName(contest.name);
-                          setContestId(contest.contestId);
-                        }}
+                        onClick={() => { toggleLoaderBackdrop(); Router.push(`/contest/${contest.contestId}`); }}
                       >
-                         Enter 
+                        Enter
                       </button>
                     </td>
                   </tr>
@@ -173,7 +179,7 @@ const contestPage = () => {
               {/* head */}
               <thead>
                 <tr>
-                  <th>S.N.</th>
+                  <th>SL. NO.</th>
                   <th>Contest Name</th>
                   <th>Start</th>
                   <th>Length</th>
@@ -201,9 +207,8 @@ const contestPage = () => {
                         }}
                       >
                         Register
-                      </button>
-                    </td>{" "}
-                    {/*create a register modal here*/}
+                      </button>{" "}
+                    </td>
                   </tr>
                 ))}
               </tbody>
@@ -233,15 +238,15 @@ const contestPage = () => {
                     <td>{contest.startTime}</td>
                     <td>{getDuration(contest.startTime, contest.endTime)}</td>
                     <td>
-                      <button className="btn btn-outline btn-success min-h-8 h-8">
-                        <Link href={`/leaderboard/${contest.contestId}`} T>
-                          Leaderboard
-                        </Link>
+                      <button className="btn btn-outline btn-success min-h-8 h-8" onClick={() => { toggleLoaderBackdrop(); Router.push(`/leaderboard/${contest.contestId}`); }}>
+                        Leaderboard
                       </button>{" "}
-                      <button className="btn btn-outline btn-success min-h-8 h-8">
-                        <Link href={`/contest/${contest.contestId}`}>
-                          Problems
-                        </Link>
+                      <button className="btn btn-outline btn-success min-h-8 h-8" onClick={() => {
+                        setOpenPast(true);
+                        setName(contest.name);
+                        setProblems(contest.problems);
+                      }}>
+                        Problems
                       </button>
                     </td>
                   </tr>
