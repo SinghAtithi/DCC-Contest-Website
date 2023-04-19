@@ -3,7 +3,7 @@ const { request } = require("express")
 
 async function test() {
       const instance = autocannon({
-            url: "http://4.240.84.221:5000/question/submit",
+            url: "https://0894-4-240-84-221.ngrok-free.app/question/submit",
             connections: 5,
             duration: 5,
             workers: 1,

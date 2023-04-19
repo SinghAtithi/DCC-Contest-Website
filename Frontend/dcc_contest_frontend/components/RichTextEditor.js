@@ -18,7 +18,7 @@ const MyCKEditor = (props) => {
   var imagekit = new ImageKit({
     publicKey: "public_/8n1ylBbpeZ+hb/0ttpwZxVDshE=",
     urlEndpoint: "https://ik.imagekit.io/pqymxdgbi/Code-DCC",
-    authenticationEndpoint: "http://4.240.84.221:5000/auth/imagekitAuth",
+    authenticationEndpoint: "https://0894-4-240-84-221.ngrok-free.app/auth/imagekitAuth",
   });
 
   function uploadAdapter(loader) {

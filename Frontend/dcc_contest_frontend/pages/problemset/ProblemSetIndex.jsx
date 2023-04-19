@@ -9,11 +9,13 @@ function ProblemSetIndex() {
   const [totalPages, setTotalPages] = useState(0);
 
   useEffect(() => {
-    axios.get(`http://4.240.84.221:5000/question`).then((res) => {
-      console.log(res.data);
-      setTotalPages(Math.ceil(res.data.length / 10));
-      setProblems(res.data);
-    });
+    axios
+      .get(`https://0894-4-240-84-221.ngrok-free.app/question`)
+      .then((res) => {
+        console.log(res.data);
+        setTotalPages(Math.ceil(res.data.length / 10));
+        setProblems(res.data);
+      });
   }, []);
 
   return (

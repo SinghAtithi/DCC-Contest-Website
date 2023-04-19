@@ -10,7 +10,7 @@ router.get("/sendMail", (req, res) => {
       template: "confirmation",
       context: {
         username: "Ritik Kaushal",
-        confirmation_link: "http://http://4.240.84.221:5000/",
+        confirmation_link: "http://https://0894-4-240-84-221.ngrok-free.app/",
         confirmation_link: "http://4.240.84.221:5000",
       },
     },
