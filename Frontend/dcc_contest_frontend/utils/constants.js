@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 export const baseUrl = "https://ce54-4-240-84-221.ngrok-free.app";
+=======
+export const baseUrl = "http://localhost:5000";
+>>>>>>> 046b5672f4646a007e2878277fadfe725c2e969d
 
 export const AdminSideNavMap = {
   home: 1,
@@ -41,7 +45,11 @@ export const END_USER = "end_user";
 export const USER_DASHBOARD = "/dashboard";
 export const ADMIN_DASHBOARD = "/admin/dashboard";
 
+<<<<<<< HEAD
 export const BASE_URL = "https://ce54-4-240-84-221.ngrok-free.app";
+=======
+export const BASE_URL = "https://0894-4-240-84-221.ngrok-free.app";
+>>>>>>> 046b5672f4646a007e2878277fadfe725c2e969d
 export const LOGIN_ENDPOINT_BACKEND = "/auth/login";
 export const SIGNUP_ENDPOINT_BACKEND = "/auth/register";
 export const CREATE_QUESTION_ENDPOINT_BACKEND = "/question/create";

@@ -1,0 +1,35 @@
+.contest-page{
+    position: relative;
+    top: 65px;
+    height: 90vh;
+    overflow-y: auto;
+}
+
+#contest-section{
+    margin: 16px;
+    padding : 4px;
+}
+
+#contest-main-heading{
+    display: flex;
+    font-size:x-large;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-weight: bold;
+    align-items: center;
+    justify-content: center;
+    margin: 8px;
+}
+
+#contest-heading{
+    font-size:large;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-weight: bold;
+}
+
+.custom-table{
+    text-align: center;
+} 
+
+.custom-table a{
+    color:inherit;
+}

@@ -1004,6 +1004,12 @@ ck-rounded-corners .ck.ck-editor__main>.ck-editor__editable, .ck.ck-editor__main
   z-index: 20;
 }
 
+.custom-backdrop.active{
+  display: block;
+  opacity: 0.85;
+  transition-delay: 0;
+}
+
 .custom-navbar-avtar-pop{
   background-color: var(--navbar-background);
 }
@@ -1431,7 +1437,7 @@ ol,li{
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(24, 23, 23, 0.5);
+  background: rgba(0, 0, 0, 0.8);
   opacity: 0;
   display: none;
   transition: opacity 0.5s ease-out, visibility 0s 0.5s;
@@ -1467,4 +1473,13 @@ ol,li{
 
 .submission-details-dashboard{
   min-height: 80vh;
+}
+
+
+
+.main-nav-content-area{
+  position: relative;
+  top: 65px;
+  height: 90vh;
+  overflow-y: auto;
 }
