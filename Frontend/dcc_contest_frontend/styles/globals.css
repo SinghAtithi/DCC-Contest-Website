@@ -919,7 +919,6 @@ ck-rounded-corners .ck.ck-editor__main>.ck-editor__editable, .ck.ck-editor__main
   width: 100%;
   background-color: var(--navbar-background);
   z-index: 50;
-  border-radius: 8px;
 }
 
 .navbar-logo{

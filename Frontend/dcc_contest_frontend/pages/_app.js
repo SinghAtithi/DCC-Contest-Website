@@ -6,6 +6,8 @@ import "../styles/RabbitLoader.css";
 import "../styles/ViewProblems.css";
 import "../styles/SearchBar.css";
 import "../styles/ContestHomePage.css";
+import "../styles/AboutRitik.css";
+import "../styles/AboutAtithi.css";
 
 import { Provider } from "react-redux";
 import store from "../store/baseStore";

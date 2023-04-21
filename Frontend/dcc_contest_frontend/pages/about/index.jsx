@@ -7,7 +7,7 @@ import Stats from "./Stats";
 
 function About() {
   return (
-    <div className="bg-white dark:bg-gray-900 pt-16">
+    <div className="main-nav-content-area bg-white dark:bg-gray-900 pt-16">
       <Navbar />
       <ThreePicAbout />
       <Ritik />
