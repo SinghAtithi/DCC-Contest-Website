@@ -21,7 +21,7 @@ router.get("/:username", async (req, res) => {
   if(username){
     try {
       const to_send = {};
-      const currDate = moment(new Date()).format("DD/MM/YYYY HH:mm").toString();
+      const currDate = moment(new Date()).utcOffset("+05:30").format("DD/MM/YYYY HH:mm").toString();
   
       // Get the user with username is in the url
       const user = await User.findOne(
