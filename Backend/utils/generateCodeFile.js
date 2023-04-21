@@ -24,12 +24,12 @@ const generateCodeFile = async (lang, content, input, username) => {
   const codeFilePath = path.join(userDir, codeFileName);
   fs.writeFileSync(codeFilePath, content);
 
-  const inFileName = `${codeFileName.split(".")[0]}.txt`;
-  const inPath = path.join(userDir, inFileName);
-  if (input) {
-    fs.writeFileSync(inPath, input);
-  }
-  return { codeFilePath, inPath };
+  const outFileName = `${codeFileName.split(".")[0]}.txt`;
+  const outPath = path.join(userDir, outFileName);
+  // if (input) {
+  //   fs.writeFileSync(inPath, input);
+  // }
+  return { codeFilePath, outPath };
 };
 
 module.exports = { generateCodeFile };
