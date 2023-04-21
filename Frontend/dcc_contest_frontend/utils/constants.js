@@ -1,5 +1,3 @@
-export const baseUrl = "https://ce54-4-240-84-221.ngrok-free.app";
-
 export const AdminSideNavMap = {
   home: 1,
   dashboard: 2,
@@ -41,7 +39,7 @@ export const END_USER = "end_user";
 export const USER_DASHBOARD = "/dashboard";
 export const ADMIN_DASHBOARD = "/admin/dashboard";
 
-export const BASE_URL = "https://ce54-4-240-84-221.ngrok-free.app";
+export const BASE_URL = "http://localhost:5000";
 export const LOGIN_ENDPOINT_BACKEND = "/auth/login";
 export const SIGNUP_ENDPOINT_BACKEND = "/auth/register";
 export const CREATE_QUESTION_ENDPOINT_BACKEND = "/question/create";

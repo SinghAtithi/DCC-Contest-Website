@@ -6,6 +6,7 @@ import QuestionStatement from "../../../components/QuestionStatement";
 import snippetCode from "../../../components/snippet";
 import axios from "axios";
 import ConsolePanel from "../../../components/console_panel";
+import { BASE_URL } from "../../../utils/constants";
 
 const contest_container = {
   display: "flex",
@@ -86,7 +87,7 @@ const contestPage = () => {
 
     setConsoleLoader(true);
 
-    const url = "https://0894-4-240-84-221.ngrok-free.app/question/submit";
+    const url = `${BASE_URL}/question/submit`;
     const config = {
       headers: {
         "Content-Type": "application/x-www-form-urlencoded",

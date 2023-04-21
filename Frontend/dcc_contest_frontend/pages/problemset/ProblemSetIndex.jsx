@@ -2,6 +2,7 @@ import axios from "axios";
 import React, { useEffect } from "react";
 import { useState } from "react";
 import ProblemRow from "../../components/problemRow";
+import { BASE_URL } from "../../utils/constants";
 
 function ProblemSetIndex() {
   const [problems, setProblems] = React.useState([]);
@@ -10,7 +11,7 @@ function ProblemSetIndex() {
 
   useEffect(() => {
     axios
-      .get(`https://0894-4-240-84-221.ngrok-free.app/question`)
+      .get(`${BASE_URL}/question`)
       .then((res) => {
         console.log(res.data);
         setTotalPages(Math.ceil(res.data.length / 10));
