@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import axios from "axios";
 import Router from "next/router";
 import QuestionSkeleton from "../skeleton/QuestionSkeleton";
+import { BASE_URL } from "../utils/constants";
 
 function QuestionStatement(props) {
   const [question, setQuestion] = React.useState({
@@ -20,7 +21,7 @@ function QuestionStatement(props) {
     if (props.problemId) {
       axios
         .get(
-          `https://0894-4-240-84-221.ngrok-free.app/question/${props.problemId}`
+          `${BASE_URL}/question/${props.problemId}`
         )
         .then((res) => {
           if (question.name != res.data.name) {
@@ -50,7 +51,7 @@ function QuestionStatement(props) {
     if (props.problemId) {
       axios
         .get(
-          `https://0894-4-240-84-221.ngrok-free.app/question/${props.problemId}`
+          `${BASE_URL}/question/${props.problemId}`
         )
         .then((res) => {
           if (question.name != res.data.name) {

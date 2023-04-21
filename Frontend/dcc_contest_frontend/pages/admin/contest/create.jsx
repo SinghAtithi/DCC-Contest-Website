@@ -14,6 +14,7 @@ import {
   END_USER,
   USER_DASHBOARD,
   LOGIN_PAGE,
+  BASE_URL,
 } from "../../../utils/constants";
 import toggleLoaderBackdrop from "../../../utils/toggleCustomBackdrop";
 import { useSelector } from "react-redux";
@@ -162,7 +163,7 @@ function create_problem() {
   const onSubmit = () => {
     axios
       .post(
-        "https://0894-4-240-84-221.ngrok-free.app/contest/create",
+        `${BASE_URL}/contest/create`,
         {
           contestName,
           contestID,
