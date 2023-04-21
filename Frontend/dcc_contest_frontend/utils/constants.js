@@ -38,7 +38,7 @@ export const END_USER = "end_user";
 
 export const ADMIN_DASHBOARD = "/admin/dashboard";
 
-export const BASE_URL = "https://275f-4-240-84-221.ngrok-free.app";
+export const BASE_URL = "https://6afe-4-240-84-221.ngrok-free.app";
 export const LOGIN_ENDPOINT_BACKEND = "/auth/login";
 export const SIGNUP_ENDPOINT_BACKEND = "/auth/register";
 export const CREATE_QUESTION_ENDPOINT_BACKEND = "/question/create";
