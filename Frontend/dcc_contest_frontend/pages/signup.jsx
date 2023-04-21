@@ -11,8 +11,7 @@ import {
     SIGNUP_ENDPOINT_BACKEND,
     ADMIN,
     SUPER_ADMIN,
-    ADMIN_DASHBOARD,
-    USER_DASHBOARD,
+    ADMIN_DASHBOARD
 } from "../utils/constants";
 import SignUpConfirmaionModal from "../components/SignUpConfirmationModal";
 import { useRouter } from "next/router";
@@ -22,14 +21,14 @@ import checkToken from "../utils/checkToken";
 
 function signup() {
     const router = useRouter();
-    const { loggedIn, role } = useSelector((state) => state.login);
+    const { loggedIn, role, username } = useSelector((state) => state.login);
 
     const [quesInd, setQuesInd] = React.useState(0);
     const [name, setName] = React.useState("");
     const [email, setEmail] = React.useState("");
     const [password, setPassword] = React.useState("");
     const [confirm_password, setconfirm_password] = React.useState("");
-    const [username, setusername] = React.useState("");
+    const [user_name, setuser_name] = React.useState("");
     const [githubURL, setGithubURL] = React.useState("");
     const [linkedinURL, setLinkedinURL] = React.useState("");
     const [codeforcesURL, setCodeforcesURL] = React.useState("");
@@ -52,7 +51,7 @@ function signup() {
                         Router.push(ADMIN_DASHBOARD);
                     else if (status.role === SUPER_ADMIN)
                         Router.push(ADMIN_DASHBOARD);
-                    else Router.push(USER_DASHBOARD);
+                    else Router.push(`/${username}`);
                 } else {
                     // setIsLoading(false);
                     toggleLoaderBackdrop(1, 2);
@@ -62,7 +61,7 @@ function signup() {
             if (next) Router.push(`/${next}`);
             else if (role === ADMIN) Router.push(ADMIN_DASHBOARD);
             else if (role === SUPER_ADMIN) Router.push(ADMIN_DASHBOARD);
-            else Router.push(USER_DASHBOARD);
+            else Router.push(`/${username}`);
         }
     }, []);
 
@@ -76,7 +75,7 @@ function signup() {
             email,
             password,
             confirm_password,
-            username,
+            user_name,
             githubURL,
             linkedinURL,
             codeforcesURL,
@@ -132,7 +131,7 @@ function signup() {
                 setText(email);
                 break;
             case 2:
-                setText(username);
+                setText(user_name);
                 break;
             case 3:
                 setText(password);
@@ -173,7 +172,7 @@ function signup() {
                 setEmail(text);
                 break;
             case 2:
-                setusername(text);
+                setuser_name(text);
                 break;
             case 3:
                 setPassword(text);

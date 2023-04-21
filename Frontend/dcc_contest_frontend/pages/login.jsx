@@ -70,6 +70,7 @@ function login() {
         axios
             .post(BASE_URL + LOGIN_ENDPOINT_BACKEND, data, config)
             .then((res) => {
+                console.log("From login", res.data);
                 store.dispatch(
                     loginUser({
                         role: res.data.role,

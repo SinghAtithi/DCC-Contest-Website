@@ -16,24 +16,24 @@ import {
     PROBLEM_SET_PAGE,
     SETTINGS_PAGE,
     SIGNUP_PAGE,
-    SUPER_ADMIN,
-    USER_DASHBOARD,
+    SUPER_ADMIN
+    ,
 } from "../utils/constants";
 import { useSelector } from "react-redux";
 import { logoutUser } from "../store/loginStore";
 import store from "../store/baseStore";
 import BackdropLoader from "./BackdropLoader";
 
-function getPath(role) {
+function getPath(role,username) {
     return role === ADMIN || role === SUPER_ADMIN
         ? ADMIN_DASHBOARD
-        : USER_DASHBOARD;
+        : `/${username}`
 }
 
 
 function Navbar() {
     const { asPath } = useRouter();
-    const { role, loggedIn, profile_pic } = useSelector((state) => state.login);
+    const { role, loggedIn, profile_pic, username } = useSelector((state) => state.login);
 
     return (
         <nav>
@@ -88,6 +88,7 @@ function Navbar() {
                             role={role}
                             asPath={asPath}
                             profile_pic={profile_pic}
+                            username={username}
                         />
                     )}
                     {!loggedIn && (
@@ -156,10 +157,10 @@ function Navbar() {
                     <>
                         <li
                             onClick={() => {
-                                toggleLoaderBackdrop(asPath, getPath(role));
+                                toggleLoaderBackdrop(asPath, getPath(role,username));
                             }}
                         >
-                            <Link href={getPath(role)}>Dashboard</Link>
+                            <Link href={getPath(role,username)}>Dashboard</Link>
                         </li>
                         <li
                             onClick={() => {
@@ -224,10 +225,10 @@ function UserMenu(props) {
             >
                 <li
                     onClick={() => {
-                        toggleLoaderBackdrop(props.asPath, getPath(props.role));
+                        toggleLoaderBackdrop(props.asPath, getPath(props.role,props.username));
                     }}
                 >
-                    <Link href={getPath(props.role)}>Dashboard</Link>
+                    <Link href={getPath(props.role,props.username)}>Dashboard</Link>
                 </li>
                 <li
                     onClick={() => {

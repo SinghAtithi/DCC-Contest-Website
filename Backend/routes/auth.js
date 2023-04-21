@@ -154,7 +154,7 @@ router.post("/login", async (req, res) => {
         } else {
           user = await User.findOne(
             { username: loginId },
-            "username password role confirmed_email"
+            "username password role profile_pic confirmed_email"
           ).exec();
         }
         if (user) {
@@ -172,6 +172,7 @@ router.post("/login", async (req, res) => {
                 token: token,
                 role: user.role,
                 profile_pic: user.profile_pic,
+                username: user.username,
               });
             } else {
               res.status(400).send({ error: "Incorrect Password." });
@@ -236,7 +237,7 @@ router.post("/verifyEmail", async (req, res) => {
         "confirmed_email"
       ).exec();
       if (user) {
-        if(!user.confirmed_email){
+        if (!user.confirmed_email) {
           const updatedUser = await User.findOneAndUpdate(
             { _id: user._id },
             { confirmed_email: true },
@@ -245,7 +246,7 @@ router.post("/verifyEmail", async (req, res) => {
           res.status(200).send({ message: "Successfully Verified." });
 
         }
-        else{
+        else {
           res.status(400).send({ error: "This link has already been used and your account has been verified." });
         }
       } else {
@@ -363,7 +364,7 @@ router.post("/resendConfirmationEmail", async (req, res) => {
     if (email.includes("@") && email.includes(".", email.indexOf("@"))) {
       const user = await User.findOne({ email: email }, "username name confirmed_email").exec();
       if (user) {
-        if(!user.confirmed_email){
+        if (!user.confirmed_email) {
           const verification_token = generateVerificationToken(user._id);
 
           EmailQueue.add({
@@ -392,12 +393,12 @@ router.post("/resendConfirmationEmail", async (req, res) => {
               });
             });
         }
-        else{
+        else {
           res
-          .status(400)
-          .json({ error: "Your email has already been verified." });
+            .status(400)
+            .json({ error: "Your email has already been verified." });
         }
-        
+
       } else {
         res
           .status(400)

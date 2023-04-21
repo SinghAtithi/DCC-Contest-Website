@@ -7,6 +7,7 @@ const login = createSlice({
   initialState,
   reducers: {
     loginUser(state, actions) {
+      console.log("From store :", actions.payload);
       state.loggedIn = true;
       state.isLoading = false;
       state.role = actions.payload.role;

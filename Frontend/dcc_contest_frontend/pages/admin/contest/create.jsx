@@ -12,7 +12,6 @@ import {
   ADMIN,
   SUPER_ADMIN,
   END_USER,
-  USER_DASHBOARD,
   LOGIN_PAGE,
   BASE_URL,
 } from "../../../utils/constants";
@@ -79,7 +78,7 @@ function create_problem() {
     toggleLoaderBackdrop();
     if (loggedIn && (role === ADMIN || role === SUPER_ADMIN))
       toggleLoaderBackdrop();
-    else if (loggedIn && role === END_USER) Router.push(USER_DASHBOARD);
+    else if (loggedIn && role === END_USER) Router.push(`/${username}`);
     else {
       checkToken().then((status) => {
         if (status.verified) {
@@ -87,7 +86,7 @@ function create_problem() {
             // FETCH data here
 
             toggleLoaderBackdrop();
-          } else Router.push(USER_DASHBOARD);
+          } else Router.push(`/${username}`);
         } else Router.push(LOGIN_PAGE + "?next=admin/contest/create");
       });
     }

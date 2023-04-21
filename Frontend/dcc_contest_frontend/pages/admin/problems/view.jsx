@@ -8,7 +8,6 @@ import {
     END_USER,
     LOGIN_PAGE,
     SUPER_ADMIN,
-    USER_DASHBOARD,
     ADMIN_DASHBOARD,
     AdminSideNavMap,
     PROBLEM_SEARCH,
@@ -52,14 +51,14 @@ const ViewProblems = () => {
         toggleLoaderBackdrop();
         if (loggedIn && (role === ADMIN || role === SUPER_ADMIN))
             search_problems(true);
-        else if (loggedIn && role === END_USER) Router.push(USER_DASHBOARD);
+        else if (loggedIn && role === END_USER) Router.push(`/${username}`);
         else {
             checkToken().then((status) => {
                 if (status.verified) {
                     if (status.role === ADMIN || status.role === SUPER_ADMIN) {
                         // FETCH data here
                         search_problems(true);
-                    } else Router.push(USER_DASHBOARD);
+                    } else Router.push(`/${username}`);
                 } else Router.push(LOGIN_PAGE + "?next=admin/problems/view");
             });
         }

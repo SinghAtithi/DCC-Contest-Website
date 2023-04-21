@@ -22,7 +22,7 @@ export default function AssignRoles() {
         if (loggedIn && role === ADMIN) toggleLoaderBackdrop();
         else if (loggedIn && role === END_USER) {
             alert("You are not authorised to access this page.");
-            Router.push(USER_DASHBOARD);
+            Router.push(`/${username}`);
         } else if (loggedIn && role === SUPER_ADMIN) {
             alert("You are not authorised to access this page.");
             Router.push(ADMIN_DASHBOARD);
@@ -38,7 +38,7 @@ export default function AssignRoles() {
                         Router.push(ADMIN_DASHBOARD);
                     } else {
                         alert("You are not authorised to access this page.");
-                        Router.push(USER_DASHBOARD);
+                        Router.push(`/${username}`);
                     }
                 } else Router.push(LOGIN_PAGE + "?next=admin/report");
             });

@@ -36,7 +36,6 @@ export const ADMIN = "admin";
 export const SUPER_ADMIN = "super_admin";
 export const END_USER = "end_user";
 
-export const USER_DASHBOARD = "/dashboard";
 export const ADMIN_DASHBOARD = "/admin/dashboard";
 
 export const BASE_URL = "https://275f-4-240-84-221.ngrok-free.app";

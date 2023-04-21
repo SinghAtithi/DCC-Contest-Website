@@ -9,7 +9,7 @@ import {
     ASSIGN_REVOKE_ROLES_PAGE,
     SUPER_ADMIN,
     END_USER,
-    USER_DASHBOARD,
+    `/${username}`,
 } from "../../utils/constants";
 import toggleLoaderBackdrop from "../../utils/toggleCustomBackdrop";
 import checkToken from "../../utils/checkToken";
@@ -23,7 +23,7 @@ export default function AssignRoles() {
         if (loggedIn && role === SUPER_ADMIN) toggleLoaderBackdrop();
         else if (loggedIn && role === END_USER) {
             alert("You are not authorised to access this page.");
-            Router.push(USER_DASHBOARD);
+            Router.push(`/${username}`);
         } else if (loggedIn && role === ADMIN) {
             alert("You are not authorised to access this page.");
             Router.push(ADMIN_DASHBOARD);
@@ -39,7 +39,7 @@ export default function AssignRoles() {
                         Router.push(ADMIN_DASHBOARD);
                     } else {
                         alert("You are not authorised to access this page.");
-                        Router.push(USER_DASHBOARD);
+                        Router.push(`/${username}`);
                     }
                 } else Router.push(LOGIN_PAGE + "?next=super_admin/roles");
             });

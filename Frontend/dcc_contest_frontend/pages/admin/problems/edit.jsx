@@ -8,7 +8,6 @@ import {
     END_USER,
     LOGIN_PAGE,
     SUPER_ADMIN,
-    USER_DASHBOARD,
     ADMIN_DASHBOARD,
     AdminSideNavMap,
 } from "../../../utils/constants";
@@ -22,7 +21,7 @@ const EditProblem = () => {
         toggleLoaderBackdrop();
         if (loggedIn && (role === ADMIN || role === SUPER_ADMIN))
             toggleLoaderBackdrop();
-        else if (loggedIn && role === END_USER) Router.push(USER_DASHBOARD);
+        else if (loggedIn && role === END_USER) Router.push(`/${username}`);
         else {
             checkToken().then((status) => {
                 if (status.verified) {
@@ -30,7 +29,7 @@ const EditProblem = () => {
                         // FETCH data here
 
                         toggleLoaderBackdrop();
-                    } else Router.push(USER_DASHBOARD);
+                    } else Router.push(`/${username}`);
                 } else Router.push(LOGIN_PAGE + "?next=admin/problems/edit");
             });
         }
