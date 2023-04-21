@@ -28,7 +28,7 @@ const createSubmission = async (req, res) => {
                         });
                   }
                   else {
-                        const formattedDate = moment(new Date()).format("DD/MM/YYYY HH:mm").toString();
+                        const formattedDate = moment(new Date()).utcOffset("+05:30").format("DD/MM/YYYY HH:mm").toString();
                         const submission = await createSubmissionInDb(user.username, lang, code, ques_id, formattedDate, contest_id);
                         addToQueue(submission._id, contestRunning, res);
                   }

@@ -149,9 +149,12 @@ function problemPage() {
                 }, 3000);
             })
             .catch((err) => {
-                setConsoleData(
-                    "Something went wrong. Check your internet and retry again."
-                );
+                console.log(err);
+                if (err.response.data.error === "Invalid Token") setConsoleData("Your session has expired. Please login again");
+                else
+                    setConsoleData(
+                        "Something went wrong. Check your internet and retry again."
+                    );
                 setConsoleLoader(false);
             });
     };

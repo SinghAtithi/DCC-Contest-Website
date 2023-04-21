@@ -16,7 +16,7 @@ router.get("/", async (req, res) => {
   //   // console.log(ques1);
   // }
   console.log("at route question /");
-  const currDate = moment(new Date()).format("DD/MM/YYYY HH:mm").toString();
+  const currDate = moment(new Date()).utcOffset("+05:30").format("DD/MM/YYYY HH:mm").toString();
   const allQues = await Question.find(
     { assigned: true },
     // { displayAfter: { $lt: currDate }, assigned: true },
@@ -77,7 +77,7 @@ router.post("/create", verifyAdmin, async (req, res) => {
     var public_tc = public_test_cases;
     var private_tc = private_test_cases;
 
-    var display_after = moment(new Date())
+    var display_after = moment(new Date()).utcOffset("+05:30")
       .add(1000, "days")
       .format("DD/MM/YYYY HH:mm")
       .toString();
@@ -109,7 +109,7 @@ router.post("/create", verifyAdmin, async (req, res) => {
 
 // Get question by ques_id
 router.get("/:ques_id", (req, res) => {
-  const currDate = moment(new Date()).format("DD/MM/YYYY HH:mm").toString();
+  const currDate = moment(new Date()).utcOffset("+05:30").format("DD/MM/YYYY HH:mm").toString();
   try {
     Question.findOne(
       {
