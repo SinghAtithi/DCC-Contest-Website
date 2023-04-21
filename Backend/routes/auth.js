@@ -11,6 +11,7 @@ const {
 const { EmailQueue } = require("../queue/EmailQueue/index.js");
 const router = express.Router();
 const jwt = require("jsonwebtoken");
+const { BASE_URL } = require("../utils/constants.js");
 
 router.post("/register", async (req, res) => {
   console.log(req.body);
@@ -64,7 +65,7 @@ router.post("/register", async (req, res) => {
                         template: "confirmation",
                         context: {
                           username: user.name,
-                          confirmation_link: `http://localhost:3000/confirmEmail/${verification_token}`,
+                          confirmation_link: `${BASE_URL}/confirmEmail/${verification_token}`,
                         },
                       },
                     })
@@ -325,7 +326,7 @@ router.post("/forgotPasswordEmail", async (req, res) => {
             context: {
               name: user.name,
               username: user.username,
-              confirmation_link: `http://localhost:3000/forgotPassword/${verification_token}`,
+              confirmation_link: `${BASE_URL}/forgotPassword/${verification_token}`,
             },
           },
         })
@@ -372,7 +373,7 @@ router.post("/resendConfirmationEmail", async (req, res) => {
               template: "confirmation",
               context: {
                 username: user.username,
-                confirmation_link: `http://localhost:3000/confirmEmail/${verification_token}`,
+                confirmation_link: `${BASE_URL}/confirmEmail/${verification_token}`,
               },
             },
           })
