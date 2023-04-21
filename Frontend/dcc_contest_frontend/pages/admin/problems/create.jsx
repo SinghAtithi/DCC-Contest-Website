@@ -85,9 +85,7 @@ function create_problem() {
         setPublicTestCases([]);
         setPrivateTestCases([]);
         setTimeLimit("");
-        setTimeLimitError(null);
         setProblemID("");
-        setProblemIDError("");
         setInputTestCase("");
         setOutputTestCase("");
         setExplanation("");
