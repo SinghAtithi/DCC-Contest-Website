@@ -8,7 +8,6 @@ import checkToken from "../utils/checkToken";
 import {
     ADMIN,
     SUPER_ADMIN,
-    USER_DASHBOARD,
     ADMIN_DASHBOARD,
     BASE_URL,
     LOGIN_ENDPOINT_BACKEND,
@@ -43,7 +42,7 @@ function login() {
                         Router.push(ADMIN_DASHBOARD);
                     else if (status.role === SUPER_ADMIN)
                         Router.push(ADMIN_DASHBOARD);
-                    else Router.push(USER_DASHBOARD);
+                    else Router.push(`/${res.data.username}`);
                 } else {
                     // setIsLoading(false);
                     toggleLoaderBackdrop();
@@ -53,7 +52,7 @@ function login() {
             if (next) Router.push(`/${next}`);
             else if (role === ADMIN) Router.push(ADMIN_DASHBOARD);
             else if (role === SUPER_ADMIN) Router.push(ADMIN_DASHBOARD);
-            else Router.push(USER_DASHBOARD);
+            else Router.push(`/${res.data.username}`);
         }
     }, []);
 
@@ -83,9 +82,8 @@ function login() {
                 if (router.query["next"])
                     Router.push(`/${router.query["next"]}`);
                 else if (res.data.role === ADMIN) Router.push(ADMIN_DASHBOARD);
-                else if (res.data.role === SUPER_ADMIN)
-                    Router.push(ADMIN_DASHBOARD);
-                else Router.push(USER_DASHBOARD);
+                else if (res.data.role === SUPER_ADMIN) Router.push(ADMIN_DASHBOARD);
+                else Router.push(`/${res.data.username}`);
             })
             .catch((err) => {
                 console.log(err);
