@@ -9,7 +9,6 @@ import {
     ASSIGN_REVOKE_ROLES_PAGE,
     SUPER_ADMIN,
     END_USER,
-    `/${username}`,
 } from "../../utils/constants";
 import toggleLoaderBackdrop from "../../utils/toggleCustomBackdrop";
 import checkToken from "../../utils/checkToken";
