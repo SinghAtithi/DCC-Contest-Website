@@ -21,13 +21,14 @@ router.post("/register", async (req, res) => {
       email,
       password,
       confirm_password,
-      username,
+      user_name,
       githubURL = "",
       linkedinURL = "",
       codeforcesURL = "",
       codechefURL = "",
       bio = "",
     } = req.body;
+    const username = user_name;
     if (name) {
       if (email) {
         if (email.includes("@") && email.includes(".", email.indexOf("@"))) {
