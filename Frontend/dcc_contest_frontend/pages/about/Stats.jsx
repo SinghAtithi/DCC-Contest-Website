@@ -3,7 +3,7 @@ import React from "react";
 function Stats() {
   return (
     <div>
-      <section className="mt-8 px-4 py-12  bg-green-500 dark:bg-gray-800 sm:py-16 sm:px-6 lg:px-8 lg:py-20">
+      <section className="mt-8 px-4 bg-green-500 dark:bg-gray-800 sm:py-16 sm:px-6 lg:px-8 lg:py-20">
         <div className="max-w-4xl mx-auto text-center">
           <h2 className="text-3xl font-extrabold leading-9 text-white sm:text-4xl sm:leading-10">
             Used by leading architects, home builders renovators.

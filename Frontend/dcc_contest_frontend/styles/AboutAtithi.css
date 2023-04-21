@@ -1,0 +1,58 @@
+.about-atithi-container{
+    position: relative;
+    background-color: rgb(17 24 39 / 1);
+    overflow: hidden;
+    display: grid;
+}
+
+.about-atithi-image{
+    display: grid;
+    padding:1rem;
+    margin:4px;
+}
+
+.about-atithi-image img{
+    border-radius: 9999px;
+    max-width: 25vw;
+    justify-self: start;
+    align-self:center;
+}
+
+.about-atithi-description{
+    text-align: start;
+    padding-top: 3rem;
+    padding-bottom: 3rem;
+    padding-left: 1rem;
+    padding-right: 1rem;
+    z-index: 20;
+    margin:4px;
+}
+
+
+@media screen and (min-width:851px) {
+    .about-atithi-image{
+        grid-column-start: 1;
+    }
+
+    .about-atithi-description{
+        grid-column-start: 2;
+    }
+}
+
+@media screen and (max-width:850px) {
+    .about-atithi-container{
+        grid-template-rows: auto;
+    }
+    .about-atithi-description{
+        grid-row-start: 2;
+    }
+    .about-atithi-image{
+        grid-row-start: 1;
+    }
+    .about-atithi-image img{
+        border-radius: 9999px;
+        justify-self: center;
+        align-self:center;
+        max-width: 50vw;
+    }   
+}

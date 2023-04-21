@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-const initialState = { loggedIn: false, isLoading: true, role: undefined, profile_pic: "https://ik.imagekit.io/pqymxdgbi/avtar.png"};
+const initialState = { loggedIn: false, isLoading: true, role: undefined, username:undefined, profile_pic: "https://ik.imagekit.io/pqymxdgbi/avtar.png"};
 
 const login = createSlice({
   name: "login",
