@@ -1,1 +1,3 @@
-export const BASE_URL = 'https://code-dcc.vercel.app';
+const BASE_URL = 'https://code-dcc.vercel.app';
+
+module.exports = {BASE_URL:BASE_URL};

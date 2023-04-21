@@ -11,7 +11,7 @@ const dirCodeFiles = path.join(
 );
 
 const executeCpp = async (filePath, username, inPath, time_limit) => {
-  console.log("time limit", time_limit)
+  console.log("time limit", time_limit);
   const userDir = path.join(dirCodeFiles, `${username}`);
   const outFileName = `${path.basename(filePath).split(".")[0]}.txt`;
   const outPath = path.join(userDir, outFileName);
@@ -22,43 +22,44 @@ const executeCpp = async (filePath, username, inPath, time_limit) => {
     exec(`g++ ${filePath} -o ${outPath} -static`, (error, stdout, stderr) => {
       if (error || stderr) {
         rej({ error, stderr });
-      }
-      else {
+      } else {
         let start = new Date();
 
         // use ./ before ${outFileName} to run the file in the same directory in linux
-        process = exec(`cd UsersCodes && cd codeFiles && cd ${username} && ./${outFileName} < ${inPath}`, (err, std_out, std_err) => {
-          let end = new Date();
+        process = exec(
+          `cd UsersCodes && cd codeFiles && cd ${username} && ./${outFileName} < ${inPath}`,
+          (err, std_out, std_err) => {
+            let end = new Date();
 
-          var to_delete = [];
-          to_delete.push(outPath);
-          deleteFile(to_delete);
+            var to_delete = [];
+            to_delete.push(outPath);
+            deleteFile(to_delete);
 
-          if (err || std_err) {
-            rej({ err, std_err });
-          }
-          let dif = Math.abs(start - end) / 1000; // the time difference in seconds.
-
-          if (dif > time_limit + 2) {
-            process.kill(); // kill the process if it runs for more than 4 seconds
-            rej({ "error": "Time Limit Exceeded", difference: dif });
-          }
-          else {
-            const response = {
-              stdout: std_out,
-              difference: dif,
+            if (err || std_err) {
+              rej({ err, std_err });
             }
-            res(response);
+            let dif = Math.abs(start - end) / 1000; // the time difference in seconds.
+
+            if (dif > time_limit + 2) {
+              process.kill(); // kill the process if it runs for more than 4 seconds
+              rej({ error: "Time Limit Exceeded", difference: dif });
+            } else {
+              const response = {
+                stdout: std_out,
+                difference: dif,
+              };
+              res(response);
+            }
           }
-        });
+        );
 
         // kill the process if it runs for more than 4 seconds
         setTimeout(() => {
           process.kill();
-          rej({ "error": "Time Limit Exceeded", difference: 4 });
+          rej({ error: "Time Limit Exceeded", difference: 4 });
         }, time_limit * 1000 + 1500);
       }
-    })
+    });
   });
 };
 
