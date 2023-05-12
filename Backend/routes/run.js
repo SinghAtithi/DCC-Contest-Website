@@ -33,7 +33,7 @@ router.post("/run", async (req, res) => {
     user_id,
     attempt_no
   ); // language, code, input(if any), user_id, attempt_no.
-    
+
   // Try to execute the file created and deliver the verdict
   try {
     var output = [];
@@ -65,7 +65,7 @@ router.post("/run", async (req, res) => {
       ); // path of code file, user_id, path of input file , time_limit
       // const ans1 = ans.replace(/(\r)/gm, ""); // Windows by default adds \r before every \n. This was causing an issue with file comparison. So removed all \r from output.
 
-      
+
       // Create a file for the result obtained by the code which was executed.
       const resultFilePath = await generateResultFile(codeFilePath, ans, user_id, i);
 

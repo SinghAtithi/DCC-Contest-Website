@@ -10,8 +10,27 @@ const { generateResultFile } = require("../../utils/generateResultFile");
 const { getVerdict } = require("../../utils/verdict");
 const { deleteFile } = require("../../utils/deleteFiles");
 
+const { exec } = require("child_process");
+
+
+
 // Create a Queue object
 const ExecuteQueue = new Queue("execute");
+
+const compileCpp = async (filePath, outPath) => {
+  // outPath = filePath.split(".")[0] + ".exe";
+  console.log("filePath from index : ", filePath);
+  console.log("outPath from index : ", outPath);
+  return new Promise((res, rej) => {
+    exec(`g++ ${filePath} -o ${outPath} -static`, (error, stdout, stderr) => {
+      if (error || stderr) {
+        rej({ error, stderr });
+      } else {
+        res();
+      }
+    });
+  });
+};
 
 // This is the process every element in ExecuteQueue will do.
 // PENDING TASKS
@@ -28,7 +47,7 @@ ExecuteQueue.process(5, async (job, done) => {
       // Generate Code file for the code.
 
       console.log(1);
-      const { codeFilePath, inPath } = await generateCodeFile(
+      const { codeFilePath, outPath } = await generateCodeFile(
         submission.language,
         submission.code,
         undefined,
@@ -48,7 +67,11 @@ ExecuteQueue.process(5, async (job, done) => {
         var error = false;
         var time_taken = 0;
 
-        console.log(2);
+        console.log("heeeee", outPath);
+        await compileCpp(codeFilePath, outPath).then(async () => {
+          console.log("Code Compiled Successfully");
+        });
+
 
         // Loop over public test cases
         for (var i = 0; i < n_public; i++) {
@@ -62,6 +85,17 @@ ExecuteQueue.process(5, async (job, done) => {
               "public"
             ),
             `${i}_in.txt`
+          );
+
+          const outPathCheck = path.join(
+            path.join(
+              path.join(
+                path.join(basePath(), "TestCases"),
+                `${ques._id}`
+              ),
+              "public"
+            ),
+            `${i}_out.txt`
           );
 
           console.log(3);
@@ -86,20 +120,10 @@ ExecuteQueue.process(5, async (job, done) => {
           );
 
           // Path of the pre defined output file for this test case
-          const outPath = path.join(
-            path.join(
-              path.join(
-                path.join(basePath(), "TestCases"),
-                `${ques._id}`
-              ),
-              "public"
-            ),
-            `${i}_out.txt`
-          );
 
           console.log(5);
           // Check for verdict
-          if (!getVerdict(resultFilePath, outPath)) {
+          if (!getVerdict(resultFilePath, outPathCheck)) {
             error = true;
             break;
           }
@@ -120,6 +144,18 @@ ExecuteQueue.process(5, async (job, done) => {
             ),
             `${i}_in.txt`
           );
+
+          const outPathCheck = path.join(
+            path.join(
+              path.join(
+                path.join(basePath(), "TestCases"),
+                `${ques._id}`
+              ),
+              "private"
+            ),
+            `${i}_out.txt`
+          );
+
 
           console.log(7);
           // Execute the code.
@@ -143,21 +179,11 @@ ExecuteQueue.process(5, async (job, done) => {
           );
 
           // Path of the pre defined output file for this test case
-          const outPath = path.join(
-            path.join(
-              path.join(
-                path.join(basePath(), "TestCases"),
-                `${ques._id}`
-              ),
-              "private"
-            ),
-            `${i}_out.txt`
-          );
 
           console.log(9);
 
           // Check for verdict
-          if (!getVerdict(resultFilePath, outPath)) {
+          if (!getVerdict(resultFilePath, outPathCheck)) {
             error = true;
             break;
           }
