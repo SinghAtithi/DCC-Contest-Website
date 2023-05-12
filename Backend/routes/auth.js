@@ -197,7 +197,6 @@ router.post("/login", async (req, res) => {
 });
 
 router.get("/verifyToken", verifyToken, (req, res) => {
-  // console.log(req.user);
   res
     .status(200)
     .send({ role: req.user.role, profile_pic: req.user.profile_pic });

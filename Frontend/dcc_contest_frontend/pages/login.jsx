@@ -16,7 +16,6 @@ import {
 } from "../utils/constants";
 import { loginUser } from "../store/loginStore";
 import store from "../store/baseStore";
-import { useSelector } from "react-redux";
 import toggleLoaderBackdrop from "../utils/toggleCustomBackdrop";
 import Link from "next/link";
 
