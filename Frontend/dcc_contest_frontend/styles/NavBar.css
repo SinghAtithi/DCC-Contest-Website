@@ -1,0 +1,143 @@
+/* Navbar */
+
+:root {
+    --navbar-bg-opacity: 0.25;
+    --navbar-padding: 0.2rem;
+    --navbar-background: rgb(20, 26, 35);
+    --navbar-item-border: #3d3d3e;
+}
+
+.custom-navbar {
+    position: fixed;
+    top: 0;
+    right: 0;
+    display: flex;
+    align-items: center;
+    padding: var(--navbar-padding, 0.5rem);
+    height: 64px;
+    width: 100%;
+    background-color: var(--navbar-background);
+    z-index: 50;
+}
+
+.navbar-logo {
+    flex: 1 1 0%;
+    margin: 4px;
+}
+
+.custom-navbar-items {
+    font-family: serif;
+    display: flex;
+    flex-direction: row;
+
+}
+
+.custom-navbar-items li {
+    min-width: 100px;
+    list-style-type: none;
+    text-align: center;
+    border: var(--navbar-item-border) 1px solid;
+    border-radius: 8px;
+    height: 38px;
+    margin: 5px;
+    display: grid;
+    align-items: center;
+}
+
+.custom-navbar-items li:hover {
+    background: #3d3d3e;
+}
+
+.custom-navbar-items li a {
+    color: white;
+}
+
+.custom-navbar-hamburger {
+    display: none;
+}
+
+.custom-navbar-items-offscreen {
+    position: fixed;
+    top: 64px;
+    right: -100%;
+    width: auto;
+    height: auto;
+    min-width: 50vw;
+    background-color: var(--navbar-background);
+    transition: right 0.5s ease-out;
+}
+
+.custom-navbar-items-offscreen li {
+    min-width: 100px;
+    list-style-type: none;
+    text-align: center;
+    border: var(--navbar-item-border) 1px solid;
+    border-radius: 8px;
+    height: 38px;
+    margin: 5px;
+    display: grid;
+    grid-template-rows: 5;
+    align-items: center;
+    z-index: 30;
+
+}
+
+.custom-navbar-items-offscreen li:hover {
+    background: #3d3d3e;
+}
+
+.custom-navbar-items-offscreen li a {
+    color: white;
+}
+
+.custom-backdrop {
+    position: fixed;
+    top: 64px;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(75, 72, 72, 0.5);
+    opacity: 0;
+    display: none;
+    transition: opacity 0.5s ease-out, visibility 0s 0.5s;
+    z-index: 20;
+}
+
+.custom-backdrop.active {
+    display: block;
+    opacity: 0.85;
+    transition-delay: 0;
+}
+
+.custom-navbar-avtar-pop {
+    background-color: var(--navbar-background);
+}
+
+@media screen and (max-width: 760px) {
+    .custom-navbar-items {
+        display: none;
+    }
+
+    .custom-navbar-hamburger {
+        display: block;
+        border: var(--navbar-item-border) 2px solid;
+        margin-right: 8px;
+        z-index: 50;
+    }
+
+    .custom-navbar-hamburger :hover {
+        background: #3d3d3e;
+    }
+
+    .custom-navbar-items-offscreen.active {
+        right: 0;
+        z-index: 30;
+    }
+
+    .custom-backdrop.active {
+        display: block;
+        opacity: 0.85;
+        transition-delay: 0;
+    }
+
+}

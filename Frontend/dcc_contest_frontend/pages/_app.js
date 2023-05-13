@@ -8,6 +8,12 @@ import "../styles/SearchBar.css";
 import "../styles/ContestHomePage.css";
 import "../styles/AboutRitik.css";
 import "../styles/AboutAtithi.css";
+import "../styles/NavBar.css";
+import "../styles/Login.css";
+import "../styles/HomePage.css";
+import "../styles/ProblemTable.css";
+import "../styles/ProblemSetPageSkeleton.css";
+import "../styles/LoginSkeleton.css";
 
 import { Provider } from "react-redux";
 import store from "../store/baseStore";
@@ -41,8 +47,17 @@ export default function App({ Component, pageProps }) {
           type="text/css"
         />
         <link rel="apple-touch-icon" href="/DCC_LOGO_DARK.png" />
-        <link rel="apple-touch-icon" sizes="152x152" href="/DCC_LOGO_DARK.png" />
-        <link rel="icon" type="image/png" sizes="32x32" href="/DCC_LOGO_DARK.png" />
+        <link
+          rel="apple-touch-icon"
+          sizes="152x152"
+          href="/DCC_LOGO_DARK.png"
+        />
+        <link
+          rel="icon"
+          type="image/png"
+          sizes="32x32"
+          href="/DCC_LOGO_DARK.png"
+        />
         <link rel="manifest" href="/manifest.json" />
 
         <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>

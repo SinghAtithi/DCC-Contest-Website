@@ -1,17 +1,16 @@
-import React, { useEffect } from "react";
-import Editor, { DiffEditor, useMonaco, loader } from "@monaco-editor/react";
-import code from "./snippet";
-import { setConfig } from "next/config";
-import CodeAreaSkeleton from "../skeleton/CodeAreaSkeleton";
+import React from "react";
+import Editor from "@monaco-editor/react";
 import { useSelector } from "react-redux";
+import CodeAreaSkeleton from "./skeleton/CodeAreaSkeleton";
 
 function CodeEditor(props) {
   /*
   props includes:  Code, setCode, ProblemId
 */
-  const {loggedIn} = useSelector(state=>state.login);
+  // Retrieve the loggedIn state using the useSelector hook
+  const { loggedIn } = useSelector(state => state.login);
 
-  
+
   return (
     props.loader ? <CodeAreaSkeleton width={props.width} height="80vh" /> :
       (<div className="code-editor-area">

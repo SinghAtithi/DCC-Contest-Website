@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import ConsoleSkeleton from '../skeleton/ConsoleSkeleton'
+import ConsoleSkeleton from './skeleton/ConsoleSkeleton'
 
 const ConsolePanel = (props) => {
 

@@ -1,0 +1,42 @@
+.login-page-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between; 
+    align-items: center;
+}
+
+.login-form {
+    margin: 24px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.form-input{
+    height:64px
+}
+
+.login-lottie {
+    min-width: 25vw;
+}
+
+
+@media screen and (max-width: 760px) {
+    .login-page-container {
+        flex-direction: column-reverse;
+    }
+
+    .form-input{
+        height:50px
+    }
+
+    .login-button{
+        height:40px !important;
+        min-height:40px !important;
+    }
+
+    .login-lottie {
+        width: 60vw;
+    }
+}

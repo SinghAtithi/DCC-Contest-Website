@@ -5,7 +5,7 @@ import HeroLottie from "./HeroLottie";
 function HomePage() {
 
   return (
-    <div className="home-page">
+    <div className="content-area-top home-page">
       <div className="home-page-content-general">
         <HeroLottie/>
         <div>

@@ -1,13 +1,18 @@
-import { useRouter } from "next/router";
-import { useEffect } from "react";
-// useEffect
+import React from 'react';
+import Navbar from '../components/Navbar';
 
-export default function test() {
-    const { asPath } = useRouter();
+const test = () => {
+    return (
+        <>
+            <Navbar />
 
-    useEffect(() => {
-        console.log(asPath);
-    }, []);
+            <div className="content-area-top">
+                
+            </div>
+        </>
+    )
 
-    return <>Hello,,,</>;
-}
+};
+
+
+export default test;

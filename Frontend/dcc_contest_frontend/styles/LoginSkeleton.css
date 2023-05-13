@@ -1,0 +1,39 @@
+.skeleton-login-lottie {
+    height: 50vh;
+    width: 25vw;
+    background-color: #c7bebe;
+    margin-left: 4px;
+    margin-right: 4px;
+    border-radius: 4px;
+    animation: loadingAnimation 1.5s infinite;
+}
+
+.skeleton-login-form-input {
+    height: 40px;
+    width: 500px;
+    background-color: #c7bebe;
+    margin-top: 4px;
+    margin-left: 4px;
+    margin-right: 4px;
+    border-radius: 4px;
+    animation: loadingAnimation 1.5s infinite;
+}
+
+.skeleton-login-form-button {
+    height: 48px;
+    width: 100px;
+    background-color: #c7bebe;
+    margin-top:4px;
+    margin-left: 4px;
+    margin-right: 4px;
+    border-radius: 4px;
+    animation: loadingAnimation 1.5s infinite;
+}
+
+
+
+@media screen and (max-width: 760px) {
+    .skeleton-login-lottie {
+        width: 60vw;
+    }
+}

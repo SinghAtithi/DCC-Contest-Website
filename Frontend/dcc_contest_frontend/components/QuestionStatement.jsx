@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import axios from "axios";
 import Router from "next/router";
-import QuestionSkeleton from "../skeleton/QuestionSkeleton";
+import QuestionSkeleton from "./skeleton/QuestionSkeleton";
 import { BASE_URL } from "../utils/constants";
 
 function QuestionStatement(props) {
