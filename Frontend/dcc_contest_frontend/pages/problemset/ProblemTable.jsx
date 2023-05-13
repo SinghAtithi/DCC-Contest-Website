@@ -27,7 +27,7 @@ export default function ProblemTable(props) {
                   <td>{problem.ques_id}</td>
                   <td>{problem.name}</td>
                   <td>{problem.topics}</td>
-                  <td><Link href={`/problems/${props.ques_id}`} target="_blank">
+                  <td><Link href={`/problems/${problem.ques_id}`} target="_blank">
                     <button className="btn btn-outline btn-info w-40 min-h-8 h-8">
                       {problem.status ? "Solve Again" : "Solve"}
                     </button>

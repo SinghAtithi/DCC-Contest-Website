@@ -1,7 +1,7 @@
 import React from "react";
 import Editor from "@monaco-editor/react";
-import CodeAreaSkeleton from "../skeleton/CodeAreaSkeleton";
 import { useSelector } from "react-redux";
+import CodeAreaSkeleton from "./skeleton/CodeAreaSkeleton";
 
 function CodeEditor(props) {
   /*

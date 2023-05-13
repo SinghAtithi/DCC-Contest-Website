@@ -4,18 +4,20 @@ import LoginLottie from "../../public/loginLottie.json";
 import Lottie from "lottie-react";
 import { useRouter } from "next/router";
 import checkToken from "../../utils/checkToken";
-import { ADMIN, SUPER_ADMIN , ADMIN_DASHBOARD } from "../../utils/constants";
+import { ADMIN, SUPER_ADMIN, ADMIN_DASHBOARD } from "../../utils/constants";
 import toggleLoaderBackdrop from "../../utils/toggleCustomBackdrop";
 import { useSelector } from "react-redux";
 import Head from "next/head";
 import LoginForm from "./LoginForm";
+import LoginPageSkeleton from "./LoginPageSkeleton";
+import { useState } from "react";
 
 function login() {
     const router = useRouter();
     const { loggedIn, role } = useSelector((state) => state.login);
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        toggleLoaderBackdrop();
         var next = null;
         if (router.query["next"]) next = router.query["next"];
 
@@ -31,7 +33,7 @@ function login() {
                         router.push(ADMIN_DASHBOARD);
                     else router.push(`/${res.data.username}`);
                 } else {
-                    toggleLoaderBackdrop();
+                    setLoading(false);
                 }
             });
         } else {
@@ -51,10 +53,14 @@ function login() {
             <Navbar />
             <div className="content-area-top">
                 <div className="login-page-container">
-                    <LoginForm />
-                    <div className="login-lottie">
-                        <Lottie animationData={LoginLottie} />
-                    </div>
+                    {loading ? <LoginPageSkeleton /> : <>
+                        <div></div>  {/* Just to adjust the login form and animation */}
+                        <LoginForm />
+                        <div className="login-lottie">
+                            <Lottie animationData={LoginLottie} />
+                        </div>
+                        <div></div> {/* Just to adjust the login form and animation */}
+                    </>}
                 </div>
             </div>
         </>

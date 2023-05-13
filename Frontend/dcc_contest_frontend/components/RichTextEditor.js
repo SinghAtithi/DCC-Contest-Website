@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
-import EditorSkeleton from "../skeleton/EditorSkeleton";
+import EditorSkeleton from "./skeleton/EditorSkeleton";
+
 import ImageKit from "imagekit-javascript";
 import { BASE_URL } from "../utils/constants";
 

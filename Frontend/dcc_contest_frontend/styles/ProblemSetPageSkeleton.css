@@ -33,16 +33,6 @@
       }
   }
 
-  .check-circle-skeleton {
-      width: 25px;
-      height: 25px;
-      border-radius: 50%;
-      background-color: #999292;
-  }
-
-
-
-
   .skeleton-button {
       height: 48px;
       width: 56px;
