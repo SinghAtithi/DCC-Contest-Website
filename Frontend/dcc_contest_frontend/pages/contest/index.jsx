@@ -123,7 +123,7 @@ const contestPage = () => {
 
       <Navbar />
 
-      <div className="contest-page">
+      <div className="content-area-top">
         <ContestRegisterModal
           open={open}
           setOpen={setOpen}

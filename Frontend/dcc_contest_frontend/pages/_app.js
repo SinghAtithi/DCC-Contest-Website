@@ -8,6 +8,9 @@ import "../styles/SearchBar.css";
 import "../styles/ContestHomePage.css";
 import "../styles/AboutRitik.css";
 import "../styles/AboutAtithi.css";
+import "../styles/NavBar.css";
+import "../styles/Login.css";
+import "../styles/HomePage.css";
 
 import { Provider } from "react-redux";
 import store from "../store/baseStore";

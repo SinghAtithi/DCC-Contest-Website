@@ -36,7 +36,7 @@ function Navbar() {
     const { role, loggedIn, profile_pic, username } = useSelector((state) => state.login);
 
     return (
-        <nav>
+        <>
             <div className="custom-navbar">
                 <div className="navbar-logo">
                     <Link
@@ -207,7 +207,7 @@ function Navbar() {
 
             <div className="custom-backdrop"></div>
             <BackdropLoader />
-        </nav>
+        </>
     );
 }
 
