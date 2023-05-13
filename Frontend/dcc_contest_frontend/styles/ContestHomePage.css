@@ -20,8 +20,9 @@
 }
 
 .custom-table{
-    text-align: center;
+    text-align: center !important;
 } 
+
 
 .custom-table a{
     color:inherit;

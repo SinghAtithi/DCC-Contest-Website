@@ -1,7 +1,7 @@
 import { Fragment, useRef, useState } from 'react';
 import { Dialog, Transition } from '@headlessui/react';
 
-export default function PastContestRegistrationModal(props) {
+export default function PastContestProblemModal(props) {
 
     const cancelButtonRef = useRef(null);
 
