@@ -1,0 +1,63 @@
+/* Problem Page */
+
+.problem-page{
+    display: flex;
+  }
+  
+  .problem-page-left{
+    position:relative;
+    top:16px;
+    height: 90vh;
+    width:40%;
+    padding: 8px;
+    overflow-y: scroll;
+  }
+  
+  .problem-page-right{
+    position:relative;
+    top:16px;
+    height:90vh;
+    width:60%;
+  }
+  
+  .problem-page-right-top{
+    margin-left: 1rem/* 16px */;
+    margin-right: 1rem/* 16px */;
+  }
+  
+  @media screen and (max-width:1000px){
+    .problem-page{
+      flex-direction: column;
+      height : auto;
+    }
+  
+    .problem-page-left{
+      overflow-y: hidden;
+      overflow-x: hidden;
+      height: auto;
+      width:100%;
+      padding:15px;
+    }
+  
+    .problem-page-right{
+      width:100%;
+      margin-top: 16px;
+    }
+  }
+  
+  /* Question Component */
+  
+  .question-component{
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    justify-content: flex-start;
+  }
+  
+  .question-component-question-meta-data{
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    align-items: center;
+    justify-content: center;
+  }

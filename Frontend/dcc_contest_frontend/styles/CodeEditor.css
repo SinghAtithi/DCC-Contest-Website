@@ -1,0 +1,35 @@
+/* Code editor */
+
+.code-editor-area{
+    position: relative;
+    
+  }
+  
+  .code-editor{
+    border-width: 2px;
+    border-color: rgb(21 128 61);
+  }
+  
+  .code-editor-area-button-area{
+    display: flex;
+    padding-top:12px;
+    padding-bottom:12px;
+    align-items: center;
+    justify-content: left;
+    /* margin: 4px; */
+  }
+  
+  #button-below{
+    margin:4px;
+  }
+  
+  .console-area{
+    position: absolute;
+    bottom: 0;
+    height: 16vh; 
+    /* width is custom set by javascript */
+    overflow-y: scroll;
+    background: inherit;
+    padding-left: 16px;
+  }
+  

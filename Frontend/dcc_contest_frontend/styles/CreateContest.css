@@ -1,0 +1,42 @@
+
+/* Create Contest */
+
+.contest_container{
+    position: relative;
+    /* top:65px; */
+    display: flex;
+    font-family: ui-serif, Georgia, Cambria, "Times New Roman", Times, serif;
+  
+  }
+  
+  .contest_details_area{
+    height: 90vh;
+    width: 50%;
+    padding : 8px 8px 8px 8px;
+  }
+  
+  #contest-details-section{
+    margin:6px;
+  }
+  
+  .add_problem_area {
+    height:90vh;
+    width: 50%;
+    float: right;
+  }
+  
+  @media screen and (max-width:1040px) {
+    .contest_container{
+      flex-direction: column;
+    }
+  
+    .contest_details_area{
+      height: auto;
+      width: 100%;
+    }
+  
+    .add_problem_area {
+      height:50vh;
+      width: 100%;
+    }
+  }
