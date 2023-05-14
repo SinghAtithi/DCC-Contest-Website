@@ -24,6 +24,7 @@ import "../styles/CreateContest.css";
 import "../styles/AdminDashboard.css";
 import "../styles/CustomBackdrop.css";
 import "../styles/ConsoleSkeleton.css";
+import "../styles/ProblemPreviewAdmin.css";
 
 import { Provider } from "react-redux";
 import store from "../store/baseStore";

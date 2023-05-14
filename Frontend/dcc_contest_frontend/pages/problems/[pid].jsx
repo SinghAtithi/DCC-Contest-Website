@@ -105,16 +105,19 @@ function ProblemPage() {
                         axios
                             .get(poll_url)
                             .then((result) => {
+                                console.log(result);
                                 if (result.data.verdict === "Accepted") {
                                     setConsoleData(
                                         `Verdict : Accepted\nTime : ${result.data.time_taken * 1000} milliseconds`
                                     );
+                                    setSubmitting("");
                                     setbackground("bg-success");
                                     setConsoleLoader(false);
                                     clearInterval(poll);
                                 } else if (
                                     result.data.verdict === "Wrong Answer"
                                 ) {
+                                    setSubmitting("");
                                     setConsoleData(`Verdict : Wrong Answer`);
                                     setbackground("bg-error");
                                     setConsoleLoader(false);
@@ -126,6 +129,7 @@ function ProblemPage() {
                                     setConsoleData(
                                         `Verdict : Compilation Error\n${toSet}`
                                     );
+                                    setSubmitting("");
                                     setbackground("bg-error");
                                     setConsoleLoader(false);
                                     clearInterval(poll);
@@ -136,28 +140,23 @@ function ProblemPage() {
                                     setConsoleData(
                                         `Verdict : Time Limit Exceeded`
                                     );
+                                    setSubmitting("");
                                     setbackground("bg-error");
                                     setConsoleLoader(false);
                                     clearInterval(poll);
                                 } else if (
                                     result.data.verdict === "Server Error"
                                 ) {
+                                    setSubmitting("");
                                     setConsoleData(`Server Error`);
                                     setbackground("bg-error");
                                     setConsoleLoader(false);
                                     clearInterval(poll);
                                 }
-                                else {
-                                    setConsoleData(
-                                        `Something Went Wrong. Please try again.`
-                                    );
-                                    setbackground("bg-error");
-                                    setConsoleLoader(false);
-                                    clearInterval(poll);
-                                }
-                                setSubmitting("");
+                                
                             })
                             .catch((error) => {
+                                console.log(error);
                                 setConsoleData(
                                     `Something Went Wrong. Please try again.`
                                 );

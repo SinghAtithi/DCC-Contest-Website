@@ -5,7 +5,6 @@ import { FcSearch } from "react-icons/fc";
 import { AiOutlineClose } from "react-icons/ai";
 import Head from "next/head";
 import moment from "moment";
-// import { AdminSideNavMap, baseUrl } from "../../../utils/constants";
 import SideNav from "../../../components/SideNavAdmin";
 import {
   AdminSideNavMap,
@@ -233,9 +232,12 @@ function CreateProblem() {
       </Head>
 
       <SideNav role="SuperAdmin" highlight={AdminSideNavMap.create_contest} />
+
       <div className="data-area">
         <div className="contest_container">
           <div className="contest_details_area">
+
+            {/* Toast to show if question is created or there is some error */}
             {toastActive && (
               <div className="toast toast-start">
                 <div className={toastClass}>
@@ -252,6 +254,8 @@ function CreateProblem() {
                 </div>
               </div>
             )}
+
+            
             <div id="contest-details-section">
               <h1 className="text-2xl">Contest ID : </h1>
               <h4 className="whitespace-pre text-sm">{"Do not use space."}</h4>

@@ -1,0 +1,45 @@
+.problem_preview_area {
+        overflow-wrap: break-word;
+        padding: 8px 20px 8px 20px;
+}
+
+.problem-metadata-preview {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        margin: 4px 4px 4px 4px;
+}
+
+
+#problem-preview-data {
+        margin: 4px 4px 4px 4px;
+}
+
+#problem-preview-data h1 {
+        font-size: 20px;
+        line-height: 28px;
+        font-family: ui-serif, Georgia, Cambria, "Times New Roman", Times, serif;
+        margin: 8px 8px 8px auto;
+}
+
+
+.problem-test-case-preview-area {
+        background-color: rgb(51 65 85);
+        margin-bottom: 16px;
+        height: auto;
+        width: 100%;
+        overflow-x: scroll;
+}
+
+.problem-test-case-preview-area span {
+        font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+        font-weight: 700;
+        color: rgb(101 163 13);
+        margin: 2px;
+}
+
+.problem-test-case-preview-area p {
+        margin: 2px;
+        white-space: pre;
+}

@@ -17,9 +17,7 @@ function Ritik() {
           </span>
         </h2>
         <p className="text-xl mt-4 text-gray-400">
-          I had noticed that both in the very poor and very rich extremes of
-          society the mad were often allowed to mingle freely
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Delectus sint, incidunt, adipisci dolore excepturi minus voluptatem iste, voluptatibus illo quaerat natus tempora magni. Dolores similique eius quo voluptatibus repellat. Nihil!
+        {"I'm a passionate web developer and machine learning enthusiast. Welcome to DCC's coding contest platform, where innovation meets competition. Join us as we challenge and inspire programmers to showcase their skills. Let's push the boundaries of coding together and create an engaging space for the coding community to thrive."}
         </p>
         <a href="https://github.com/Ritik-Kaushal" target="_blank"  rel="noreferrer">
           <button className="mt-8 mx-2">

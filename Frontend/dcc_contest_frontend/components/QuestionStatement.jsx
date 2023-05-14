@@ -55,7 +55,7 @@ function QuestionStatement(props) {
         <div className="question-component-question-meta-data">
           <h1 className="text-2xl">{question.name}</h1>
           <p className="text-sm mt-1 italic">
-            Time Limit : {question.time_limit} per test case
+            Time Limit : {question.time_limit} seconds per test case
           </p>
           <p className="text-sm italic">Space Limit : 256 MB</p>
         </div>
@@ -98,11 +98,13 @@ function QuestionStatement(props) {
                     <br></br>
                     {public_test_case.input}
                   </pre>
+                  <hr></hr>
                   <pre>
                     <span className="font-mono font-bold">Output</span>
                     <br></br>
                     {public_test_case.output}
                   </pre>
+                  <hr></hr>
                   {public_test_case.explanation && (
                     <pre>
                       <span className="font-mono font-bold">Explanation</span>
@@ -114,6 +116,7 @@ function QuestionStatement(props) {
                         }}
                       ></p>
                     </pre>
+                    
                   )}
                 </div>
               </div>
