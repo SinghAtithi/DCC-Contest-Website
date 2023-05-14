@@ -26,7 +26,7 @@ function getDuration(startTime, endTime) {
   ).slice(-2)}`;
 }
 
-const contestPage = () => {
+const ContestPage = () => {
   const router = useRouter();
   const [open, setOpen] = useState(false);
   const [name, setName] = useState("");
@@ -275,4 +275,4 @@ function PastContests(props) {
   )
 }
 
-export default contestPage;
+export default ContestPage;

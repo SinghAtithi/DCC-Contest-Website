@@ -121,7 +121,7 @@ export default function ForgotPassword() {
                             toggleLoaderBackdrop();
                         }}
                     >
-                        Don't have an account? Create one now
+                        {"Don't have an account? Create one now"}
                     </Link>
                 </div>
                 <div className="lottie">

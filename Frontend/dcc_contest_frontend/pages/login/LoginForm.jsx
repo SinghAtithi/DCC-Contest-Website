@@ -122,7 +122,7 @@ export default function LoginForm() {
                     toggleLoaderBackdrop();
                 }}
             >
-                Don't have an account? Create one now
+                {"Don't have an account? Create one now"}
             </Link>
         </div>
     )

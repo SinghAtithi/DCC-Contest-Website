@@ -80,6 +80,7 @@ function Leaderboard() {
                 href={`/${item.username}`}
                 target="_blank"
                 className="text-green-400"
+                rel="noreferrer"
               >
                 {item.username}
               </a>
@@ -98,8 +99,9 @@ function Leaderboard() {
           Prev
         </button>
         {Array.from({ length: totalPages }, (_, index) => index + 1).map(
-          (num) => (
+          (num,index) => (
             <button
+              key={index}
               className={`btn btn-success mx-1 ${num == page ? "btn-outline" : ""
                 }`}
               onClick={() => setPage(num)}

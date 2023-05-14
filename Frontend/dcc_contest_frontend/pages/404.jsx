@@ -10,7 +10,7 @@ function F404() {
           <div className="max-w-md">
             <div className="text-5xl font-dark font-bold">404</div>
             <p className="text-2xl md:text-3xl font-light leading-normal">
-              Sorry we couldn't find this page.{" "}
+              {"Sorry we couldn't find this page."}{" "}
             </p>
             <p className="mb-8">
               But dont worry, you can find plenty of other things on our

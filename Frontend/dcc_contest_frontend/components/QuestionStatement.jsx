@@ -88,7 +88,7 @@ function QuestionStatement(props) {
         </div>
         <div>
           {question.public_test_cases.map((public_test_case, index) => (
-            <div>
+            <div key={index}>
               <br></br>
               <div key={index}>
                 <h1 className="text-xl font-serif">Example {index + 1} :</h1>

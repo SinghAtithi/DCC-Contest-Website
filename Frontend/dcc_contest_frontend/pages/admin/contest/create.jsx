@@ -45,7 +45,7 @@ function validateDateTimeString(dateTime) {
   }
 }
 
-function create_problem() {
+function CreateProblem() {
   const { role, isLoading, loggedIn } = useSelector((state) => state.login);
 
   const [contestName, setContestName] = React.useState("");
@@ -343,7 +343,7 @@ function create_problem() {
               {searchedList.length != 0 && (
                 <div>
                   {searchedList.map((value, index) => (
-                    <div className="tooltip tooltip-warning" data-tip="Add">
+                    <div className="tooltip tooltip-warning" data-tip="Add" key={index}>
                       <div
                         className="bg-slate-700 my-1 py-1 mx-1 hover:text-green-500"
                         onClick={() => {
@@ -368,7 +368,7 @@ function create_problem() {
                   <span className="font-mono font-bold">Added Problems</span>
                   <br></br>
                   {ques_ids.map((value, index) => (
-                    <div className="tooltip tooltip-error" data-tip="Remove">
+                    <div className="tooltip tooltip-error" data-tip="Remove" key={index}>
                       <div
                         className="bg-slate-700 my-1 py-1 mx-1 hover:text-red-500"
                         onClick={() => {
@@ -394,4 +394,4 @@ function create_problem() {
   );
 }
 
-export default create_problem;
+export default CreateProblem;

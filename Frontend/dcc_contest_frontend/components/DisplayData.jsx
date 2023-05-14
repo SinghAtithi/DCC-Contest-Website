@@ -78,7 +78,7 @@ export default function DisplayData(props) {
                         {props.data[clickedIndex].private_test_cases.length != 0 && <div id="problem-preview-data">
                             <h1 >Private Test Cases : </h1>
                             {props.data[clickedIndex].private_test_cases.map((private_test_case, index) => (
-                                <div className="problem-test-case-preview-area">
+                                <div className="problem-test-case-preview-area" key={index}>
                                     <p><span>Input</span><br></br>{private_test_case.input}</p>
                                     <hr></hr>
                                     <p><span>Output</span><br></br>{private_test_case.output}</p>

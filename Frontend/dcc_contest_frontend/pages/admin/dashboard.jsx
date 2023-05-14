@@ -13,7 +13,7 @@ import {
 } from "../../utils/constants";
 import toggleLoaderBackdrop from "../../utils/toggleCustomBackdrop";
 
-const admin_dashboad = () => {
+const AdminDashboad = () => {
     const { role, isLoading, loggedIn , username} = useSelector((state) => state.login);
 
     const { asPath } = useRouter();
@@ -43,4 +43,4 @@ const admin_dashboad = () => {
     );
 };
 
-export default admin_dashboad;
+export default AdminDashboad;

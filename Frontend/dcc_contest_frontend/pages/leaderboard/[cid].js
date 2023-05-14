@@ -35,7 +35,7 @@ const rankListData = [
 
 // import React from "react";
 
-function contestLeaderboard() {
+function ContestLeaderboard() {
   const router = useRouter();
   const { cid } = router.query;
 
@@ -86,6 +86,7 @@ function contestLeaderboard() {
               <a
                 href={`/${item.username}`}
                 target="_blank"
+                rel="noreferrer"
                 className="text-green-400"
               >
                 {item.username}
@@ -105,8 +106,9 @@ function contestLeaderboard() {
           Prev
         </button>
         {Array.from({ length: totalPages }, (_, index) => index + 1).map(
-          (num) => (
+          (num,index) => (
             <button
+              key={index}
               className={`btn btn-success mx-1 ${
                 num == page ? "btn-outline" : ""
               }`}
@@ -127,4 +129,4 @@ function contestLeaderboard() {
   );
 }
 
-export default contestLeaderboard;
+export default ContestLeaderboard;

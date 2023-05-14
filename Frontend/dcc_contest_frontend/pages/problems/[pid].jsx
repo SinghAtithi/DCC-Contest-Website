@@ -15,7 +15,7 @@ import {
 } from "../../utils/constants";
 
 
-function problemPage() {
+function ProblemPage() {
     const router = useRouter();
     const { pid } = router.query;
 
@@ -237,4 +237,4 @@ function problemPage() {
     );
 }
 
-export default problemPage;
+export default ProblemPage;

@@ -31,7 +31,7 @@ const CKEditor = dynamic(() => import("../../../components/RichTextEditor"), {
     ssr: false,
 });
 
-function create_problem() {
+function CreateProblem() {
     const { role, isLoading, loggedIn } = useSelector((state) => state.login);
 
     const [name, setName] = React.useState("");
@@ -349,7 +349,7 @@ function create_problem() {
                         <div id="question_area_section" className="button_area">
                             <div id="button-div">
                                 {inputTestCase.trim() !== "" &&
-                                outputTestCase.trim() !== "" ? (
+                                    outputTestCase.trim() !== "" ? (
                                     <button
                                         className="btn btn-outline btn-success"
                                         onClick={onAddPublicTestCase}
@@ -364,7 +364,7 @@ function create_problem() {
                             </div>
                             <div id="button-div">
                                 {inputTestCase.trim() !== "" &&
-                                outputTestCase.trim() !== "" ? (
+                                    outputTestCase.trim() !== "" ? (
                                     <button
                                         className="btn btn-outline btn-success"
                                         onClick={onAddPrivateTestCase}
@@ -394,14 +394,14 @@ function create_problem() {
                                 </label>
                             </div>
                             {name &&
-                            description &&
-                            constraints &&
-                            input_format &&
-                            output_format &&
-                            problemID &&
-                            time_limit &&
-                            public_test_cases.length != 0 &&
-                            private_test_cases.length != 0 ? (
+                                description &&
+                                constraints &&
+                                input_format &&
+                                output_format &&
+                                problemID &&
+                                time_limit &&
+                                public_test_cases.length != 0 &&
+                                private_test_cases.length != 0 ? (
                                 <div id="buttom-div">
                                     <button
                                         className="btn btn-outline btn-success"
@@ -672,4 +672,4 @@ function create_problem() {
     );
 }
 
-export default create_problem;
+export default CreateProblem;

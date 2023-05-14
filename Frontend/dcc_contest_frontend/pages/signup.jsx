@@ -19,7 +19,7 @@ import { useSelector } from "react-redux";
 import toggleLoaderBackdrop from "../utils/toggleCustomBackdrop";
 import checkToken from "../utils/checkToken";
 
-function signup() {
+function Signup() {
     const router = useRouter();
     const { loggedIn, role, username } = useSelector((state) => state.login);
 
@@ -301,4 +301,4 @@ function signup() {
     );
 }
 
-export default signup;
+export default Signup;

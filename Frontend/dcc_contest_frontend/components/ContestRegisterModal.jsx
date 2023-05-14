@@ -43,7 +43,7 @@ export default function ContestRegisterModal(props) {
                             <p><strong>1. Eligibility:</strong> The contest is open to individuals of all ages and backgrounds, residing in any country. Employees of the contest organizers or their family members are not eligible to participate.</p>
                             <p><strong>2. Submission Guidelines:</strong> Code submissions must be written in C++ and submitted in the IDE integrated in the website. However, you may use external IDE for testing but make sure that IDE is not visible to anyone but the participant himself/herself.</p>
                             <p><strong>3. Plagiarism Policy:</strong> Any form of plagiarism, including copying code from external sources without proper attribution, will result in disqualification. The organizers reserve the right to use plagiarism-detection software to check for violations.</p>
-                            <p><strong>4. Disqualification Policy:</strong> The organizers reserve the right to disqualify any participant who violates the rules, engages in any unethical behavior, or submits code that is harmful to the contest infrastructure or other participants' systems.</p>
+                            <p><strong>4. Disqualification Policy:</strong> {"The organizers reserve the right to disqualify any participant who violates the rules, engages in any unethical behavior, or submits code that is harmful to the contest infrastructure or other participants' systems."}</p>
                         </p>
                         <hr className="border-t-2 border-gray-500"/>
                         <p className="text-sm text-red-600">

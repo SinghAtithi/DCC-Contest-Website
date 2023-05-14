@@ -69,12 +69,6 @@ export default function App({ Component, pageProps }) {
           href="/DCC_LOGO_DARK.png"
         />
         <link rel="manifest" href="/manifest.json" />
-
-        <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
-        <script
-          src="https://kit.fontawesome.com/5d9d1ab027.js"
-          crossorigin="anonymous"
-        ></script>
       </Head>
       <Provider store={store}>
         <Auth>
