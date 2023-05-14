@@ -12,7 +12,7 @@ import LoginForm from "./LoginForm";
 import LoginPageSkeleton from "./LoginPageSkeleton";
 import { useState } from "react";
 
-function login() {
+function Login() {
     const router = useRouter();
     const { loggedIn, role } = useSelector((state) => state.login);
     const [loading, setLoading] = useState(true);
@@ -67,4 +67,4 @@ function login() {
     );
 }
 
-export default login;
+export default Login;

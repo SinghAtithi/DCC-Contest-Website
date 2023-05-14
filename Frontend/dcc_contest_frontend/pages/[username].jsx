@@ -17,6 +17,7 @@ import {
 import { useRouter } from "next/router";
 import axios from "axios";
 import { BASE_URL, GET_DASHBOARD_DATA } from "../utils/constants";
+import Image from "next/image";
 
 Chart.register(
     ArcElement,
@@ -28,7 +29,7 @@ Chart.register(
     Title
 );
 
-function dashboard() {
+function Dashboard() {
     const router = useRouter();
     const { username } = router.query;
 
@@ -239,10 +240,11 @@ function dashboard() {
                     <p className="dashboard_title_div">Statistics</p>
                     <div className="dashboard_left_top">
                         <div className="dashboard_profile_info">
-                            <img
+                            <Image
                                 src={profile_pic}
                                 style={{ "border-radius": "50%" }}
-                            ></img>
+                                alt="ProfilePic"
+                            ></Image>
                             <div className="dashboard-profile-user">
                                 <p>{username}</p>
                                 <p>Current Rating : {current_rating}</p>
@@ -388,4 +390,4 @@ function dashboard() {
     );
 }
 
-export default dashboard;
+export default Dashboard;

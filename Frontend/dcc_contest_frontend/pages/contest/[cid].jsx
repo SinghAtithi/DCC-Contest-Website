@@ -7,7 +7,7 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import React from "react";
 
-const contestPage = () => {
+const ContestPage = () => {
   const router = useRouter();
   const { cid } = router.query;
 
@@ -42,4 +42,4 @@ const contestPage = () => {
   );
 };
 
-export default contestPage;
+export default ContestPage;

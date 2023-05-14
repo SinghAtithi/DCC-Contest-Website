@@ -1,0 +1,56 @@
+@keyframes placeHolderShimmerConsole {
+
+    0% {
+        background: rgb(160, 160, 160);
+    }
+
+    10% {
+        background: rgb(168, 168, 168);
+    }
+
+    20% {
+        background: rgb(176, 176, 176);
+    }
+
+    30% {
+        background: rgb(184, 184, 184);
+    }
+
+    40% {
+        background: rgb(192, 192, 192);
+    }
+
+    50% {
+        background: rgb(200, 200, 200);
+    }
+
+    60% {
+        background: rgb(192, 192, 192);
+    }
+
+    70% {
+        background: rgb(184, 184, 184);
+    }
+
+    80% {
+        background: rgb(176, 176, 176);
+    }
+
+    90% {
+        background: rgb(168, 168, 168);
+    }
+
+    100% {
+        background: rgb(160, 160, 160);
+    }
+
+}
+
+.animated-background-console {
+    animation-duration: 2s;
+    animation-fill-mode: forwards;
+    animation-iteration-count: infinite;
+    animation-name: placeHolderShimmerConsole;
+    animation-timing-function: linear;
+    border-radius: 8px;
+}

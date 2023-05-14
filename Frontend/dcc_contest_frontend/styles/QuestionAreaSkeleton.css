@@ -1,23 +1,60 @@
 /* Question Area Skeleton */
 
 
+
 @keyframes placeHolderShimmer {
-    0% {
-      background-position: -800px 0
-    }
-    100% {
-      background-position: 800px 0
-    }
+  0% {
+    background: rgb(100, 100, 100);
   }
-  
-  .animated-background {
-    animation-duration: 2s;
-    animation-fill-mode: forwards;
-    animation-iteration-count: infinite;
-    animation-name: placeHolderShimmer;
-    animation-timing-function: linear;
-    background-color: #2872bc;
-    background: linear-gradient(to right, #000000 8%, #353434 18%, #373737 33%);
-    background-size: 800px 104px;
+
+  10% {
+    background: rgb(104, 104, 104);
   }
-  
+
+  20% {
+    background: rgb(108, 108, 108);
+  }
+
+  30% {
+    background: rgb(112, 112, 112);
+  }
+
+  40% {
+    background: rgb(116, 116, 116);
+  }
+
+  50% {
+    background: rgb(120, 120, 120);
+  }
+
+  60% {
+    background: rgb(116, 116, 116);
+  }
+
+  70% {
+    background: rgb(112, 112, 112);
+  }
+
+  80% {
+    background: rgb(108, 108, 108);
+  }
+
+  90% {
+    background: rgb(104, 104, 104);
+  }
+
+  100% {
+    background: rgb(100, 100, 100);
+  }
+
+
+}
+
+.animated-background {
+  animation-duration: 2s;
+  animation-fill-mode: forwards;
+  animation-iteration-count: infinite;
+  animation-name: placeHolderShimmer;
+  animation-timing-function: linear;
+  border-radius: 8px;
+}

@@ -1,3 +1,4 @@
+import Link from "next/link";
 import React from "react";
 
 function problemTable(props) {
@@ -50,7 +51,7 @@ function problemTable(props) {
               <td>{problem.name}</td>
               <td>{problem.topics}</td>
               <td>
-                <Link href={`/problems/${problem.ques_id}`} target="_blank">
+                <Link href={`/contest/${props.cid}/${problem.ques_id}`} target="_blank">
                   <button className="btn btn-outline btn-info w-40 min-h-8 h-8">
                     {problem.status ? "Solve Again" : "Solve"}
                   </button>

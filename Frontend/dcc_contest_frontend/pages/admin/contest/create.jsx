@@ -5,7 +5,6 @@ import { FcSearch } from "react-icons/fc";
 import { AiOutlineClose } from "react-icons/ai";
 import Head from "next/head";
 import moment from "moment";
-// import { AdminSideNavMap, baseUrl } from "../../../utils/constants";
 import SideNav from "../../../components/SideNavAdmin";
 import {
   AdminSideNavMap,
@@ -45,7 +44,7 @@ function validateDateTimeString(dateTime) {
   }
 }
 
-function create_problem() {
+function CreateProblem() {
   const { role, isLoading, loggedIn } = useSelector((state) => state.login);
 
   const [contestName, setContestName] = React.useState("");
@@ -233,9 +232,12 @@ function create_problem() {
       </Head>
 
       <SideNav role="SuperAdmin" highlight={AdminSideNavMap.create_contest} />
+
       <div className="data-area">
         <div className="contest_container">
           <div className="contest_details_area">
+
+            {/* Toast to show if question is created or there is some error */}
             {toastActive && (
               <div className="toast toast-start">
                 <div className={toastClass}>
@@ -252,6 +254,8 @@ function create_problem() {
                 </div>
               </div>
             )}
+
+            
             <div id="contest-details-section">
               <h1 className="text-2xl">Contest ID : </h1>
               <h4 className="whitespace-pre text-sm">{"Do not use space."}</h4>
@@ -343,7 +347,7 @@ function create_problem() {
               {searchedList.length != 0 && (
                 <div>
                   {searchedList.map((value, index) => (
-                    <div className="tooltip tooltip-warning" data-tip="Add">
+                    <div className="tooltip tooltip-warning" data-tip="Add" key={index}>
                       <div
                         className="bg-slate-700 my-1 py-1 mx-1 hover:text-green-500"
                         onClick={() => {
@@ -368,7 +372,7 @@ function create_problem() {
                   <span className="font-mono font-bold">Added Problems</span>
                   <br></br>
                   {ques_ids.map((value, index) => (
-                    <div className="tooltip tooltip-error" data-tip="Remove">
+                    <div className="tooltip tooltip-error" data-tip="Remove" key={index}>
                       <div
                         className="bg-slate-700 my-1 py-1 mx-1 hover:text-red-500"
                         onClick={() => {
@@ -394,4 +398,4 @@ function create_problem() {
   );
 }
 
-export default create_problem;
+export default CreateProblem;

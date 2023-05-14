@@ -1,7 +1,10 @@
 import React from "react";
 import Editor from "@monaco-editor/react";
 import { useSelector } from "react-redux";
-import CodeAreaSkeleton from "./skeleton/CodeAreaSkeleton";
+import Countdown from "./Countdown";
+import moment from "moment";
+import EditorSkeleton from "./skeleton/EditorSkeleton";
+
 
 function CodeEditor(props) {
   /*
@@ -12,7 +15,7 @@ function CodeEditor(props) {
 
 
   return (
-    props.loader ? <CodeAreaSkeleton width={props.width} height="80vh" /> :
+    props.loader ? <EditorSkeleton /> :
       (<div className="code-editor-area">
         <div className="code-editor">
           <Editor
@@ -89,7 +92,7 @@ function CodeEditor(props) {
         </div>
         <div className="code-editor-area-button-area">
           {loggedIn ? <button
-            className="btn btn-outline btn-success"
+            className={`btn btn-outline btn-success ${props.submitting}`}
             onClick={props.onSubmit}
           >
             Submit
@@ -101,6 +104,11 @@ function CodeEditor(props) {
           <button className="btn btn-outline btn-success" id="button-below" onClick={props.controlConsole}>
             Console
           </button>
+          {props.countdownRequired && <div className="ContestCountdown-container">
+            <div className="ContestCountdown">
+              <Countdown deadline={moment().add(2, 'days').format("DD/MM/YYYY HH:mm")} />
+            </div>
+          </div>}
         </div>
       </div>)
   );

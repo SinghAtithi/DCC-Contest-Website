@@ -55,7 +55,7 @@ export default function PastContestProblemModal(props) {
                                                                     <tr key={problem.problemId} className='hover'>
                                                                         <th>{index + 1}</th>
                                                                         <td>{problem.name}</td>
-                                                                        <td><button className='btn btn-outline btn-info min-h-8 h-8'><a href={`/problems/${problem.problemId}`} target="_blank">Solve</a></button></td>
+                                                                        <td><button className='btn btn-outline btn-info min-h-8 h-8'><a href={`/problems/${problem.problemId}`} target="_blank" rel="noreferrer">Solve</a></button></td>
                                                                     </tr>
                                                                 </>))}
                                                             </tbody>

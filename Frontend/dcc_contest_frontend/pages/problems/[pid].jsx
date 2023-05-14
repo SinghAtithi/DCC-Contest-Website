@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import CodeEditor from "../../components/CodeEditor";
 import Navbar from "../../components/Navbar";
@@ -14,7 +14,8 @@ import {
     BASE_URL,
 } from "../../utils/constants";
 
-function problemPage() {
+
+function ProblemPage() {
     const router = useRouter();
     const { pid } = router.query;
 
@@ -22,13 +23,13 @@ function problemPage() {
     const [code, setCode] = React.useState("");
     const [isOpen, setIsOpen] = React.useState(false);
     const [lowerSpaceVisible, setLowerSpaceVisible] = React.useState(false);
-    const [editorHeight, setEditorHeight] = React.useState("78vh");
-    const [consoleData, setConsoleData] = React.useState(
-        "Nothing to display on console"
-    );
+    const [editorHeight, setEditorHeight] = React.useState('calc(90vh - 80px)');
+    const [consoleData, setConsoleData] = React.useState("Nothing to display on console");
     const [consoleLoader, setConsoleLoader] = React.useState(false);
-    const [loader, setLoader] = React.useState(false);
+    const [loader, setLoader] = React.useState(true);
     const [question__id, setQuestionId] = React.useState("");
+    const [submitting, setSubmitting] = useState("");
+    const [background, setbackground] = useState("bg-warning"); // This stores the background of data in console - default is bg-warning, other values include bg-error, bg-success and bg-inherit
 
     const code_console = {
         display: lowerSpaceVisible ? "block" : "none",
@@ -51,7 +52,7 @@ function problemPage() {
     }, [problemId]);
 
     const controlConsole = () => {
-        setEditorHeight(editorHeight === "78vh" ? "60vh" : "78vh");
+        setEditorHeight(editorHeight === 'calc(90vh - 80px)' ? 'calc(90vh - 300px)' : 'calc(90vh - 80px)');
         setLowerSpaceVisible(!lowerSpaceVisible);
         setIsOpen(!isOpen);
     };
@@ -59,16 +60,18 @@ function problemPage() {
     const onSubmit = async () => {
         setConsoleData("Evaluating the code ...");
         if (!isOpen) {
-            setEditorHeight(editorHeight === "78vh" ? "60vh" : "78vh");
+            setEditorHeight(editorHeight === 'calc(90vh - 80px)' ? 'calc(90vh - 300px)' : 'calc(90vh - 80px)');
             setLowerSpaceVisible(!lowerSpaceVisible);
             setIsOpen(true);
         }
 
         setConsoleLoader(true);
+        setSubmitting("loading");
+
         const url = BASE_URL + SUBMIT_QUESTION;
         const config = {
             headers: {
-                "Content-Type": "application/x-www-form-urlencoded",
+                "Content-background": "application/x-www-form-urlencoded",
                 token: localStorage.getItem("token"),
             },
         };
@@ -94,6 +97,7 @@ function problemPage() {
                         setConsoleData(
                             `It is taking longer than usual. Please go the submission page to see the status.`
                         );
+                        setSubmitting("");
                         setConsoleLoader(false);
                         clearInterval(poll);
                     } else {
@@ -101,24 +105,32 @@ function problemPage() {
                         axios
                             .get(poll_url)
                             .then((result) => {
+                                console.log(result);
                                 if (result.data.verdict === "Accepted") {
                                     setConsoleData(
-                                        `Verdict : Accepted\nTime : ${result.data.time_taken} seconds`
+                                        `Verdict : Accepted\nTime : ${result.data.time_taken * 1000} milliseconds`
                                     );
+                                    setSubmitting("");
+                                    setbackground("bg-success");
                                     setConsoleLoader(false);
                                     clearInterval(poll);
                                 } else if (
                                     result.data.verdict === "Wrong Answer"
                                 ) {
+                                    setSubmitting("");
                                     setConsoleData(`Verdict : Wrong Answer`);
+                                    setbackground("bg-error");
                                     setConsoleLoader(false);
                                     clearInterval(poll);
                                 } else if (
                                     result.data.verdict === "Compilation Error"
                                 ) {
+                                    let toSet = result.data.error.replace(/\/home[\s\S]*?\.cpp:/g, '')
                                     setConsoleData(
-                                        `Verdict : Compilation Error\n${result.data.error}`
+                                        `Verdict : Compilation Error\n${toSet}`
                                     );
+                                    setSubmitting("");
+                                    setbackground("bg-error");
                                     setConsoleLoader(false);
                                     clearInterval(poll);
                                 } else if (
@@ -128,22 +140,30 @@ function problemPage() {
                                     setConsoleData(
                                         `Verdict : Time Limit Exceeded`
                                     );
+                                    setSubmitting("");
+                                    setbackground("bg-error");
                                     setConsoleLoader(false);
                                     clearInterval(poll);
                                 } else if (
                                     result.data.verdict === "Server Error"
                                 ) {
+                                    setSubmitting("");
                                     setConsoleData(`Server Error`);
+                                    setbackground("bg-error");
                                     setConsoleLoader(false);
                                     clearInterval(poll);
                                 }
+                                
                             })
                             .catch((error) => {
+                                console.log(error);
                                 setConsoleData(
                                     `Something Went Wrong. Please try again.`
                                 );
+                                setbackground("bg-error");
                                 setConsoleLoader(false);
                                 clearInterval(poll);
+                                setSubmitting("");
                             });
                     }
                 }, 3000);
@@ -155,6 +175,8 @@ function problemPage() {
                     setConsoleData(
                         "Something went wrong. Check your internet and retry again."
                     );
+                setbackground("bg-error");
+                setSubmitting("");
                 setConsoleLoader(false);
             });
     };
@@ -169,38 +191,44 @@ function problemPage() {
                 )}
             </Head>
             <Navbar />
-            <div className="problem-page">
-                <div className="problem-page-left">
-                    <QuestionStatement
-                        problemId={problemId}
-                        loader={loader}
-                        setLoader={setLoader}
-                        setQuestionId={setQuestionId}
-                    />
-                </div>
-                <div className="problem-page-right">
-                    <div className="problem-page-right-top">
-                        <CodeEditor
+            <div className="content-area-top">
+                <div className="problem-page">
+                    <div className="problem-page-left">
+                        <QuestionStatement
+                            problemId={problemId}
                             loader={loader}
-                            Code={code}
-                            setCode={setCode}
-                            ProblemId={problemId}
-                            EditorHeight={editorHeight}
-                            EditorWidth="58vw"
-                            controlConsole={controlConsole}
-                            onSubmit={onSubmit}
+                            setLoader={setLoader}
+                            setQuestionId={setQuestionId}
                         />
                     </div>
-                    <div
-                        className="problem-page-right-bottom border-green-500"
-                        style={code_console}
-                    >
-                        <ConsolePanel
-                            consoleLoader={consoleLoader}
-                            isOpen={isOpen}
-                            console_data={consoleData}
-                            width="60vw"
-                        />
+                    <div className="problem-page-right">
+                        <div className="problem-page-right-top" style={{ height: editorHeight }}>
+                            <CodeEditor
+                                loader={loader}
+                                Code={code}
+                                setCode={setCode}
+                                ProblemId={problemId}
+                                EditorHeight={editorHeight}
+                                EditorWidth="58vw"
+                                controlConsole={controlConsole}
+                                onSubmit={onSubmit}
+                                submitting={submitting}
+                                countdownRequired={false}
+                            />
+                        </div>
+                        <div
+                            className="problem-page-right-bottom border-green-500"
+                            style={code_console}
+                        >
+                            <ConsolePanel
+                                consoleLoader={consoleLoader}
+                                isOpen={isOpen}
+                                console_data={consoleData}
+                                width="57vw"
+                                background={background}
+
+                            />
+                        </div>
                     </div>
                 </div>
             </div>
@@ -208,4 +236,4 @@ function problemPage() {
     );
 }
 
-export default problemPage;
+export default ProblemPage;

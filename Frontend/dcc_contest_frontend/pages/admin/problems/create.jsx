@@ -1,5 +1,5 @@
 import axios from "axios";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import TextArea from "../../../components/TextArea";
 import { AiOutlineDelete } from "react-icons/ai";
 import { AiOutlineClose } from "react-icons/ai";
@@ -31,29 +31,30 @@ const CKEditor = dynamic(() => import("../../../components/RichTextEditor"), {
     ssr: false,
 });
 
-function create_problem() {
-    const { role, isLoading, loggedIn } = useSelector((state) => state.login);
+function CreateProblem() {
+    const { role, loggedIn, username } = useSelector((state) => state.login);
 
-    const [name, setName] = React.useState("");
-    const [description, setDescription] = React.useState("");
-    const [constraints, setConstraints] = React.useState("");
-    const [input_format, setInputFormat] = React.useState("");
-    const [output_format, setOutputFormat] = React.useState("");
-    const [topics, setTopics] = React.useState("");
-    const [public_test_cases, setPublicTestCases] = React.useState([]);
-    const [private_test_cases, setPrivateTestCases] = React.useState([]);
-    const [time_limit, setTimeLimit] = React.useState("");
-    const [problemID, setProblemID] = React.useState("");
-    const [inputTestCase, setInputTestCase] = React.useState("");
-    const [outputTestCase, setOutputTestCase] = React.useState("");
-    const [explanation, setExplanation] = React.useState("");
-    const [is_draft, setIsDraft] = React.useState(false);
+    const [name, setName] = useState("");
+    const [description, setDescription] = useState("");
+    const [constraints, setConstraints] = useState("");
+    const [input_format, setInputFormat] = useState("");
+    const [output_format, setOutputFormat] = useState("");
+    const [topics, setTopics] = useState("");
+    const [public_test_cases, setPublicTestCases] = useState([]);
+    const [private_test_cases, setPrivateTestCases] = useState([]);
+    const [time_limit, setTimeLimit] = useState("");
+    const [problemID, setProblemID] = useState("");
+    const [inputTestCase, setInputTestCase] = useState("");
+    const [outputTestCase, setOutputTestCase] = useState("");
+    const [explanation, setExplanation] = useState("");
+    const [is_draft, setIsDraft] = useState(false);
 
-    const [toastActive, setToastActive] = React.useState(false);
-    const [toastMessage, setToastMessage] = React.useState("");
-    const [toastClass, setToastClass] = React.useState(
+    const [toastActive, setToastActive] = useState(false);
+    const [toastMessage, setToastMessage] = useState("");
+    const [toastClass, setToastClass] = useState(
         "alert left-16 alert-error relative"
     );
+    const [loadingButton,setLoadingButton] = useState("");
 
     useEffect(() => {
         toggleLoaderBackdrop();
@@ -64,8 +65,6 @@ function create_problem() {
             checkToken().then((status) => {
                 if (status.verified) {
                     if (status.role === ADMIN || status.role === SUPER_ADMIN) {
-                        // FETCH data here
-
                         toggleLoaderBackdrop();
                     } else Router.push(`/${username}`);
                 } else Router.push(LOGIN_PAGE + "?next=admin/problems/create");
@@ -97,6 +96,7 @@ function create_problem() {
     };
 
     const onSubmit = () => {
+        setLoadingButton("loading");
         const data = {
             name: name,
             description: description,
@@ -120,6 +120,7 @@ function create_problem() {
         axios
             .post(url, data, options)
             .then((result) => {
+                setLoadingButton("");
                 reinitialiseQuestionState();
                 setToastClass("alert left-16 alert-success relative");
                 setToastMessage("Question Successfully created.");
@@ -192,6 +193,7 @@ function create_problem() {
                     );
                     setToastActive(true);
                 }
+                setLoadingButton("");
             });
     };
 
@@ -349,7 +351,7 @@ function create_problem() {
                         <div id="question_area_section" className="button_area">
                             <div id="button-div">
                                 {inputTestCase.trim() !== "" &&
-                                outputTestCase.trim() !== "" ? (
+                                    outputTestCase.trim() !== "" ? (
                                     <button
                                         className="btn btn-outline btn-success"
                                         onClick={onAddPublicTestCase}
@@ -364,7 +366,7 @@ function create_problem() {
                             </div>
                             <div id="button-div">
                                 {inputTestCase.trim() !== "" &&
-                                outputTestCase.trim() !== "" ? (
+                                    outputTestCase.trim() !== "" ? (
                                     <button
                                         className="btn btn-outline btn-success"
                                         onClick={onAddPrivateTestCase}
@@ -394,17 +396,17 @@ function create_problem() {
                                 </label>
                             </div>
                             {name &&
-                            description &&
-                            constraints &&
-                            input_format &&
-                            output_format &&
-                            problemID &&
-                            time_limit &&
-                            public_test_cases.length != 0 &&
-                            private_test_cases.length != 0 ? (
+                                description &&
+                                constraints &&
+                                input_format &&
+                                output_format &&
+                                problemID &&
+                                time_limit &&
+                                public_test_cases.length != 0 &&
+                                private_test_cases.length != 0 ? (
                                 <div id="buttom-div">
                                     <button
-                                        className="btn btn-outline btn-success"
+                                        className={`btn btn-outline btn-success ${loadingButton}`}
                                         onClick={onSubmit}
                                     >
                                         Submit
@@ -672,4 +674,4 @@ function create_problem() {
     );
 }
 
-export default create_problem;
+export default CreateProblem;

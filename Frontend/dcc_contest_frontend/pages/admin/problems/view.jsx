@@ -56,7 +56,6 @@ const ViewProblems = () => {
             checkToken().then((status) => {
                 if (status.verified) {
                     if (status.role === ADMIN || status.role === SUPER_ADMIN) {
-                        // FETCH data here
                         search_problems(true);
                     } else Router.push(`/${username}`);
                 } else Router.push(LOGIN_PAGE + "?next=admin/problems/view");
@@ -67,8 +66,6 @@ const ViewProblems = () => {
     function search_problems(toggleLoader = false) {
         if (!toggleLoader) toggleLoaderBackdrop();
         if (search_text && search_option) {
-            // Get the data from backend here.
-
             const url = BASE_URL + SEARCH_QUESIONS_ENDPOINT_BACKEND;
             const body = {
                 searchFilter: search_option,
@@ -88,9 +85,10 @@ const ViewProblems = () => {
                     toggleLoaderBackdrop();
                 })
                 .catch((err) => {
-                    // error handling here
+                    console.log(err);
                     toggleLoaderBackdrop();
                     alert("Something went wrong");
+                    // Router.push(LOGIN_PAGE + "?next=admin/problems/view");
                 });
         } else {
             toggleLoaderBackdrop();
@@ -101,24 +99,33 @@ const ViewProblems = () => {
     return (
         <>
             <SideNav role="admin" highlight={AdminSideNavMap.view_problem} />
-            <div className="data-area">
-                <div className="view-problem-container">
-                    <SearchBar
-                        setFilter={SetSearchOption}
-                        filter={search_option}
-                        setText={setSearchText}
-                        text={search_text}
-                        search_options={PROBLEM_SEARCH}
-                        triggerSearch={search_problems}
-                    />
-                    {data.length != 0 ? (
-                        <DisplayData
-                            data={data}
-                            heading={PROBLEM_SEARCH[search_option]}
+            <div className="admin-container">
+                <div className="data-area">
+                    <div className="view-problem-container">
+                        <SearchBar
+                            setFilter={SetSearchOption}
+                            filter={search_option}
+                            setText={setSearchText}
+                            text={search_text}
+                            search_options={PROBLEM_SEARCH}
+                            triggerSearch={search_problems}
                         />
-                    ) : (
-                        <div>Nothing matches your current search.</div>
-                    )}
+                        {data.length != 0 ? (
+                            <DisplayData
+                                data={data}
+                                heading={PROBLEM_SEARCH[search_option]}
+                            />
+                        ) : (
+                        <div className="flex justify-center">
+                            <div className="alert alert-warning shadow-lg !w-fit">
+                                    <div>
+                                        <svg xmlns="http://www.w3.org/2000/svg" className="stroke-current flex-shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" /></svg>
+                                        <span>Nothing matches your current search.</span>
+                                    </div>
+                                </div>
+                        </div>
+                        )}
+                    </div>
                 </div>
             </div>
         </>

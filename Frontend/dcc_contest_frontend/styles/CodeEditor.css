@@ -1,35 +1,93 @@
 /* Code editor */
 
-.code-editor-area{
-    position: relative;
-    
+.code-editor-area {
+  position: relative;
+
+}
+
+.code-editor {
+  border-width: 2px;
+  border-color: rgb(21 128 61);
+}
+
+.code-editor-area-button-area {
+  display: flex;
+  padding-top: 12px;
+  padding-bottom: 12px;
+  align-items: center;
+  justify-content: left;
+}
+
+#button-below {
+  margin: 4px;
+}
+
+.console-area {
+  position: absolute;
+  bottom: 0;
+  height: 200px;
+  /* width is custom set by javascript */
+  overflow-y: scroll;
+  padding: 16px;
+  border-radius: 8px;
+}
+
+.console-area pre {
+  color: black;
+}
+
+
+.ContestCountdown-container {
+  display: flex;
+  justify-content: flex-end;
+  flex-grow: 1;
+}
+
+.ContestCountdown {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 48px;
+  width: fit-content;
+  background: red;
+  padding: 16px;
+  border-radius: 8px;
+
+}
+
+.ContestCountdownTop-container {
+  display: None;
+}
+
+
+@media screen and (max-width:1000px) {
+  .console-area {
+    width: 95% !important;
   }
-  
-  .code-editor{
-    border-width: 2px;
-    border-color: rgb(21 128 61);
+
+  .ContestCountdown-container {
+    display: none;
   }
-  
-  .code-editor-area-button-area{
+
+  .ContestCountdownTop-container {
     display: flex;
-    padding-top:12px;
-    padding-bottom:12px;
-    align-items: center;
-    justify-content: left;
-    /* margin: 4px; */
+    justify-content: center;
+
   }
-  
-  #button-below{
-    margin:4px;
-  }
-  
-  .console-area{
-    position: absolute;
-    bottom: 0;
-    height: 16vh; 
-    /* width is custom set by javascript */
-    overflow-y: scroll;
-    background: inherit;
+
+  .ContestCountdownTop {
+    display: block;
+    background: red;
+    margin: 16px;
     padding-left: 16px;
+    padding-right: 16px;
+    border-radius: 8px;
   }
-  
+
+  /* .code-editor-area-button-area {
+    flex-direction: column;
+  }
+  .justify-end {
+    align-items: flex-start;
+  } */
+}

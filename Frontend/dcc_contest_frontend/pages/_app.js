@@ -16,7 +16,6 @@ import "../styles/ProblemSetPageSkeleton.css";
 import "../styles/LoginSkeleton.css";
 import "../styles/ckeditor.css";
 import "../styles/QuestionAreaSkeleton.css";
-import "../styles/CodeAreaSkeleton.css";
 import "../styles/Dashboard.css";
 import "../styles/ProblemPage.css";
 import "../styles/CodeEditor.css";
@@ -24,6 +23,8 @@ import "../styles/CreateProblem.css";
 import "../styles/CreateContest.css";
 import "../styles/AdminDashboard.css";
 import "../styles/CustomBackdrop.css";
+import "../styles/ConsoleSkeleton.css";
+import "../styles/ProblemPreviewAdmin.css";
 
 import { Provider } from "react-redux";
 import store from "../store/baseStore";
@@ -69,12 +70,6 @@ export default function App({ Component, pageProps }) {
           href="/DCC_LOGO_DARK.png"
         />
         <link rel="manifest" href="/manifest.json" />
-
-        <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
-        <script
-          src="https://kit.fontawesome.com/5d9d1ab027.js"
-          crossorigin="anonymous"
-        ></script>
       </Head>
       <Provider store={store}>
         <Auth>
