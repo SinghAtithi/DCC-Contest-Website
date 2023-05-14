@@ -1,8 +1,16 @@
+const withPlugins = require('next-compose-plugins')
+
 const withPWA = require("next-pwa")({
   dest: "public",
 });
 
-module.exports = withPWA({
+const withBundleAnalyzer = require('@next/bundle-analyzer')({
+  enabled: process.env.ANALYZE === 'true',
+});
+
+
+
+const withPWAA = withPWA({
   // next.js config
   /** @type {import('next').NextConfig} */
   reactStrictMode: false,
@@ -12,3 +20,7 @@ module.exports = withPWA({
     ignoreDuringBuilds: true,
   },
 });
+
+module.exports = withPlugins([withBundleAnalyzer],
+  withPWAA
+);

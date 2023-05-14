@@ -36,7 +36,7 @@ function QuestionStatement(props) {
               public_test_cases: res.data.public_test_cases,
             });
             props.setQuestionId(res.data._id);
-            alert(res.data._id);
+            // alert(res.data._id);
           }
           props.setLoader(false);
         })
@@ -66,7 +66,7 @@ function QuestionStatement(props) {
               public_test_cases: res.data.public_test_cases,
             });
             props.setQuestionId(res.data._id);
-            alert(res.data._id);
+            // alert(res.data._id);
           }
           props.setLoader(false);
         })

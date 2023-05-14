@@ -3,7 +3,7 @@ import React, { useEffect } from "react";
 import { useState } from "react";
 import { BASE_URL } from "../../utils/constants";
 import AlertError from "./AlertError";
-import ProblemTable from "./ProblemTable";
+import ProblemTable from "../../components/problemset/ProblemTable";
 import PageButtons from "./PageButtons";
 import ProblemSetSkeleton from "./ProblemSetSkeleton";
 

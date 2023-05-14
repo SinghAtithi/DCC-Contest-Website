@@ -956,8 +956,6 @@ ck-rounded-corners .ck.ck-editor__main>.ck-editor__editable, .ck.ck-editor__main
 /* Problem Page */
 
 .problem-page{
-  position: relative;
-  top:65px;
   display: flex;
 }
 
