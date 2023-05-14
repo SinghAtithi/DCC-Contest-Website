@@ -14,7 +14,16 @@ import "../styles/HomePage.css";
 import "../styles/ProblemTable.css";
 import "../styles/ProblemSetPageSkeleton.css";
 import "../styles/LoginSkeleton.css";
-import "tailwindcss/tailwind.css";
+import "../styles/ckeditor.css";
+import "../styles/QuestionAreaSkeleton.css";
+import "../styles/CodeAreaSkeleton.css";
+import "../styles/Dashboard.css";
+import "../styles/ProblemPage.css";
+import "../styles/CodeEditor.css";
+import "../styles/CreateProblem.css";
+import "../styles/CreateContest.css";
+import "../styles/AdminDashboard.css";
+import "../styles/CustomBackdrop.css";
 
 import { Provider } from "react-redux";
 import store from "../store/baseStore";
