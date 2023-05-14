@@ -14,6 +14,7 @@ import "../styles/HomePage.css";
 import "../styles/ProblemTable.css";
 import "../styles/ProblemSetPageSkeleton.css";
 import "../styles/LoginSkeleton.css";
+import "tailwindcss/tailwind.css";
 
 import { Provider } from "react-redux";
 import store from "../store/baseStore";

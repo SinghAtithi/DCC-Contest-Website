@@ -6,7 +6,7 @@ function ProblemSetPage() {
   return (
     <>
       <Navbar />
-      <div className="content-area-top">
+      <div className="content-area-top ">
         <ProblemSet />
       </div>
     </>
