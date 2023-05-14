@@ -102,7 +102,7 @@ const ContestPage = () => {
       .get(`${BASE_URL}/contest`)
       .then((res) => {
         // divide as upcoming, ongoing and past contests and display on the screen
-        console.log(res);
+        // console.log(res);
         console.log("Here at contest folder");
         setLoading(false);
       })
