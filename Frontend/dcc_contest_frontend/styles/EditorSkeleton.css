@@ -1,8 +1,6 @@
 .EditorSkeleton-container{
-    display:flex;
-    flex-direction: column;
-    max-height: 130px;
-    border:2px solid green;
+    height:100%;
+    width:100%;
     border-radius: 6px;
     margin:4px;
 }
@@ -17,4 +15,9 @@
     min-height: 75px;
 }
 
+@media screen and (max-width:1000px) {
+    .EditorSkeleton-container{
+        width:100%;
+    }
+}
 

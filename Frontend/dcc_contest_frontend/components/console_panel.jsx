@@ -4,14 +4,9 @@ import ConsoleSkeleton from './skeleton/ConsoleSkeleton'
 const ConsolePanel = (props) => {
 
   return (
-    props.consoleLoader ? <ConsoleSkeleton/> :
-    (<>
-      {props.isOpen && (
-        <div className="console-area" style={{ width: `${props.width}` }}>
-          <pre>{props.console_data}</pre>
-        </div>
-      )}
-    </>)
+    <div className={`relative console-area ${props.background}`} style={{ width: `${props.width}` }}>
+      {props.consoleLoader ? <ConsoleSkeleton /> : (props.isOpen && <pre>{props.console_data}</pre>)}
+    </div>
   )
 }
 

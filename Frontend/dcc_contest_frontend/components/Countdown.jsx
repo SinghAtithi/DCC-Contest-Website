@@ -30,8 +30,8 @@ export default function Countdown(props) {
 
   return (
     <>
-      <div className="border border-blue-400 min-h-8 h-8">
-        <div className="flex gap-5 align-middle justify-center">
+      <div className="min-h-8 h-8 flex gap-5 align-middle justify-center self-center">
+        <div className="flex gap-5 align-middle justify-center self-center">
           <div className=" text-white">
             <span className="countdown font-mono text-lg">
               <span style={{ "--value": days }}></span>

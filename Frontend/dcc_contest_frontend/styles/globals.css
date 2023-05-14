@@ -6,9 +6,8 @@
 
 .content-area-top{
   position: relative;
-  padding-top: 65px;
-  overflow-x: hidden;
-  overflow-y:auto;
+  padding-top: 64px;
+  overflow: hidden !important;
 }
 
 .loading{
