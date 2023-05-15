@@ -2,15 +2,16 @@ const path = require("path");
 const fs = require("fs");
 const { basePath } = require("../basePath.js");
 
-const testCasesDir = path.join(basePath(), "TestCases");
-
-if (!fs.existsSync(testCasesDir)) {
-    fs.mkdirSync(testCasesDir, { recursive: true });
-}
-
 const generateTestCaseFiles = async (public_test_case_obj, private_test_case_obj, ques_id) => {
     // Create a new directory for the question
     // quesDir: directory path of the question
+
+
+    const testCasesDir = path.join(basePath(), "TestCases");
+
+    if (!fs.existsSync(testCasesDir)) {
+        fs.mkdirSync(testCasesDir, { recursive: true });
+    }
 
     const quesDir = path.join(testCasesDir, `${ques_id}`);
     if (!fs.existsSync(quesDir)) {
@@ -26,10 +27,10 @@ const generateTestCaseFiles = async (public_test_case_obj, private_test_case_obj
         var test_case = public_test_case_obj[i];
 
         const input_file = path.join(public, `${i}_in.txt`);
-        await fs.writeFileSync(input_file, test_case.input);
+        fs.writeFileSync(input_file, test_case.input);
 
         const output_file = path.join(public, `${i}_out.txt`);
-        await fs.writeFileSync(output_file, test_case.output);
+        fs.writeFileSync(output_file, test_case.output);
     }
 
     const private = path.join(quesDir, "private");
@@ -41,10 +42,10 @@ const generateTestCaseFiles = async (public_test_case_obj, private_test_case_obj
         var test_case = private_test_case_obj[i];
 
         const input_file = path.join(private, `${i}_in.txt`);
-        await fs.writeFileSync(input_file, test_case["input"]);
+        fs.writeFileSync(input_file, test_case["input"]);
 
         const output_file = path.join(private, `${i}_out.txt`);
-        await fs.writeFileSync(output_file, test_case["output"]);
+        fs.writeFileSync(output_file, test_case["output"]);
     }
 };
 
