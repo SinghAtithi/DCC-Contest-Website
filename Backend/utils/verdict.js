@@ -11,7 +11,7 @@ const { deleteFile } = require("./deleteFiles");
 const getVerdict = (resultFilePath, outputFilePath) => {
   let filesManager = new FilesManager();
   let verdict = filesManager.isFileEqualTo(resultFilePath, outputFilePath);
-  // deleteFile([resultFilePath]);
+  deleteFile([resultFilePath]);
   return verdict;
 };
 
