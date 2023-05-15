@@ -1,5 +1,6 @@
 const Queue = require("bull");
 const path = require("path");
+const fs = require("fs");
 const { basePath } = require("../../basePath.js");
 
 const Question = require("../../models/question");
@@ -9,26 +10,27 @@ const { executeCpp } = require("../../utils/executeCpp");
 const { generateResultFile } = require("../../utils/generateResultFile");
 const { getVerdict } = require("../../utils/verdict");
 const { deleteFile } = require("../../utils/deleteFiles");
-
 const { exec } = require("child_process");
-
-
+const {
+  generateTestCaseFiles,
+} = require("../../utils/generateTestCaseFiles.js");
 
 // Create a Queue object
 const ExecuteQueue = new Queue("execute");
 
-const compileCpp = async (filePath, outPath) => {
-  // outPath = filePath.split(".")[0] + ".exe";
-  console.log("filePath from index : ", filePath);
-  console.log("outPath from index : ", outPath);
+// Function to compile the code at path 'codeFilePath' and store the coumpiled output in 'compiledFilePath'
+const compileCpp = async (codeFilePath, compiledFilePath) => {
   return new Promise((res, rej) => {
-    exec(`g++ ${filePath} -o ${outPath} -static`, (error, stdout, stderr) => {
-      if (error || stderr) {
-        rej({ error, stderr });
-      } else {
-        res();
+    exec(
+      `g++ ${codeFilePath} -o ${compiledFilePath} -static`,
+      (error, stdout, stderr) => {
+        if (error || stderr) {
+          rej({ error, stderr });
+        } else {
+          res();
+        }
       }
-    });
+    );
   });
 };
 
@@ -38,79 +40,101 @@ const compileCpp = async (filePath, outPath) => {
 ExecuteQueue.process(5, async (job, done) => {
   const submission_id = job.data.submission_id;
   const contestRunning = job.data.contestRunning;
-  console.log(submission_id);
   try {
+    // Find the submission in the database
     const submission = await Submission.findOne({
       _id: submission_id,
     }).exec();
+
+    // If submission is queued
     if (submission.verdict === "Queued") {
-      // Generate Code file for the code.
+      // Generate the code file and the compiled file path
+      const { codeFilePath, compiledFilePath, compiledFileName } =
+        await generateCodeFile(
+          submission.language,
+          submission.code,
+          submission.username
+        );
 
-      console.log(1);
-      const { codeFilePath, outPath } = await generateCodeFile(
-        submission.language,
-        submission.code,
-        undefined,
-        submission.username
-      ); // language, code, input(if any), username.
-
-      // Try to execute the file created and deliver the verdict
+      console.log("To compile");
+      // Try to compile and then execute the file created and deliver the verdict
       try {
-        // For pre defined Private Test Cases
-        const ques = await Question.findOne({
-          _id: submission.ques_id,
-        }).exec();
+        // Get the question from databse
+        console.log("Getting Question");
+        const ques = await Question.findById(
+          submission.ques_id,
+          "time_limit public_test_cases private_test_cases"
+        ).exec();
+        console.log("Got the question");
 
-        const n_pvt = ques.private_test_cases.length;
+        console.log("Checking for test cases");
+        // If the testcaseDir doesnot exist, create it.
+        const testCasesDir = path.join(basePath(), "TestCases");
+
+        if (!fs.existsSync(testCasesDir)) {
+          fs.mkdirSync(testCasesDir, { recursive: true });
+        }
+
+        const quesDir = path.join(testCasesDir, `${ques._id}`);
+        if (!fs.existsSync(quesDir)) {
+          console.log("Creating test case files");
+          await generateTestCaseFiles(
+            ques.public_test_cases,
+            ques.private_test_cases,
+            ques._id
+          );
+          console.log("Created test case files");
+        }
+        console.log("Checking for test cases");
+
+        // Extract the no of public and private test cases
         const n_public = ques.public_test_cases.length;
+        const n_pvt = ques.private_test_cases.length;
 
-        var error = false;
-        var time_taken = 0;
+        // Some letiables to reegulate the flow of process
+        let error = false;
+        let time_taken = 0;
 
-        console.log("heeeee", outPath);
-        await compileCpp(codeFilePath, outPath).then(async () => {
+        console.log("Compiling");
+        // Compile the code
+        await compileCpp(codeFilePath, compiledFilePath).then(async () => {
           console.log("Code Compiled Successfully");
         });
 
-
+        console.log("Checking public test cases");
         // Loop over public test cases
-        for (var i = 0; i < n_public; i++) {
+        for (let i = 0; i < n_public; i++) {
           // Path of the pre defined input file for this test case
           const inPath = path.join(
             path.join(
-              path.join(
-                path.join(basePath(), "TestCases"),
-                `${ques._id}`
-              ),
+              path.join(path.join(basePath(), "TestCases"), `${ques._id}`),
               "public"
             ),
             `${i}_in.txt`
           );
 
-          const outPathCheck = path.join(
+          // Path of the pre defined output file for this test case
+          const outputFilePath = path.join(
             path.join(
-              path.join(
-                path.join(basePath(), "TestCases"),
-                `${ques._id}`
-              ),
+              path.join(path.join(basePath(), "TestCases"), `${ques._id}`),
               "public"
             ),
             `${i}_out.txt`
           );
 
-          console.log(3);
           // Execute the code.
-          var resp = await executeCpp(
-            codeFilePath,
+          let resp = await executeCpp(
+            compiledFileName,
             submission.username,
             inPath,
             ques.time_limit
-          ); // path of code file, username, path of input file, time_limit
+          );
 
-          ans = resp.stdout;
+          // Extract the output answer and time taken from the response of executeCpp.
+          // Add the time difference to the time_taken.
+          let ans = resp.stdout;
           time_taken = time_taken + resp.difference;
 
-          console.log(4);
           // Create a file for the result obtained by the code which was executed.
           const resultFilePath = await generateResultFile(
             codeFilePath,
@@ -119,57 +143,50 @@ ExecuteQueue.process(5, async (job, done) => {
             i
           );
 
-          // Path of the pre defined output file for this test case
-
-          console.log(5);
-          // Check for verdict
-          if (!getVerdict(resultFilePath, outPathCheck)) {
+          // Check for verdict.
+          // If verdict is ok, move with the next test case. Else set error to true and break the loop.
+          if (!getVerdict(resultFilePath, outputFilePath)) {
             error = true;
             break;
           }
         }
 
-        console.log(6);
+        console.log("Checking private test cases");
+
         // Loop over the test cases, execute and give verdict
         // Loop only is there is no error from above
-        for (var i = 0; !error && i < n_pvt; i++) {
+        for (let i = 0; !error && i < n_pvt; i++) {
           // Path of the pre defined input file for this test case
           const inPath = path.join(
             path.join(
-              path.join(
-                path.join(basePath(), "TestCases"),
-                `${ques._id}`
-              ),
+              path.join(path.join(basePath(), "TestCases"), `${ques._id}`),
               "private"
             ),
             `${i}_in.txt`
           );
 
-          const outPathCheck = path.join(
+          // Path of the pre defined output file for this test case
+          const outputFilePath = path.join(
             path.join(
-              path.join(
-                path.join(basePath(), "TestCases"),
-                `${ques._id}`
-              ),
+              path.join(path.join(basePath(), "TestCases"), `${ques._id}`),
               "private"
             ),
             `${i}_out.txt`
           );
 
-
-          console.log(7);
           // Execute the code.
-          var resp = await executeCpp(
-            codeFilePath,
+          let resp = await executeCpp(
+            compiledFileName,
             submission.username,
             inPath,
             ques.time_limit
-          ); // path of code file, username, path of input file, time_limit
+          );
 
-          ans = resp.stdout;
+          // Extract the output answer and time taken from the response of executeCpp.
+          // Add the time difference to the time_taken.
+          let ans = resp.stdout;
           time_taken = time_taken + resp.difference;
 
-          console.log(8);
           // Create a file for the result obtained by the code which was executed.
           const resultFilePath = await generateResultFile(
             codeFilePath,
@@ -178,36 +195,33 @@ ExecuteQueue.process(5, async (job, done) => {
             i
           );
 
-          // Path of the pre defined output file for this test case
-
-          console.log(9);
-
-          // Check for verdict
-          if (!getVerdict(resultFilePath, outPathCheck)) {
+          // Check for verdict.
+          // If verdict is ok, move with the next test case. Else set error to true and break the loop.
+          if (!getVerdict(resultFilePath, outputFilePath)) {
             error = true;
             break;
           }
         }
 
+        // Find the average time taken in executing all the test cases.
         const average_time_taken = time_taken / (n_public + n_pvt);
-        console.log(10);
+
         deleteFile([codeFilePath]);
+        deleteFile([compiledFilePath]);
 
-        console.log("Ultimately at the end");
-
-        console.log(11);
+        // If there is no error and all test cases have been successfully executed
         if (!error) {
-          console.log(12);
+          // Update the database
           await Submission.findOneAndUpdate(
             { _id: submission_id },
             { verdict: "Accepted", time_taken: average_time_taken },
             { new: true }
           );
-          console.log("Yeah.. correct answer and updated too");
           done();
-        } else {
-          console.log(13);
-          console.log("oops.. wrong answer");
+        }
+        // Else if there is some error
+        else {
+          // Update the database
           await Submission.findOneAndUpdate(
             { _id: submission_id },
             { verdict: "Wrong Answer" }
@@ -215,72 +229,76 @@ ExecuteQueue.process(5, async (job, done) => {
           done();
         }
       } catch (error) {
-        console.log(14);
+        // If there is compilation error or promise is rejected
         deleteFile([codeFilePath]);
-        console.log(14.2);
 
         let err;
+        // If there is compilation error, the error is in stderr.
         if (error.stderr) {
-          const searchString = codeFilePath + ": ";
-          err = error.stderr.split(searchString).join("");
-          console.log(15);
+          console.log("Compilation Error");
+          // Update the database
           await Submission.findOneAndUpdate(
             { _id: submission_id },
-            { verdict: "Compilation Error", error: err }
+            { verdict: "Compilation Error", error: error.stderr }
           ).exec();
-          console.log(16);
           done();
-        } else if (error.error) {
-          console.log(17);
+        }
+        // if key error(custom error when promise is rejected) is present in the error,
+        else if (error.error) {
+          deleteFile([compiledFilePath]);
+          let run_time = Number(error.difference);
+          let verdict = "Time Limit Exceeded";
+
+          if (run_time === 30) verdict = "May be Infinite Loop";
+
+          // Update the database
           await Submission.findOneAndUpdate(
             { _id: submission_id },
-            { verdict: "Time Limit Exceeded" }
+            { verdict: verdict, time_taken: error.difference }
           ).exec();
-          console.log(18);
           done();
-        } else if (error.err) {
-          console.log(19);
-          console.log(error.err);
+        }
+        // if there is some error after compilation such as in inputs, the error is in err.
+        else if (error.err) {
+          deleteFile([compiledFilePath]);
           err = error.err.code;
           await Submission.findOneAndUpdate(
             { _id: submission_id },
-            { verdict: "Compilation Error", error: err }
+            { verdict: "Error in IO", error: err }
           ).exec();
-          console.log(20);
           done();
-        } else {
-          console.log(error);
+        }
+        // Some unknown error happended
+        else {
+          console.log("Error 1", error);
           await Submission.findOneAndUpdate(
             { _id: submission_id },
-            { verdict: "Server Error" },
-            { new: true }
+            { verdict: "Server Error" }
           );
           done();
         }
       }
-    } else {
-      console.log("in error of process");
-      throw Error;
+    }
+    // If submission has already been executed
+    else {
+      done();
     }
   } catch (error) {
-    console.log(error);
+    // If something else has gone wrong
+    console.log("Error 1", error);
     await Submission.findOneAndUpdate(
       { _id: submission_id },
-      { verdict: "Server Error" },
-      { new: true }
+      { verdict: "Server Error" }
     );
-    throw Error;
+    done();
   }
 });
 
+// Once the job is completed, this will be triggered
 ExecuteQueue.on("completed", (job) => {
   console.log(
-    `Completed job id # ${job.id} and submission_id #${job.data.submission_id}`
+    `BULL QUEUE - Completed job id # ${job.id} and submission_id #${job.data.submission_id}`
   );
-});
-
-ExecuteQueue.on("error", (error) => {
-  console.log(error);
 });
 
 module.exports = { ExecuteQueue };
