@@ -16,7 +16,10 @@ router.get("/", async (req, res) => {
   //   // console.log(ques1);
   // }
   console.log("at route question /");
-  const currDate = moment(new Date()).utcOffset("+05:30").format("DD/MM/YYYY HH:mm").toString();
+  const currDate = moment(new Date())
+    .utcOffset("+05:30")
+    .format("DD/MM/YYYY HH:mm")
+    .toString();
   const allQues = await Question.find(
     { assigned: true },
     // { displayAfter: { $lt: currDate }, assigned: true },
@@ -48,7 +51,7 @@ router.post("/search", verifyAdmin, async (req, res) => {
   console.log(search_params);
 
   const allQues = await Question.find(search_params).exec();
-  console.log(allQues);
+
   res.status(200).send({ data: allQues });
 });
 
@@ -72,12 +75,13 @@ router.post("/create", verifyAdmin, async (req, res) => {
     is_draft,
   } = req.body;
   const user = req.user;
-  console.log(user);
+
   try {
     var public_tc = public_test_cases;
     var private_tc = private_test_cases;
 
-    var display_after = moment(new Date()).utcOffset("+05:30")
+    var display_after = moment(new Date())
+      .utcOffset("+05:30")
       .add(1000, "days")
       .format("DD/MM/YYYY HH:mm")
       .toString();
@@ -107,9 +111,64 @@ router.post("/create", verifyAdmin, async (req, res) => {
   }
 });
 
+router.post("/update", verifyAdmin, async (req, res) => {
+  const {
+    name,
+    description,
+    constraints,
+    input_format,
+    output_format,
+    time_limit,
+    public_test_cases,
+    private_test_cases,
+    topics,
+    ques_id,
+    is_draft,
+  } = req.body;
+
+  const user = req.user;
+
+  try {
+    var public_tc = public_test_cases;
+    var private_tc = private_test_cases;
+
+    var display_after = moment(new Date())
+      .utcOffset("+05:30")
+      .add(1000, "days")
+      .format("DD/MM/YYYY HH:mm")
+      .toString();
+    const author = await User.findOne({ _id: user.userId }, "username").exec();
+
+    const filter = { ques_id: ques_id, author: author.username };
+    const update = {
+      name: name,
+      description: description,
+      constraints: constraints,
+      input_format: input_format,
+      output_format: output_format,
+      time_limit: time_limit,
+      public_test_cases: public_test_cases,
+      private_test_cases: private_test_cases,
+      topics: topics,
+      is_draft: is_draft,
+    };
+
+    const ques = await Question.findOneAndUpdate(filter, update);
+
+    generateTestCaseFiles(public_tc, private_tc, ques._id);
+    res.status(200).json({ message: "Question created successfully" });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json(error);
+  }
+});
+
 // Get question by ques_id
 router.get("/:ques_id", (req, res) => {
-  const currDate = moment(new Date()).utcOffset("+05:30").format("DD/MM/YYYY HH:mm").toString();
+  const currDate = moment(new Date())
+    .utcOffset("+05:30")
+    .format("DD/MM/YYYY HH:mm")
+    .toString();
   try {
     Question.findOne(
       {
@@ -137,19 +196,37 @@ router.get("/:ques_id", (req, res) => {
   }
 });
 
+router.delete("/delete/:ques_id", verifyAdmin, async (req, res) => {
+  const ques_id = req.params.ques_id;
+  const user = req.user;
+
+  try {
+    const filter = {
+      ques_id: ques_id,
+      author: user.username,
+    };
+
+    const deleted = await Question.findOneAndDelete(filter);
+
+    if (!deleted)
+      res.status(500).send({ error: "Could not find the question to delete." });
+    else res.status(200).send({ message: "Deleted Successfully." });
+  } catch (error) {
+    res.status(500).send({ error: error });
+  }
+});
+
 router.get("/getSubmission/:id", async (req, res) => {
   try {
     const submission = await Submission.findOne(
       { _id: req.params.id },
       "verdict error time_taken"
     ).exec();
-    res
-      .status(200)
-      .json({
-        verdict: submission.verdict,
-        error: submission.error,
-        time_taken: submission.time_taken,
-      });
+    res.status(200).json({
+      verdict: submission.verdict,
+      error: submission.error,
+      time_taken: submission.time_taken,
+    });
   } catch (error) {
     console.log(error);
     res.status(500).json({ error: "Something went wrong." });

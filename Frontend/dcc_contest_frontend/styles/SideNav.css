@@ -67,14 +67,13 @@
 .data-area{
     /* border: 2px solid red; */
     position: relative;
-    top:64px;
-    left:21vw;
-    height:90vh;
+    padding-top:64px;
+    padding-left:20vw;
+    /* height:90vh; */
     /* max-width:77vw; */
-    width:77vw;
+    /* width:77vw; */
     /* margin:3px; */
-    overflow-y:auto;
-    overflow-x: hidden;
+    overflow: hidden !important;
 }
 
 .side-navbar-hamburger{
@@ -86,9 +85,8 @@
         width : 25vw;
     }
     .data-area{
-        top:64px;
-        left:25vw;
-        max-width: 74vw;
+        padding-left:25vw;
+        /* max-width: 75vw; */
         /* overflow-y:hidden; */
         /* margin:4px; */
     }
@@ -99,9 +97,9 @@
         width : 30vw;
     }
     .data-area{
-        left:30vw;
-        min-width: 69vw;
-        /* overflow-y:hidden; */
+        padding-left:30vw;
+        /* max-width: 68vw; */
+        /* width:100%; */
     }
 }
 
@@ -110,9 +108,9 @@
         left:100vw;
     }
     .data-area{
-        top:64px;
-        left:0vw;
-        min-width:95vw;
+        /* top:64px; */
+        padding-left:0vw;
+        /* min-width:98vw; */
         /* overflow-y:hidden; */
       }
 
@@ -143,9 +141,9 @@
         left:100vw;
     }
     .data-area{
-        top:64px;
-        left:0vw;
-        min-width:95vw;
+        /* top:64px; */
+        padding-left:0vw;
+        /* min-width:95vw; */
         /* overflow-y:hidden; */
         /* overflow-y: auto;
         margin:4px; */

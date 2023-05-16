@@ -6,7 +6,7 @@ import { AiOutlineClose } from "react-icons/ai";
 import { BsPencilSquare } from "react-icons/bs";
 import dynamic from "next/dynamic";
 import checkToken from "../../../utils/checkToken";
-import Router from "next/router";
+import Router, { useRouter } from "next/router";
 import Head from "next/head";
 import SideNav from "../../../components/SideNavAdmin";
 import {
@@ -17,9 +17,13 @@ import {
     LOGIN_PAGE,
     BASE_URL,
     CREATE_QUESTION_ENDPOINT_BACKEND,
+    SEARCH_QUESIONS_ENDPOINT_BACKEND,
+    UPDATE_QUESTION_ENDPOINT_BACKEND,
 } from "../../../utils/constants";
 import toggleLoaderBackdrop from "../../../utils/toggleCustomBackdrop";
 import { useSelector } from "react-redux";
+import SideNavSkeleton from "../../../components/skeleton/SideNavSkeleton";
+import CreateProblemSkeleton from "../../../components/skeleton/CreateProblemSkeleton";
 
 const toastCross = {
     position: "absolute",
@@ -33,6 +37,7 @@ const CKEditor = dynamic(() => import("../../../components/RichTextEditor"), {
 
 function CreateProblem() {
     const { role, loggedIn, username } = useSelector((state) => state.login);
+    const router = useRouter();
 
     const [name, setName] = useState("");
     const [description, setDescription] = useState("");
@@ -54,27 +59,86 @@ function CreateProblem() {
     const [toastClass, setToastClass] = useState(
         "alert left-16 alert-error relative"
     );
-    const [loadingButton,setLoadingButton] = useState("");
+    const [loadingButton, setLoadingButton] = useState("");
+    const [loadingSkeleton, setLoadingSkeleton] = useState(true);
+
+    const [disableProblemID, setDisableProblemID] = useState(false);
+
+    function setQuesForEdit(ques_id) {
+        const url = BASE_URL + SEARCH_QUESIONS_ENDPOINT_BACKEND;
+        const body = {
+            searchFilter: 0,
+            searchString: ques_id,
+        };
+
+        console.log(body);
+        const options = {
+            headers: {
+                "Content-Type": "application/json",
+                token: localStorage.getItem("token"),
+            },
+        };
+        axios
+            .post(url, body, options)
+            .then((result) => {
+                const data = result.data.data;
+                if (data.length === 0) {
+                    setToastMessage(`Question with ID ${ques_id} does not exist.`);
+                    setToastActive(true);
+                    setLoadingSkeleton(false);
+                }
+                else {
+                    setDisableProblemID(true);
+                    setProblemID(data[0].ques_id);
+                    setName(data[0].name);
+                    setTimeLimit(data[0].time_limit);
+
+                    setDescription(data[0].description);
+                    setConstraints(data[0].constraints);
+                    setInputFormat(data[0].input_format);
+                    setOutputFormat(data[0].output_format);
+                    setTopics(data[0].topics);
+                    setPublicTestCases(data[0].public_test_cases);
+                    setPrivateTestCases(data[0].private_test_cases);
+                    setLoadingSkeleton(false);
+                }
+            })
+            .catch((err) => {
+                setToastMessage(`Something went wrong.`);
+                setToastActive(true);
+                setLoadingSkeleton(false);
+            });
+
+    }
 
     useEffect(() => {
-        toggleLoaderBackdrop();
-        if (loggedIn && (role === ADMIN || role === SUPER_ADMIN))
-            toggleLoaderBackdrop();
-        else if (loggedIn && role === END_USER) Router.push(`/${username}`);
-        else {
-            checkToken().then((status) => {
-                if (status.verified) {
-                    if (status.role === ADMIN || status.role === SUPER_ADMIN) {
-                        toggleLoaderBackdrop();
-                    } else Router.push(`/${username}`);
-                } else Router.push(LOGIN_PAGE + "?next=admin/problems/create");
-            });
+        if (router.isReady) {
+            if (loggedIn && (role === ADMIN || role === SUPER_ADMIN)) {
+                if (router.query["edit"]) {
+                    setQuesForEdit(router.query["edit"]);
+                }
+                else setLoadingSkeleton(false);
+            }
+
+            else if (loggedIn && role === END_USER) Router.push(`/${username}`);
+            else {
+                checkToken().then((status) => {
+                    if (status.verified) {
+                        if (status.role === ADMIN || status.role === SUPER_ADMIN) {
+                            if (router.query["edit"]) {
+                                setQuesForEdit(router.query["edit"]);
+                            }
+                            else setLoadingSkeleton(false);
+                        } else Router.push(`/${username}`);
+                    } else Router.push(LOGIN_PAGE + "?next=admin/problems/create");
+                });
+            }
         }
-    }, []);
+
+    }, [router.isReady]);
 
     const reinitialiseQuestionState = () => {
         setName("");
-        setNameError(null);
         setDescription("");
         setConstraints("");
         setInputFormat("");
@@ -110,7 +174,10 @@ function CreateProblem() {
             ques_id: problemID,
             is_draft: is_draft,
         };
-        const url = BASE_URL + CREATE_QUESTION_ENDPOINT_BACKEND;
+        let url = BASE_URL + CREATE_QUESTION_ENDPOINT_BACKEND;
+        if(router.query["edit"]){
+            url = BASE_URL + UPDATE_QUESTION_ENDPOINT_BACKEND;
+        }
         const options = {
             headers: {
                 "Content-Type": "application/json",
@@ -124,6 +191,9 @@ function CreateProblem() {
                 reinitialiseQuestionState();
                 setToastClass("alert left-16 alert-success relative");
                 setToastMessage("Question Successfully created.");
+                if(router.query["edit"]){
+                    setToastMessage("Question Successfully updated.");
+                }
                 setToastActive(true);
             })
             .catch((err) => {
@@ -233,443 +303,447 @@ function CreateProblem() {
                 role="SuperAdmin"
                 highlight={AdminSideNavMap.create_problems}
             />
+            {loadingSkeleton ? <>
+                <CreateProblemSkeleton />
+            </> : <>
 
-            <div className="data-area">
-                <div className="question_container">
-                    <div className="question_details_area">
-                        {toastActive && (
-                            <div className="toast toast-start z-50">
-                                <div className={toastClass}>
-                                    <div>
-                                        <span>{toastMessage}</span>
+                <div className="data-area">
+                    <div className="question_container">
+                        <div className="question_details_area">
+                            {toastActive && (
+                                <div className="toast toast-start z-50">
+                                    <div className={toastClass}>
+                                        <div>
+                                            <span>{toastMessage}</span>
+                                        </div>
+                                        <div style={toastCross}>
+                                            <AiOutlineClose
+                                                onClick={() => {
+                                                    setToastActive(false);
+                                                }}
+                                            />
+                                        </div>
                                     </div>
-                                    <div style={toastCross}>
-                                        <AiOutlineClose
-                                            onClick={() => {
-                                                setToastActive(false);
+                                </div>
+                            )}
+                            <div id="question_area_section">
+                                <h1 className="text-2xl">Problem ID : </h1>
+                                <h4 className="whitespace-pre text-sm">
+                                    {
+                                        "Format : contestId_questionNo\nDo not use space."
+                                    }
+                                </h4>
+
+                                <TextArea
+                                    value={problemID}
+                                    setValue={setProblemID}
+                                    height={10}
+                                    disabled={disableProblemID}
+                                />
+                            </div>
+                            <div id="question_area_section">
+                                <h1 className="text-2xl">Problem Name : </h1>
+
+                                <TextArea
+                                    value={name}
+                                    setValue={setName}
+                                    height={10}
+                                />
+                            </div>
+                            <div id="question_area_section">
+                                <h1 className="text-2xl">Time Limit : </h1>
+                                <h4 className="whitespace-pre text-sm">
+                                    {"An integer representing time in seconds"}
+                                </h4>
+                                <TextArea
+                                    value={time_limit}
+                                    setValue={setTimeLimit}
+                                    height={10}
+                                />
+                            </div>
+                            <div id="question_area_section">
+                                <h1 className="text-2xl">Topics : </h1>
+                                <TextArea
+                                    value={topics}
+                                    setValue={setTopics}
+                                    height={10}
+                                />
+                            </div>
+                            <div id="question_area_section">
+                                <h1 className="text-2xl">Description : </h1>
+                                <CKEditor
+                                    value={description}
+                                    setValue={setDescription}
+                                />
+                            </div>
+                            <div id="question_area_section">
+                                <h1 className="text-2xl">Constraints : </h1>
+                                <CKEditor
+                                    value={constraints}
+                                    setValue={setConstraints}
+                                />
+                            </div>
+                            <div id="question_area_section">
+                                <h1 className="text-2xl">Input Format : </h1>
+                                <CKEditor
+                                    value={input_format}
+                                    setValue={setInputFormat}
+                                />
+                            </div>
+                            <div id="testCases"></div>{" "}
+                            {/* This is just a dummy div, a place to which it will automatically scroll when needed */}
+                            <div id="question_area_section">
+                                <h1 className="text-2xl">Output Format : </h1>
+                                <CKEditor
+                                    value={output_format}
+                                    setValue={setOutputFormat}
+                                />
+                            </div>
+                            <div id="question_area_section">
+                                <h1 className="text-2xl">Input Test Case : </h1>
+                                <TextArea
+                                    value={inputTestCase}
+                                    setValue={setInputTestCase}
+                                    height={20}
+                                />
+                            </div>
+                            <div id="question_area_section">
+                                <h1 className="text-2xl">Output Test Case : </h1>
+                                <TextArea
+                                    value={outputTestCase}
+                                    setValue={setOutputTestCase}
+                                    height={20}
+                                />
+                            </div>
+                            <div id="question_area_section">
+                                <h1 className="text-2xl">Explanation : </h1>
+                                <CKEditor
+                                    value={explanation}
+                                    setValue={setExplanation}
+                                />
+                            </div>
+                            <div id="question_area_section" className="button_area">
+                                <div id="button-div">
+                                    {inputTestCase.trim() !== "" &&
+                                        outputTestCase.trim() !== "" ? (
+                                        <button
+                                            className="btn btn-outline btn-success"
+                                            onClick={onAddPublicTestCase}
+                                        >
+                                            Add Public Test Case
+                                        </button>
+                                    ) : (
+                                        <button className="btn btn-outline btn-error btn-disabled">
+                                            Add Public Test Case
+                                        </button>
+                                    )}
+                                </div>
+                                <div id="button-div">
+                                    {inputTestCase.trim() !== "" &&
+                                        outputTestCase.trim() !== "" ? (
+                                        <button
+                                            className="btn btn-outline btn-success"
+                                            onClick={onAddPrivateTestCase}
+                                        >
+                                            Add Private Test Case
+                                        </button>
+                                    ) : (
+                                        <button className="btn btn-outline btn-error btn-disabled">
+                                            Add Private Test Case
+                                        </button>
+                                    )}
+                                </div>
+                            </div>
+                            <div className="button_area" id="question_area_section">
+                                <div className="form-control">
+                                    <label className="cursor-pointer label">
+                                        <input
+                                            type="checkbox"
+                                            className="checkbox checkbox-error"
+                                            onChange={(event) => {
+                                                setIsDraft(event.target.checked);
                                             }}
                                         />
+                                        <span className="label-text mx-2">
+                                            Save as draft ?
+                                        </span>
+                                    </label>
+                                </div>
+                                {name &&
+                                    description &&
+                                    constraints &&
+                                    input_format &&
+                                    output_format &&
+                                    problemID &&
+                                    time_limit &&
+                                    public_test_cases.length != 0 &&
+                                    private_test_cases.length != 0 ? (
+                                    <div id="buttom-div">
+                                        <button
+                                            className={`btn btn-outline btn-success ${loadingButton}`}
+                                            onClick={onSubmit}
+                                        >
+                                            Submit
+                                        </button>
                                     </div>
-                                </div>
-                            </div>
-                        )}
-                        <div id="question_area_section">
-                            <h1 className="text-2xl">Problem ID : </h1>
-                            <h4 className="whitespace-pre text-sm">
-                                {
-                                    "Format : contestId_questionNo\nDo not use space."
-                                }
-                            </h4>
-
-                            <TextArea
-                                value={problemID}
-                                setValue={setProblemID}
-                                height={10}
-                            />
-                        </div>
-                        <div id="question_area_section">
-                            <h1 className="text-2xl">Problem Name : </h1>
-
-                            <TextArea
-                                value={name}
-                                setValue={setName}
-                                height={10}
-                            />
-                        </div>
-                        <div id="question_area_section">
-                            <h1 className="text-2xl">Time Limit : </h1>
-                            <h4 className="whitespace-pre text-sm">
-                                {"An integer representing time in seconds"}
-                            </h4>
-                            <TextArea
-                                value={time_limit}
-                                setValue={setTimeLimit}
-                                height={10}
-                            />
-                        </div>
-                        <div id="question_area_section">
-                            <h1 className="text-2xl">Topics : </h1>
-                            <TextArea
-                                value={topics}
-                                setValue={setTopics}
-                                height={10}
-                            />
-                        </div>
-                        <div id="question_area_section">
-                            <h1 className="text-2xl">Description : </h1>
-                            <CKEditor
-                                value={description}
-                                setValue={setDescription}
-                            />
-                        </div>
-                        <div id="question_area_section">
-                            <h1 className="text-2xl">Constraints : </h1>
-                            <CKEditor
-                                value={constraints}
-                                setValue={setConstraints}
-                            />
-                        </div>
-                        <div id="question_area_section">
-                            <h1 className="text-2xl">Input Format : </h1>
-                            <CKEditor
-                                value={input_format}
-                                setValue={setInputFormat}
-                            />
-                        </div>
-                        <div id="testCases"></div>{" "}
-                        {/* This is just a dummy div, a place to which it will automatically scroll when needed */}
-                        <div id="question_area_section">
-                            <h1 className="text-2xl">Output Format : </h1>
-                            <CKEditor
-                                value={output_format}
-                                setValue={setOutputFormat}
-                            />
-                        </div>
-                        <div id="question_area_section">
-                            <h1 className="text-2xl">Input Test Case : </h1>
-                            <TextArea
-                                value={inputTestCase}
-                                setValue={setInputTestCase}
-                                height={20}
-                            />
-                        </div>
-                        <div id="question_area_section">
-                            <h1 className="text-2xl">Output Test Case : </h1>
-                            <TextArea
-                                value={outputTestCase}
-                                setValue={setOutputTestCase}
-                                height={20}
-                            />
-                        </div>
-                        <div id="question_area_section">
-                            <h1 className="text-2xl">Explanation : </h1>
-                            <CKEditor
-                                value={explanation}
-                                setValue={setExplanation}
-                            />
-                        </div>
-                        <div id="question_area_section" className="button_area">
-                            <div id="button-div">
-                                {inputTestCase.trim() !== "" &&
-                                    outputTestCase.trim() !== "" ? (
-                                    <button
-                                        className="btn btn-outline btn-success"
-                                        onClick={onAddPublicTestCase}
-                                    >
-                                        Add Public Test Case
-                                    </button>
                                 ) : (
-                                    <button className="btn btn-outline btn-error btn-disabled">
-                                        Add Public Test Case
-                                    </button>
-                                )}
-                            </div>
-                            <div id="button-div">
-                                {inputTestCase.trim() !== "" &&
-                                    outputTestCase.trim() !== "" ? (
-                                    <button
-                                        className="btn btn-outline btn-success"
-                                        onClick={onAddPrivateTestCase}
-                                    >
-                                        Add Private Test Case
-                                    </button>
-                                ) : (
-                                    <button className="btn btn-outline btn-error btn-disabled">
-                                        Add Private Test Case
-                                    </button>
+                                    <div id="button-div">
+                                        <button className="btn btn-outline btn-error btn-disabled cursor-not-allowed">
+                                            Submit
+                                        </button>
+                                    </div>
                                 )}
                             </div>
                         </div>
-                        <div className="button_area" id="question_area_section">
-                            <div className="form-control">
-                                <label className="cursor-pointer label">
-                                    <input
-                                        type="checkbox"
-                                        className="checkbox checkbox-error"
-                                        onChange={(event) => {
-                                            setIsDraft(event.target.checked);
-                                        }}
-                                    />
-                                    <span className="label-text mx-2">
-                                        Save as draft ?
-                                    </span>
-                                </label>
+                        <div className="question_preview_area">
+                            <div className="preview-heading">
+                                <h1>Preview of the Question </h1>
                             </div>
-                            {name &&
-                                description &&
-                                constraints &&
-                                input_format &&
-                                output_format &&
-                                problemID &&
-                                time_limit &&
-                                public_test_cases.length != 0 &&
-                                private_test_cases.length != 0 ? (
-                                <div id="buttom-div">
-                                    <button
-                                        className={`btn btn-outline btn-success ${loadingButton}`}
-                                        onClick={onSubmit}
-                                    >
-                                        Submit
-                                    </button>
+                            <div className="preview-content">
+                                <div className="question-metadata-preview">
+                                    {problemID && (
+                                        <h1 className="text-2xl">{problemID}</h1>
+                                    )}
+                                    {name && <h1 className="text-2xl">{name}</h1>}
+                                    {time_limit && (
+                                        <p className="text-sm mt-1 italic">
+                                            Time Limit : {time_limit} Sec
+                                        </p>
+                                    )}
                                 </div>
-                            ) : (
-                                <div id="button-div">
-                                    <button className="btn btn-outline btn-error btn-disabled cursor-not-allowed">
-                                        Submit
-                                    </button>
+                                <div id="question-preview-data">
+                                    {description && (
+                                        <p
+                                            className="ck-content"
+                                            dangerouslySetInnerHTML={{
+                                                __html: description,
+                                            }}
+                                        ></p>
+                                    )}
                                 </div>
-                            )}
-                        </div>
-                    </div>
-                    <div className="question_preview_area">
-                        <div className="preview-heading">
-                            <h1>Preview of the Question </h1>
-                        </div>
-                        <div className="preview-content">
-                            <div className="question-metadata-preview">
-                                {problemID && (
-                                    <h1 className="text-2xl">{problemID}</h1>
+                                {constraints && (
+                                    <div id="question-preview-data">
+                                        <h1>Constraints : </h1>
+                                        <p
+                                            className="ck-content"
+                                            dangerouslySetInnerHTML={{
+                                                __html: constraints,
+                                            }}
+                                        ></p>
+                                    </div>
                                 )}
-                                {name && <h1 className="text-2xl">{name}</h1>}
-                                {time_limit && (
-                                    <p className="text-sm mt-1 italic">
-                                        Time Limit : {time_limit} Sec
-                                    </p>
+                                {input_format && (
+                                    <div id="question-preview-data">
+                                        <h1>Input Format : </h1>
+                                        <p
+                                            className="ck-content"
+                                            dangerouslySetInnerHTML={{
+                                                __html: input_format,
+                                            }}
+                                        ></p>
+                                    </div>
                                 )}
-                            </div>
-                            <div id="question-preview-data">
-                                {description && (
-                                    <p
-                                        className="ck-content"
-                                        dangerouslySetInnerHTML={{
-                                            __html: description,
-                                        }}
-                                    ></p>
+                                {output_format && (
+                                    <div id="question-preview-data">
+                                        <h1>Output Format : </h1>
+                                        <p
+                                            className="ck-content"
+                                            dangerouslySetInnerHTML={{
+                                                __html: output_format,
+                                            }}
+                                        ></p>
+                                    </div>
                                 )}
-                            </div>
-                            {constraints && (
-                                <div id="question-preview-data">
-                                    <h1>Constraints : </h1>
-                                    <p
-                                        className="ck-content"
-                                        dangerouslySetInnerHTML={{
-                                            __html: constraints,
-                                        }}
-                                    ></p>
-                                </div>
-                            )}
-                            {input_format && (
-                                <div id="question-preview-data">
-                                    <h1>Input Format : </h1>
-                                    <p
-                                        className="ck-content"
-                                        dangerouslySetInnerHTML={{
-                                            __html: input_format,
-                                        }}
-                                    ></p>
-                                </div>
-                            )}
-                            {output_format && (
-                                <div id="question-preview-data">
-                                    <h1>Output Format : </h1>
-                                    <p
-                                        className="ck-content"
-                                        dangerouslySetInnerHTML={{
-                                            __html: output_format,
-                                        }}
-                                    ></p>
-                                </div>
-                            )}
-                            {topics && (
-                                <div id="question-preview-data">
-                                    <h1>Topics : </h1>
-                                    <p>{topics}</p>
-                                </div>
-                            )}
-                            {public_test_cases.length != 0 && (
-                                <div id="question-preview-data">
-                                    <h1>Public Test Cases : </h1>
-                                    {public_test_cases.map(
-                                        (public_test_case, index) => (
-                                            <div
-                                                key={index}
-                                                className="question-preview-data-icon"
-                                            >
-                                                <h1>Test Case : {index}</h1>
+                                {topics && (
+                                    <div id="question-preview-data">
+                                        <h1>Topics : </h1>
+                                        <p>{topics}</p>
+                                    </div>
+                                )}
+                                {public_test_cases.length != 0 && (
+                                    <div id="question-preview-data">
+                                        <h1>Public Test Cases : </h1>
+                                        {public_test_cases.map(
+                                            (public_test_case, index) => (
                                                 <div
-                                                    className="question-preview-delete-icon tooltip tooltip-error"
-                                                    data-tip="Delete"
+                                                    key={index}
+                                                    className="question-preview-data-icon"
                                                 >
-                                                    <AiOutlineDelete
-                                                        size={32}
-                                                        onClick={() => {
-                                                            setPublicTestCases(
-                                                                public_test_cases.filter(
-                                                                    (_, i) =>
-                                                                        i !==
-                                                                        index
-                                                                )
-                                                            );
-                                                        }}
-                                                    />
-                                                </div>
-                                                <div
-                                                    className="question-preview-edit-icon tooltip tooltip-warning"
-                                                    data-tip="Edit"
-                                                >
-                                                    <BsPencilSquare
-                                                        size={28}
-                                                        onClick={() => {
-                                                            setInputTestCase(
-                                                                public_test_cases[
-                                                                    index
-                                                                ].input
-                                                            );
-                                                            setOutputTestCase(
-                                                                public_test_cases[
-                                                                    index
-                                                                ].output
-                                                            );
-                                                            setExplanation(
-                                                                public_test_cases[
-                                                                    index
-                                                                ].explanation
-                                                            );
-                                                            setTimeout(() => {
-                                                                scrollToTestCase(
-                                                                    "testCases"
+                                                    <h1>Test Case : {index}</h1>
+                                                    <div
+                                                        className="question-preview-delete-icon tooltip tooltip-error"
+                                                        data-tip="Delete"
+                                                    >
+                                                        <AiOutlineDelete
+                                                            size={32}
+                                                            onClick={() => {
+                                                                setPublicTestCases(
+                                                                    public_test_cases.filter(
+                                                                        (_, i) =>
+                                                                            i !==
+                                                                            index
+                                                                    )
                                                                 );
-                                                            }, 100);
-                                                            setPublicTestCases(
-                                                                public_test_cases.filter(
-                                                                    (_, i) =>
-                                                                        i !==
+                                                            }}
+                                                        />
+                                                    </div>
+                                                    <div
+                                                        className="question-preview-edit-icon tooltip tooltip-warning"
+                                                        data-tip="Edit"
+                                                    >
+                                                        <BsPencilSquare
+                                                            size={28}
+                                                            onClick={() => {
+                                                                setInputTestCase(
+                                                                    public_test_cases[
                                                                         index
-                                                                )
-                                                            );
-                                                        }}
-                                                    />
-                                                </div>
-                                                <div className="test-case-preview-area">
-                                                    <p>
-                                                        <span>Input</span>
-                                                        <br></br>
-                                                        {public_test_case.input}
-                                                    </p>
-                                                    <hr></hr>
-                                                    <p>
-                                                        <span>Output</span>
-                                                        <br></br>
-                                                        {
-                                                            public_test_case.output
-                                                        }
-                                                    </p>
-                                                    <hr></hr>
-                                                    {public_test_case.explanation && (
-                                                        <div>
-                                                            <span>
-                                                                Explanation
-                                                            </span>
+                                                                    ].input
+                                                                );
+                                                                setOutputTestCase(
+                                                                    public_test_cases[
+                                                                        index
+                                                                    ].output
+                                                                );
+                                                                setExplanation(
+                                                                    public_test_cases[
+                                                                        index
+                                                                    ].explanation
+                                                                );
+                                                                setTimeout(() => {
+                                                                    scrollToTestCase(
+                                                                        "testCases"
+                                                                    );
+                                                                }, 100);
+                                                                setPublicTestCases(
+                                                                    public_test_cases.filter(
+                                                                        (_, i) =>
+                                                                            i !==
+                                                                            index
+                                                                    )
+                                                                );
+                                                            }}
+                                                        />
+                                                    </div>
+                                                    <div className="test-case-preview-area">
+                                                        <p>
+                                                            <span>Input</span>
                                                             <br></br>
-                                                            <p
-                                                                className="ck-content"
-                                                                dangerouslySetInnerHTML={{
-                                                                    __html: public_test_case.explanation,
-                                                                }}
-                                                            ></p>
-                                                        </div>
-                                                    )}
+                                                            {public_test_case.input}
+                                                        </p>
+                                                        <hr></hr>
+                                                        <p>
+                                                            <span>Output</span>
+                                                            <br></br>
+                                                            {
+                                                                public_test_case.output
+                                                            }
+                                                        </p>
+                                                        <hr></hr>
+                                                        {public_test_case.explanation && (
+                                                            <div>
+                                                                <span>
+                                                                    Explanation
+                                                                </span>
+                                                                <br></br>
+                                                                <p
+                                                                    className="ck-content"
+                                                                    dangerouslySetInnerHTML={{
+                                                                        __html: public_test_case.explanation,
+                                                                    }}
+                                                                ></p>
+                                                            </div>
+                                                        )}
+                                                    </div>
                                                 </div>
-                                            </div>
-                                        )
-                                    )}
-                                </div>
-                            )}
-                            {private_test_cases.length != 0 && (
-                                <div id="question-preview-data">
-                                    <h1>Private Test Cases : </h1>
-                                    {private_test_cases.map(
-                                        (private_test_case, index) => (
-                                            <div
-                                                key={index}
-                                                className="question-preview-data-icon"
-                                            >
-                                                <h1> Test Case : {index}</h1>
+                                            )
+                                        )}
+                                    </div>
+                                )}
+                                {private_test_cases.length != 0 && (
+                                    <div id="question-preview-data">
+                                        <h1>Private Test Cases : </h1>
+                                        {private_test_cases.map(
+                                            (private_test_case, index) => (
                                                 <div
-                                                    className="question-preview-delete-icon tooltip tooltip-error"
-                                                    data-tip="Delete"
+                                                    key={index}
+                                                    className="question-preview-data-icon"
                                                 >
-                                                    <AiOutlineDelete
-                                                        size={32}
-                                                        onClick={() => {
-                                                            setPrivateTestCases(
-                                                                private_test_cases.filter(
-                                                                    (_, i) =>
-                                                                        i !==
-                                                                        index
-                                                                )
-                                                            );
-                                                        }}
-                                                    />
-                                                </div>
-                                                <div
-                                                    className="question-preview-edit-icon tooltip tooltip-warning"
-                                                    data-tip="Edit"
-                                                >
-                                                    <BsPencilSquare
-                                                        size={28}
-                                                        onClick={() => {
-                                                            setInputTestCase(
-                                                                private_test_cases[
-                                                                    index
-                                                                ].input
-                                                            );
-                                                            setOutputTestCase(
-                                                                private_test_cases[
-                                                                    index
-                                                                ].output
-                                                            );
-                                                            setTimeout(() => {
-                                                                scrollToTestCase(
-                                                                    "testCases"
+                                                    <h1> Test Case : {index}</h1>
+                                                    <div
+                                                        className="question-preview-delete-icon tooltip tooltip-error"
+                                                        data-tip="Delete"
+                                                    >
+                                                        <AiOutlineDelete
+                                                            size={32}
+                                                            onClick={() => {
+                                                                setPrivateTestCases(
+                                                                    private_test_cases.filter(
+                                                                        (_, i) =>
+                                                                            i !==
+                                                                            index
+                                                                    )
                                                                 );
-                                                            }, 100);
-                                                            setPrivateTestCases(
-                                                                private_test_cases.filter(
-                                                                    (_, i) =>
-                                                                        i !==
+                                                            }}
+                                                        />
+                                                    </div>
+                                                    <div
+                                                        className="question-preview-edit-icon tooltip tooltip-warning"
+                                                        data-tip="Edit"
+                                                    >
+                                                        <BsPencilSquare
+                                                            size={28}
+                                                            onClick={() => {
+                                                                setInputTestCase(
+                                                                    private_test_cases[
                                                                         index
-                                                                )
-                                                            );
-                                                        }}
-                                                    />
+                                                                    ].input
+                                                                );
+                                                                setOutputTestCase(
+                                                                    private_test_cases[
+                                                                        index
+                                                                    ].output
+                                                                );
+                                                                setTimeout(() => {
+                                                                    scrollToTestCase(
+                                                                        "testCases"
+                                                                    );
+                                                                }, 100);
+                                                                setPrivateTestCases(
+                                                                    private_test_cases.filter(
+                                                                        (_, i) =>
+                                                                            i !==
+                                                                            index
+                                                                    )
+                                                                );
+                                                            }}
+                                                        />
+                                                    </div>
+                                                    <div className="test-case-preview-area">
+                                                        <p>
+                                                            <span>Input</span>
+                                                            <br></br>
+                                                            {
+                                                                private_test_case.input
+                                                            }
+                                                        </p>
+                                                        <hr></hr>
+                                                        <p>
+                                                            <span>Output</span>
+                                                            <br></br>
+                                                            {
+                                                                private_test_case.output
+                                                            }
+                                                        </p>
+                                                    </div>
                                                 </div>
-                                                <div className="test-case-preview-area">
-                                                    <p>
-                                                        <span>Input</span>
-                                                        <br></br>
-                                                        {
-                                                            private_test_case.input
-                                                        }
-                                                    </p>
-                                                    <hr></hr>
-                                                    <p>
-                                                        <span>Output</span>
-                                                        <br></br>
-                                                        {
-                                                            private_test_case.output
-                                                        }
-                                                    </p>
-                                                </div>
-                                            </div>
-                                        )
-                                    )}
-                                </div>
-                            )}
+                                            )
+                                        )}
+                                    </div>
+                                )}
+                            </div>
                         </div>
                     </div>
-                </div>
-            </div>
+                </div></>}
         </div>
     );
 }

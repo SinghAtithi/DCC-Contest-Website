@@ -40,16 +40,20 @@ export const ADMIN_DASHBOARD = "/admin/dashboard";
 
 export const BASE_URL = "https://b132-4-240-84-221.ngrok-free.app";
 // export const BASE_URL = "http://localhost:5000";
+
 export const LOGIN_ENDPOINT_BACKEND = "/auth/login";
 export const SIGNUP_ENDPOINT_BACKEND = "/auth/register";
 export const CREATE_QUESTION_ENDPOINT_BACKEND = "/question/create";
+export const UPDATE_QUESTION_ENDPOINT_BACKEND = "/question/update";
 export const SEARCH_QUESIONS_ENDPOINT_BACKEND = "/question/search";
+export const DELETE_QUESION_ENDPOINT_BACKEND = "/question/delete";
 export const GET_DASHBOARD_DATA = "/dashboard";
 export const VERIFY_EMAIL_BACKEND = "/auth/verifyEmail";
 export const FORGOT_PASSWORD_BACKEND = "/auth/forgotPassword";
 export const SEND_FORGOT_PASSWORD_EMAIL_BACKEND = "/auth/forgotPasswordEmail";
 export const RESEND_CONFIRMATION_EMAIL = "/auth/resendConfirmationEmail";
 export const SUBMIT_QUESTION = "/question/submit";
+export const GET_A_QUESTION = "/question/getOneForEdit";
 export const GET_SUBMISSION = "/question/getSubmission";
 
 export const HOME_PAGE = "/";

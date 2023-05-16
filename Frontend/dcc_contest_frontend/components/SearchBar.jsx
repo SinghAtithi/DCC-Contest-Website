@@ -20,7 +20,7 @@ export default function SearchBar(props){
                     }} />
                 </div>
                 <div className="search-bar-icon">
-                    <button className="btn btn-outline btn-success w-full " onClick={()=>{
+                    <button className={`btn btn-outline btn-success w-full ${props.loadingButton}`} onClick={()=>{
                         props.triggerSearch();
                     }}>Search</button>
                 
