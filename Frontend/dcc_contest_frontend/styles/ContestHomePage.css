@@ -22,7 +22,10 @@
 .custom-table{
     text-align: center !important;
 } 
-
+/* 
+.table th:first-child {
+    position: inherit !important;
+} */
 
 .custom-table a{
     color:inherit;

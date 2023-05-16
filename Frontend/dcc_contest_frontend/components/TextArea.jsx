@@ -15,6 +15,7 @@ function TextArea(props) {
         className={customClass}
         value={props.value}
         onChange={(e) => props.setValue(e.target.value)}
+        disabled = {props.disabled ? true : false}
       />
     </div>
   );

@@ -57,10 +57,10 @@
     float: right;
     height: 90vh;
     width:50%;
-    overflow-y: scroll;
+    overflow-y: auto;
     overflow-x: hidden;
     overflow-wrap: break-word;
-    padding : 8px 20px 8px 20px;
+    padding : 8px 8px 8px 8px;
   }
   
   .preview-heading{
