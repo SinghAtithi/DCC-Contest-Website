@@ -11,7 +11,7 @@ export default function SideNavSkeleton() {
                     <div className="animated-background mt-1" style={{ width: "50px", height: "50px", "border-radius": "50%" }}></div>
                 </div>
                 <div className="mr-2 side-navbar-hamburger">
-                    <div className="animated-background" style={{ width: "50px", height: "50px", "border-radius": "0%"}}></div>
+                    <div className="animated-background" style={{ width: "50px", height: "50px", "border-radius": "0%" }}></div>
                 </div>
             </div>
             <nav>
@@ -20,7 +20,7 @@ export default function SideNavSkeleton() {
                         <div className="animated-background mr-2" style={{ width: "20%", height: "20px" }}></div>
                     </li>
                     {Array.from({ length: 2 }, (_, index) => (
-                        <li id="nav-li">
+                        <li id="nav-li" key={index}>
                             <span id="nav-items">
                                 <span className="animated-background mt-1" style={{ width: "10%", height: "20px" }}></span>
                                 <span className="animated-background mt-1" style={{ width: "90%", height: "20px" }}></span>
@@ -36,7 +36,7 @@ export default function SideNavSkeleton() {
                         <div className="animated-background mt-2" style={{ width: "50%", height: "20px" }}></div>
                     </li>
                     {Array.from({ length: 4 }, (_, index) => (
-                        <li id="nav-li">
+                        <li id="nav-li" key={index}>
                             <span id="nav-items">
                                 <span className="animated-background mt-1" style={{ width: "10%", height: "20px" }}></span>
                                 <span className="animated-background mt-1" style={{ width: "90%", height: "20px" }}></span>
@@ -51,7 +51,7 @@ export default function SideNavSkeleton() {
                         <div className="animated-background mt-2" style={{ width: "50%", height: "20px" }}></div>
                     </li>
                     {Array.from({ length: 6 }, (_, index) => (
-                        <li id="nav-li">
+                        <li id="nav-li" key={index}>
                             <span id="nav-items">
                                 <span className="animated-background mt-1" style={{ width: "10%", height: "20px" }}></span>
                                 <span className="animated-background mt-1" style={{ width: "90%", height: "20px" }}></span>
