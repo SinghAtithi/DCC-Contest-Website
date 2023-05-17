@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { BASE_URL, DELETE_CONTEST_ENDPOINT_BACKEND, DELETE_QUESION_ENDPOINT_BACKEND } from "../utils/constants";
 import { useRouter } from "next/router";
 import axios from "axios";
@@ -9,10 +9,18 @@ export default function DisplayContestData(props) {
 
     const [clickedIndex, setClickedIndex] = useState(0);
     const [previewActive, setPreviewActive] = useState(false);
-    const [buttonLoading, setButtonLoading] = useState("");
+    const [deleteButtonLoading, setDeleteButtonLoading] = useState([]);
+
+    useEffect(() => {
+        setDeleteButtonLoading(Array(props.data.length).fill(""));
+    }, [props.data]);
 
     function handleDeleteContest(contest_id, index) {
-        setButtonLoading("loading");
+        setDeleteButtonLoading((prevLoadingStates) => {
+            const newLoadingStates = [...prevLoadingStates];
+            newLoadingStates[index] = "loading";
+            return newLoadingStates;
+        });
         const url = BASE_URL + DELETE_CONTEST_ENDPOINT_BACKEND + `/${contest_id}`;
         const options = {
             headers: {
@@ -24,12 +32,20 @@ export default function DisplayContestData(props) {
             const updatedData = [...props.data];
             updatedData.splice(index, 1);
             props.setData(updatedData);
-            setButtonLoading("");
+            setDeleteButtonLoading((prevLoadingStates) => {
+                const newLoadingStates = [...prevLoadingStates];
+                newLoadingStates[index] = "";
+                return newLoadingStates;
+            });
         }).catch((error) => {
             if (error.data && error.data.error)
                 alert(error.data.error);
             else alert("You have been logged out. Please login");
-            setButtonLoading("");
+            setDeleteButtonLoading((prevLoadingStates) => {
+                const newLoadingStates = [...prevLoadingStates];
+                newLoadingStates[index] = "";
+                return newLoadingStates;
+            });
         })
 
     }
@@ -78,7 +94,7 @@ export default function DisplayContestData(props) {
                                             </button>
                                         </span>
                                         <span className="px-1">
-                                            <button className={`btn btn-outline btn-info min-w-fit w-20 min-h-8 h-8 ${buttonLoading}`} onClick={() => { handleDeleteContest(contest.contest_id, index) }}>
+                                            <button className={`btn btn-outline btn-info min-w-fit w-20 min-h-8 h-8 ${deleteButtonLoading[index]}`} onClick={() => { handleDeleteContest(contest.contest_id, index) }}>
                                                 Delete
                                             </button>
                                         </span>

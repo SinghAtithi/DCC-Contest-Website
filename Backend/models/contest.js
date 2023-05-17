@@ -123,6 +123,11 @@ const ContestSchema = mongoose.Schema(
       default: true,
     },
 
+    launched: {
+      type: Boolean,
+      default: false,
+    },
+
     // [user_id]
     registrations: [
       {

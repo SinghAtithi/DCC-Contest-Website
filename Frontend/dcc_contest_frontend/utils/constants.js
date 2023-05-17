@@ -52,8 +52,11 @@ export const CREATE_CONTEST_ENDPOINT_BACKEND = "/contest/create";
 export const UPDATE_CONTEST_ENDPOINT_BACKEND = "/contest/update";
 export const SEARCH_CONTESTS_ENDPOINT_BACKEND = "/contest/search";
 export const DELETE_CONTEST_ENDPOINT_BACKEND = "/contest/delete";
-export const PRE_FETCH_COLLABORATORS_AND_QUESTION_ENDPOINT_BACKEND =
-  "/contest/collabAndQues";
+export const LAUNCH_CANCEL_CONTEST_ENDPOINT_BACKEND = "/contest/launch";
+
+
+
+export const PRE_FETCH_COLLABORATORS_AND_QUESTION_ENDPOINT_BACKEND ="/contest/collabAndQues";
 
 export const GET_DASHBOARD_DATA = "/dashboard";
 export const VERIFY_EMAIL_BACKEND = "/auth/verifyEmail";
