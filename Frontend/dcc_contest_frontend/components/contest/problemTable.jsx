@@ -3,15 +3,16 @@ import React from "react";
 
 function problemTable(props) {
   console.log(props);
+  console.log("From problemTable")
   return (
-    <div className="overflow-x-auto">
+    <div className="overflow-x-auto mt-32 ">
       <table className="table w-full custom-table">
         <thead>
           <tr>
             <th></th>
-            <th>#</th>
             <th>Name</th>
-            <th>Topics</th>
+            <th>Points</th>
+            <th>Status</th>
             <th>Action</th>
           </tr>
         </thead>
@@ -47,9 +48,9 @@ function problemTable(props) {
                   </svg>
                 </td>
               )}
-              <td>{problem.ques_id}</td>
-              <td>{problem.name}</td>
-              <td>{problem.topics}</td>
+              <td>{problem.quesId}</td>
+              <td>{problem.points}</td>
+              <td>Not Solved</td>
               <td>
                 <Link href={`/contest/${props.cid}/${problem.ques_id}`} target="_blank">
                   <button className="btn btn-outline btn-info w-40 min-h-8 h-8">

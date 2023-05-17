@@ -16,6 +16,7 @@ function ProblemSet() {
 
   useEffect(() => {
     const URL = `${BASE_URL}/question`;
+    console.log(URL);
     axios
       .get(URL)
       .then((res) => {

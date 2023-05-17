@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
 const moment = require("moment");
 
+<<<<<<< HEAD
 const ContestSchema = mongoose.Schema(
   {
     contest_name: {
@@ -136,6 +137,56 @@ const ContestSchema = mongoose.Schema(
         },
       },
     ],
+=======
+const ContestSchema = mongoose.Schema({
+    contestName: {
+        type: String,
+        required: true,
+        unique: true
+    },
+    contestId: {
+        type: String,
+        required: true,
+        unique: true
+    },
+    // [{ques_id = ques_id, points = points}]
+    quesIds: {
+        type: Array
+    },
+    startTime: {
+        type: String,
+        required: true
+    },
+    endTime: {
+        type: String,
+        required: true
+    },
+    creator: {
+        type: Array,
+        required: true
+    },
+    collaborators: {
+        type: Array
+    },
+    isDraft: {
+        type: Boolean,
+        default: true
+    },
+
+    // [user_id]
+    registrations: {
+        type: Array
+    },
+    result: {
+        type: Array,
+        // {username:coder_ravan, points:754}
+    },
+    ratingsUpdated: {
+        type: Boolean,
+        default: false
+    },
+});
+>>>>>>> 9142398 (made some changes)
 
     result: [
       {

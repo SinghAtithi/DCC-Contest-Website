@@ -1,45 +1,38 @@
-import { useRouter } from "next/router";
-import Navbar from "../../components/Navbar";
-import Head from "next/head";
-import problemTable from "../../components/contest/problemTable";
-const { BASE_URL } = require("../../utils/constants");
-import axios from "axios";
-import { useEffect, useState } from "react";
-import React from "react";
+import { useRouter } from 'next/router'
+import React, { useEffect, useState } from 'react'
 
-const ContestPage = () => {
+import axios from 'axios';
+
+import Navbar from '../../components/Navbar';
+import ProblemTable from '../../components/contest/ProblemTable';
+
+const contestProblem = () => {
+
   const router = useRouter();
   const { cid } = router.query;
 
-  const [problems, setProblems] = React.useState([]);
-  const [page, setPage] = useState(1);
-  const [totalPages, setTotalPages] = useState(0);
+  const [contestId, setContestId] = useState('');
+  const [problems, setProblems] = useState([])
 
   useEffect(() => {
-    const URL = `${BASE_URL}/question`;
-    axios.get(URL).then((res) => {
-      setTotalPages(Math.ceil(res.data.length / 6));
-      setProblems(res.data);
-    });
-  }, []);
+    setContestId(cid)
+    if (cid) {
+      axios.get(`http://localhost:5000/contest/CPTITAN-DEV-001`).then((res) => {
+        console.log(res.data)
+        setProblems(res.data.quesIds)
+      }).catch((err) => {
+        console.log(err)
+      })
+    }
+  }, [cid])
 
   return (
-    <div>
-      <Head>
-        <title>Contest - {cid}</title>
-      </Head>
+    <div className='absolute'>
       <Navbar />
-
-      <div className="main-nav-content-area flex flex-col">
-        <div className="text-2xl self-center my-2">Contest Page - {cid}</div>
-        <div className="px-2">
-          {problems.length != 0 && (
-            <problemTable problems={problems} page={page} cid={cid} />
-          )}
-        </div>
-      </div>
+      <h1>hellow</h1>
+      <ProblemTable problems={problems} />
     </div>
-  );
-};
+  )
+}
 
-export default ContestPage;
+export default contestProblem
