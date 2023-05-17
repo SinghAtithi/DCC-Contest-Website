@@ -1,7 +1,7 @@
 import Link from "next/link";
 import React from "react";
 
-function problemTable(props) {
+function ProblemTable(props) {
   console.log(props);
   console.log("From problemTable")
   return (
@@ -66,4 +66,4 @@ function problemTable(props) {
   );
 }
 
-export default problemTable;
+export default ProblemTable;
