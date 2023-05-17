@@ -15,7 +15,7 @@ const ContestProblem = () => {
   const [problems, setProblems] = useState([])
 
   useEffect(() => {
-    setContestId(cid)
+    setContestId(cid);
     if (cid) {
       axios.get(`http://localhost:5000/contest/CPTITAN-DEV-001`).then((res) => {
         console.log(res.data)

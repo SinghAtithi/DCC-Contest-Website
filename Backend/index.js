@@ -20,7 +20,7 @@ const QuesRoutes = require("./routes/question.js");
 const SubmitRoutes = require("./routes/submit.js");
 const CodeRoutes = require("./routes/code.js");
 const AuthRoutes = require("./routes/auth.js");
-const ContestRoutes = require("./routes/contest/index.js");
+const ContestRoutes = require("./routes/contest.js");
 const UpdateRating = require("./routes/updateRating.js");
 const DashboardRoutes = require("./routes/dashboard.js");
 const TestRoutes = require("./routes/test.js");
@@ -32,7 +32,6 @@ app.use(bodyParser.json({ extended: true }));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cors());
 
-
 app.use("/api", RunRoutes);
 app.use("/question", QuesRoutes);
 app.use("/question", SubmitRoutes);
@@ -41,8 +40,7 @@ app.use("/auth", AuthRoutes);
 app.use("/contest", ContestRoutes);
 app.use("/", UpdateRating);
 app.use("/dashboard", DashboardRoutes);
-app.use('/', TestRoutes);
-
+app.use("/", TestRoutes);
 
 // ------------- database connection and starting the server --------------
 const PORT = process.env.PORT || 5000;
