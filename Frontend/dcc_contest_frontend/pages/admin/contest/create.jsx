@@ -359,7 +359,7 @@ function CreateProblem() {
                 <div className={toastClass}>
                   <div>
                     {toastMessage.map((message, index) => (
-                      <span>{message}</span>
+                      <span key={index}>{message}</span>
                     ))}
                   </div>
                   <div style={toastCross}>

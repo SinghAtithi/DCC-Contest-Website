@@ -5,7 +5,6 @@ import ProblemSet from "./ProblemSet";
 function ProblemSetPage() {
   return (
     <>
-      // @refresh reset
       <Navbar />
       <div className="content-area-top p-2">
         <ProblemSet />

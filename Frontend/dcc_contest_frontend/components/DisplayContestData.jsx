@@ -126,7 +126,7 @@ export default function DisplayContestData(props) {
                         {props.data[clickedIndex].collaborators && props.data[clickedIndex].collaborators.length != 0 && <div id="contest-preview-data">
                             <h1 >Collaborators : </h1>
                             {props.data[clickedIndex].collaborators.map((username, ind) => (
-                                <p>{ind + 1} : {username}</p>
+                                <p key={ind}>{ind + 1} : {username}</p>
                             ))}
                         </div>}
                         <br />
