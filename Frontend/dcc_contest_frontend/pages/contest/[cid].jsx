@@ -4,7 +4,7 @@ import React, { useEffect, useState } from 'react'
 import axios from 'axios';
 
 import Navbar from '../../components/Navbar';
-import ProblemTable from '../../components/contest/ProblemTable';
+import ProblemTable from '../../components/contest/problemTable';
 
 const ContestProblem = () => {
 
