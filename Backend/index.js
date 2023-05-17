@@ -20,7 +20,7 @@ const QuesRoutes = require("./routes/question.js");
 const SubmitRoutes = require("./routes/submit.js");
 const CodeRoutes = require("./routes/code.js");
 const AuthRoutes = require("./routes/auth.js");
-const ContestRoutes = require("./routes/contest.js");
+const ContestRoutes = require("./routes/contest/index.js");
 const UpdateRating = require("./routes/updateRating.js");
 const DashboardRoutes = require("./routes/dashboard.js");
 const TestRoutes = require("./routes/test.js");
@@ -41,7 +41,7 @@ app.use("/auth", AuthRoutes);
 app.use("/contest", ContestRoutes);
 app.use("/", UpdateRating);
 app.use("/dashboard", DashboardRoutes);
-app.use('/',TestRoutes);
+app.use('/', TestRoutes);
 
 
 // ------------- database connection and starting the server --------------
