@@ -7,21 +7,12 @@ const moment = require("moment");
 // To get all the contest for the contests page.
 router.get("/", async (req, res) => {
   try {
-<<<<<<< HEAD
     Contest.find(
       { is_draft: false },
       "contest_name contest_id ques_ids start_time end_time",
       (error, result) => {
         if (error) {
           res.status(404).json({ error: error });
-=======
-    Contest.find({}, (error, result) => {
-      if (error) {
-        res.status(404).json({ error: error });
-      } else {
-        if (result.length === 0) {
-          res.status(404).send({ error: "No Contest" });
->>>>>>> 9142398 (made some changes)
         } else {
           if (result.length === 0) {
             res.status(404).send({ error: "No Contest" });
@@ -38,7 +29,6 @@ router.get("/", async (req, res) => {
 
 // To create a new contest
 router.post("/create", async (req, res) => {
-<<<<<<< HEAD
   const user = { username: "ritik_kaushal" };
   const {
     contest_name,
@@ -87,24 +77,6 @@ router.post("/create", async (req, res) => {
           { display_after: start_time, assigned: true }
         );
       }
-=======
-  console.log(req.body);
-  const { contestName, contestId, quesIds, startTime, endTime } = req.body;
-  try {
-    const contest = await new Contest({
-      contestName: contestName,
-      contestId: contestId,
-      quesIds: quesIds,
-      startTime: startTime,
-      endTime: endTime,
-    }).save();
-
-    for (var i = 0; i < quesIds.length; i++) {
-      await Question.findOneAndUpdate(
-        { ques_no: quesIds[i] },
-        { displayAfter: startTime, assigned: true }
-      );
->>>>>>> 9142398 (made some changes)
     }
 
     res.status(200).send("Contest created successfully.");
