@@ -1,27 +1,20 @@
 const express = require("express");
 const Contest = require("../models/contest.js");
 const Question = require("../models/question.js");
+const User = require("../models/user.js");
 const router = express.Router();
 const moment = require("moment");
+const { verifyAdmin } = require("../middlewares/verifyToken.js");
 
 // To get all the contest for the contests page.
 router.get("/", async (req, res) => {
   try {
-<<<<<<< HEAD
     Contest.find(
       { is_draft: false },
       "contest_name contest_id ques_ids start_time end_time",
       (error, result) => {
         if (error) {
           res.status(404).json({ error: error });
-=======
-    Contest.find({}, (error, result) => {
-      if (error) {
-        res.status(404).json({ error: error });
-      } else {
-        if (result.length === 0) {
-          res.status(404).send({ error: "No Contest" });
->>>>>>> 9142398 (made some changes)
         } else {
           if (result.length === 0) {
             res.status(404).send({ error: "No Contest" });
@@ -36,10 +29,57 @@ router.get("/", async (req, res) => {
   }
 });
 
+router.get("/collabAndQues", verifyAdmin, async (req, res) => {
+  const user = req.user;
+
+  try {
+    const collaborators = await User.find(
+      { role: { $in: ["admin", "super_admin"] } },
+      "username"
+    ).exec();
+    const ques_ids = await Question.find(
+      { is_draft: false },
+      "ques_id"
+    ).exec();
+
+    res.status(200).send({ collaborators, ques_ids });
+  } catch (err) {
+    console.log("From /contest/collabAndQues", err);
+    res.status(500).send({ error: "Internal Server Error" });
+  }
+});
+
+// Search for contests from admin view contest page
+router.post("/search", verifyAdmin, async (req, res) => {
+  const user = req.user;
+  const { searchFilter, searchString } = req.body;
+  try {
+    let search_params = { creator: user.username };
+
+    if (searchFilter == 0)
+      search_params.contest_name = { $regex: searchString, $options: "i" };
+    else if (searchFilter == 1)
+      search_params.contest_id = { $regex: searchString, $options: "i" };
+    else if (searchFilter == 2)
+      search_params.is_draft =
+        String(searchString).toLowerCase() === "true" ? true : false;
+
+    console.log(search_params);
+    const selectParams =
+      "contest_name contest_id start_time end_time ques_ids collaborators creator";
+
+    const allContests = await Contest.find(search_params, selectParams).exec();
+
+    res.status(200).send({ data: allContests });
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
+
 // To create a new contest
-router.post("/create", async (req, res) => {
-<<<<<<< HEAD
-  const user = { username: "ritik_kaushal" };
+router.post("/create", verifyAdmin, async (req, res) => {
+  const user = req.user;
   const {
     contest_name,
     contest_id,
@@ -87,24 +127,6 @@ router.post("/create", async (req, res) => {
           { display_after: start_time, assigned: true }
         );
       }
-=======
-  console.log(req.body);
-  const { contestName, contestId, quesIds, startTime, endTime } = req.body;
-  try {
-    const contest = await new Contest({
-      contestName: contestName,
-      contestId: contestId,
-      quesIds: quesIds,
-      startTime: startTime,
-      endTime: endTime,
-    }).save();
-
-    for (var i = 0; i < quesIds.length; i++) {
-      await Question.findOneAndUpdate(
-        { ques_no: quesIds[i] },
-        { displayAfter: startTime, assigned: true }
-      );
->>>>>>> 9142398 (made some changes)
     }
 
     res.status(200).send("Contest created successfully.");
@@ -128,9 +150,9 @@ router.post("/create", async (req, res) => {
   }
 });
 
-// To create a new contest
-router.put("/update", async (req, res) => {
-  const user = { username: "ritik_kaushal" };
+// To update a contest
+router.post("/update", verifyAdmin, async (req, res) => {
+  const user = req.user;
   const {
     contest_id,
     ques_ids,
@@ -172,6 +194,8 @@ router.put("/update", async (req, res) => {
       collaborators: collaborators,
       is_draft: is_draft,
     };
+
+    console.log(update);
 
     const contest = await Contest.findOne(filter, "collaborators creator");
     if (contest) {
@@ -220,8 +244,8 @@ router.put("/update", async (req, res) => {
 });
 
 // To delete a contest
-router.delete("/delete/:contest_id", async (req, res) => {
-  const user = { username: "ritik_kaushal" };
+router.delete("/delete/:contest_id", verifyAdmin, async (req, res) => {
+  const user = req.user;
   const { contest_id } = req.params;
 
   try {
@@ -240,11 +264,11 @@ router.delete("/delete/:contest_id", async (req, res) => {
   }
 });
 
-router.get("/:contestId", async (req, res) => {
-  const { contestId } = req.params;
-  console.log(contestId);
+// Get a particular contest
+router.get("/:contest_id", verifyAdmin, async (req, res) => {
+  const { contest_id } = req.params;
   try {
-    const contest = await Contest.findOne({ contestId: contestId });
+    const contest = await Contest.findOne({ contest_id: contest_id });
     if (contest) {
       res.status(200).json(contest);
     } else {
@@ -254,6 +278,5 @@ router.get("/:contestId", async (req, res) => {
     res.status(500).json(error);
   }
 });
-
 
 module.exports = router;

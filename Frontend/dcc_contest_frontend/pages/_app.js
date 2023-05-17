@@ -25,6 +25,7 @@ import "../styles/AdminDashboard.css";
 import "../styles/CustomBackdrop.css";
 import "../styles/ConsoleSkeleton.css";
 import "../styles/ProblemPreviewAdmin.css";
+import "../styles/ContestPreviewAdmin.css";
 
 import { Provider } from "react-redux";
 import store from "../store/baseStore";
