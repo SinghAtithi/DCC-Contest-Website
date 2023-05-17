@@ -7,8 +7,6 @@ export const AdminSideNavMap = {
 
   view_problem: 5,
   create_problems: 6,
-  edit_problem: 7,
-  delete_problem: 8,
 
   view_contests: 9,
   create_contest: 10,
@@ -32,26 +30,31 @@ export const PROBLEM_SEARCH = [
   "is_draft",
 ];
 
+export const CONTEST_SEARCH = ["contest_name", "contest_id", "is_draft"];
+
 export const ADMIN = "admin";
 export const SUPER_ADMIN = "super_admin";
 export const END_USER = "end_user";
 
 export const ADMIN_DASHBOARD = "/admin/dashboard";
 
-<<<<<<< HEAD
-export const BASE_URL = "https://b132-4-240-84-221.ngrok-free.app";
-// export const BASE_URL = "http://localhost:5000";
-
-=======
 // export const BASE_URL = "https://b132-4-240-84-221.ngrok-free.app";
 export const BASE_URL = "http://localhost:5000";
->>>>>>> 9142398 (made some changes)
 export const LOGIN_ENDPOINT_BACKEND = "/auth/login";
 export const SIGNUP_ENDPOINT_BACKEND = "/auth/register";
+
 export const CREATE_QUESTION_ENDPOINT_BACKEND = "/question/create";
 export const UPDATE_QUESTION_ENDPOINT_BACKEND = "/question/update";
 export const SEARCH_QUESIONS_ENDPOINT_BACKEND = "/question/search";
 export const DELETE_QUESION_ENDPOINT_BACKEND = "/question/delete";
+
+export const CREATE_CONTEST_ENDPOINT_BACKEND = "/contest/create";
+export const UPDATE_CONTEST_ENDPOINT_BACKEND = "/contest/update";
+export const SEARCH_CONTESTS_ENDPOINT_BACKEND = "/contest/search";
+export const DELETE_CONTEST_ENDPOINT_BACKEND = "/contest/delete";
+export const PRE_FETCH_COLLABORATORS_AND_QUESTION_ENDPOINT_BACKEND =
+  "/contest/collabAndQues";
+
 export const GET_DASHBOARD_DATA = "/dashboard";
 export const VERIFY_EMAIL_BACKEND = "/auth/verifyEmail";
 export const FORGOT_PASSWORD_BACKEND = "/auth/forgotPassword";

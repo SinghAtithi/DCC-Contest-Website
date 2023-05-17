@@ -33,7 +33,6 @@ const ViewProblems = () => {
     const { asPath } = useRouter();
 
     useEffect(() => {
-        if (asPath.includes("admin") || asPath.includes("super_admin")) setLoadingSkeleton(false);
 
         if (loggedIn && (role === ADMIN || role === SUPER_ADMIN)) {
             setLoadingSkeleton(false);

@@ -6,7 +6,7 @@ import axios from 'axios';
 import Navbar from '../../components/Navbar';
 import ProblemTable from '../../components/contest/ProblemTable';
 
-const contestProblem = () => {
+const ContestProblem = () => {
 
   const router = useRouter();
   const { cid } = router.query;
@@ -29,10 +29,9 @@ const contestProblem = () => {
   return (
     <div className='absolute'>
       <Navbar />
-      <h1>hellow</h1>
       <ProblemTable problems={problems} />
     </div>
   )
 }
 
-export default contestProblem
+export default ContestProblem

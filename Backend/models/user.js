@@ -51,9 +51,9 @@ const UserSchema = mongoose.Schema({
   },
 
   // [{time_stamp = "12/12/2001 10:42", contest_id = contest_id, rating = rating}]
-  rating_array : {
-    type : Array,
-    deafult : []
+  rating_array: {
+    type: Array,
+    deafult: [],
   },
 
   current_rating: {
@@ -61,7 +61,6 @@ const UserSchema = mongoose.Schema({
     default: 0,
   },
 
-  
   max_rating: {
     type: Number,
     default: 0,
@@ -70,15 +69,13 @@ const UserSchema = mongoose.Schema({
   // [{contest_id : contest_id, status : attempted/unattempted}]
   total_contests: {
     type: Array,
-    default : []
+    default: [],
   },
-  confirmed_email : {
-    type : Boolean,
-    default : false
-  }
+  confirmed_email: {
+    type: Boolean,
+    default: false,
+  },
 });
-
-UserSchema.plugin(require("mongoose-beautiful-unique-validation"));
 
 const User = new mongoose.model("user", UserSchema);
 module.exports = User;
