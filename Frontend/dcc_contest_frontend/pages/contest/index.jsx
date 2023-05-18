@@ -1,7 +1,7 @@
 import Router, { useRouter } from "next/router";
 import Navbar from "../../components/Navbar";
 import Head from "next/head";
-import { useEffect, useState } from "react";
+import { use, useEffect, useState } from "react";
 import toggleLoaderBackdrop from "../../utils/toggleCustomBackdrop";
 import { BASE_URL } from "../../utils/constants";
 import axios from "axios";
@@ -10,6 +10,9 @@ import moment from "moment/moment";
 import ContestRegisterModal from "../../components/ContestRegisterModal";
 import PastContestProblemModal from "../../components/PastContestProblemModal";
 import ContestLandingSkeleton from "./ContestLandingSkeleton";
+import { useSelector } from "react-redux";
+import ContestUnRegisterModal from "../../components/ContestUnregisterModal";
+
 
 function getDuration(startTime, endTime) {
   const end = moment(endTime, "DD/MM/YYYY h:mm:s");
@@ -28,88 +31,35 @@ function getDuration(startTime, endTime) {
 
 const ContestPage = () => {
   const router = useRouter();
+  const { username } = useSelector(state => state.login);
+
   const [open, setOpen] = useState(false);
+  const [openUnregister, setOpenUnregister] = useState(false);
   const [name, setName] = useState("");
   const [contestId, setContestId] = useState("");
 
   const [openPast, setOpenPast] = useState(false);
   const [problems, setProblems] = useState([]);
-  const [loading,setLoading] = useState(true);
+  const [loading, setLoading] = useState(true);
 
-  const ongoingContests = [
-    {
-      contestId: "A",
-      name: "Contest A",
-      startTime: "16/04/2023 00:00",
-      endTime: "20/04/2023 18:00",
-    },
-    {
-      contestId: "B",
-      name: "Contest B",
-      startTime: "15/04/2023 00:00",
-      endTime: "21/04/2023 09:00",
-    },
-  ];
+  const [ongoingContests, setOngoingContests] = useState([]);
+  const [upcomingContests, setUpcomingContests] = useState([]);
+  const [pastContests, setPastContests] = useState([]);
 
-  const upcomingContests = [
-    {
-      contestId: "C",
-      name: "Contest C",
-      startTime: "22/04/2023 00:00",
-      endTime: "25/04/2023 00:00",
-    },
-    {
-      contestId: "D",
-      name: "Contest D",
-      startTime: "25/04/2023 00:00",
-      endTime: "28/04/2023 00:00",
-    },
-  ];
-
-  const pastContests = [
-    {
-      contestId: "E",
-      name: "Contest E",
-      startTime: "10/04/2023 00:00",
-      endTime: "15/04/2023 00:00",
-      problems: [{ name: "P1", problemId: "P1" }, { name: "P2", problemId: "P2" }, { name: "P3", problemId: "P3" }, { name: "P4", problemId: "P4" }, { name: "P4", problemId: "P4" }]
-    },
-    {
-      contestId: "F",
-      name: "Contest F",
-      startTime: "10/04/2023 00:00",
-      endTime: "15/04/2023 00:00",
-      problems: [{ name: "P1", problemId: "P1" }, { name: "P2", problemId: "P2" }, { name: "P3", problemId: "P3" }, { name: "P4", problemId: "P4" }, { name: "P4", problemId: "P4" }]
-    },
-    {
-      contestId: "G",
-      name: "Contest G",
-      startTime: "10/04/2023 00:00",
-      endTime: "15/04/2023 00:00",
-      problems: [{ name: "P1", problemId: "P1" }, { name: "P2", problemId: "P2" }, { name: "P3", problemId: "P3" }, { name: "P4", problemId: "P4" }, { name: "P4", problemId: "P4" }]
-    },
-    {
-      contestId: "H",
-      name: "Contest H",
-      startTime: "10/04/2023 00:00",
-      endTime: "15/04/2023 00:00",
-      problems: [{ name: "P1", problemId: "P1" }, { name: "P2", problemId: "P2" }, { name: "P3", problemId: "P3" }, { name: "P4", problemId: "P4" }, { name: "P4", problemId: "P4" }]
-    },
-  ];
 
   useEffect(() => {
     axios
       .get(`${BASE_URL}/contest`)
       .then((res) => {
-        // divide as upcoming, ongoing and past contests and display on the screen
-        // console.log(res);
-        console.log("Here at contest folder");
+        const { ongoing = [], upcoming = [], past = [] } = res.data;
+        setOngoingContests(ongoing);
+        setPastContests(past);
+        setUpcomingContests(upcoming);
+        console.log(res);
         setLoading(false);
       })
       .catch((err) => {
-        // do something based on error
-        console.log(err);
-        console.log(123);
+        alert("Internal Server Error");
         setLoading(false);
       });
   }, []);
@@ -123,18 +73,33 @@ const ContestPage = () => {
       <Navbar />
 
       <div className="content-area-top">
-        {loading ? <ContestLandingSkeleton /> : <><ContestRegisterModal
-          open={open}
-          setOpen={setOpen}
-          contestId={contestId}
-          name={name}
-        />
-          <PastContestProblemModal open={openPast} setOpen={setOpenPast} name={name} problems={problems} />
-          <h1 id="contest-main-heading">CONTESTS</h1>
-          <OngoingContests ongoingContests={ongoingContests} />
-          <UpcomingContests upcomingContests={upcomingContests} />
-          <PastContests pastContests={pastContests} /></>}
+        {loading ? <ContestLandingSkeleton />
+          :
+          <>
+            <ContestRegisterModal
+              open={open}
+              setOpen={setOpen}
+              contest_id={contestId}
+              name={name}
+              upcomingContests={upcomingContests}
+              setUpcomingContests={setUpcomingContests}
+              username={username}
+            />
+            <ContestUnRegisterModal 
+              open={openUnregister}
+              setOpen={setOpenUnregister}
+              contest_id={contestId}
+              name={name}
+              upcomingContests={upcomingContests}
+              setUpcomingContests={setUpcomingContests}
+              username={username}
+            />
 
+            <PastContestProblemModal open={openPast} setOpen={setOpenPast} name={name} problems={problems} />
+            <h1 id="contest-main-heading">CONTESTS</h1>
+            <OngoingContests ongoingContests={ongoingContests} />
+            <UpcomingContests username={username} upcomingContests={upcomingContests} setOpen={setOpen} setOpenUnregister={setOpenUnregister} setName={setName} setContestId={setContestId} />
+            <PastContests pastContests={pastContests} setOpenPast={setOpenPast} setName={setName} setContestId={setContestId} setProblems={setProblems} /></>}
       </div>
     </>
   );
@@ -160,25 +125,36 @@ function UpcomingContests(props) {
           </thead>
           <tbody>
             {props.upcomingContests.map((contest, index) => (
-              <tr key={contest.contestId} className="hover">
+              <tr key={contest.contest_id} className="hover">
                 <th>{index + 1}</th>
-                <td>{contest.name}</td>
-                <td>{contest.startTime}</td>
-                <td>{getDuration(contest.startTime, contest.endTime)}</td>
+                <td>{contest.contest_name}</td>
+                <td>{contest.start_time}</td>
+                <td>{getDuration(contest.start_time, contest.end_time)}</td>
                 <td>
-                  <Countdown deadline={contest.startTime} />
+                  <Countdown deadline={contest.start_time} />
                 </td>
                 <td>
-                  <button
+                  {contest.registrations.includes(props.username) ? <button
                     className="btn btn-outline btn-info min-h-8 h-8"
                     onClick={() => {
-                      setOpen(true);
-                      setName(contest.name);
-                      setContestId(contest.contestId);
+                      props.setOpenUnregister(true);
+                      props.setName(contest.contest_name);
+                      props.setContestId(contest.contest_id);
                     }}
                   >
-                    Register
-                  </button>{" "}
+                    Unregister
+                  </button>
+                    :
+                    <button
+                      className="btn btn-outline btn-info min-h-8 h-8"
+                      onClick={() => {
+                        props.setOpen(true);
+                        props.setName(contest.contest_name);
+                        props.setContestId(contest.contest_id);
+                      }}
+                    >
+                      Register
+                    </button>}{" "}
                 </td>
               </tr>
             ))}
@@ -207,18 +183,18 @@ function OngoingContests(props) {
         </thead>
         <tbody>
           {props.ongoingContests.map((contest, index) => (
-            <tr key={contest.contestId} className="hover">
+            <tr key={contest.contest_id} className="hover">
               <th>{index + 1}</th>
-              <td>{contest.name}</td>
-              <td>{contest.startTime}</td>
-              <td>{getDuration(contest.startTime, contest.endTime)}</td>
+              <td>{contest.contest_name}</td>
+              <td>{contest.start_time}</td>
+              <td>{getDuration(contest.start_time, contest.end_time)}</td>
               <td>
-                <Countdown deadline={contest.endTime} />
+                <Countdown deadline={contest.end_time} />
               </td>
               <td>
                 <button
                   className="btn btn-outline btn-info min-h-8 h-8"
-                  onClick={() => { toggleLoaderBackdrop(); Router.push(`/contest/${contest.contestId}`); }}
+                  onClick={() => { Router.push(`/contest/${contest.contest_id}`); }}
                 >
                   Enter
                 </button>
@@ -249,19 +225,19 @@ function PastContests(props) {
           </thead>
           <tbody>
             {props.pastContests.map((contest, index) => (
-              <tr key={contest.contestId} className="hover">
+              <tr key={contest.contest_id} className="hover">
                 <th>{index + 1}</th>
-                <td>{contest.name}</td>
-                <td>{contest.startTime}</td>
-                <td>{getDuration(contest.startTime, contest.endTime)}</td>
+                <td>{contest.contest_name}</td>
+                <td>{contest.start_time}</td>
+                <td>{getDuration(contest.start_time, contest.end_time)}</td>
                 <td>
-                  <button className="btn btn-outline btn-success min-h-8 h-8" onClick={() => { toggleLoaderBackdrop(); Router.push(`/leaderboard/${contest.contestId}`); }}>
+                  <button className="btn btn-outline btn-success min-h-8 h-8" onClick={() => { Router.push(`/leaderboard/${contest.contest_id}`); }}>
                     Leaderboard
                   </button>{" "}
                   <button className="btn btn-outline btn-success min-h-8 h-8" onClick={() => {
-                    setOpenPast(true);
-                    setName(contest.name);
-                    setProblems(contest.problems);
+                    props.setOpenPast(true);
+                    props.setName(contest.contest_name);
+                    props.setProblems(contest.ques_ids);
                   }}>
                     Problems
                   </button>

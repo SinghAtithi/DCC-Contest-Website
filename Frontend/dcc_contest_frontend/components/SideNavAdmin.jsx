@@ -10,20 +10,13 @@ import {
     CHANGE_EMAIL_REQUEST_PAGE,
     VIEW_PROBLEMS_CREATED_PAGE,
     CREATE_PROBLEM_PAGE,
-    EDIT_PROBLEM_PAGE,
-    DELETE_PROBLEM_PAGE,
     VIEW_CONTESTS_CREATED_PAGE,
     CREATE_CONTEST_PAGE,
-    EDIT_CONTEST_PAGE,
-    DELETE_CONTEST_PAGE,
     LAUNCH_CONTEST_PAGE,
-    VIEW_CONTEST_REGISTRATIONS_PAGE,
-    VIEW_CONTEST_SUBMISSIONS_PAGE,
     VIEW_CONTEST_RESULT_PAGE,
     REPORT_VIOLATIONS,
     BAN_USERS,
 } from "../utils/constants";
-import toggleLoaderBackdrop from "../utils/toggleCustomBackdrop";
 
 import { GiHamburgerMenu } from "react-icons/gi";
 import { useRouter } from "next/router";
@@ -44,18 +37,10 @@ function UserMenu(props) {
                 tabIndex={0}
                 className="custom-navbar-avtar-pop menu menu-compact dropdown-content mt-3 p-2 shadow bg-base-100 rounded-box w-52"
             >
-                <li
-                    onClick={() => {
-                        toggleLoaderBackdrop(props.asPath, SETTINGS_PAGE);
-                    }}
-                >
+                <li>
                     <Link href={SETTINGS_PAGE}>Settings</Link>
                 </li>
-                <li
-                    onClick={() => {
-                        toggleLoaderBackdrop(props.asPath, HOME_PAGE);
-                    }}
-                >
+                <li>
                     <Link
                         href={HOME_PAGE}
                         onClick={() => {
@@ -71,9 +56,7 @@ function UserMenu(props) {
 }
 
 export default function SideNav(props) {
-    // useEffect(()=>{
-    //     document.querySelector.className()
-    // },[])
+
     const { profile_pic } = useSelector((state) => state.login);
     const { asPath } = useRouter();
     return (
@@ -83,9 +66,6 @@ export default function SideNav(props) {
                 <div className="navbar-logo-side">
                     <Link
                         href={HOME_PAGE}
-                        onClick={() => {
-                            toggleLoaderBackdrop(asPath, HOME_PAGE);
-                        }}
                     >
                         <Image
                             src="/DCC_LOGO01.png"
@@ -120,9 +100,6 @@ export default function SideNav(props) {
                     <li id="nav-li">
                         <Link
                             href={HOME_PAGE}
-                            onClick={() => {
-                                toggleLoaderBackdrop(asPath, HOME_PAGE);
-                            }}
                         >
                             <span id="nav-items">
                                 <span>
@@ -155,11 +132,7 @@ export default function SideNav(props) {
                     </li>
                     <li id="nav-li">
                         <Link
-                            href={ADMIN_DASHBOARD}
-                            onClick={() => {
-                                toggleLoaderBackdrop(asPath, ADMIN_DASHBOARD);
-                            }}
-                        >
+                            href={ADMIN_DASHBOARD}>
                             <span id="nav-items">
                                 <span>
                                     <svg
@@ -206,12 +179,6 @@ export default function SideNav(props) {
                             <li id="nav-li">
                                 <Link
                                     href={ASSIGN_REVOKE_ROLES_PAGE}
-                                    onClick={() => {
-                                        toggleLoaderBackdrop(
-                                            asPath,
-                                            ASSIGN_REVOKE_ROLES_PAGE
-                                        );
-                                    }}
                                 >
                                     <span id="nav-items">
                                         <span>
@@ -247,15 +214,9 @@ export default function SideNav(props) {
                                     </span>
                                 </Link>
                             </li>
-                            <li id="nav-li">
+                            {/* <li id="nav-li">
                                 <Link
                                     href={CHANGE_EMAIL_REQUEST_PAGE}
-                                    onClick={() => {
-                                        toggleLoaderBackdrop(
-                                            asPath,
-                                            CHANGE_EMAIL_REQUEST_PAGE
-                                        );
-                                    }}
                                 >
                                     <span id="nav-items">
                                         <span>
@@ -286,7 +247,7 @@ export default function SideNav(props) {
                                         </span>
                                     </span>
                                 </Link>
-                            </li>
+                            </li> */}
                             <li className="nav-divider">
                                 <hr></hr>
                             </li>
@@ -301,12 +262,6 @@ export default function SideNav(props) {
                     <li id="nav-li">
                         <Link
                             href={VIEW_PROBLEMS_CREATED_PAGE}
-                            onClick={() => {
-                                toggleLoaderBackdrop(
-                                    asPath,
-                                    VIEW_PROBLEMS_CREATED_PAGE
-                                );
-                            }}
                         >
                             <span id="nav-items">
                                 <span>
@@ -381,12 +336,6 @@ export default function SideNav(props) {
                     <li id="nav-li">
                         <Link
                             href={VIEW_CONTESTS_CREATED_PAGE}
-                            onClick={() => {
-                                toggleLoaderBackdrop(
-                                    asPath,
-                                    VIEW_PROBLEMS_CREATED_PAGE
-                                );
-                            }}
                         >
                             <span id="nav-items">
                                 <span>
@@ -421,12 +370,6 @@ export default function SideNav(props) {
                     <li id="nav-li">
                         <Link
                             href={CREATE_CONTEST_PAGE}
-                            onClick={() => {
-                                toggleLoaderBackdrop(
-                                    asPath,
-                                    CREATE_CONTEST_PAGE
-                                );
-                            }}
                         >
                             <span id="nav-items">
                                 <span>
@@ -460,12 +403,6 @@ export default function SideNav(props) {
                     <li id="nav-li">
                         <Link
                             href={LAUNCH_CONTEST_PAGE}
-                            onClick={() => {
-                                toggleLoaderBackdrop(
-                                    asPath,
-                                    LAUNCH_CONTEST_PAGE
-                                );
-                            }}
                         >
                             <span id="nav-items">
                                 <span>
@@ -500,93 +437,7 @@ export default function SideNav(props) {
                     </li>
                     <li id="nav-li">
                         <Link
-                            href={VIEW_CONTEST_REGISTRATIONS_PAGE}
-                            onClick={() => {
-                                toggleLoaderBackdrop(
-                                    asPath,
-                                    VIEW_CONTEST_REGISTRATIONS_PAGE
-                                );
-                            }}
-                        >
-                            <span id="nav-items">
-                                <span>
-                                    <svg
-                                        xmlns="http://www.w3.org/2000/svg"
-                                        width="16"
-                                        height="16"
-                                        fill={
-                                            props.highlight === 14
-                                                ? "white"
-                                                : "gray"
-                                        }
-                                        className="bi bi-person-badge"
-                                        viewBox="0 0 16 16"
-                                    >
-                                        <path d="M6.5 2a.5.5 0 0 0 0 1h3a.5.5 0 0 0 0-1h-3zM11 8a3 3 0 1 1-6 0 3 3 0 0 1 6 0z" />
-                                        <path d="M4.5 0A2.5 2.5 0 0 0 2 2.5V14a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V2.5A2.5 2.5 0 0 0 11.5 0h-7zM3 2.5A1.5 1.5 0 0 1 4.5 1h7A1.5 1.5 0 0 1 13 2.5v10.795a4.2 4.2 0 0 0-.776-.492C11.392 12.387 10.063 12 8 12s-3.392.387-4.224.803a4.2 4.2 0 0 0-.776.492V2.5z" />
-                                    </svg>
-                                </span>
-                                <span
-                                    className={
-                                        props.highlight === 14
-                                            ? "active"
-                                            : "none"
-                                    }
-                                >
-                                    View Registrations
-                                </span>
-                            </span>
-                        </Link>
-                    </li>
-                    <li id="nav-li">
-                        <Link
-                            href={VIEW_CONTEST_SUBMISSIONS_PAGE}
-                            onClick={() => {
-                                toggleLoaderBackdrop(
-                                    asPath,
-                                    VIEW_CONTEST_SUBMISSIONS_PAGE
-                                );
-                            }}
-                        >
-                            <span id="nav-items">
-                                <span>
-                                    <svg
-                                        xmlns="http://www.w3.org/2000/svg"
-                                        width="16"
-                                        height="16"
-                                        fill={
-                                            props.highlight === 15
-                                                ? "white"
-                                                : "gray"
-                                        }
-                                        className="bi bi-send-check"
-                                        viewBox="0 0 16 16"
-                                    >
-                                        <path d="M15.964.686a.5.5 0 0 0-.65-.65L.767 5.855a.75.75 0 0 0-.124 1.329l4.995 3.178 1.531 2.406a.5.5 0 0 0 .844-.536L6.637 10.07l7.494-7.494-1.895 4.738a.5.5 0 1 0 .928.372l2.8-7Zm-2.54 1.183L5.93 9.363 1.591 6.602l11.833-4.733Z" />
-                                        <path d="M16 12.5a3.5 3.5 0 1 1-7 0 3.5 3.5 0 0 1 7 0Zm-1.993-1.679a.5.5 0 0 0-.686.172l-1.17 1.95-.547-.547a.5.5 0 0 0-.708.708l.774.773a.75.75 0 0 0 1.174-.144l1.335-2.226a.5.5 0 0 0-.172-.686Z" />
-                                    </svg>
-                                </span>
-                                <span
-                                    className={
-                                        props.highlight === 15
-                                            ? "active"
-                                            : "none"
-                                    }
-                                >
-                                    View Submissions
-                                </span>
-                            </span>
-                        </Link>
-                    </li>
-                    <li id="nav-li">
-                        <Link
                             href={VIEW_CONTEST_RESULT_PAGE}
-                            onClick={() => {
-                                toggleLoaderBackdrop(
-                                    asPath,
-                                    VIEW_CONTEST_RESULT_PAGE
-                                );
-                            }}
                         >
                             <span id="nav-items">
                                 <span>
@@ -629,12 +480,6 @@ export default function SideNav(props) {
                         <li id="nav-li">
                             <Link
                                 href={REPORT_VIOLATIONS}
-                                onClick={() => {
-                                    toggleLoaderBackdrop(
-                                        asPath,
-                                        REPORT_VIOLATIONS
-                                    );
-                                }}
                             >
                                 <span id="nav-items">
                                     <span>
@@ -673,9 +518,6 @@ export default function SideNav(props) {
                         <li id="nav-li">
                             <Link
                                 href={BAN_USERS}
-                                onClick={() => {
-                                    toggleLoaderBackdrop(asPath, BAN_USERS);
-                                }}
                             >
                                 <span id="nav-items">
                                     <span>

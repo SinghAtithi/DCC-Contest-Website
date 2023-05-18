@@ -46,16 +46,16 @@ export default function PastContestProblemModal(props) {
                                                             <thead className='text-gray-500'>
                                                                 <tr>
                                                                     <th>SL. NO.</th>
-                                                                    <th>Problem Name</th>
+                                                                    <th>Problem</th>
                                                                     <th>Go to Problem</th>
                                                                 </tr>
                                                             </thead>
                                                             <tbody className='text-white'>
                                                                 {props.problems.map((problem, index) => (<>
-                                                                    <tr key={problem.problemId} className='hover'>
+                                                                    <tr key={problem.ques_id} className='hover'>
                                                                         <th>{index + 1}</th>
-                                                                        <td>{problem.name}</td>
-                                                                        <td><button className='btn btn-outline btn-info min-h-8 h-8'><a href={`/problems/${problem.problemId}`} target="_blank" rel="noreferrer">Solve</a></button></td>
+                                                                        <td>{problem.ques_id}</td>
+                                                                        <td><button className='btn btn-outline btn-info min-h-8 h-8'><a href={`/problems/${problem.ques_id}`} target="_blank" rel="noreferrer">Solve</a></button></td>
                                                                     </tr>
                                                                 </>))}
                                                             </tbody>

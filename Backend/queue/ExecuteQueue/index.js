@@ -40,6 +40,7 @@ const compileCpp = async (codeFilePath, compiledFilePath) => {
 ExecuteQueue.process(5, async (job, done) => {
   const submission_id = job.data.submission_id;
   const contestRunning = job.data.contestRunning;
+  console.log("Contest Running - ",contestRunning);
   try {
     // Find the submission in the database
     const submission = await Submission.findOne({

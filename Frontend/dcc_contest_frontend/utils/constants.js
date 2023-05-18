@@ -38,8 +38,8 @@ export const END_USER = "end_user";
 
 export const ADMIN_DASHBOARD = "/admin/dashboard";
 
-export const BASE_URL = "https://b132-4-240-84-221.ngrok-free.app";
-// export const BASE_URL = "http://localhost:5000";
+// export const BASE_URL = "https://b132-4-240-84-221.ngrok-free.app";
+export const BASE_URL = "http://localhost:5000";
 export const LOGIN_ENDPOINT_BACKEND = "/auth/login";
 export const SIGNUP_ENDPOINT_BACKEND = "/auth/register";
 
@@ -53,10 +53,10 @@ export const UPDATE_CONTEST_ENDPOINT_BACKEND = "/contest/update";
 export const SEARCH_CONTESTS_ENDPOINT_BACKEND = "/contest/search";
 export const DELETE_CONTEST_ENDPOINT_BACKEND = "/contest/delete";
 export const LAUNCH_CANCEL_CONTEST_ENDPOINT_BACKEND = "/contest/launch";
+export const REGISTER_CONTEST_ENDPOINT_BACKEND = "/contest/register";
 
-
-
-export const PRE_FETCH_COLLABORATORS_AND_QUESTION_ENDPOINT_BACKEND ="/contest/collabAndQues";
+export const PRE_FETCH_COLLABORATORS_AND_QUESTION_ENDPOINT_BACKEND =
+  "/contest/collabAndQues";
 
 export const GET_DASHBOARD_DATA = "/dashboard";
 export const VERIFY_EMAIL_BACKEND = "/auth/verifyEmail";
@@ -80,20 +80,13 @@ export const ABOUT_PAGE = "/about";
 export const SETTINGS_PAGE = "/settings";
 
 export const ASSIGN_REVOKE_ROLES_PAGE = "/super_admin/roles";
-export const CHANGE_EMAIL_REQUEST_PAGE = "/super_admin/changeemail";
 
 export const VIEW_PROBLEMS_CREATED_PAGE = "/admin/problems/view";
 export const CREATE_PROBLEM_PAGE = "/admin/problems/create";
-export const EDIT_PROBLEM_PAGE = "/admin/problems/edit";
-export const DELETE_PROBLEM_PAGE = "/admin/problems/delete";
 
 export const VIEW_CONTESTS_CREATED_PAGE = "/admin/contest/view";
 export const CREATE_CONTEST_PAGE = "/admin/contest/create";
-export const EDIT_CONTEST_PAGE = "/admin/contest/edit";
-export const DELETE_CONTEST_PAGE = "/admin/contest/delete";
 export const LAUNCH_CONTEST_PAGE = "/admin/contest/launch";
-export const VIEW_CONTEST_REGISTRATIONS_PAGE = "/admin/contest/registrations";
-export const VIEW_CONTEST_SUBMISSIONS_PAGE = "/admin/contest/submissions";
 export const VIEW_CONTEST_RESULT_PAGE = "/admin/contest/results";
 
 export const REPORT_VIOLATIONS = "/admin/report";

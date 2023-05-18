@@ -1,25 +1,31 @@
 import React from "react";
 import { useState, useEffect } from "react";
-import moment from "moment/moment";
+import moment from "moment";
 
 export default function Countdown(props) {
+  const [months, setMonths] = useState(0);
   const [days, setDays] = useState(0);
   const [hours, setHours] = useState(0);
   const [minutes, setMinutes] = useState(0);
   const [seconds, setSeconds] = useState(0);
 
   const getTime = () => {
-    const deadline = moment(props.deadline, "DD/MM/YYYY h:mm:s");
-    var now = moment(Date.now()).format("DD/MM/YYYY h:mm:s");
-    now = moment(now, "DD/MM/YYYY h:mm:s");
+    const deadline = moment(props.deadline, "DD/MM/YYYY HH:mm");
+    const now = moment();
 
-    const time = deadline.diff(now);
-    // console.log(time);
+    const duration = moment.duration(deadline.diff(now));
 
-    setDays(Math.floor(time / (1000 * 60 * 60 * 24)));
-    setHours(Math.floor((time / (1000 * 60 * 60)) % 24));
-    setMinutes(Math.floor((time / 1000 / 60) % 60));
-    setSeconds(Math.floor((time / 1000) % 60));
+    const months = duration.months();
+    const days = duration.days();
+    const hours = duration.hours();
+    const minutes = duration.minutes();
+    const seconds = duration.seconds();
+
+    setMonths(months);
+    setDays(days);
+    setHours(hours);
+    setMinutes(minutes);
+    setSeconds(seconds);
   };
 
   useEffect(() => {
@@ -32,6 +38,12 @@ export default function Countdown(props) {
     <>
       <div className="min-h-8 h-8 flex gap-5 align-middle justify-center self-center">
         <div className="flex gap-5 align-middle justify-center self-center">
+          {months!==0 && <div className=" text-white">
+            <span className="countdown font-mono text-lg">
+              <span style={{ "--value": months }}></span>
+            </span>
+            months
+          </div>}
           <div className=" text-white">
             <span className="countdown font-mono text-lg">
               <span style={{ "--value": days }}></span>

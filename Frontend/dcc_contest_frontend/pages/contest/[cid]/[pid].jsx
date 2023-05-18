@@ -7,8 +7,6 @@ import snippetCode from "../../../components/snippet";
 import axios from "axios";
 import ConsolePanel from "../../../components/console_panel";
 import Head from "next/head";
-import { useSelector } from "react-redux";
-import moment from "moment";
 
 import {
   GET_SUBMISSION,
@@ -20,16 +18,19 @@ import Countdown from "../../../components/Countdown";
 
 function ProblemPage() {
   const router = useRouter();
-  const { pid } = router.query;
+  const { pid, cid } = router.query;
 
   const [problemId, setProblemId] = React.useState("");
+  const [contestId, setContestId] = React.useState("");
+  const [contestEndTime, setContestEndTime] = React.useState("");
+
   const [code, setCode] = React.useState("");
   const [isOpen, setIsOpen] = React.useState(false);
   const [lowerSpaceVisible, setLowerSpaceVisible] = React.useState(false);
   const [editorHeight, setEditorHeight] = React.useState('calc(90vh - 80px)');
   const [consoleData, setConsoleData] = React.useState("Nothing to display on console");
   const [consoleLoader, setConsoleLoader] = React.useState(false);
-  const [loader, setLoader] = React.useState(false);
+  const [loader, setLoader] = React.useState(true);
   const [question__id, setQuestionId] = React.useState("");
   const [submitting, setSubmitting] = useState("");
   const [background, setbackground] = useState("bg-warning"); // This stores the background of data in console - default is bg-warning, other values include error and success
@@ -41,7 +42,35 @@ function ProblemPage() {
 
   useEffect(() => {
     if (pid) setProblemId(pid);
-  }, [pid]);
+    if (cid) setContestId(cid);
+  }, [pid, cid]);
+
+  useEffect(() => {
+    if (contestId) {
+      const url = BASE_URL + `/contest/timings/${contestId}`;
+      const options = {
+        headers: {
+          "Content-Type": "application/json",
+          token: localStorage.getItem("token"),
+        },
+      };
+
+      axios.get(url, options).then((res) => {
+        setContestEndTime(res.data.end_time);
+        if (res.data.ques_ids && res.data.ques_ids.some((item) => item.ques_id === problemId)) {
+          console.log("done");
+        }
+        else {
+          console.log(res.data.ques_ids);
+          console.log("Problem not of this contest");
+          router.push("/404");
+        }
+      }).catch((err) => {
+        console.log(err);
+        router.push("/404");
+      })
+    }
+  }), [contestId]
 
   useEffect(() => {
     let prevCode = localStorage.getItem(problemId);
@@ -83,6 +112,7 @@ function ProblemPage() {
     params.append("code", code);
     params.append("language", "cpp");
     params.append("ques_id", question__id);
+    params.append("contest_id", contestId)
 
     axios
       .post(url, params, config)
@@ -97,7 +127,7 @@ function ProblemPage() {
           console.log("Poll = ", poll);
           console.log("count = ", count);
           count = count + 1;
-          if (count === 10) {
+          if (count === 20) {
             setConsoleData(
               `It is taking longer than usual. Please go the submission page to see the status.`
             );
@@ -151,10 +181,9 @@ function ProblemPage() {
                   setConsoleLoader(false);
                   clearInterval(poll);
                 }
-                else {
-                  setConsoleData(
-                    `Something Went Wrong. Please try again.`
-                  );
+                else if (result.data.verdict === "May be Infinite Loop") {
+                  setSubmitting("");
+                  setConsoleData("May be Infinite Loop");
                   setbackground("bg-error");
                   setConsoleLoader(false);
                   clearInterval(poll);
@@ -190,7 +219,7 @@ function ProblemPage() {
     <div>
       <Head>
         {problemId ? (
-          <title>DCC Contest : {problemId}</title>
+          <title> DCC - {contestId} : {problemId}</title>
         ) : (
           <title>DCC : Loading</title>
         )}
@@ -202,9 +231,10 @@ function ProblemPage() {
           {/* This will be visible on smaller screens only */}
           <div className="ContestCountdownTop-container">
             <div className="ContestCountdownTop">
-              <Countdown deadline={moment().add(2, 'days').format("DD/MM/YYYY HH:mm")} />
+              <Countdown deadline={contestEndTime} />
             </div>
           </div>
+          {/* This will be visible on smaller screens only */}
 
 
           <div className="problem-page-left">
@@ -228,6 +258,7 @@ function ProblemPage() {
                 onSubmit={onSubmit}
                 submitting={submitting}
                 countdownRequired={true}
+                deadline={contestEndTime}
               />
             </div>
             <div
@@ -240,6 +271,7 @@ function ProblemPage() {
                 console_data={consoleData}
                 width="57vw"
                 background={background}
+
 
               />
             </div>
