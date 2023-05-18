@@ -59,7 +59,6 @@ const ContestSchema = mongoose.Schema(
       get: function (value) {
         // Format the Date object to the specified format
         const date = moment(value).format("DD/MM/YYYY HH:mm").toString();
-        console.log("from contest model - ", date);
         return date;
       },
     },
@@ -150,18 +149,23 @@ const ContestSchema = mongoose.Schema(
           validate: [
             {
               validator: async function (username) {
-                const user = await mongoose
-                  .model("user")
-                  .findOne({ username: username });
-                return user !== null;
+                const registrations = await mongoose
+                  .model("contest")
+                  .find({ registrations: { $in: [username] } });
+                return registrations.length !== 0;
               },
-              message: `username is invalid.`,
+              message: `User is not registered for the contest.`,
             },
           ],
         },
         points: {
           type: Number,
         },
+        solved: [
+          {
+            type: String,
+          },
+        ],
       },
     ],
 
@@ -174,7 +178,7 @@ const ContestSchema = mongoose.Schema(
 );
 
 // The custom function updateResult
-ContestSchema.statics.updateResult = function (contestId, username, newPoints) {
+ContestSchema.statics.updateResult = function (contestId, ques_id, username) {
   return new Promise(async (resolve, reject) => {
     try {
       // Find the contest by contest_id
@@ -184,26 +188,47 @@ ContestSchema.statics.updateResult = function (contestId, username, newPoints) {
         reject(`Contest with contest_id '${contestId}' not found.`);
       }
 
-      // Find the index of the username in the result array
-      const resultIndex = contest.result.findIndex(
-        (result) => result.username === username
+      // Find the index of ques_id in ques_ids araay
+      const quesIndex = contest.ques_ids.findIndex(
+        (ques) => ques.ques_id === ques_id
       );
 
-      if (resultIndex === -1) {
-        reject(`Username '${username}' not found in the result array.`);
+      if (quesIndex !== -1) {
+        const points = contest.ques_ids[quesIndex].points;
+
+        // Find the index of the username in the result array
+        const resultIndex = contest.result.findIndex(
+          (result) => result.username === username
+        );
+
+        if (resultIndex === -1) {
+          // Username not found, create a new result object
+          const newResult = {
+            username,
+            points: points,
+            solved: [ques_id],
+          };
+
+          // Add the new result to the result array
+          contest.result.push(newResult);
+        } else {
+          // Update the points for the existing username if the point has not been added.
+          if (!contest.result[resultIndex].solved.includes(ques_id)) {
+            contest.result[resultIndex].points += points;
+            contest.result[resultIndex].solved.push(ques_id);
+          }
+        }
+        // Save the updated contest
+        await contest.save();
+
+        console.log(
+          `Result updated for username '${username}' in contest '${contestId}'.`
+        );
+
+        resolve(contest); // Resolve the promise with the updated contest object
+      } else {
+        reject("Internal Server Error");
       }
-
-      // Update the points for the username
-      contest.result[resultIndex].points += newPoints;
-
-      // Save the updated contest
-      await contest.save();
-
-      console.log(
-        `Result updated for username '${username}' in contest '${contestId}'.`
-      );
-
-      resolve(contest); // Resolve the promise with the updated contest object
     } catch (error) {
       console.error("Error updating result:", error.message);
       reject(error); // Reject the promise with the error

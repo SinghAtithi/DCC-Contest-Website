@@ -33,7 +33,8 @@ function ProblemPage() {
   const [loader, setLoader] = React.useState(true);
   const [question__id, setQuestionId] = React.useState("");
   const [submitting, setSubmitting] = useState("");
-  const [background, setbackground] = useState("bg-warning"); // This stores the background of data in console - default is bg-warning, other values include error and success
+  const [background, setbackground] = useState("bg-warning"); // This stores the background of console - default is bg-warning, other values include error and success
+  const [severeError, setSevereError] = useState(""); // Error in case backend is not able to give proper response
 
 
   const code_console = {
@@ -41,13 +42,11 @@ function ProblemPage() {
   };
 
   useEffect(() => {
-    if (pid) setProblemId(pid);
-    if (cid) setContestId(cid);
-  }, [pid, cid]);
+    if (router.isReady) {
+      setProblemId(pid);
+      setContestId(cid);
 
-  useEffect(() => {
-    if (contestId) {
-      const url = BASE_URL + `/contest/timings/${contestId}`;
+      const url = BASE_URL + `/contest/timings/${cid}`;
       const options = {
         headers: {
           "Content-Type": "application/json",
@@ -56,21 +55,26 @@ function ProblemPage() {
       };
 
       axios.get(url, options).then((res) => {
+        console.log(res);
         setContestEndTime(res.data.end_time);
-        if (res.data.ques_ids && res.data.ques_ids.some((item) => item.ques_id === problemId)) {
-          console.log("done");
+        if (!(res.data.ques_ids && res.data.ques_ids.some((item) => item.ques_id === pid))) router.push("/404");
+      }).catch((error) => {
+        if (error.response) {
+          const statusCode = error.response.status;
+          if (statusCode == 403) setSevereError("Forbidden : Contest has not yet started.");
+          else if (statusCode == 404) setSevereError("Contest not found. You must have missed the registeration deadline or the contest doesnot exist.");
+          else if (statusCode == 500) setSevereError("Internal Server Error");
+          else if (statusCode == 401) setSevereError("Your session has expired. Please re-login");
+        }
+        else if (error.request) {
+          setSevereError("Network error. Please check your internet connection");
         }
         else {
-          console.log(res.data.ques_ids);
-          console.log("Problem not of this contest");
-          router.push("/404");
+          setSevereError("Something went wrong.");
         }
-      }).catch((err) => {
-        console.log(err);
-        router.push("/404");
       })
     }
-  }), [contestId]
+  }, [router.isReady])
 
   useEffect(() => {
     let prevCode = localStorage.getItem(problemId);
@@ -225,61 +229,71 @@ function ProblemPage() {
         )}
       </Head>
       <Navbar />
-      <div className="content-area-top">
-        <div className="problem-page">
-
-          {/* This will be visible on smaller screens only */}
-          <div className="ContestCountdownTop-container">
-            <div className="ContestCountdownTop">
-              <Countdown deadline={contestEndTime} />
+      <div className='content-area-top'>
+        {severeError
+          ?
+          <div className='flex justify-center p-2'>
+            <div className="alert alert-error shadow-lg w-fit">
+              <div>
+                <svg xmlns="http://www.w3.org/2000/svg" className="stroke-current flex-shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                <span>{severeError}</span>
+              </div>
             </div>
           </div>
-          {/* This will be visible on smaller screens only */}
+          :
+          <div className="problem-page">
+
+            {/* This will be visible on smaller screens only */}
+            <div className="ContestCountdownTop-container">
+              <div className="ContestCountdownTop">
+                <Countdown deadline={contestEndTime} />
+              </div>
+            </div>
+            {/* This will be visible on smaller screens only */}
 
 
-          <div className="problem-page-left">
-            <QuestionStatement
-              problemId={problemId}
-              loader={loader}
-              setLoader={setLoader}
-              setQuestionId={setQuestionId}
-            />
-          </div>
-          <div className="problem-page-right">
-            <div className="problem-page-right-top" style={{ height: editorHeight }}>
-              <CodeEditor
+            <div className="problem-page-left">
+              <QuestionStatement
+                problemId={problemId}
                 loader={loader}
-                Code={code}
-                setCode={setCode}
-                ProblemId={problemId}
-                EditorHeight={editorHeight}
-                EditorWidth="58vw"
-                controlConsole={controlConsole}
-                onSubmit={onSubmit}
-                submitting={submitting}
-                countdownRequired={true}
-                deadline={contestEndTime}
+                setLoader={setLoader}
+                setQuestionId={setQuestionId}
               />
             </div>
-            <div
-              className="problem-page-right-bottom border-green-500"
-              style={code_console}
-            >
-              <ConsolePanel
-                consoleLoader={consoleLoader}
-                isOpen={isOpen}
-                console_data={consoleData}
-                width="57vw"
-                background={background}
-
-
-              />
+            <div className="problem-page-right">
+              <div className="problem-page-right-top" style={{ height: editorHeight }}>
+                <CodeEditor
+                  loader={loader}
+                  Code={code}
+                  setCode={setCode}
+                  ProblemId={problemId}
+                  EditorHeight={editorHeight}
+                  EditorWidth="58vw"
+                  controlConsole={controlConsole}
+                  onSubmit={onSubmit}
+                  submitting={submitting}
+                  countdownRequired={true}
+                  deadline={contestEndTime}
+                />
+              </div>
+              <div
+                className="problem-page-right-bottom border-green-500"
+                style={code_console}
+              >
+                <ConsolePanel
+                  consoleLoader={consoleLoader}
+                  isOpen={isOpen}
+                  console_data={consoleData}
+                  width="57vw"
+                  background={background}
+                />
+              </div>
             </div>
-          </div>
-        </div>
+          </div>}
       </div>
     </div>
-  );
+
+  )
 }
 
 export default ProblemPage;

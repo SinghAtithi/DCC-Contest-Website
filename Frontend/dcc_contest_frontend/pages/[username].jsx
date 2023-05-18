@@ -208,7 +208,7 @@ function Dashboard() {
                     console.log(result);
 
                     if (result.data.profile_pic)
-                        setProfilePic(result.data.profile_pic);
+                    setProfilePic(result.data.profile_pic);
                     setCurrentRating(result.data.current_rating);
                     setMaxRating(result.data.max_rating);
 

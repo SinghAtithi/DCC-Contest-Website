@@ -14,6 +14,7 @@ const { exec } = require("child_process");
 const {
   generateTestCaseFiles,
 } = require("../../utils/generateTestCaseFiles.js");
+const Contest = require("../../models/contest.js");
 
 // Create a Queue object
 const ExecuteQueue = new Queue("execute");
@@ -40,7 +41,9 @@ const compileCpp = async (codeFilePath, compiledFilePath) => {
 ExecuteQueue.process(5, async (job, done) => {
   const submission_id = job.data.submission_id;
   const contestRunning = job.data.contestRunning;
-  console.log("Contest Running - ",contestRunning);
+  const username = job.data.username;
+  const contest_id = job.data.contest_id;
+  console.log("Contest Running - ", contestRunning);
   try {
     // Find the submission in the database
     const submission = await Submission.findOne({
@@ -64,7 +67,7 @@ ExecuteQueue.process(5, async (job, done) => {
         console.log("Getting Question");
         const ques = await Question.findById(
           submission.ques_id,
-          "time_limit public_test_cases private_test_cases"
+          "ques_id time_limit public_test_cases private_test_cases"
         ).exec();
         console.log("Got the question");
 
@@ -86,7 +89,7 @@ ExecuteQueue.process(5, async (job, done) => {
           );
           console.log("Created test case files");
         }
-        console.log("Checking for test cases");
+        console.log("Checked for test cases");
 
         // Extract the no of public and private test cases
         const n_public = ques.public_test_cases.length;
@@ -218,6 +221,10 @@ ExecuteQueue.process(5, async (job, done) => {
             { verdict: "Accepted", time_taken: average_time_taken },
             { new: true }
           );
+
+          // If contest is running, update the results,
+          if (contestRunning)
+            await Contest.updateResult(contest_id, ques.ques_id, username);
           done();
         }
         // Else if there is some error
@@ -286,7 +293,6 @@ ExecuteQueue.process(5, async (job, done) => {
     }
   } catch (error) {
     // If something else has gone wrong
-    console.log("Error 1", error);
     await Submission.findOneAndUpdate(
       { _id: submission_id },
       { verdict: "Server Error" }

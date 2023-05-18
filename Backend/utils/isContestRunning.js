@@ -10,8 +10,6 @@ const isContestRunning = async (contestId) => {
       { contest_id: contestId },
       "start_time end_time ques_ids"
     );
-
-    console.log("From isCOntestRunning - ", contest);
     if (!contest) {
       return { verdict: false };
     } else {
@@ -20,13 +18,17 @@ const isContestRunning = async (contestId) => {
       const contestEndTime = moment(contest.end_time, "DD/MM/YYYY HH:mm");
 
       if (currentTime.isBetween(contestStartTime, contestEndTime)) {
-        return { verdict: true, start_time: contest.start_time, end_time: contest.end_time, ques_ids:contest.ques_ids };
+        return {
+          verdict: true,
+          start_time: contest.start_time,
+          end_time: contest.end_time,
+          ques_ids: contest.ques_ids,
+        };
       } else {
         return { verdict: false };
       }
     }
   } catch (error) {
-    console.error(error);
     return { verdict: false };
   }
 };

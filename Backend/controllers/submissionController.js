@@ -39,7 +39,7 @@ const createSubmission = async (req, res) => {
           formattedDate,
           contest_id
         );
-        addToQueue(submission._id, contestRunning, res);
+        addToQueue(submission._id, contestRunning, user.username,contest_id ,res);
       }
     }
   } catch (error) {
@@ -69,10 +69,12 @@ const createSubmissionInDb = async (
   }).save();
 };
 
-const addToQueue = (submissionId, contestRunning, res) => {
+const addToQueue = (submissionId, contestRunning, username , contest_id, res) => {
   ExecuteQueue.add({
     submission_id: submissionId,
     contestRunning: contestRunning,
+    username : username,
+    contest_id: contest_id
   })
     .then(() => {
       console.log("Successfully added to the queue");
