@@ -106,7 +106,7 @@ function CodeEditor(props) {
           </button>
           {props.countdownRequired && <div className="ContestCountdown-container">
             <div className="ContestCountdown">
-              <Countdown deadline={moment().add(2, 'days').format("DD/MM/YYYY HH:mm")} />
+              <Countdown deadline={props.deadline} />
             </div>
           </div>}
         </div>

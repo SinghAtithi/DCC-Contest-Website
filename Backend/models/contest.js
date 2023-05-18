@@ -59,6 +59,7 @@ const ContestSchema = mongoose.Schema(
       get: function (value) {
         // Format the Date object to the specified format
         const date = moment(value).format("DD/MM/YYYY HH:mm").toString();
+        console.log("from contest model - ", date);
         return date;
       },
     },

@@ -93,7 +93,7 @@ function ProblemPage() {
                     console.log("Poll = ", poll);
                     console.log("count = ", count);
                     count = count + 1;
-                    if (count === 10) {
+                    if (count === 20) {
                         setConsoleData(
                             `It is taking longer than usual. Please go the submission page to see the status.`
                         );
@@ -153,7 +153,15 @@ function ProblemPage() {
                                     setConsoleLoader(false);
                                     clearInterval(poll);
                                 }
-                                
+                                else if (result.data.verdict === "May be Infinite Loop") {
+                                    setSubmitting("");
+                                    setConsoleData("May be Infinite Loop");
+                                    setbackground("bg-error");
+                                    setConsoleLoader(false);
+                                    clearInterval(poll);
+                                }
+                                setSubmitting("");
+
                             })
                             .catch((error) => {
                                 console.log(error);

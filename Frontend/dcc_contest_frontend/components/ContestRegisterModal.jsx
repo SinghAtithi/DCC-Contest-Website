@@ -1,9 +1,68 @@
 import { Fragment, useRef, useState } from 'react';
 import { Dialog, Transition } from '@headlessui/react';
+import { BASE_URL, REGISTER_CONTEST_ENDPOINT_BACKEND } from '../utils/constants';
+import axios from 'axios';
 
 export default function ContestRegisterModal(props) {
-
   const cancelButtonRef = useRef(null);
+  const [error, setError] = useState("");
+  const [registerButtonLoading, setRegisterButtonLoading] = useState("");
+
+  function handleRegister() {
+    setRegisterButtonLoading("loading");
+    const url = BASE_URL + REGISTER_CONTEST_ENDPOINT_BACKEND;
+    const body = {
+      contest_id: props.contest_id,
+      type: "register"
+    }
+    const options = {
+      headers: {
+        "Content-Type": "application/json",
+        token: localStorage.getItem("token"),
+      },
+    };
+
+    axios.post(url, body, options).then((res) => {
+      setError("");
+
+      const updatedContests = props.upcomingContests.map(contest => {
+        if (contest.contest_id === props.contest_id) {
+          // Add the username to the registrations array of the specific contest
+          const updatedRegistrations = [...contest.registrations, props.username];
+          return { ...contest, registrations: updatedRegistrations };
+        }
+        return contest;
+      });
+  
+      // Update the state with the modified contests array
+      props.setUpcomingContests(updatedContests);
+
+      props.setOpen(false);
+      setRegisterButtonLoading("");
+    }).catch((error) => {
+      console.log(error);
+      if (error) {
+        if (error.response) {
+          if (error.response.data.error) {
+            setError("Your session has expired. Please re-login.");
+          }
+          else if (Array.isArray(error.response.data)) {
+            let errorArray = error.response.data.map(error => `Error in ${error.error_field} - ${error.error_message}`);
+            setError(errorArray[0]);
+          }
+        }
+        else {
+          setError("Network Error. Please check your internet connection.");
+        }
+      }
+      else{
+        setError("Something went wrong.");
+      }
+
+      setRegisterButtonLoading("");
+    })
+  }
+
 
   return (
     <Transition.Root show={props.open} as={Fragment}>
@@ -40,15 +99,21 @@ export default function ContestRegisterModal(props) {
                       </Dialog.Title>
                       <div className="mt-2">
                         <p className="text-sm text-gray-500">
-                            <p><strong>1. Eligibility:</strong> The contest is open to individuals of all ages and backgrounds, residing in any country. Employees of the contest organizers or their family members are not eligible to participate.</p>
-                            <p><strong>2. Submission Guidelines:</strong> Code submissions must be written in C++ and submitted in the IDE integrated in the website. However, you may use external IDE for testing but make sure that IDE is not visible to anyone but the participant himself/herself.</p>
-                            <p><strong>3. Plagiarism Policy:</strong> Any form of plagiarism, including copying code from external sources without proper attribution, will result in disqualification. The organizers reserve the right to use plagiarism-detection software to check for violations.</p>
-                            <p><strong>4. Disqualification Policy:</strong> {"The organizers reserve the right to disqualify any participant who violates the rules, engages in any unethical behavior, or submits code that is harmful to the contest infrastructure or other participants' systems."}</p>
+                          <p><strong>1. Eligibility:</strong> The contest is open to individuals of all ages and backgrounds, residing in any country. Employees of the contest organizers or their family members are not eligible to participate.</p>
+                          <p><strong>2. Submission Guidelines:</strong> Code submissions must be written in C++ and submitted in the IDE integrated in the website. However, you may use external IDE for testing but make sure that IDE is not visible to anyone but the participant himself/herself.</p>
+                          <p><strong>3. Plagiarism Policy:</strong> Any form of plagiarism, including copying code from external sources without proper attribution, will result in disqualification. The organizers reserve the right to use plagiarism-detection software to check for violations.</p>
+                          <p><strong>4. Disqualification Policy:</strong> {"The organizers reserve the right to disqualify any participant who violates the rules, engages in any unethical behavior, or submits code that is harmful to the contest infrastructure or other participants' systems."}</p>
                         </p>
-                        <hr className="border-t-2 border-gray-500"/>
+                        <hr className="border-t-2 border-gray-500" />
                         <p className="text-sm text-red-600">
-                            <p>By clicking on Register, you agree to our aforesaid policies.</p>
+                          <p>By clicking on Register, you agree to our aforesaid policies.</p>
                         </p>
+                        {error && <div className="alert alert-error shadow-lg mt-3">
+                          <div>
+                            <svg xmlns="http://www.w3.org/2000/svg" className="stroke-current flex-shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                            <span>{error}</span>
+                          </div>
+                        </div>}
                       </div>
                     </div>
                   </div>
@@ -56,8 +121,8 @@ export default function ContestRegisterModal(props) {
                 <div className="bg-gray-50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6">
                   <button
                     type="button"
-                    className="inline-flex w-full justify-center rounded-md bg-red-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500 sm:ml-3 sm:w-auto"
-                    onClick={() => props.setOpen(false)}
+                    className={`inline-flex w-full justify-center rounded-md ${registerButtonLoading} bg-red-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500 sm:ml-3 sm:w-auto`}
+                    onClick={handleRegister}
                   >
                     Register
                   </button>

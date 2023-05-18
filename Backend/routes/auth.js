@@ -200,7 +200,7 @@ router.post("/login", async (req, res) => {
 router.get("/verifyToken", verifyToken, (req, res) => {
   res
     .status(200)
-    .send({ role: req.user.role, profile_pic: req.user.profile_pic });
+    .send({ role: req.user.role, profile_pic: req.user.profile_pic, username: req.user.username });
 });
 
 router.get("/imagekitAuth", async (req, res) => {

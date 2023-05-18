@@ -9,50 +9,51 @@ const router = express.Router();
 
 // Get the list of ques_no,name and topics page by page as specified by query parameter
 router.get("/", async (req, res) => {
-  // const ques = await Question.find({});
-  // // console.log(ques);
-  // for(var i=0;i<ques.length;i++){
-  //   var ques1 = await Question.findOneAndUpdate({ques_no:ques[i].ques_no},{assigned : false});
-  //   // console.log(ques1);
-  // }
-  console.log("at route question /");
-  const currDate = moment(new Date())
-    .utcOffset("+05:30")
-    .format("DD/MM/YYYY HH:mm")
-    .toString();
-  const allQues = await Question.find(
-    { assigned: true },
-    // { displayAfter: { $lt: currDate }, assigned: true },
-    "ques_id name topics"
-  );
-  res.status(200).json(allQues);
+  try {
+    console.log("at route question /");
+    const currDate = moment(new Date()).toString();
+    const allQues = await Question.find(
+      { display_after: { $lte: currDate }, assigned: true },
+      "ques_id name topics"
+    );
+    res.status(200).json(allQues);
+  } catch (err) {
+    res.status(500).json({ error: "Internal Server Error." });
+  }
 });
 
 router.post("/search", verifyAdmin, async (req, res) => {
   const user = req.user;
-  const author = await User.findOne({ _id: user.userId }, "username").exec();
-  const { searchFilter, searchString } = req.body;
+  try{
+    const author = await User.findOne({ _id: user.userId }, "username").exec();
+    const { searchFilter, searchString } = req.body;
+  
+    let search_params = { author: author.username };
+    if (searchFilter == 0)
+      search_params.ques_id = { $regex: searchString, $options: "i" };
+    else if (searchFilter == 1)
+      search_params.contest_id = { $regex: searchString, $options: "i" };
+    else if (searchFilter == 2)
+      search_params.name = { $regex: searchString, $options: "i" };
+    else if (searchFilter == 3) search_params.display_after = searchString;
+    else if (searchFilter == 4)
+      search_params.assigned =
+        String(searchString).toLowerCase() === "true" ? true : false;
+    if (searchFilter == 5)
+      search_params.is_draft =
+        String(searchString).toLowerCase() === "true" ? true : false;
+  
+    console.log(search_params);
+  
+    const allQues = await Question.find(search_params).exec();
+  
+    res.status(200).send({ data: allQues });
+  }
+  catch(err){
+    console.log(err);
+    res.status(500).json({ error: "Internal Server Error." });
 
-  let search_params = { author: author.username };
-  if (searchFilter == 0)
-    search_params.ques_id = { $regex: searchString, $options: "i" };
-  else if (searchFilter == 1)
-    search_params.contest_id = { $regex: searchString, $options: "i" };
-  else if (searchFilter == 2)
-    search_params.name = { $regex: searchString, $options: "i" };
-  else if (searchFilter == 3) search_params.display_after = searchString;
-  else if (searchFilter == 4)
-    search_params.assigned =
-      String(searchString).toLowerCase() === "true" ? true : false;
-  if (searchFilter == 5)
-    search_params.is_draft =
-      String(searchString).toLowerCase() === "true" ? true : false;
-
-  console.log(search_params);
-
-  const allQues = await Question.find(search_params).exec();
-
-  res.status(200).send({ data: allQues });
+  }
 });
 
 router.get("/getQuesNo", async (req, res) => {
@@ -132,14 +133,7 @@ router.post("/update", verifyAdmin, async (req, res) => {
     var public_tc = public_test_cases;
     var private_tc = private_test_cases;
 
-    var display_after = moment(new Date())
-      .utcOffset("+05:30")
-      .add(1000, "days")
-      .format("DD/MM/YYYY HH:mm")
-      .toString();
-    const author = await User.findOne({ _id: user.userId }, "username").exec();
-
-    const filter = { ques_id: ques_id, author: author.username };
+    const filter = { ques_id: ques_id, author: user.username };
     const update = {
       name: name,
       description: description,
@@ -165,15 +159,12 @@ router.post("/update", verifyAdmin, async (req, res) => {
 
 // Get question by ques_id
 router.get("/:ques_id", (req, res) => {
-  const currDate = moment(new Date())
-    .utcOffset("+05:30")
-    .format("DD/MM/YYYY HH:mm")
-    .toString();
+  const currDate = moment(new Date()).toString();
   try {
     Question.findOne(
       {
         ques_id: req.params.ques_id,
-        display_after: { $lt: currDate },
+        display_after: { $lte: currDate },
         assigned: true,
       },
 

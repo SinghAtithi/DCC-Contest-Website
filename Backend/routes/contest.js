@@ -4,26 +4,36 @@ const Question = require("../models/question.js");
 const User = require("../models/user.js");
 const router = express.Router();
 const moment = require("moment");
-const { verifyAdmin } = require("../middlewares/verifyToken.js");
+const {
+  verifyAdmin,
+  verifyGeneralUser,
+} = require("../middlewares/verifyToken.js");
+const isContestRunning = require("../utils/isContestRunning.js");
 
 // To get all the contest for the contests page.
 router.get("/", async (req, res) => {
   try {
-    Contest.find(
-      { is_draft: false },
-      "contest_name contest_id ques_ids start_time end_time",
-      (error, result) => {
-        if (error) {
-          res.status(404).json({ error: error });
-        } else {
-          if (result.length === 0) {
-            res.status(404).send({ error: "No Contest" });
-          } else {
-            res.status(200).json(result);
-          }
-        }
-      }
-    );
+    const currDate = moment(new Date()).toString();
+    const searchString = "contest_name contest_id start_time end_time";
+    const upcoming = await Contest.find(
+      { launched: true, is_draft: false, start_time: { $gt: currDate } },
+      searchString + " registrations"
+    ).exec();
+    const ongoing = await Contest.find(
+      {
+        launched: true,
+        is_draft: false,
+        start_time: { $lte: currDate },
+        end_time: { $gt: currDate },
+      },
+      searchString
+    ).exec();
+    const past = await Contest.find(
+      { is_draft: false, launched: true, end_time: { $lte: currDate } },
+      searchString + " ques_ids"
+    ).exec();
+
+    return res.status(200).json({ ongoing, upcoming, past });
   } catch (error) {
     res.status(500).json(error);
   }
@@ -277,6 +287,22 @@ router.get("/:contest_id", verifyAdmin, async (req, res) => {
   }
 });
 
+// Get timings of  particular contest only when contest is running
+router.get("/timings/:contest_id", verifyGeneralUser, async (req, res) => {
+  const { contest_id } = req.params;
+  try {
+    const resp = await isContestRunning(contest_id);
+    if (resp.verdict) {
+        res.status(200).json({start_time : resp.start_time, end_time: resp.end_time, ques_ids:resp.ques_ids});
+    }
+    else {
+      res.status(404).send("Contest not found");
+    }
+  } catch (error) {
+    res.status(500).json(error);
+  }
+});
+
 // Launch or cancel a contest
 router.put("/launch", verifyAdmin, async (req, res) => {
   const user = req.user;
@@ -366,7 +392,89 @@ router.put("/launch", verifyAdmin, async (req, res) => {
         },
       ]);
     }
-  } catch (err) {}
+  } catch (err) {
+    res.status(00).send([
+      {
+        error_field: "server",
+        error_message: "Internal Server Error",
+      },
+    ]);
+  }
+});
+
+// To register for a contest
+router.post("/register", verifyGeneralUser, async (req, res) => {
+  const { contest_id, type } = req.body;
+  const username = req.user.username;
+  try {
+    // Find the contest by contestId
+    const contest = await Contest.findOne({ contest_id: contest_id });
+
+    // console.log(contest);
+
+    // Check if the contest exists
+    if (contest) {
+      if (type === "register") {
+        // Check if the username already exists in the registration array
+        const isUsernameRegistered = contest.registrations.some(
+          (registration) => registration === username
+        );
+        if (!isUsernameRegistered) {
+          // Add the username to the registration array
+          contest.registrations.push(username);
+
+          // Save the updated contest
+          await contest.save();
+
+          res.status(200).json({ message: "Username registered successfully" });
+        } else {
+          res.status(400).send([
+            {
+              error_field: "username",
+              error_message: "username is already registered with this contest",
+            },
+          ]);
+        }
+      } else {
+        // Check if the username exists in the registration array
+        const registrationIndex = contest.registrations.findIndex(
+          (registration) => registration === username
+        );
+        if (registrationIndex !== -1) {
+          // Remove the username from the registration array
+          contest.registrations.splice(registrationIndex, 1);
+
+          // Save the updated contest
+          await contest.save();
+          res
+            .status(200)
+            .json({ message: "Username unregistered successfully" });
+        } else {
+          res.status(400).send([
+            {
+              error_field: "username",
+              error_message: "username is not registered with this contest",
+            },
+          ]);
+        }
+      }
+    } else {
+      res.status(400).send([
+        {
+          error_field: "contest_id",
+          error_message: `Contest with contest id "${contest_id}" not found.`,
+        },
+      ]);
+    }
+  } catch (error) {
+    console.error(error);
+    res.status(500).send([
+      {
+        error_field: "server",
+        error_message: "Internal Server Error",
+      },
+    ]);
+  }
 });
 
 module.exports = router;
