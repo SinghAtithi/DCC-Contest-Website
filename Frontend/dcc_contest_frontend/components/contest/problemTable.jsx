@@ -2,24 +2,22 @@ import Link from "next/link";
 import React from "react";
 
 function ProblemTable(props) {
-  console.log(props);
-  console.log("From problemTable")
+
   return (
-    <div className="overflow-x-auto mt-32 ">
+    <div className="overflow-x-auto">
       <table className="table w-full custom-table">
         <thead>
           <tr>
             <th></th>
-            <th>Name</th>
+            <th>Problem</th>
             <th>Points</th>
-            <th>Status</th>
             <th>Action</th>
           </tr>
         </thead>
         <tbody>
-          {props.problems.map((problem) => (
+          {props.problems && props.problems.lemgth != 0 && props.problems.map((problem) => (
             <tr key={problem.ques_id} className="hover cursor-pointer">
-              {problem.status ? (
+              {props.solved.includes(problem.ques_id) ? (
                 <th>
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -48,13 +46,12 @@ function ProblemTable(props) {
                   </svg>
                 </th>
               )}
-              <td>{problem.quesId}</td>
+              <td>{problem.ques_id}</td>
               <td>{problem.points}</td>
-              <td>Not Solved</td>
               <td>
                 <Link href={`/contest/${props.cid}/${problem.ques_id}`} target="_blank">
                   <button className="btn btn-outline btn-info w-40 min-h-8 h-8">
-                    {problem.status ? "Solve Again" : "Solve"}
+                    {props.solved.includes(problem.ques_id) ? "Solve Again" : "Solve"}
                   </button>
                 </Link>
               </td>

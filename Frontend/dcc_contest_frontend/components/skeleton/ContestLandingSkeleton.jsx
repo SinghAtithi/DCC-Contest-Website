@@ -1,5 +1,5 @@
 import React from 'react';
-import TableSkeleton from '../../components/skeleton/TableSkeleton';
+import TableSkeleton from './TableSkeleton';
 
 export default function ContestLandingSkeleton() {
     return (

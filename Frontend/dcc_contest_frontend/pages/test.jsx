@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import QuestionSkeleton from '../components/skeleton/QuestionSkeleton';
 import Navbar from '../components/Navbar';
 import CreateProblemSkeleton from '../components/skeleton/CreateProblemSkeleton';
@@ -15,6 +15,7 @@ import DisplayContestData from '../components/DisplayContestData';
 
 
 const Test = () => {
-}
+
+};
 
 export default Test;

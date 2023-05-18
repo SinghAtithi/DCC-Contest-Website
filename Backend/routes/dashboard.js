@@ -6,6 +6,9 @@ const Contest = require("../models/contest");
 const Submission = require("../models/submission");
 const router = express.Router();
 
+
+// ---------- FORMAT -------------
+
 // question_stats = [no_unsolved, no_solved]
 // contest_stats = [no_contest_attempted, no_contest_unattempted, no_contest_unregistered]
 // contest_stats_line = [{contest_id = contest_id, rating = rating}],
