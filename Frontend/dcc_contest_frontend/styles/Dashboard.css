@@ -2,11 +2,11 @@
 
 .dashboard {
     position: relative;
-    top: 64px;
+    padding-top: 64px;
     font-family: serif;
     display: flex;
     flex-direction: row;
-    margin: 2px;
+    /* margin: 2px; */
     z-index: 10;
 }
 
@@ -15,8 +15,7 @@
     width: 50%;
     display: flex;
     flex-direction: column;
-    padding-left: 4px;
-    padding-right: 4px;
+    padding: 8px;
 }
 
 .dashboard_title_div {
@@ -26,8 +25,6 @@
     padding-left: 4px;
 }
 
-/* grid grid-cols-3 mb-2 */
-
 .dashboard_left_top {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
@@ -36,7 +33,7 @@
 
 .dashboard_profile_info {
     display: grid;
-    background-color: rgb(30 41 59);
+    background-color: rgb(37 39 42);
     border-radius: 8px;
     margin-right: 8px;
     justify-items: center;
@@ -55,7 +52,7 @@
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
     grid-column: span 2 / span 2;
-    background-color: rgb(30 41 59 / 1);
+    background-color: rgb(37 39 42);
     border-radius: 8px;
 }
 
@@ -70,7 +67,7 @@
 
 .dashboard_submission_row,
 .dashboard_submission_title {
-    background-color: rgb(71 85 105);
+    background-color: rgb(37 39 42);
     margin: 6px;
     padding: 4px;
     display: grid;
@@ -84,25 +81,32 @@
 
 .dashboard_submission_title {
     margin-top: 5px;
-    color: rgb(129, 152, 202);
+    color: rgb(255, 255, 255);
     border-radius: 0.25rem;
 }
 
 .dashboard_trendline {
     min-height: 51vh;
-    background-color: rgb(30 41 59);
+    background-color: rgb(37 39 42);
     border-radius: 0.5rem;
 }
 
 .dashboard_submission_heading {
     font-size: 15px;
     text-align: center;
-    color: rgb(129, 152, 202);
+    color: rgb(255, 255, 255);
 }
 
 .dashboard_submission_heading svg {
     margin: auto;
 }
+
+.submission-details-dashboard{
+    min-height: 80vh;
+    border-radius: 8px;
+    background-color: rgb(37 39 42);
+  }
+  
 
 
 
@@ -124,23 +128,24 @@
 
 @media screen and (max-width: 500px) {
     .summary_area {
-        width: 99vw;
-        margin-right: 10px;
+        width: 100%;
     }
 
     .dashboard_left_top {
         display: grid;
         grid-template-rows: 1fr 2fr;
         margin-bottom: 8px;
+        width:100%;
+        padding: 8px;
     }
 
     .dashboard_profile_info {
         display: grid;
         grid-row-start: 1;
-        background-color: rgb(30 41 59 / 1);
+        background-color: rgb(37 39 42);
         border-radius: 8px;
         justify-items: center;
-        width: 97vw;
+        width: 92vw;
         display: flex;
         justify-content: space-around;
     }
@@ -150,23 +155,15 @@
         margin: auto 0;
     }
 
-    /* .dashboard_profile_info div {
-      display: flex;
-    }
-    .dashboard_profile_info div p{
-      text-align: center;
-      align-items: center;
-      justify-content: center;
-    } */
-
     .dashboard_graph_div {
         display: grid;
         grid-row-start: 2;
         grid-template-columns: repeat(2, minmax(0, 1fr));
-        background-color: rgb(30 41 59 / 1);
+        background-color: rgb(37 39 42);
         border-radius: 8px;
         margin-top: 8px;
-        width: 97vw;
+        width: 92vw;
+        height:fit-content;
     }
 
     .dashboard_submission_row,
@@ -175,6 +172,6 @@
     }
 
     .dashboard_trendline {
-        width: 97vw;
+        width: 92vw;
     }
 }

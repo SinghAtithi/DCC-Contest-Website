@@ -65,7 +65,7 @@ router.get("/:username" ,async (req, res) => {
   
   
         //  Get the submission list of the user in descending order of time stamp
-        const submissions = await Submission.find({username:username, display_after: { $lt: currTime }},"ques_name time_stamp verdict").sort({time_stamp : -1}).limit(10).exec();
+        const submissions = await Submission.find({username:username, display_after: { $lt: currDate }},"ques_name time_stamp verdict").sort({time_stamp : -1}).limit(10).exec();
         
         to_send.profile_pic = user.profile_pic;
         to_send.current_rating = user.current_rating;
@@ -82,7 +82,6 @@ router.get("/:username" ,async (req, res) => {
         res.status(404).json({ error: "User not found" });
       }
     } catch (error) {
-      console.log(error);
       res.status(500).json({ error: "Something went wrong." });
     }
   }

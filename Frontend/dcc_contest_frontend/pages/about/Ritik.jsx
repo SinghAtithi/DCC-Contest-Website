@@ -54,7 +54,7 @@ function Ritik() {
         </a>
       </div>
       <div className="about-ritik-image">
-          <Image
+          <img
             src="/Ritik.jpeg"
             alt="Ritik Kaushal"
           />

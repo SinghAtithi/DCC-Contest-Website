@@ -8,7 +8,7 @@ import Navbar from "../../components/Navbar";
 import SubmissionTable from "../../components/submission/submissionTable";
 import TableSkeleton from "../../components/skeleton/TableSkeleton";
 
-export default function submissions() {
+export default function Submissions() {
     const router = useRouter();
     const { username } = router.query;
 
