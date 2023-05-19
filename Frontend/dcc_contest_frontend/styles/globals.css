@@ -27,10 +27,3 @@
   border: none;
   border-collapse: collapse;
 } 
-
-
-/* Submission */
-
-.submission-details-dashboard{
-  min-height: 80vh;
-}

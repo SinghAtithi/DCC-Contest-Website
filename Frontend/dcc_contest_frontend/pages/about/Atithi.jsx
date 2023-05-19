@@ -10,7 +10,7 @@ function Atithi() {
   return (
     <div className="about-atithi-container">
       <div className="about-atithi-image">
-        <Image src="/Atithi.jpeg" alt="Atithi Kumar Singh" />
+        <img src="/Atithi.jpeg" alt="Atithi Kumar Singh" />
       </div>
       <div className="about-atithi-description">
         <h2 className="text-2xl font-extrabold text-white dark:text-white sm:text-4xl">

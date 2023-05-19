@@ -38,15 +38,29 @@ const verifyAdmin = (req, res, next) => {
     if (verified.role == "admin" || verified.role == "super_admin") {
       next();
     } else {
-      res
-        .status(401)
-        .send({
-          error: "User is Unauthorized to perform this action, contact admins.",
-        });
+      res.status(401).send({
+        error: "User is Unauthorized to perform this action, contact admins.",
+      });
     }
   } catch (error) {
     res.status(401).send({ error: "Invalid Token" });
   }
 };
 
-module.exports = { verifyGeneralUser, verifyAdmin, verifyToken };
+const passby = (req, res, next) => {
+  const token = req.header("token");
+  console.log("token : ", token);
+  if (!token) next();
+  else {
+    try {
+      const verified = jwt.verify(token, process.env.JWT_SECRET_KEY);
+      req.user = verified;
+      next();
+    } catch (error) {
+      console.log("In catch of passby", error);
+      next();
+    }
+  }
+};
+
+module.exports = { verifyGeneralUser, verifyAdmin, verifyToken, passby };

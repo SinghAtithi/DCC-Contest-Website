@@ -32,6 +32,7 @@ function ProblemPage() {
   const [consoleLoader, setConsoleLoader] = React.useState(false);
   const [loader, setLoader] = React.useState(true);
   const [question__id, setQuestionId] = React.useState("");
+  const [ques_name, setQuesName] = React.useState("");
   const [submitting, setSubmitting] = useState("");
   const [background, setbackground] = useState("bg-warning"); // This stores the background of console - default is bg-warning, other values include error and success
   const [severeError, setSevereError] = useState(""); // Error in case backend is not able to give proper response
@@ -115,8 +116,9 @@ function ProblemPage() {
     const params = new URLSearchParams();
     params.append("code", code);
     params.append("language", "cpp");
+    params.append("contest_id", contestId);
     params.append("ques_id", question__id);
-    params.append("contest_id", contestId)
+    params.append("ques_name", ques_name);
 
     axios
       .post(url, params, config)
@@ -258,6 +260,7 @@ function ProblemPage() {
                 loader={loader}
                 setLoader={setLoader}
                 setQuestionId={setQuestionId}
+                setQuesName = {setQuesName}
               />
             </div>
             <div className="problem-page-right">

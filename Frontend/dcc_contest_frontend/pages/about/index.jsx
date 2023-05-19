@@ -12,7 +12,7 @@ function About() {
       <ThreePicAbout />
       <Ritik />
       <Atithi />
-      <Stats />
+      {/* <Stats /> */}
     </div>
   );
 }

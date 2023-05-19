@@ -18,6 +18,7 @@ import { useRouter } from "next/router";
 import axios from "axios";
 import { BASE_URL, GET_DASHBOARD_DATA } from "../utils/constants";
 import Image from "next/image";
+import SubmissionTableDashboard from "../components/dashboard/submissionTable";
 
 Chart.register(
     ArcElement,
@@ -45,6 +46,9 @@ function Dashboard() {
     //contest_stats_line = [{contest_id = contest_id, rating = rating, time_stamp = time_stamp}]
     const [contest_stats_line, setContestStatsLine] = useState([]);
     const [line_data, setLineData] = useState(null);
+
+    const [severeError, setSevereError] = useState(""); // Error in case backend is not able to give proper response
+    const [skeletonLoading, setSkeletonLoading] = useState(true);
 
     // submission_data = [{
     //     _id: "1",
@@ -200,15 +204,14 @@ function Dashboard() {
     }
 
     useEffect(() => {
-        if (username) {
+        if (router.isReady) {
             const url = `${BASE_URL}${GET_DASHBOARD_DATA}/${username}`;
             axios
                 .get(url)
                 .then((result) => {
                     console.log(result);
 
-                    if (result.data.profile_pic)
-                    setProfilePic(result.data.profile_pic);
+                    if (result.data.profile_pic) setProfilePic(result.data.profile_pic);
                     setCurrentRating(result.data.current_rating);
                     setMaxRating(result.data.max_rating);
 
@@ -218,175 +221,165 @@ function Dashboard() {
                     setContestStatsLine(result.data.contest_stats_line);
                     setLineChartData(result.data.contest_stats_line);
                     setSubmissionData(result.data.submission_data);
+
+                    setSkeletonLoading(false);
                 })
                 .catch((err) => {
-                    console.log(err);
-                    router.push("/404");
+                    if (err.response) {
+                        const statusCode = err.response.status;
+                        if (statusCode == 500) setSevereError("Internal Server Error");
+                        else router.push("/404");
+                    }
+                    else if (err.request) {
+                        setSevereError("Network error. Please check your internet connection");
+                    }
+                    else {
+                        setSevereError("Something went wrong. Please relaod");
+                    }
+                    setSkeletonLoading(false);
                 });
-
-            // console.log(username)
         }
-    }, [username]);
+    }, [router.isReady]);
 
     return (
-        <div>
+        <>
             <Head>
                 <title>Dashboard</title>
             </Head>
 
             <Navbar />
             <div className="dashboard">
-                <div className="summary_area">
-                    <p className="dashboard_title_div">Statistics</p>
-                    <div className="dashboard_left_top">
-                        <div className="dashboard_profile_info">
-                            <Image
-                                src={profile_pic}
-                                style={{ "border-radius": "50%" }}
-                                alt="ProfilePic"
-                            ></Image>
-                            <div className="dashboard-profile-user">
-                                <p>{username}</p>
-                                <p>Current Rating : {current_rating}</p>
-                                <p>(Max: {max_rating})</p>
+                {severeError
+                    ?
+                    <div className='flex justify-center p-2'>
+                        < div className="alert alert-error shadow-lg w-fit">
+                            <div>
+                                <svg xmlns="http://www.w3.org/2000/svg" className="stroke-current flex-shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                                <span>{severeError}</span>
                             </div>
                         </div>
-                        <div className="dashboard_graph_div">
-                            {question_stats.length != 0 ? (
-                                <div className="dashboard_graph">
-                                    {question_stats[0] + question_stats[1] !=
-                                    0 ? (
-                                        <>
-                                            <Doughnut
-                                                className="p-5"
-                                                data={getProblemStatsObject()}
-                                            />
-                                            <p className="text-md">
-                                                Problems Solved<br></br>
-                                                {question_stats[1]}/
-                                                {question_stats[0] +
-                                                    question_stats[1]}
-                                            </p>
-                                        </>
+                    </div >
+                    : <>
+                        <div className="summary_area">
+                            <p className="dashboard_title_div">Statistics</p>
+                            <div className="dashboard_left_top">
+                                <div className="dashboard_profile_info">
+                                    <img
+                                        src={profile_pic}
+                                        style={{ "border-radius": "50%" }}
+                                        alt="ProfilePic"
+                                    />
+                                    <div className="dashboard-profile-user">
+                                        <p>{username}</p>
+                                        <p>Current Rating : {current_rating}</p>
+                                        <p>(Max: {max_rating})</p>
+                                    </div>
+                                </div>
+                                <div className="dashboard_graph_div">
+                                    {question_stats.length != 0 ? (
+                                        <div className="dashboard_graph">
+                                            {question_stats[0] + question_stats[1] !=
+                                                0 ? (
+                                                <>
+                                                    <Doughnut
+                                                        className="p-5"
+                                                        data={getProblemStatsObject()}
+                                                    />
+                                                    <p className="text-md">
+                                                        Problems Solved<br></br>
+                                                        {question_stats[1]}/
+                                                        {question_stats[0] +
+                                                            question_stats[1]}
+                                                    </p>
+                                                </>
+                                            ) : (
+                                                <p>Not enough data to display</p>
+                                            )}
+                                        </div>
                                     ) : (
-                                        <p>Not enough data to display</p>
+                                        <div className="dashboard_graph">
+                                            Loading...
+                                        </div>
+                                    )}
+
+                                    {contest_stats.length != 0 ? (
+                                        <div className="dashboard_graph">
+                                            {contest_stats[0] +
+                                                contest_stats[1] +
+                                                contest_stats[2] !=
+                                                0 ? (
+                                                <>
+                                                    <Doughnut
+                                                        className="p-5"
+                                                        data={getContestStatsObject()}
+                                                    />
+                                                    <p className="text-md">
+                                                        Contest Attempted
+                                                        <br />
+                                                        {contest_stats[0]}/
+                                                        {contest_stats[0] +
+                                                            contest_stats[1] +
+                                                            contest_stats[2]}
+                                                    </p>
+                                                </>
+                                            ) : (
+                                                <p>Not enough data to display</p>
+                                            )}
+                                        </div>
+                                    ) : (
+                                        <div className="dashboard_graph">
+                                            Loading...
+                                        </div>
+                                    )}
+                                </div>
+                            </div>
+                            {line_data ? (
+                                <div className="dashboard_trendline flex justify-center">
+                                    {contest_stats_line.length !== 0 ? (
+                                        <Line
+                                            className="p-2"
+                                            options={{
+                                                responsive: true,
+                                                plugins: {
+                                                    title: {
+                                                        display: true,
+                                                        text: "Contest Ratings",
+                                                        color: ["white"],
+                                                        font: {
+                                                            size: 14,
+                                                            weight: "normal",
+                                                        },
+                                                    },
+                                                    tooltip: {
+                                                        enabled: false,
+                                                        external: function (context) {
+                                                            toolTip(context);
+                                                        },
+                                                    },
+                                                },
+                                            }}
+                                            data={line_data}
+                                        />
+                                    ) : (
+                                        <>Not enough data to display trendline</>
                                     )}
                                 </div>
                             ) : (
-                                <div className="dashboard_graph">
-                                    Loading...
-                                </div>
+                                <div className="dashboard_trendline">Loading...</div>
                             )}
+                        </div>
+                        <div className="summary_area">
+                            <p className="dashboard_title_div submission_div">
+                                Submissions
+                            </p>
 
-                            {contest_stats.length != 0 ? (
-                                <div className="dashboard_graph">
-                                    {contest_stats[0] +
-                                        contest_stats[1] +
-                                        contest_stats[2] !=
-                                    0 ? (
-                                        <>
-                                            <Doughnut
-                                                className="p-5"
-                                                data={getContestStatsObject()}
-                                            />
-                                            <p className="text-md">
-                                                Contest Attempted
-                                                <br />
-                                                {contest_stats[0]}/
-                                                {contest_stats[0] +
-                                                    contest_stats[1] +
-                                                    contest_stats[2]}
-                                            </p>
-                                        </>
-                                    ) : (
-                                        <p>Not enough data to display</p>
-                                    )}
-                                </div>
-                            ) : (
-                                <div className="dashboard_graph">
-                                    Loading...
-                                </div>
-                            )}
+                            <SubmissionTableDashboard data={submission_data}/>
+                            
                         </div>
-                    </div>
-                    {line_data ? (
-                        <div className="dashboard_trendline flex justify-center">
-                            {contest_stats_line.length !== 0 ? (
-                                <Line
-                                    className="p-2"
-                                    options={{
-                                        responsive: true,
-                                        plugins: {
-                                            title: {
-                                                display: true,
-                                                text: "Contest Ratings",
-                                                color: ["white"],
-                                                font: {
-                                                    size: 14,
-                                                    weight: "normal",
-                                                },
-                                            },
-                                            tooltip: {
-                                                enabled: false,
-                                                external: function (context) {
-                                                    toolTip(context);
-                                                },
-                                            },
-                                        },
-                                    }}
-                                    data={line_data}
-                                />
-                            ) : (
-                                <>Not enough data to display trendline</>
-                            )}
-                        </div>
-                    ) : (
-                        <div className="dashboard_trendline">Loading...</div>
-                    )}
-                </div>
-                <div className="summary_area">
-                    <p className="dashboard_title_div submission_div">
-                        Submissions
-                    </p>
-                    {submission_data.length != 0 ? (
-                        <div className="bg-slate-800 rounded-lg h-95.5% submission-details-dashboard">
-                            <div className="dashboard_submission_title">
-                                <div>S.No.</div>
-                                <div>Q Id.</div>
-                                <div className="col-span-2">Time stamp</div>
-                                <div className="col-span-2">Verdict</div>
-                            </div>
-
-                            {submission_data.map((submission, index) => (
-                                <SubmissionRow
-                                    key={index}
-                                    index={index}
-                                    submission_id={submission._id}
-                                    ques_no={submission.ques_id}
-                                    submission_time={submission.time_stamp}
-                                    verdict={submission.verdict}
-                                />
-                            ))}
-                            <div className="">
-                                <div
-                                    className="dashboard_submission_heading col-start-4 hover:text-green-700 hover:cursor-pointer"
-                                    onClick={() => {
-                                        router.push(`/submissions`);
-                                    }}
-                                >
-                                    View all Submissions
-                                    <AiFillCaretDown />
-                                </div>
-                            </div>
-                        </div>
-                    ) : (
-                        <div className="bg-slate-800 rounded-lg flex justify-center submission-details-dashboard">
-                            No submissions made
-                        </div>
-                    )}
-                </div>
-            </div>
-        </div>
+                                    
+                    </>}
+            </div >
+        </>
     );
 }
 

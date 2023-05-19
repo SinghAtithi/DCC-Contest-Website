@@ -1,10 +1,11 @@
 const express = require("express");
 const moment = require("moment");
-const { verifyAdmin } = require("../middlewares/verifyToken");
+const { verifyAdmin, passby } = require("../middlewares/verifyToken");
 const Question = require("../models/question");
 const Submission = require("../models/submission");
 const User = require("../models/user");
 const { generateTestCaseFiles } = require("../utils/generateTestCaseFiles.js");
+const getAllSubmissionsController = require("../controllers/question/getAllSubmissions");
 const router = express.Router();
 
 // Get the list of ques_no,name and topics page by page as specified by query parameter
@@ -223,5 +224,8 @@ router.get("/getSubmission/:id", async (req, res) => {
     res.status(500).json({ error: "Something went wrong." });
   }
 });
+
+
+router.get("/getAllSubmissions/:username", passby ,getAllSubmissionsController); // passby is a function which adds user in req when token is valid. Else does nothing
 
 module.exports = router;

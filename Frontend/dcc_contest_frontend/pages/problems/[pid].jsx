@@ -28,6 +28,7 @@ function ProblemPage() {
     const [consoleLoader, setConsoleLoader] = React.useState(false);
     const [loader, setLoader] = React.useState(true);
     const [question__id, setQuestionId] = React.useState("");
+    const [ques_name, setQuesName] = React.useState("");
     const [submitting, setSubmitting] = useState("");
     const [background, setbackground] = useState("bg-warning"); // This stores the background of data in console - default is bg-warning, other values include bg-error, bg-success and bg-inherit
 
@@ -78,7 +79,8 @@ function ProblemPage() {
         const params = new URLSearchParams();
         params.append("code", code);
         params.append("language", "cpp");
-        params.append("ques_id", question__id);
+        params.append("ques_id", question__id); //This is the mongodb _id
+        params.append("ques_name", ques_name);
 
         axios
             .post(url, params, config)
@@ -125,9 +127,8 @@ function ProblemPage() {
                                 } else if (
                                     result.data.verdict === "Compilation Error"
                                 ) {
-                                    let toSet = result.data.error.replace(/\/home[\s\S]*?\.cpp:/g, '')
                                     setConsoleData(
-                                        `Verdict : Compilation Error\n${toSet}`
+                                        `Verdict : Compilation Error\n${result.data.error}`
                                     );
                                     setSubmitting("");
                                     setbackground("bg-error");
@@ -178,7 +179,7 @@ function ProblemPage() {
             })
             .catch((err) => {
                 console.log(err);
-                if (err.response.data.error === "Invalid Token") setConsoleData("Your session has expired. Please login again");
+                if (err.response && err.response.data && err.response.data.error === "Invalid Token") setConsoleData("Your session has expired. Please login again");
                 else
                     setConsoleData(
                         "Something went wrong. Check your internet and retry again."
@@ -207,6 +208,7 @@ function ProblemPage() {
                             loader={loader}
                             setLoader={setLoader}
                             setQuestionId={setQuestionId}
+                            setQuesName={setQuesName}
                         />
                     </div>
                     <div className="problem-page-right">

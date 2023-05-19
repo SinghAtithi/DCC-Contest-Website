@@ -70,7 +70,7 @@ const QuesSchema = mongoose.Schema(
         else {
           // throw new Error({ message:"Task validation failed: deadline: Invalid date format" });
           throw new Error(
-            "Contest validation failed: deadline: Invalid date format"
+            "Question validation failed: display_after: Invalid date format"
           );
         }
       },

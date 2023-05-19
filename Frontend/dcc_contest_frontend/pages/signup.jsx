@@ -38,8 +38,6 @@ function Signup() {
     const [error, setError] = React.useState(null);
 
     useEffect(() => {
-        // setIsLoading(true);
-        toggleLoaderBackdrop(1, 2);
         var next = null;
         if (router.query["next"]) next = router.query["next"];
 
@@ -52,9 +50,6 @@ function Signup() {
                     else if (status.role === SUPER_ADMIN)
                         Router.push(ADMIN_DASHBOARD);
                     else Router.push(`/${username}`);
-                } else {
-                    // setIsLoading(false);
-                    toggleLoaderBackdrop(1, 2);
                 }
             });
         } else {
@@ -66,10 +61,6 @@ function Signup() {
     }, []);
 
     const onSubmit = () => {
-        document
-            .querySelector(".custom-backdrop-loader")
-            .classList.toggle("active");
-
         const data = {
             name,
             email,
@@ -91,13 +82,9 @@ function Signup() {
         axios
             .post(BASE_URL + SIGNUP_ENDPOINT_BACKEND, data, config)
             .then((res) => {
-                console.log(res.data);
                 document.querySelector(".modal").classList.toggle("modal-open");
             })
             .catch((err) => {
-                document
-                    .querySelector(".custom-backdrop-loader")
-                    .classList.toggle("active");
                 console.log(err);
                 if (err.code == "ERR_NETWORK") {
                     setError(
@@ -203,15 +190,11 @@ function Signup() {
         setText("");
     };
 
-    function uploadImage(file) {
-        console.log(file);
-    }
-
     return (
-        <div className="">
+        <>
             <Navbar />
             <SignUpConfirmaionModal />
-            <div className="container min-w-full mt-16 flex justify-around items-center">
+            <div className="signup-container min-w-full mt-16 flex justify-around items-center">
                 <Lottie animationData={heroSignupLottie} className="w-4/12" />
 
                 <div
@@ -239,14 +222,15 @@ function Signup() {
                             </div>
                         </div>
                     )}
-                    <div className="heroForm mt-8 mx-24 text-3xl justify-center flex">
+                    <div className="mt-8 text-3xl justify-center flex">
                         {signupQues[quesInd].question}
                     </div>
                     <div className="flex justify-center items-center">
-                        {quesInd > 0 ? (
+                        {quesInd >= 0 ? (
                             <button
                                 className="btn btn-outline btn-success rounded-full mx-6"
                                 onClick={onBackClick}
+                                disabled={quesInd===0?true:false}
                             >
                                 <BiArrowToLeft size={30} />
                             </button>
@@ -277,7 +261,7 @@ function Signup() {
                             : "hidden"
                     }`}
                 >
-                    <p className="text-xl my-5">
+                    <p className="text-xl my-5 px-2">
                         By clicking on the button you accept to our terms and
                         conditions!
                     </p>
@@ -297,7 +281,7 @@ function Signup() {
                     </div>
                 </div>
             </div>
-        </div>
+        </>
     );
 }
 

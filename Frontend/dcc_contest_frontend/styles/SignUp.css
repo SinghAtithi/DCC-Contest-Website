@@ -1,0 +1,14 @@
+.signup-container{
+    min-width: 100%;
+    margin-top:64px;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+
+}
+
+@media screen and (max-width: 750px){
+    .signup-container{
+        flex-direction: column;
+    }
+}
