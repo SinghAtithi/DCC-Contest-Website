@@ -15,7 +15,7 @@ function ProblemTable(props) {
           </tr>
         </thead>
         <tbody>
-          {props.problems && props.problems.lemgth != 0 && props.problems.map((problem) => (
+          {props.problems && props.problems.length != 0 && props.problems.map((problem) => (
             <tr key={problem.ques_id} className="hover cursor-pointer">
               {props.solved.includes(problem.ques_id) ? (
                 <th>

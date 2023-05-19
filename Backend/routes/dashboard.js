@@ -4,6 +4,7 @@ const Question = require("../models/question");
 const User = require("../models/user");
 const Contest = require("../models/contest");
 const Submission = require("../models/submission");
+const { passby } = require("../middlewares/verifyToken");
 const router = express.Router();
 
 
@@ -14,19 +15,18 @@ const router = express.Router();
 // contest_stats_line = [{contest_id = contest_id, rating = rating}],
 // submission_data = [{
 //     _id: "1",
-//     ques_id: "Trial-01",
+//     ques_name: "Add two numbers",
 //     time_stamp: "24/01/2001 08:05",
 //     verdict: "Passed"
 // }]
-router.get("/:username", async (req, res) => {
+router.get("/:username" ,async (req, res) => { 
   const username = req.params.username;
-
   if(username){
     try {
       const to_send = {};
-      const currDate = moment(new Date()).utcOffset("+05:30").format("DD/MM/YYYY HH:mm").toString();
+      const currDate = moment(new Date()).utcOffset("+05:30").toString();
   
-      // Get the user with username is in the url
+      // Get the user with username
       const user = await User.findOne(
         { username: username },
         "current_rating max_rating rating_array questions_solved total_contests profile_pic"
@@ -34,7 +34,7 @@ router.get("/:username", async (req, res) => {
   
       if (user) {
   
-        //  Get a list of all questions available for public to solve
+        //  Get a list of all questions available to solve
         const questions = await Question.find({
           is_draft: false,
           assigned: true,
@@ -42,8 +42,7 @@ router.get("/:username", async (req, res) => {
         }).exec();
   
         const no_solved = user.questions_solved.length;
-        var total = 0;
-        if (questions) total = questions.length;
+        var total = questions.length;
   
         const no_unsolved = total - no_solved;
   
@@ -55,10 +54,10 @@ router.get("/:username", async (req, res) => {
           if (contest_obj.status == "attempted") no_contest_attempted = no_contest_attempted + 1;
           else no_contest_unattempted = no_contest_unattempted + 1;
         }
-  
+
   
         //  Get the total no. of contests launched
-        const contest = await Contest.find({ is_draft: false },"contest_id").exec();
+        const contest = await Contest.find({ is_draft: false, launched: true },"contest_id").exec();
         var total_no_of_contest = 0;
         if(contest) total_no_of_contest = contest.length;
   
@@ -66,7 +65,7 @@ router.get("/:username", async (req, res) => {
   
   
         //  Get the submission list of the user in descending order of time stamp
-        const submissions = await Submission.find({username:username},"ques_id time_stamp verdict").sort({time_stamp : -1}).limit(12).exec();
+        const submissions = await Submission.find({username:username, display_after: { $lt: currTime }},"ques_name time_stamp verdict").sort({time_stamp : -1}).limit(10).exec();
         
         to_send.profile_pic = user.profile_pic;
         to_send.current_rating = user.current_rating;
@@ -88,7 +87,7 @@ router.get("/:username", async (req, res) => {
     }
   }
   else{
-    res.status(404).json({ error: "Username is required" });
+    res.status(400).json({ error: "Username is required" });
   }
 });
 

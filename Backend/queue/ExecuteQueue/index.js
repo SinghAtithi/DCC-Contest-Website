@@ -15,6 +15,7 @@ const {
   generateTestCaseFiles,
 } = require("../../utils/generateTestCaseFiles.js");
 const Contest = require("../../models/contest.js");
+const User = require("../../models/user.js");
 
 // Create a Queue object
 const ExecuteQueue = new Queue("execute");
@@ -222,6 +223,9 @@ ExecuteQueue.process(5, async (job, done) => {
             { new: true }
           );
 
+          // Update the solved array of user
+          await User.updateSolved(ques.ques_id, username);
+
           // If contest is running, update the results,
           if (contestRunning)
             await Contest.updateResult(contest_id, ques.ques_id, username);
@@ -244,10 +248,21 @@ ExecuteQueue.process(5, async (job, done) => {
         // If there is compilation error, the error is in stderr.
         if (error.stderr) {
           console.log("Compilation Error");
+
+          // Prepare the error
+          let torep = basePath();
+          const escapedTorep = torep.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+          const regexPattern = new RegExp(
+            `${escapedTorep}[\\s\\S]*?\\.cpp:`,
+            "g"
+          );
           // Update the database
           await Submission.findOneAndUpdate(
             { _id: submission_id },
-            { verdict: "Compilation Error", error: error.stderr }
+            {
+              verdict: "Compilation Error",
+              error: error.stderr.replace(regexPattern, ""),
+            }
           ).exec();
           done();
         }

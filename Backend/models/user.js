@@ -42,10 +42,12 @@ const UserSchema = mongoose.Schema({
     type: String,
     default: "end_user",
   },
-  // Array of ques_no
-  questions_solved: {
-    type: Array,
-  },
+  // Array of ques_ids
+  questions_solved: [
+    {
+      type: String,
+    },
+  ],
   profile_pic: {
     type: String,
   },
@@ -65,17 +67,151 @@ const UserSchema = mongoose.Schema({
     type: Number,
     default: 0,
   },
-
-  // [{contest_id : contest_id, status : attempted/unattempted}]
-  total_contests: {
-    type: Array,
-    default: [],
-  },
+  total_contests: [
+    {
+      contest_id: {
+        type: String,
+        required: true,
+      },
+      status: {
+        type: String,
+        required: true,
+        default: "unattempted",
+      },
+    },
+  ],
   confirmed_email: {
     type: Boolean,
     default: false,
   },
 });
+
+// The custom function update solved array
+UserSchema.statics.updateSolved = function (ques_id, username) {
+  return new Promise(async (resolve, reject) => {
+    try {
+      // Find the user by username
+      const user = await this.findOne({ username: username });
+
+      if (!user) {
+        reject(`User with username '${username}' not found.`);
+      }
+
+      // Find the index of ques_id in solved array
+      const quesIndex = user.questions_solved.findIndex(
+        (ques) => ques === ques_id
+      );
+
+      if (quesIndex === -1) {
+        // Add the new ques_id
+        user.questions_solved.push(ques_id);
+      }
+      // Save the updated user
+      await user.save();
+
+      resolve(user); // Resolve the promise with the updated contest object
+    } catch (error) {
+      reject(error); // Reject the promise with the error
+    }
+  });
+};
+
+// The custom function to register a user for a contest
+UserSchema.statics.registerForContest = function (contest_id, username) {
+  return new Promise(async (resolve, reject) => {
+    try {
+      /// Find the user by username
+      const user = await this.findOne({ username: username });
+
+      if (!user) {
+        reject(`User with username '${username}' not found.`);
+      }
+
+      // Find the index of contest_id in total contest array
+      const contestIndex = user.total_contests.findIndex(
+        (contest) => contest.contest_id === contest_id
+      );
+
+      if (contestIndex === -1) {
+        // Add the new contest
+        user.total_contests.push({
+          contest_id: contest_id,
+          status: "unattempted",
+        });
+      }
+      // Save the updated user
+      await user.save();
+
+      resolve(user); // Resolve the promise with the updated contest object
+    } catch (error) {
+      reject(error); // Reject the promise with the error
+    }
+  });
+};
+
+// The custom function to unregister a user from a contest
+UserSchema.statics.unRegisterForContest = function (contest_id, username) {
+  return new Promise(async (resolve, reject) => {
+    try {
+      // Find the user by username
+      const user = await this.findOne({ username: username });
+
+      if (!user) {
+        reject(`User with username '${username}' not found.`);
+      }
+
+      // Find the index of contest_id in total contest array
+      const contestIndex = user.total_contests.findIndex(
+        (contest) => contest.contest_id === contest_id
+      );
+
+      if (contestIndex !== -1) {
+        // Remove the contest
+        user.total_contests.splice(contestIndex, 1);
+      }
+      // Save the updated user
+      await user.save();
+
+      resolve(user); // Resolve the promise with the updated contest object
+    } catch (error) {
+      reject(error); // Reject the promise with the error
+    }
+  });
+};
+
+// The custom function to update status of contest
+UserSchema.statics.updateContestStatus = function (contest_id, username) {
+  return new Promise(async (resolve, reject) => {
+    try {
+      // Find the user by username
+      const user = await this.findOne({ username: username });
+
+      if (!user) {
+        reject(`User with username '${username}' not found.`);
+      }
+
+      // Find the index of contest_id in total contest array
+      const contestIndex = user.total_contests.findIndex(
+        (contest) => contest.contest_id === contest_id
+      );
+
+      if (
+        contestIndex !== -1 &&
+        user.total_contests[contestIndex].status !== "attempted"
+      ) {
+        // Change the status
+        user.total_contests[contestIndex].status = "attempted";
+
+        // Save the updated user
+        await user.save();
+      }
+
+      resolve(user); // Resolve the promise with the updated contest object
+    } catch (error) {
+      reject(error); // Reject the promise with the error
+    }
+  });
+};
 
 const User = new mongoose.model("user", UserSchema);
 module.exports = User;

@@ -200,15 +200,14 @@ function Dashboard() {
     }
 
     useEffect(() => {
-        if (username) {
+        if (router.isReady) {
             const url = `${BASE_URL}${GET_DASHBOARD_DATA}/${username}`;
             axios
                 .get(url)
                 .then((result) => {
                     console.log(result);
 
-                    if (result.data.profile_pic)
-                    setProfilePic(result.data.profile_pic);
+                    if (result.data.profile_pic) setProfilePic(result.data.profile_pic);
                     setCurrentRating(result.data.current_rating);
                     setMaxRating(result.data.max_rating);
 
@@ -226,7 +225,7 @@ function Dashboard() {
 
             // console.log(username)
         }
-    }, [username]);
+    }, [router.isReady]);
 
     return (
         <div>
