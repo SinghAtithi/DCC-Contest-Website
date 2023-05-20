@@ -1,5 +1,5 @@
 {
-  "name": "onlinecompiler",
+  "name": "dcc_backend",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -7,7 +7,7 @@
     "start": "nodemon --legacy-watch index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "Ritik Kaushal",
+  "author": "Ritik Kaushal, Atithi Kumar Singh",
   "license": "ISC",
   "dependencies": {
     "bcrypt": "^5.1.0",

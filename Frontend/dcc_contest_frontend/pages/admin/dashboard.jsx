@@ -38,7 +38,7 @@ const AdminDashboad = () => {
     return (
         <>
             <SideNav role={role} highlight={AdminSideNavMap["dashboard"]} />
-            <div className="data-area">Hello from admin dashboard</div>
+            <div className="data-area">Admin Dashboard</div>
         </>
     );
 };
