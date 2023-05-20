@@ -10,8 +10,8 @@ import {
     LOGIN_PAGE,
     SUPER_ADMIN,
     AdminSideNavMap,
-    LAUNCH_CANCEL_CONTEST_ENDPOINT_BACKEND,
-    SEARCH_CONTESTS_ENDPOINT_BACKEND
+    SEARCH_CONTESTS_ENDPOINT_BACKEND,
+    UPDATE_RATINGS_CONTEST_ENDPOINT_BACKEND
 } from "../../../utils/constants";
 import SearchBar from "../../../components/SearchBar";
 import Head from "next/head";
@@ -28,7 +28,7 @@ const toastCross = {
 };
 
 
-const LaunchContest = () => {
+export default function UpdateResults() {
     const router = useRouter();
     const [search_option, SetSearchOption] = useState("");
     const [search_text, setSearchText] = useState("");
@@ -36,8 +36,7 @@ const LaunchContest = () => {
     const [loadingSkeleton, setLoadingSkeleton] = useState(true);
     const [loadingButton, setLoadingButton] = useState("");
     const [tableActive, setTableActive] = useState(false);
-    const [cancelContestButtonLoading, setCancelContestButtonLoading] = useState([]);
-    const [launchContestButtonLoading, setLaunchContestButtonLoading] = useState([]);
+    const [launchContestButtonLoading, setUpdateRatingButtonLoading] = useState([]);
 
     const SEARCH_FILTERS = ["contest_name", "contest_id"]
     const [message, setMessage] = useState("Nothing matches your current search.");
@@ -62,7 +61,7 @@ const LaunchContest = () => {
                     if (status.role === ADMIN || status.role === SUPER_ADMIN) {
                         setLoadingSkeleton(false);
                     } else router.push(`/${username}`);
-                } else router.push(LOGIN_PAGE + "?next=admin/contest/launch");
+                } else router.push(LOGIN_PAGE + "?next=admin/contest/updateRatings");
             });
         }
     }, []);
@@ -74,7 +73,7 @@ const LaunchContest = () => {
             const body = {
                 searchFilter: search_option,
                 searchString: search_text,
-                selectString: "contest_id contest_name launched"
+                selectString: "contest_id contest_name ratings_updated"
             };
             const options = {
                 headers: {
@@ -87,15 +86,13 @@ const LaunchContest = () => {
                 .then((result) => {
                     if (result.data.data.length === 0) {
                         setData([]);
-                        setCancelContestButtonLoading([]);
-                        setLaunchContestButtonLoading([]);
+                        setUpdateRatingButtonLoading([]);
                         setMessage("Nothing matches your current search.");
 
                     }
                     else {
                         setData(result.data.data);
-                        setCancelContestButtonLoading(Array(result.data.data.length).fill(""));
-                        setLaunchContestButtonLoading(Array(result.data.data.length).fill(""));
+                        setUpdateRatingButtonLoading(Array(result.data.data.length).fill(""));
                         setTableActive(true);
                     }
                     setLoadingButton("");
@@ -107,13 +104,13 @@ const LaunchContest = () => {
                     setUpdateRatingButtonLoading([]);
                     setLoadingButton("");
                     setTableActive(false);
-                    if (err.response) {
+                    if(err.response){
                         const statusCode = err.response.status;
-                        if (statusCode == 401) setMessage("Your session has expired. Please login again.");
+                        if(statusCode==500) setMessage("Internal Server Error");
                         else setMessage("Internal Server Error");
 
                     }
-                    else if (err.request) {
+                    else if(err.request){
                         setMessage("Network Error. Please check your internet connectivity.")
                     }
                     else setMessage("Something went wrong. Please relaod.");
@@ -127,15 +124,14 @@ const LaunchContest = () => {
         }
     }
 
-    function handleCancelContest(contest_id, index) {
-        setCancelContestButtonLoading((prevLoadingStates) => {
+    function updateRatings(contest_id, index) {
+        setUpdateRatingButtonLoading((prevLoadingStates) => {
             const newLoadingStates = [...prevLoadingStates];
             newLoadingStates[index] = "loading";
             return newLoadingStates;
         });
-        const url = BASE_URL + LAUNCH_CANCEL_CONTEST_ENDPOINT_BACKEND;
+        const url = BASE_URL + UPDATE_RATINGS_CONTEST_ENDPOINT_BACKEND;
         const body = {
-            type: "cancel",
             contest_id: contest_id
         }
         const options = {
@@ -144,86 +140,31 @@ const LaunchContest = () => {
                 token: localStorage.getItem("token"),
             },
         };
-        axios.put(url, body, options).then((res) => {
-            const updatedData = [...data];
-            updatedData[index].launched = false;
-            setData(updatedData);
+
+        axios.post(url, body, options).then((res) => {
             setToastClass("alert alert-success relative");
-            setToastMessage(["Contest successfully cancelled."]);
+            setToastMessage(["Ratings successfully updated."]);
             setToastActive(true);
-            setCancelContestButtonLoading((prevLoadingStates) => {
+            setUpdateRatingButtonLoading((prevLoadingStates) => {
                 const newLoadingStates = [...prevLoadingStates];
                 newLoadingStates[index] = "";
                 return newLoadingStates;
             });
         }).catch((err) => {
+            // console.log(err.response.data);
             setToastClass("alert alert-error relative");
-            if (err.response) {
+            if(err.response){
                 const statusCode = err.response.status;
-                if (statusCode == 401) setToastMessage(["Your session has expired. Please login again"]);
+                if(statusCode==401) setToastMessage(["Your session has expired. Please login again"]);
                 else if (Array.isArray(err.response.data)) {
                     let errorArray = err.response.data.map(error => `Error in ${error.error_field} - ${error.error_message}`);
                     setToastMessage(errorArray);
                 }
                 else setToastMessage(["Internal Server Error"]);
             }
-            else if (err.request) setToastMessage(["Network Error. Please check your internet connectivity."]);
+            else if(err.request) setToastMessage(["Network Error. Please check your internet connectivity."]);
             else setToastMessage(["Something went wrong."]);
-
-
-            setLoadingButton("");
-            setToastActive(true);
-            setCancelContestButtonLoading((prevLoadingStates) => {
-                const newLoadingStates = [...prevLoadingStates];
-                newLoadingStates[index] = "";
-                return newLoadingStates;
-            });
-        })
-    }
-
-    function handleLaunchContest(contest_id, index) {
-        setLaunchContestButtonLoading((prevLoadingStates) => {
-            const newLoadingStates = [...prevLoadingStates];
-            newLoadingStates[index] = "loading";
-            return newLoadingStates;
-        });
-        const url = BASE_URL + LAUNCH_CANCEL_CONTEST_ENDPOINT_BACKEND;
-        const body = {
-            type: "launch",
-            contest_id: contest_id
-        }
-        const options = {
-            headers: {
-                "Content-Type": "application/json",
-                token: localStorage.getItem("token"),
-            },
-        };
-        axios.put(url, body, options).then((res) => {
-            const updatedData = [...data];
-            updatedData[index].launched = true;
-            setData(updatedData);
-            setToastClass("alert alert-success relative");
-            setToastMessage(["Contest successfully launched"]);
-            setToastActive(true);
-            setLaunchContestButtonLoading((prevLoadingStates) => {
-                const newLoadingStates = [...prevLoadingStates];
-                newLoadingStates[index] = "";
-                return newLoadingStates;
-            });
-        }).catch((err) => {
-            setToastClass("alert alert-error relative");
-            if (err.response) {
-                const statusCode = err.response.status;
-                if (statusCode == 401) setToastMessage(["Your session has expired. Please login again"]);
-                else if (Array.isArray(err.response.data)) {
-                    let errorArray = err.response.data.map(error => `Error in ${error.error_field} - ${error.error_message}`);
-                    setToastMessage(errorArray);
-                }
-                else setToastMessage(["Internal Server Error"]);
-            }
-            else if (err.request) setToastMessage(["Network Error. Please check your internet connectivity."]);
-            else setToastMessage(["Something went wrong."]);
-
+            
             setLoadingButton("");
             setToastActive(true);
             setUpdateRatingButtonLoading((prevLoadingStates) => {
@@ -237,9 +178,9 @@ const LaunchContest = () => {
     return (
         <>
             <Head>
-                <title>DCC : Launch Contests</title>
+                <title>DCC : Update Ratings</title>
             </Head>
-            <SideNav role={role} highlight={AdminSideNavMap.launch_contest} />
+            <SideNav role={role} highlight={AdminSideNavMap.update_ratings} />
             {loadingSkeleton ? <ViewContestSkeleton /> : <div className="data-area">
                 {toastActive && toastMessage.length !== 0 && (
                     <div className="toast toast-start z-50">
@@ -295,16 +236,16 @@ const LaunchContest = () => {
                                         <td>{contest.contest_id}</td>
                                         <td>{contest.contest_name}</td>
                                         <td>
-                                            {contest.launched ?
+                                            {contest.ratings_updated ?
                                                 <span className="px-1">
-                                                    <button className={`btn btn-outline btn-info min-w-fit w-20 min-h-8 h-8 ${cancelContestButtonLoading[index]}`} onClick={() => { handleCancelContest(contest.contest_id, index) }}>
-                                                        Cancel Contest
+                                                    <button className={`btn btn-outline btn-info min-w-fit w-20 min-h-8 h-8`} disabled>
+                                                        Update Ratings
                                                     </button>
                                                 </span>
                                                 :
                                                 <span className="px-1">
-                                                    <button className={`btn btn-outline btn-info min-w-fit w-20 min-h-8 h-8 ${launchContestButtonLoading[index]}`} onClick={() => { handleLaunchContest(contest.contest_id, index) }}>
-                                                        Launch
+                                                    <button className={`btn btn-outline btn-info min-w-fit w-20 min-h-8 h-8 ${launchContestButtonLoading[index]}`} onClick={() => { updateRatings(contest.contest_id, index) }}>
+                                                        Update Ratings
                                                     </button>
                                                 </span>
                                             }
@@ -328,5 +269,3 @@ const LaunchContest = () => {
         </>
     );
 };
-
-export default LaunchContest;

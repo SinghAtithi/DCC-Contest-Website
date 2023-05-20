@@ -58,7 +58,8 @@ const ContestSchema = mongoose.Schema(
       },
       get: function (value) {
         // Format the Date object to the specified format
-        const date = moment(value).format("DD/MM/YYYY HH:mm").toString();
+        const date = moment(value).utcOffset("+5:30").format("DD/MM/YYYY HH:mm").toString();
+        console.log(date);
         return date;
       },
     },
@@ -85,7 +86,7 @@ const ContestSchema = mongoose.Schema(
       },
       get: function (value) {
         // Format the Date object to the specified format
-        const date = moment(value).format("DD/MM/YYYY HH:mm").toString();
+        const date = moment(value).utcOffset("+5:30").format("DD/MM/YYYY HH:mm").toString();
         return date;
       },
     },
