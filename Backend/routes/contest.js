@@ -13,6 +13,7 @@ const getAContestController = require("../controllers/contest/getAContest.js");
 const getTimingsController = require("../controllers/contest/getTimings.js");
 const launchContestController = require("../controllers/contest/launchContest.js");
 const registerForContestController = require("../controllers/contest/registerForContest.js");
+const getResultsController = require("../controllers/contest/getResults.js");
 
 const router = express.Router();
 
@@ -45,5 +46,8 @@ router.put("/launch", verifyAdmin, launchContestController);
 
 // To register for a contest
 router.post("/register", verifyGeneralUser, registerForContestController);
+
+// To get the results list
+router.get("/results/:contest_id",getResultsController);
 
 module.exports = router;

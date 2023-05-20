@@ -34,7 +34,7 @@ router.post("/verifyEmail", verifyEmailController);
 router.post("/forgotPassword", forgetPasswordController);
 
 // Route to send forgot password email
-router.post("/forgotPasswordEmail", forgetPasswordEmailController);
+router.post("/sendForgotPasswordEmail", forgetPasswordEmailController);
 
 // Route to resend confirmation email
 router.post("/resendConfirmationEmail", resendConfirmationEmailController);

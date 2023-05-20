@@ -194,90 +194,90 @@ function Signup() {
         <>
             <Navbar />
             <SignUpConfirmaionModal />
-            <div className="signup-container min-w-full mt-16 flex justify-around items-center">
-                <Lottie animationData={heroSignupLottie} className="w-4/12" />
-
-                <div
-                    className={`${
-                        quesInd < signupQues.length - 1 ? "" : "hidden"
-                    }`}
-                >
-                    {error && (
-                        <div className="alert alert-error shadow-lg">
-                            <div>
-                                <svg
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    className="stroke-current flex-shrink-0 h-6 w-6"
-                                    fill="none"
-                                    viewBox="0 0 24 24"
-                                >
-                                    <path
-                                        strokeLinecap="round"
-                                        strokeLinejoin="round"
-                                        strokeWidth="2"
-                                        d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"
-                                    />
-                                </svg>
-                                <span>{error}</span>
+            <div className="content-area-top">
+                <h1 id="contest-main-heading">Welcome to Code-DCC</h1>
+                <div className="signup-container min-w-full flex justify-around items-center mb-4">
+                    <Lottie animationData={heroSignupLottie} />
+                    <div
+                        className={`${quesInd < signupQues.length - 1 ? "" : "hidden"
+                            }`}
+                    >
+                        {error && (
+                            <div className="alert alert-error shadow-lg">
+                                <div>
+                                    <svg
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        className="stroke-current flex-shrink-0 h-6 w-6"
+                                        fill="none"
+                                        viewBox="0 0 24 24"
+                                    >
+                                        <path
+                                            strokeLinecap="round"
+                                            strokeLinejoin="round"
+                                            strokeWidth="2"
+                                            d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"
+                                        />
+                                    </svg>
+                                    <span>{error}</span>
+                                </div>
                             </div>
+                        )}
+                        <div className="mt-8 text-3xl justify-center flex">
+                            {signupQues[quesInd].question}
                         </div>
-                    )}
-                    <div className="mt-8 text-3xl justify-center flex">
-                        {signupQues[quesInd].question}
+                        <div className="flex justify-center items-center">
+                            {quesInd >= 0 ? (
+                                <button
+                                    className="btn btn-outline btn-success rounded-full mx-6"
+                                    onClick={onBackClick}
+                                    disabled={quesInd === 0 ? true : false}
+                                >
+                                    <BiArrowToLeft size={30} />
+                                </button>
+                            ) : (
+                                <></>
+                            )}
+                            <input
+                                type="text"
+                                className="input text-2xl rounded-lg my-4 bg-inherit input-success h-16 w-full max-w-lg"
+                                value={text}
+                                onChange={(e) => setText(e.target.value)}
+                                onKeyDown={(e) => {
+                                    if (e.key === "Enter") onNextClick();
+                                }}
+                            />
+                            <button
+                                className="btn btn-outline btn-success rounded-full mx-6"
+                                onClick={onNextClick}
+                            >
+                                <BiArrowToRight size={30} />
+                            </button>
+                        </div>
                     </div>
-                    <div className="flex justify-center items-center">
-                        {quesInd >= 0 ? (
+                    <div
+                        className={`${quesInd === signupQues.length - 1
+                            ? "flex justify-center items-center flex-col"
+                            : "hidden"
+                            }`}
+                    >
+                        <p className="text-xl my-5 px-2">
+                            By clicking on the button you accept to our terms and
+                            conditions!
+                        </p>
+                        <div className="flex justify-center items-center">
                             <button
                                 className="btn btn-outline btn-success rounded-full mx-6"
                                 onClick={onBackClick}
-                                disabled={quesInd===0?true:false}
                             >
                                 <BiArrowToLeft size={30} />
                             </button>
-                        ) : (
-                            <></>
-                        )}
-                        <input
-                            type="text"
-                            className="input text-2xl rounded-lg my-4 bg-inherit input-success h-16 w-full max-w-lg"
-                            value={text}
-                            onChange={(e) => setText(e.target.value)}
-                            onKeyDown={(e) => {
-                                if (e.key === "Enter") onNextClick();
-                            }}
-                        />
-                        <button
-                            className="btn btn-outline btn-success rounded-full mx-6"
-                            onClick={onNextClick}
-                        >
-                            <BiArrowToRight size={30} />
-                        </button>
-                    </div>
-                </div>
-                <div
-                    className={`${
-                        quesInd === signupQues.length - 1
-                            ? "flex justify-center items-center flex-col"
-                            : "hidden"
-                    }`}
-                >
-                    <p className="text-xl my-5 px-2">
-                        By clicking on the button you accept to our terms and
-                        conditions!
-                    </p>
-                    <div className="flex justify-center items-center">
-                        <button
-                            className="btn btn-outline btn-success rounded-full mx-6"
-                            onClick={onBackClick}
-                        >
-                            <BiArrowToLeft size={30} />
-                        </button>
-                        <button
-                            className="btn btn-outline btn-success rounded-full mx-6"
-                            onClick={onSubmit}
-                        >
-                            {"Yay Lets Go!"}
-                        </button>
+                            <button
+                                className="btn btn-outline btn-success rounded-full mx-6"
+                                onClick={onSubmit}
+                            >
+                                {"Yay Lets Go!"}
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>

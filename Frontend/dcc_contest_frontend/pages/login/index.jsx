@@ -9,8 +9,8 @@ import toggleLoaderBackdrop from "../../utils/toggleCustomBackdrop";
 import { useSelector } from "react-redux";
 import Head from "next/head";
 import LoginForm from "./LoginForm";
-import LoginPageSkeleton from "./LoginPageSkeleton";
 import { useState } from "react";
+import LoginPageSkeleton from "../../components/skeleton/LoginPageSkeleton";
 
 function Login() {
     const router = useRouter();
@@ -52,6 +52,7 @@ function Login() {
             </Head>
             <Navbar />
             <div className="content-area-top">
+                <h1 id="contest-main-heading" className="font-serif">Welcome to Code-DCC</h1>
                 <div className="login-page-container">
                     {loading ? <LoginPageSkeleton /> : <>
                         <div></div>  {/* Just to adjust the login form and animation */}

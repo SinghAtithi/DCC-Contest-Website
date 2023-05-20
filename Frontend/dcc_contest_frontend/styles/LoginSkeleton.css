@@ -1,6 +1,6 @@
 .skeleton-login-lottie {
-    height: 50vh;
-    width: 25vw;
+    height: 70vh;
+    width: 35vw;
     background-color: #c7bebe;
     margin-left: 4px;
     margin-right: 4px;
@@ -21,7 +21,7 @@
 
 .skeleton-login-form-button {
     height: 48px;
-    width: 100px;
+    width: 120px;
     background-color: #c7bebe;
     margin-top:4px;
     margin-left: 4px;

@@ -36,7 +36,7 @@ async function resendConfirmationEmailController(req, res) {
             })
             .catch((err) => {
               console.log(err);
-              res.status(400).send({
+              res.status(402).send({
                 error:
                   "Could not send the email. Please re-initiate the process of sending email.",
                 seq: 0,
@@ -44,12 +44,12 @@ async function resendConfirmationEmailController(req, res) {
             });
         } else {
           res
-            .status(400)
+            .status(401)
             .json({ error: "Your email has already been verified." });
         }
       } else {
         res
-          .status(400)
+          .status(404)
           .json({ error: "You are not registered. Please register first." });
       }
     } else {
