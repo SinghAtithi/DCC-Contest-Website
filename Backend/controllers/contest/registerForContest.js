@@ -1,4 +1,5 @@
 const Contest = require("../../models/contest");
+const User = require("../../models/user");
 
 async function registerForContestController(req, res) {
   const { contest_id, type } = req.body;
