@@ -226,7 +226,7 @@ const LaunchContest = () => {
 
             setLoadingButton("");
             setToastActive(true);
-            setUpdateRatingButtonLoading((prevLoadingStates) => {
+            setLaunchContestButtonLoading((prevLoadingStates) => {
                 const newLoadingStates = [...prevLoadingStates];
                 newLoadingStates[index] = "";
                 return newLoadingStates;
