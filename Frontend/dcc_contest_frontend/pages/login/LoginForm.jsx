@@ -5,16 +5,21 @@ import { loginUser } from "../../store/loginStore";
 import store from "../../store/baseStore";
 import { ADMIN, SUPER_ADMIN, ADMIN_DASHBOARD, BASE_URL, LOGIN_ENDPOINT_BACKEND, SIGNUP_PAGE, FORGET_PASSWORD_PAGE } from '../../utils/constants';
 import axios from "axios";
-import toggleLoaderBackdrop from '../../utils/toggleCustomBackdrop';
+import ForgotPasswordModal from '../../components/login/ForgotPasswordModal';
+import ResendConfirmationEmailModal from '../../components/login/ResendConfirmationEmail';
 
 export default function LoginForm() {
     const router = useRouter();
     const [loginId, setloginId] = useState("");
     const [password, setPassword] = useState("");
     const [error, setError] = useState("");
+    const [loadingButton, setLoadingButton] = useState("");
+
+    const [openForgotPasswordModal, setOpenForgotPasswordModal] = useState(false);
+    const [openResendConfirmationEmailModal, setOpenResendConfirmationEmailModal] = useState(false);
 
     const onLogin = () => {
-        toggleLoaderBackdrop();
+        setLoadingButton("loading");
         const config = {
             headers: {
                 "Content-Type": "application/json",
@@ -44,7 +49,6 @@ export default function LoginForm() {
             })
             .catch((err) => {
                 console.log(err);
-                toggleLoaderBackdrop();
                 if (err.code == "ERR_NETWORK") {
                     setError(
                         "Something went wrong. Please check your Internet or refresh. If the problem persists, contact the adminstrator."
@@ -59,12 +63,15 @@ export default function LoginForm() {
                         "Something went wrong. Please check your Internet or refresh. If the problem persists, contact the adminstrator."
                     );
                 }
+                setLoadingButton("");
             });
     };
 
 
     return (
         <div className="login-form">
+            <ForgotPasswordModal open={openForgotPasswordModal} setOpen={setOpenForgotPasswordModal}/>
+            <ResendConfirmationEmailModal open={openResendConfirmationEmailModal} setOpen={setOpenResendConfirmationEmailModal}/>
             {error && (
                 <div className="alert alert-error shadow-lg">
                     <div>
@@ -101,29 +108,21 @@ export default function LoginForm() {
             />{" "}
             <br />
             <button
-                className="login-button btn btn-success btn-lg rounded-lg"
+                className={`login-button btn btn-outline btn-success btn-lg rounded-lg ${loadingButton}`}
                 onClick={onLogin}
             >
                 Login
             </button>
 
-            <Link
-                href={FORGET_PASSWORD_PAGE}
-                onClick={() => {
-                    toggleLoaderBackdrop();
-                }}
-                className="py-4"
-            >
-                Forgot Password?
-            </Link>
-            <Link
-                href={SIGNUP_PAGE}
-                onClick={() => {
-                    toggleLoaderBackdrop();
-                }}
-            >
-                {"Don't have an account? Create one now"}
-            </Link>
+            <div className='flex flex-row gap-2 m-4 justify-between text-green-600'>
+                <Link href="#" onClick={()=>setOpenForgotPasswordModal(true)}> Forgot Password ??? </Link>
+                | 
+                <Link href="#" onClick={()=>setOpenResendConfirmationEmailModal(true)}> Resend Confirmation</Link>
+                
+            </div>
+            <div>
+                <Link href="#" onClick={()=>router.push(SIGNUP_PAGE)}> New to Code-DCC ? Sign Up</Link>
+            </div>
         </div>
     )
 }

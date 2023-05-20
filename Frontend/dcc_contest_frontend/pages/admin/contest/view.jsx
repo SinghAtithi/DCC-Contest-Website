@@ -15,9 +15,9 @@ import {
 } from "../../../utils/constants";
 import axios from "axios";
 import Head from "next/head";
-import ViewProblemSkeleton from "../../../components/skeleton/ViewProblemSkeleton";
 import SearchBar from "../../../components/SearchBar";
 import DisplayContestData from "../../../components/DisplayContestData";
+import ViewContestSkeleton from "../../../components/skeleton/ViewContestSkeleton";
 
 
 const ViewContest = () => {
@@ -90,7 +90,7 @@ const ViewContest = () => {
       </Head>
       <SideNav role="admin" highlight={AdminSideNavMap.view_contests} />
       {loadingSkeleton ? <>
-        <ViewProblemSkeleton />
+        <ViewContestSkeleton />
       </> : <>
         <div className="data-area">
           <SearchBar

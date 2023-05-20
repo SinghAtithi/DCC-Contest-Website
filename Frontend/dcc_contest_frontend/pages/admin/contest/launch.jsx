@@ -17,6 +17,7 @@ import SearchBar from "../../../components/SearchBar";
 import Head from "next/head";
 import axios from "axios";
 import { AiOutlineClose } from "react-icons/ai";
+import ViewContestSkeleton from "../../../components/skeleton/ViewContestSkeleton";
 
 
 
@@ -235,7 +236,7 @@ const LaunchContest = () => {
                 <title>DCC : Launch Contests</title>
             </Head>
             <SideNav role={role} highlight={AdminSideNavMap.launch_contest} />
-            <div className="data-area">
+            {loadingSkeleton ? <ViewContestSkeleton /> : <div className="data-area">
                 {toastActive && toastMessage.length !== 0 && (
                     <div className="toast toast-start z-50">
                         <div className={toastClass}>
@@ -273,7 +274,7 @@ const LaunchContest = () => {
                             </div>
                         </div>
                     </div>
-                    <div className="overflow-auto">
+                    <div className="overflow-auto p-2">
                         <table className="table w-full custom-table">
                             <thead>
                                 <tr>
@@ -319,7 +320,7 @@ const LaunchContest = () => {
                 </div>}
 
 
-            </div>
+            </div>}
         </>
     );
 };

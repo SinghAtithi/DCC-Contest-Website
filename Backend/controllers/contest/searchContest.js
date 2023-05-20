@@ -8,7 +8,10 @@ async function searchContestController (req, res){
       selectString = "contest_name contest_id start_time end_time ques_ids collaborators creator",
     } = req.body;
     try {
-      let search_params = { creator: user.username };
+      let search_params = { $or: [
+        { creator: user.username },
+        { collaborators: { $in: [user.username] } }
+      ] };
   
       if (searchFilter == 0)
         search_params.contest_name = { $regex: searchString, $options: "i" };

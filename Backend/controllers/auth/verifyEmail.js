@@ -21,14 +21,14 @@ async function verifyEmailController(req, res){
             res.status(200).send({ message: "Successfully Verified." });
           } else {
             res
-              .status(400)
+              .status(403)
               .send({
                 error:
                   "This link has already been used and your account has been verified.",
               });
           }
         } else {
-          res.status(400).send({ error: "User not found." });
+          res.status(404).send({ error: "User not found." });
         }
       } catch (error) {
         res.status(400).send({ error: "Invalid Token." });

@@ -2,6 +2,8 @@ const bcrypt = require("bcrypt");
 const User = require("../../models/user");
 const { generateVerificationToken } = require("../../utils/generateVerificationToken");
 const { EmailQueue } = require("../../queue/EmailQueue");
+const {BASE_URL} = require("../../utils/constants");
+
 
 async function registerController(req, res){
   try {

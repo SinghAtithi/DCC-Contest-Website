@@ -21,6 +21,7 @@ import {
 import { useSelector } from "react-redux";
 import checkToken from "../../../utils/checkToken";
 import { useRouter } from "next/router";
+import CreateContestSkeleton from "../../../components/skeleton/CreateContestSkeleton";
 
 
 const toastCross = {
@@ -349,7 +350,7 @@ function CreateProblem() {
 
       <SideNav role="SuperAdmin" highlight={AdminSideNavMap.create_contest} />
 
-      <div className="data-area">
+      {loadingSkeleton ? <CreateContestSkeleton /> : <div className="data-area">
         <div className="contest_container">
           <div className="contest_details_area">
 
@@ -594,7 +595,7 @@ function CreateProblem() {
             </div>
           </div>
         </div>
-      </div>
+      </div>}
     </div>
   );
 }
