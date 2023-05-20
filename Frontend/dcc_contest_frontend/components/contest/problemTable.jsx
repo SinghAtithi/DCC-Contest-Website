@@ -2,7 +2,12 @@ import Link from "next/link";
 import React from "react";
 
 function ProblemTable(props) {
+<<<<<<< Updated upstream
 
+=======
+  console.log(props);
+  console.log("From ProblemTable")
+>>>>>>> Stashed changes
   return (
     <div className="overflow-x-auto">
       <table className="table w-full custom-table">
