@@ -12,7 +12,7 @@ const router = express.Router();
 router.get("/", async (req, res) => {
   try {
     console.log("at route question /");
-    const currDate = moment(new Date()).toString();
+    const currDate = moment().toString();
     const allQues = await Question.find(
       { display_after: { $lte: currDate }, assigned: true },
       "ques_id name topics"
@@ -25,10 +25,10 @@ router.get("/", async (req, res) => {
 
 router.post("/search", verifyAdmin, async (req, res) => {
   const user = req.user;
-  try{
+  try {
     const author = await User.findOne({ _id: user.userId }, "username").exec();
     const { searchFilter, searchString } = req.body;
-  
+
     let search_params = { author: author.username };
     if (searchFilter == 0)
       search_params.ques_id = { $regex: searchString, $options: "i" };
@@ -43,17 +43,15 @@ router.post("/search", verifyAdmin, async (req, res) => {
     if (searchFilter == 5)
       search_params.is_draft =
         String(searchString).toLowerCase() === "true" ? true : false;
-  
+
     console.log(search_params);
-  
+
     const allQues = await Question.find(search_params).exec();
-  
+
     res.status(200).send({ data: allQues });
-  }
-  catch(err){
+  } catch (err) {
     console.log(err);
     res.status(500).json({ error: "Internal Server Error." });
-
   }
 });
 
@@ -82,8 +80,7 @@ router.post("/create", verifyAdmin, async (req, res) => {
     var public_tc = public_test_cases;
     var private_tc = private_test_cases;
 
-    var display_after = moment(new Date())
-      .utcOffset("+05:30")
+    var display_after = moment()
       .add(1000, "days")
       .format("DD/MM/YYYY HH:mm")
       .toString();
@@ -160,7 +157,7 @@ router.post("/update", verifyAdmin, async (req, res) => {
 
 // Get question by ques_id
 router.get("/:ques_id", (req, res) => {
-  const currDate = moment(new Date()).toString();
+  const currDate = moment().toString();
   try {
     Question.findOne(
       {
@@ -225,7 +222,6 @@ router.get("/getSubmission/:id", async (req, res) => {
   }
 });
 
-
-router.get("/getAllSubmissions/:username", passby ,getAllSubmissionsController); // passby is a function which adds user in req when token is valid. Else does nothing
+router.get("/getAllSubmissions/:username", passby, getAllSubmissionsController); // passby is a function which adds user in req when token is valid. Else does nothing
 
 module.exports = router;

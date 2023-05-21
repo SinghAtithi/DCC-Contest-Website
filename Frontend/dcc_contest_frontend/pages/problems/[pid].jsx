@@ -161,8 +161,13 @@ function ProblemPage() {
                                     setConsoleLoader(false);
                                     clearInterval(poll);
                                 }
-                                setSubmitting("");
-
+                                else if (result.data.verdict === "Error in IO") {
+                                    setSubmitting("");
+                                    setConsoleData("Error in IO");
+                                    setbackground("bg-error");
+                                    setConsoleLoader(false);
+                                    clearInterval(poll);
+                                }
                             })
                             .catch((error) => {
                                 console.log(error);

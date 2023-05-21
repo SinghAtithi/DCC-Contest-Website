@@ -37,8 +37,6 @@ const compileCpp = async (codeFilePath, compiledFilePath) => {
 };
 
 // This is the process every element in ExecuteQueue will do.
-// PENDING TASKS
-// 1. On successfull submission(line 145) , update the points in result field of contest model
 ExecuteQueue.process(5, async (job, done) => {
   const submission_id = job.data.submission_id;
   const contestRunning = job.data.contestRunning;

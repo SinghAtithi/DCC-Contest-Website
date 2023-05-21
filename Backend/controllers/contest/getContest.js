@@ -3,7 +3,7 @@ const Contest = require("../../models/contest");
 
 async function getContestController(req, res) {
   try {
-    const currDate = moment(new Date()).toString();
+    const currDate = moment().toString();
     const searchString = "contest_name contest_id start_time end_time";
     const upcoming = await Contest.find(
       { launched: true, is_draft: false, start_time: { $gt: currDate } },

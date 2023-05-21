@@ -23,6 +23,7 @@
     "jsonwebtoken": "^9.0.0",
     "kue": "^0.11.1",
     "moment": "^2.29.4",
+    "moment-timezone": "^0.5.43",
     "mongoose": "^6.8.0",
     "mongoose-beautiful-unique-validation": "^7.1.1",
     "mongoose-paginate-v2": "^1.7.1",

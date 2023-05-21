@@ -244,7 +244,7 @@ function Dashboard() {
     return (
         <>
             <Head>
-                <title>Dashboard</title>
+                <title>DCC - Dashboard : {username}</title>
             </Head>
 
             <Navbar />

@@ -18,6 +18,7 @@ import { useRouter } from "next/router";
 import { useSelector } from "react-redux";
 import toggleLoaderBackdrop from "../utils/toggleCustomBackdrop";
 import checkToken from "../utils/checkToken";
+import Head from "next/head";
 
 function Signup() {
     const router = useRouter();
@@ -192,6 +193,7 @@ function Signup() {
 
     return (
         <>
+            <Head><title>DCC : Sign Up</title></Head>
             <Navbar />
             <SignUpConfirmaionModal />
             <div className="content-area-top">

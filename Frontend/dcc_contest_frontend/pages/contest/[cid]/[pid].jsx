@@ -149,12 +149,14 @@ function ProblemPage() {
                   setConsoleData(
                     `Verdict : Accepted\nTime : ${result.data.time_taken * 1000} milliseconds`
                   );
+                  setSubmitting("");
                   setbackground("bg-success");
                   setConsoleLoader(false);
                   clearInterval(poll);
                 } else if (
                   result.data.verdict === "Wrong Answer"
                 ) {
+                  setSubmitting("");
                   setConsoleData(`Verdict : Wrong Answer`);
                   setbackground("bg-error");
                   setConsoleLoader(false);
@@ -162,10 +164,12 @@ function ProblemPage() {
                 } else if (
                   result.data.verdict === "Compilation Error"
                 ) {
+
                   let toSet = result.data.error.replace(/\/home[\s\S]*?\.cpp:/g, '')
                   setConsoleData(
                     `Verdict : Compilation Error\n${toSet}`
                   );
+                  setSubmitting("");
                   setbackground("bg-error");
                   setConsoleLoader(false);
                   clearInterval(poll);
@@ -176,12 +180,14 @@ function ProblemPage() {
                   setConsoleData(
                     `Verdict : Time Limit Exceeded`
                   );
+                  setSubmitting("");
                   setbackground("bg-error");
                   setConsoleLoader(false);
                   clearInterval(poll);
                 } else if (
                   result.data.verdict === "Server Error"
                 ) {
+                  setSubmitting("");
                   setConsoleData(`Server Error`);
                   setbackground("bg-error");
                   setConsoleLoader(false);
@@ -194,7 +200,13 @@ function ProblemPage() {
                   setConsoleLoader(false);
                   clearInterval(poll);
                 }
-                setSubmitting("");
+                else if (result.data.verdict === "Error in IO") {
+                  setSubmitting("");
+                  setConsoleData("Error in IO");
+                  setbackground("bg-error");
+                  setConsoleLoader(false);
+                  clearInterval(poll);
+                }
               })
               .catch((error) => {
                 setConsoleData(
@@ -260,12 +272,12 @@ function ProblemPage() {
                 loader={loader}
                 setLoader={setLoader}
                 setQuestionId={setQuestionId}
-                setQuesName = {setQuesName}
+                setQuesName={setQuesName}
               />
             </div>
             <div className="problem-page-right">
               <div className="problem-page-right-top" style={{ height: editorHeight }}>
-                <CodeEditor
+                {contestEndTime && <CodeEditor
                   loader={loader}
                   Code={code}
                   setCode={setCode}
@@ -277,7 +289,7 @@ function ProblemPage() {
                   submitting={submitting}
                   countdownRequired={true}
                   deadline={contestEndTime}
-                />
+                />}
               </div>
               <div
                 className="problem-page-right-bottom border-green-500"

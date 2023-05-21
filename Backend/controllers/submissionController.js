@@ -13,7 +13,7 @@ const createSubmission = async (req, res) => {
     const resp = await isContestRunning(contest_id);
     const contest_end_time = resp.end_time;
     const contestRunning = resp.verdict;
-    const {userId, username} = req.user;
+    const { userId, username } = req.user;
     const user = await User.findOne({ _id: userId }, "username").exec();
     if (!user) {
       return res.status(404).json({
@@ -28,10 +28,7 @@ const createSubmission = async (req, res) => {
           error: "Empty code cannot be executed.",
         });
       } else {
-        const formattedDate = moment(new Date())
-          .utcOffset("+05:30")
-          .format("DD/MM/YYYY HH:mm")
-          .toString();
+        const formattedDate = moment().format("DD/MM/YYYY HH:mm").toString();
 
         let display_after = formattedDate;
         if (contestRunning) display_after = contest_end_time;
