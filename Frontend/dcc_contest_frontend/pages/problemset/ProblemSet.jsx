@@ -16,12 +16,17 @@ function ProblemSet() {
   const [severeError, setSevereError] = useState(""); // Error in case backend is not able to give proper response
 
   useEffect(() => {
-    const URL = `${BASE_URL}/question`;
-    console.log(URL);
+    const url = `${BASE_URL}/question`;
+    const options = {
+      headers: {
+        token: localStorage.getItem("token"),
+      },
+    };
     axios
-      .get(URL)
+      .get(url,options)
       .then((res) => {
         setTotalPages(Math.ceil(res.data.length / 6));
+        console.log(res.data);
         setProblems(res.data);
         setLoading(false);
       }).catch((error) => {

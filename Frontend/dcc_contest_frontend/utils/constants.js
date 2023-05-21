@@ -10,16 +10,11 @@ export const AdminSideNavMap = {
 
   view_contests: 9,
   create_contest: 10,
-  edit_contest: 11,
-  delete_contest: 12,
-  launch_contest: 13,
-  view_registrations: 14,
-  view_submissions: 15,
-  update_ratings: 16,
 
-  report: 17,
-  ban_users: 18,
+  launch_contest: 13,
+  update_ratings: 16,
 };
+
 
 export const PROBLEM_SEARCH = [
   "ques_id",
@@ -71,6 +66,8 @@ export const SUBMIT_QUESTION = "/question/submit";
 export const GET_A_QUESTION = "/question/getOneForEdit";
 export const GET_SUBMISSION = "/question/getSubmission";
 
+
+
 export const HOME_PAGE = "/";
 export const LOGIN_PAGE = "/login";
 export const FORGET_PASSWORD_PAGE = "/forgotPassword";
@@ -78,12 +75,12 @@ export const RESEND_CONFIRMATION_EMAIL_PAGE = "/confirmEmail";
 export const SIGNUP_PAGE = "/signup";
 export const PROBLEM_SET_PAGE = "/problemset";
 export const CONTEST_PAGE = "/contest";
-export const BLOGS_PAGE = "/blogs";
+export const INTERVIEW_PREP_PAGE = "/interviewPrep";
 export const ABOUT_PAGE = "/about";
 
 export const SETTINGS_PAGE = "/settings";
 
-export const ASSIGN_REVOKE_ROLES_PAGE = "/super_admin/roles";
+export const ASSIGN_REVOKE_ROLES_PAGE = "/superAdmin/roles";
 
 export const VIEW_PROBLEMS_CREATED_PAGE = "/admin/problems/view";
 export const CREATE_PROBLEM_PAGE = "/admin/problems/create";
@@ -94,4 +91,4 @@ export const LAUNCH_CONTEST_PAGE = "/admin/contest/launch";
 export const UPDATE_RATINGS_PAGE = "/admin/contest/updateRatings";
 
 export const REPORT_VIOLATIONS = "/admin/report";
-export const BAN_USERS = "/super_admin/banusers";
+export const BAN_USERS = "/superAdmin/banusers";

@@ -28,7 +28,7 @@ async function updateELORatingsController(req, res) {
 
     if (contest) {
       if (contest.ratings_updated == true) {
-        res.status(401).json({ error: "Ratings already updated" });
+        res.status(402).json({ error: "Ratings already updated" });
       } else {
         /*
             There are three steps involved,

@@ -7,10 +7,12 @@ import { BASE_URL } from '../../utils/constants';
 import Head from 'next/head';
 import TableSkeleton from '../../components/skeleton/TableSkeleton';
 import Countdown from '../../components/Countdown';
+import { useSelector } from 'react-redux';
 
 const ContestProblem = () => {
   const router = useRouter(); // router to access the url parameters, redirect etc.
   const { cid } = router.query; // cid variable in the url
+  const {username} = useSelector(state=>state.login);
 
   const [contestId, setContestId] = useState(""); // Contest id for which the page is - from url
   const [contestName, setContestName] = useState(""); // Contest id for which the page is - from url
@@ -93,6 +95,14 @@ const ContestProblem = () => {
               </div>
               <div className='p-2'>
                 <ProblemTable problems={problems} cid={cid} solved={solved}/>
+              </div>
+              <div className="p-2">
+                <button className='btn btn-outline btn-info mx-2' onClick={()=>{
+                  router.push(`/submissions/${username}`);
+                }}>Submissions</button>
+                <button className='btn btn-outline btn-info' onClick={()=>{
+                  router.push(`/leaderboard/${cid}`);
+                }}>Leaderboard</button>
               </div>
             </>
             )}
