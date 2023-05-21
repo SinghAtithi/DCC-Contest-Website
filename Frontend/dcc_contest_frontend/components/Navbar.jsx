@@ -1,7 +1,6 @@
 import React from "react";
 import Link from "next/link";
 import Image from "next/image";
-import toggleLoaderBackdrop from "../utils/toggleCustomBackdrop";
 import { useRouter } from "next/router";
 
 import { GiHamburgerMenu } from "react-icons/gi";
@@ -12,6 +11,7 @@ import {
     BLOGS_PAGE,
     CONTEST_PAGE,
     HOME_PAGE,
+    INTERVIEW_PREP_PAGE,
     LOGIN_PAGE,
     PROBLEM_SET_PAGE,
     SETTINGS_PAGE,
@@ -24,7 +24,7 @@ import { logoutUser } from "../store/loginStore";
 import store from "../store/baseStore";
 import BackdropLoader from "./BackdropLoader";
 
-function getPath(role,username) {
+function getPath(role, username) {
     return role === ADMIN || role === SUPER_ADMIN
         ? ADMIN_DASHBOARD
         : `/${username}`
@@ -41,9 +41,6 @@ function Navbar() {
                 <div className="navbar-logo">
                     <Link
                         href="/"
-                        onClick={() => {
-                            toggleLoaderBackdrop(asPath, HOME_PAGE);
-                        }}
                     >
                         <Image
                             src="/DCC_LOGO01.png"
@@ -56,30 +53,18 @@ function Navbar() {
 
                 <ul className="custom-navbar-items">
                     <li
-                        onClick={() => {
-                            toggleLoaderBackdrop(asPath, CONTEST_PAGE);
-                        }}
                     >
                         <Link href={CONTEST_PAGE}>Contest</Link>
                     </li>
                     <li
-                        onClick={() => {
-                            toggleLoaderBackdrop(asPath, PROBLEM_SET_PAGE);
-                        }}
                     >
                         <Link href={PROBLEM_SET_PAGE}>Problem Set</Link>
                     </li>
                     <li
-                        onClick={() => {
-                            toggleLoaderBackdrop(asPath, BLOGS_PAGE);
-                        }}
                     >
-                        <Link href={BLOGS_PAGE}>Blogs</Link>
+                        <Link href={INTERVIEW_PREP_PAGE}>Interview Prep</Link>
                     </li>
                     <li
-                        onClick={() => {
-                            toggleLoaderBackdrop(asPath, ABOUT_PAGE);
-                        }}
                     >
                         <Link href={ABOUT_PAGE}>About</Link>
                     </li>
@@ -93,18 +78,10 @@ function Navbar() {
                     )}
                     {!loggedIn && (
                         <>
-                            <li
-                                onClick={() => {
-                                    toggleLoaderBackdrop(asPath, LOGIN_PAGE);
-                                }}
-                            >
+                            <li>
                                 <Link href={LOGIN_PAGE}>Login</Link>
                             </li>
-                            <li
-                                onClick={() => {
-                                    toggleLoaderBackdrop(asPath, SIGNUP_PAGE);
-                                }}
-                            >
+                            <li>
                                 <Link href={SIGNUP_PAGE}>SignUp</Link>
                             </li>
                         </>
@@ -125,55 +102,27 @@ function Navbar() {
                 </div>
             </div>
             <ul className="custom-navbar-items-offscreen">
-                <li
-                    onClick={() => {
-                        toggleLoaderBackdrop(asPath, CONTEST_PAGE);
-                    }}
-                >
+                <li>
                     <Link href={CONTEST_PAGE}>Contest</Link>
                 </li>
-                <li
-                    onClick={() => {
-                        toggleLoaderBackdrop(asPath, PROBLEM_SET_PAGE);
-                    }}
-                >
+                <li>
                     <Link href={PROBLEM_SET_PAGE}>Problem Set</Link>
                 </li>
-                <li
-                    onClick={() => {
-                        toggleLoaderBackdrop(asPath, BLOGS_PAGE);
-                    }}
-                >
-                    <Link href={BLOGS_PAGE}>Blogs</Link>
+                <li>
+                    <Link href={INTERVIEW_PREP_PAGE}>Interview Prep</Link>
                 </li>
-                <li
-                    onClick={() => {
-                        toggleLoaderBackdrop(asPath, ABOUT_PAGE);
-                    }}
-                >
+                <li>
                     <Link href={ABOUT_PAGE}>About</Link>
                 </li>
                 {loggedIn && (
                     <>
-                        <li
-                            onClick={() => {
-                                toggleLoaderBackdrop(asPath, getPath(role,username));
-                            }}
-                        >
-                            <Link href={getPath(role,username)}>Dashboard</Link>
+                        <li>
+                            <Link href={getPath(role, username)}>Dashboard</Link>
                         </li>
-                        <li
-                            onClick={() => {
-                                toggleLoaderBackdrop(asPath, SETTINGS_PAGE);
-                            }}
-                        >
+                        <li>
                             <Link href={SETTINGS_PAGE}>Settings</Link>
                         </li>
-                        <li
-                            onClick={() => {
-                                toggleLoaderBackdrop(asPath, HOME_PAGE);
-                            }}
-                        >
+                        <li>
                             <Link
                                 href={HOME_PAGE}
                                 onClick={() => {
@@ -187,18 +136,10 @@ function Navbar() {
                 )}
                 {!loggedIn && (
                     <>
-                        <li
-                            onClick={() => {
-                                toggleLoaderBackdrop(asPath, LOGIN_PAGE);
-                            }}
-                        >
+                        <li>
                             <Link href={LOGIN_PAGE}>Login</Link>
                         </li>
-                        <li
-                            onClick={() => {
-                                toggleLoaderBackdrop(asPath, SIGNUP_PAGE);
-                            }}
-                        >
+                        <li>
                             <Link href={SIGNUP_PAGE}>SignUp</Link>
                         </li>
                     </>
@@ -223,27 +164,15 @@ function UserMenu(props) {
                 tabIndex={0}
                 className="custom-navbar-avtar-pop menu menu-compact dropdown-content mt-3 p-2 shadow bg-base-100 rounded-box w-52"
             >
-                <li
-                    onClick={() => {
-                        toggleLoaderBackdrop(props.asPath, getPath(props.role,props.username));
-                    }}
-                >
-                    <Link href={getPath(props.role,props.username)}>Dashboard</Link>
+                <li>
+                    <Link href={getPath(props.role, props.username)}>Dashboard</Link>
                 </li>
-                <li
-                    onClick={() => {
-                        toggleLoaderBackdrop(props.asPath, SETTINGS_PAGE);
-                    }}
-                >
+                <li>
                     <Link href={SETTINGS_PAGE}>Settings</Link>
                 </li>
-                <li
-                    onClick={() => {
-                        toggleLoaderBackdrop(props.asPath, HOME_PAGE);
-                    }}
-                >
+                <li>
                     <Link
-                        href={HOME_PAGE}
+                        href="/"
                         onClick={() => {
                             store.dispatch(logoutUser());
                         }}

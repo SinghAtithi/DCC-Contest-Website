@@ -44,6 +44,7 @@ const createSubmission = async (req, res) => {
         );
 
         if (contest_id) await User.updateContestStatus(contest_id, username);
+        
         addToQueue(
           submission._id,
           contestRunning,

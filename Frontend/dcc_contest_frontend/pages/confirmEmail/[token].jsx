@@ -6,6 +6,7 @@ import {
     BASE_URL,
     VERIFY_EMAIL_BACKEND,
 } from "../../utils/constants";
+import Head from "next/head";
 
 export default function ConfirmEmail() {
     const router = useRouter();
@@ -54,6 +55,7 @@ export default function ConfirmEmail() {
 
     return (
         <>
+            <Head><title>DCC : Confirm Email</title></Head>
             <Navbar />
             <div className="content-area-top">
                 {loadingSkeleton

@@ -225,7 +225,7 @@ function ProblemPage() {
         if (err.response.data.error === "Invalid Token") setConsoleData("Your session has expired. Please login again");
         else
           setConsoleData(
-            "Something went wrong. Check your internet and retry again."
+            "Something went wrong. Check your internet and retry."
           );
         setbackground("bg-error");
         setSubmitting("");

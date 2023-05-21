@@ -151,11 +151,13 @@ export default function UpdateResults() {
                 return newLoadingStates;
             });
         }).catch((err) => {
-            // console.log(err.response.data);
+            console.log(err.response.data);
             setToastClass("alert alert-error relative");
             if(err.response){
                 const statusCode = err.response.status;
                 if(statusCode==401) setToastMessage(["Your session has expired. Please login again"]);
+                else if(statusCode==402) setToastMessage(["Ratings already updated."]);
+                else if(statusCode==404) setToastMessage(["The contest is not launched or is ongoing."]);
                 else if (Array.isArray(err.response.data)) {
                     let errorArray = err.response.data.map(error => `Error in ${error.error_field} - ${error.error_message}`);
                     setToastMessage(errorArray);

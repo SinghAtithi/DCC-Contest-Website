@@ -369,8 +369,11 @@ function Dashboard() {
                             )}
                         </div>
                         <div className="summary_area">
-                            <p className="dashboard_title_div submission_div">
-                                Submissions
+                            <p className="dashboard_title_div submission_div flex justify-between">
+                                <span>Submissions</span>
+                                <span onClick={()=>{
+                                    router.push(`/submissions/${username}`);
+                                }} className="text-sm text-gray-400 cursor-pointer hover:text-white">Go to Submissions Page</span>
                             </p>
 
                             <SubmissionTableDashboard data={submission_data}/>

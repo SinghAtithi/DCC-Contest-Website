@@ -12,6 +12,7 @@ import {
     AdminSideNavMap,
 } from "../../utils/constants";
 import toggleLoaderBackdrop from "../../utils/toggleCustomBackdrop";
+import Head from "next/head";
 
 const AdminDashboad = () => {
     const { role, isLoading, loggedIn , username} = useSelector((state) => state.login);
@@ -37,6 +38,7 @@ const AdminDashboad = () => {
 
     return (
         <>
+            <Head><title>DCC : Admin Dashboard</title></Head>
             <SideNav role={role} highlight={AdminSideNavMap["dashboard"]} />
             <div className="data-area">Admin Dashboard</div>
         </>

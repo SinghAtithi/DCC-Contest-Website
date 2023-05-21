@@ -8,16 +8,37 @@ const { generateTestCaseFiles } = require("../utils/generateTestCaseFiles.js");
 const getAllSubmissionsController = require("../controllers/question/getAllSubmissions");
 const router = express.Router();
 
-// Get the list of ques_no,name and topics page by page as specified by query parameter
-router.get("/", async (req, res) => {
+// Get the list of ques_no,name and topics
+router.get("/", passby, async (req, res) => {
+  // If the user is logged in, passby will detect it and add the user to req.user from where we can get the username
+  const user = req.user;
   try {
-    console.log("at route question /");
+    // user is present means user is logged in. So we have to check the status of questions.
+    let currUser = null;
+    if (user) {
+      currUser = await User.findOne(
+        { username: user.username },
+        "questions_solved"
+      ).exec();
+    }
+
     const currDate = moment().toString();
     const allQues = await Question.find(
       { display_after: { $lte: currDate }, assigned: true },
       "ques_id name topics"
-    );
-    res.status(200).json(allQues);
+    ).lean(); // lean() converts it to plain javascript object so thay direct manipu;ation can be done.
+
+    if (currUser) {
+      const updatedAllQues = allQues.map((question) =>
+        Object.assign({}, question, {
+          status: currUser.questions_solved.includes(question.ques_id)
+            ? true
+            : false,
+        })
+      );
+
+      res.status(200).json(updatedAllQues);
+    } else res.status(200).json(allQues);
   } catch (err) {
     res.status(500).json({ error: "Internal Server Error." });
   }

@@ -37,12 +37,12 @@ export default function ViewSubmissionModal(props) {
                       <Dialog.Title as="h3" className="text-base font-semibold leading-6 text-gray-900">
                         Code for Submission ID - {props.submission_id}
                       </Dialog.Title>
-                      <div className="mt-2">
+                      <div className="overflow-auto mt-2 sm:-mx-5 sm:w-full sm:max-w-lg">
                         <p className="text-sm text-gray-500">
                           <pre>{props.code}</pre>
                         </p>
                       </div>
-                      {props.code_error ? <div className="overflow-auto mt-2 sm:w-full sm:max-w-lg">
+                      {props.code_error ? <div className="overflow-auto mt-2 sm:-mx-5 sm:w-full sm:max-w-lg">
                         <Dialog.Title as="h3" className="text-base font-semibold leading-6 text-gray-900">
                           Error
                         </Dialog.Title>

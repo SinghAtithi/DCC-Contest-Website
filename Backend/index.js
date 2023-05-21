@@ -25,6 +25,7 @@ const AuthRoutes = require("./routes/auth.js");
 const ContestRoutes = require("./routes/contest.js");
 const UpdateRating = require("./routes/updateRating.js");
 const DashboardRoutes = require("./routes/dashboard.js");
+const UserRoutes = require("./routes/user.js");
 
 const app = express();
 
@@ -39,6 +40,7 @@ app.use("/auth", AuthRoutes); // Routes to handle authentication related request
 app.use("/contest", ContestRoutes); // Routes to handle queries related to contests 
 app.use("/", UpdateRating); // Routes to facilitate updating the rating after contest 
 app.use("/dashboard", DashboardRoutes); // Routes for user dashbaord
+app.use("/user", UserRoutes); // Routes to handle updates in user
 
 
 // ------------- Database connection and starting the server --------------

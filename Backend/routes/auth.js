@@ -22,7 +22,7 @@ router.post("/register", registerController);
 router.post("/login", loginController);
 
 // Route to verify a token (e.g., for authentication)
-router.get("/verifyToken", verifyToken, verifyTokenController);
+router.get("/verifyToken", verifyGeneralUser, verifyTokenController);
 
 // Route to authenticate a user for ImageKit integration
 router.get("/imagekitAuth", verifyGeneralUser, imageKitController);

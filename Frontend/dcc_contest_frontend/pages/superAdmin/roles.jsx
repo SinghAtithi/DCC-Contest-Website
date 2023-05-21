@@ -33,18 +33,19 @@ const toastCross = {
 
 export default function AssignRoles() {
     const router = useRouter();
+    const { role, loggedIn, username } = useSelector((state) => state.login);
+
     const [search_option, SetSearchOption] = useState(0);
     const [search_text, setSearchText] = useState("");
-    const [data, setData] = useState([{ name: "Ritik Kaushal", email: "ritikkaushallvb@gmail.com", username: "ritik_kaushal", role: "end_user" }]);
-    
+    const [data, setData] = useState();
+
     const SEARCH_FILTERS = ["name", "username", "email"]
 
-    const [loadingSkeleton, setLoadingSkeleton] = useState(false);
+    const [loadingSkeleton, setLoadingSkeleton] = useState(true);
     const [loadingButton, setLoadingButton] = useState("");
-    const [tableActive, setTableActive] = useState(true);
+    const [tableActive, setTableActive] = useState(false);
     const [updateButtonLoading, setUpdateButtonLoading] = useState([]);
     const [message, setMessage] = useState("Nothing matches your current search.");
-    const { role, loggedIn, username } = useSelector((state) => state.login);
 
     const [toastActive, setToastActive] = useState(false);
     const [toastMessage, setToastMessage] = useState([]);
@@ -57,17 +58,17 @@ export default function AssignRoles() {
 
 
     useEffect(() => {
-        if (loggedIn && role === SUPER_ADMIN){
+        if (loggedIn && role === SUPER_ADMIN) {
             setLoadingSkeleton(false);
         }
-        else if(loggedIn && role === ADMIN) router.push(ADMIN_DASHBOARD);
-        else if(loggedIn && role === END_USER) router.push(`/${username}`);
+        else if (loggedIn && role === ADMIN) router.push(ADMIN_DASHBOARD);
+        else if (loggedIn && role === END_USER) router.push(`/${username}`);
         else {
             setLoadingSkeleton(true);
             checkToken().then((status) => {
                 if (status.verified) {
                     if (status.role === SUPER_ADMIN) setLoadingSkeleton(false);
-                    else if(role === ADMIN) router.push(ADMIN_DASHBOARD);
+                    else if (role === ADMIN) router.push(ADMIN_DASHBOARD);
                     else router.push(`/${username}`);
                 } else router.push(LOGIN_PAGE + "?next=superAdmin/roles");
             });
@@ -86,20 +87,19 @@ export default function AssignRoles() {
             const options = {
                 headers: {
                     "Content-Type": "application/json",
-                    token: localStorage.getItem("token"),
                 },
             };
             axios
                 .post(url, body, options)
                 .then((result) => {
-                    if (result.data.data.length === 0) {
+                    if (result.data.length === 0) {
                         setData([]);
                         setUpdateButtonLoading([]);
                         setMessage("Nothing matches your current search.");
                     }
                     else {
-                        setData(result.data.data);
-                        setUpdateButtonLoading(Array(result.data.data.length).fill(""));
+                        setData(result.data);
+                        setUpdateButtonLoading(Array(result.data.length).fill(""));
                         setTableActive(true);
                     }
                     setLoadingButton("");
@@ -208,7 +208,7 @@ export default function AssignRoles() {
             <Head>
                 <title>DCC : Assign/Revoke Roles</title>
             </Head>
-            <SideNav role={role} highlight={AdminSideNavMap.update_ratings} />
+            <SideNav role={role} highlight={AdminSideNavMap.assign_revoke_roles} />
             {loadingSkeleton ? <ViewContestSkeleton /> : <div className="data-area">
                 {toastActive && toastMessage.length !== 0 && (
                     <div className="toast toast-start z-50">
@@ -278,7 +278,7 @@ export default function AssignRoles() {
                                                 <option value={2} selected={user.role == "super_admin" ? "selected" : ""}>super_admin</option>
                                             </select>
                                         </td>
-                                        <td><button className={`btn btn-outline btn-info rounded btn-sm ${updateButtonLoading[index]}`} onClick={()=>{handleUpdateRoles(index)}}>Update</button></td>
+                                        <td><button className={`btn btn-outline btn-info rounded btn-sm ${updateButtonLoading[index]}`} onClick={() => { handleUpdateRoles(index) }}>Update</button></td>
                                     </tr>
                                 ))}
                             </tbody>
