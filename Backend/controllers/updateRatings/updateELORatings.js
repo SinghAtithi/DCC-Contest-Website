@@ -12,7 +12,7 @@ async function updateELORatingsController(req, res) {
   const contest_id = req.body.contest_id;
   try {
     // Get the current time in IST to query for past contests.
-    const currTime = moment().utcOffset("+5:30");
+    const currTime = moment();
 
     // Get the contest
     const contest = await Contest.findOne(

@@ -12,7 +12,7 @@ async function forgetPasswordController(req, res) {
       if (user) {
         if (password) {
           if (confirm_password) {
-            const currDate = moment().utcOffset("+5:30");
+            const currDate = moment();
             if (user.OTP == otp && currDate.isBefore(moment(user.OTP_validity))) {
               if (password === confirm_password) {
                 const hashedPassword = await bcrypt.hash(

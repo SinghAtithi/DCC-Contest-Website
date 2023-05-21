@@ -9,6 +9,10 @@ const jwt = require("jsonwebtoken");
 require("./queue/ExecuteQueue/index.js");
 require("./queue/EmailQueue/index.js");
 
+const moment = require('moment');
+require('moment-timezone');
+moment.tz.setDefault('Asia/Kolkata');
+
 const { Question } = require("./models/question.js");
 const { User } = require("./models/user.js");
 const { Code } = require("./models/code.js");

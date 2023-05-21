@@ -21,7 +21,7 @@ async function getAllSubmissionsController(req, res) {
     } else {
       // either token is invalid or is of different user as comapred to req.params
       if (username) {
-        const currTime = moment(new Date()).utcOffset("+5:30");
+        const currTime = moment();
         const submissions = await Submission.find(
           { username: username, display_after: { $lt: currTime } },
           "ques_id ques_name verdict time_stamp time_taken code error"

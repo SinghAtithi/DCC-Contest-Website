@@ -16,7 +16,7 @@ async function forgetPasswordEmailController(req, res) {
             var otp = Math.floor(100000 + Math.random() * 900000);
 
             user.OTP = otp;
-            const OTP_validity = moment().utcOffset("+5:30").add(2,"minutes");
+            const OTP_validity = moment().add(5, "minutes");
             user.OTP_validity = OTP_validity;
 
             user.save();
@@ -52,7 +52,9 @@ async function forgetPasswordEmailController(req, res) {
             });
           }
         } else {
-          res.status(404).json({ error: "You are not registered. Please register first." });
+          res
+            .status(404)
+            .json({ error: "You are not registered. Please register first." });
         }
       } else {
         res.status(400).json({ error: "Please provide a valid email." });
