@@ -10,7 +10,7 @@ const generateLoginToken = (id, role,profile_pic,username) => {
     username : username
   };
 
-  const token = jwt.sign(data, jwtSecretKey, { expiresIn: '20m' });
+  const token = jwt.sign(data, jwtSecretKey, { expiresIn: '15d' });
 
   return token;
 };

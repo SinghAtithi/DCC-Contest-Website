@@ -343,7 +343,7 @@ function CreateProblem() {
         <title>Create Contest</title>
       </Head>
 
-      <SideNav role="SuperAdmin" highlight={AdminSideNavMap.create_contest} />
+      <SideNav role={role} highlight={AdminSideNavMap.create_contest} />
 
       {loadingSkeleton ? <CreateContestSkeleton /> : <div className="data-area">
         <div className="contest_container">
