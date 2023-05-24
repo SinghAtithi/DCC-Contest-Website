@@ -30,6 +30,7 @@ const toastCross = {
 
 const LaunchContest = () => {
     const router = useRouter();
+
     const [search_option, SetSearchOption] = useState("");
     const [search_text, setSearchText] = useState("");
     const [data, setData] = useState([]);

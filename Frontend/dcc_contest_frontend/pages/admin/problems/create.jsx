@@ -294,7 +294,7 @@ function CreateProblem() {
                 <title>Create Question</title>
             </Head>
             <SideNav
-                role="SuperAdmin"
+                role={role}
                 highlight={AdminSideNavMap.create_problems}
             />
             {loadingSkeleton ? <>

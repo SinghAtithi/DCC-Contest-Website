@@ -87,7 +87,7 @@ const ViewContest = () => {
       <Head>
         <title>DCC : View Contests</title>
       </Head>
-      <SideNav role="admin" highlight={AdminSideNavMap.view_contests} />
+      <SideNav role={role} highlight={AdminSideNavMap.view_contests} />
       {loadingSkeleton ? <>
         <ViewContestSkeleton />
       </> : <>

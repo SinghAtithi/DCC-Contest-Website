@@ -88,7 +88,7 @@ const ViewProblems = () => {
             <Head>
                 <title>DCC : View Problems</title>
             </Head>
-            <SideNav role="admin" highlight={AdminSideNavMap.view_problem} />
+            <SideNav role={role} highlight={AdminSideNavMap.view_problem} />
             {loadingSkeleton ? <>
                 <ViewProblemSkeleton />
             </> : <>
