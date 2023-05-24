@@ -53,7 +53,6 @@ function ContestLeaderboard() {
     if (router.isReady) {
       const url = BASE_URL + `/contest/results/${cid}`;
       axios.get(url).then((res) => {
-        console.log(res.data);
         const tempList = res.data.contest.result;
 
         tempList.sort(function (x, y) {

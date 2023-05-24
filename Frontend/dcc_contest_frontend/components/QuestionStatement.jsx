@@ -42,7 +42,6 @@ function QuestionStatement(props) {
           props.setLoader(false);
         })
         .catch((err) => {
-          console.log(err);
           Router.push("/404");
         });
     }

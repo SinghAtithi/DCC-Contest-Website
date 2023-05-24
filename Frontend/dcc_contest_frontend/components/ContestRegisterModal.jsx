@@ -40,7 +40,6 @@ export default function ContestRegisterModal(props) {
       props.setOpen(false);
       setRegisterButtonLoading("");
     }).catch((error) => {
-      console.log(error);
       if (error) {
         if (error.response) {
           if (error.response.data.error) {

@@ -71,7 +71,6 @@ const ViewContest = () => {
           setLoadingButton("");
         })
         .catch((err) => {
-          console.log(err);
           setData([]);
           setLoadingButton("");
           setMessage("You have been logged out. Please login");

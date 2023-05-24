@@ -44,7 +44,8 @@
     "react-paginate": "^8.1.4",
     "react-redux": "^8.0.5",
     "react-spring": "^9.7.1",
-    "react-use-gesture": "^9.1.3"
+    "react-use-gesture": "^9.1.3",
+    "update": "^0.7.4"
   },
   "devDependencies": {
     "autoprefixer": "^10.4.13",

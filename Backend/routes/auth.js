@@ -25,7 +25,7 @@ router.post("/login", loginController);
 router.get("/verifyToken", verifyGeneralUser, verifyTokenController);
 
 // Route to authenticate a user for ImageKit integration
-router.get("/imagekitAuth", verifyGeneralUser, imageKitController);
+router.get("/imagekitAuth", imageKitController);
 
 // Route to verify an email
 router.post("/verifyEmail", verifyEmailController);

@@ -11,7 +11,6 @@ import {
     ADMIN_DASHBOARD,
     AdminSideNavMap,
 } from "../../utils/constants";
-import toggleLoaderBackdrop from "../../utils/toggleCustomBackdrop";
 import Head from "next/head";
 
 const AdminDashboad = () => {
@@ -19,9 +18,9 @@ const AdminDashboad = () => {
 
     const { asPath } = useRouter();
     useEffect(() => {
-        toggleLoaderBackdrop();
-        if (loggedIn && (role === ADMIN || role === SUPER_ADMIN))
-            toggleLoaderBackdrop();
+        if (loggedIn && (role === ADMIN || role === SUPER_ADMIN)){
+
+        }
         else if (loggedIn && role === END_USER) Router.push(`/${username}`);
         else {
             checkToken().then((status) => {
@@ -29,7 +28,6 @@ const AdminDashboad = () => {
                     if (status.role === ADMIN || status.role === SUPER_ADMIN) {
                         // FETCH data here
 
-                        toggleLoaderBackdrop();
                     } else Router.push(`/${username}`);
                 } else Router.push(LOGIN_PAGE + "?next=admin/dashboard");
             });

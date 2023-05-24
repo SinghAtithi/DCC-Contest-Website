@@ -130,7 +130,6 @@ function CreateProblem() {
       if (result.data.ques_ids.length !== 0) setQuestionSearchedList(result.data.ques_ids.map((ques, i) => ques.ques_id));
       if (result.data.collaborators.length !== 0) setCollaboratorsSearchedList(result.data.collaborators.map((user, i) => user.username));
     }).catch((error) => {
-      console.log(error);
     })
   }
 
@@ -227,7 +226,6 @@ function CreateProblem() {
 
   // useEffect to check if contest id is containing space or not 
   useEffect(() => {
-    console.log(contest_id);
 
     if (contest_id.indexOf(" ") >= 0)
       setcontest_idError("Contest ID cannot contain space.");
@@ -291,7 +289,6 @@ function CreateProblem() {
   // Function to handle submit
   const onSubmit = () => {
     setLoadingButton("loading");
-    console.log(ques_ids);
     const data = {
       contest_name: contest_name,
       contest_id: contest_id,
@@ -305,7 +302,6 @@ function CreateProblem() {
     if (router.query["edit"]) {
       url = BASE_URL + UPDATE_CONTEST_ENDPOINT_BACKEND;
     }
-    console.log(url);
     const options = {
       headers: {
         "Content-Type": "application/json",
@@ -325,7 +321,6 @@ function CreateProblem() {
         setToastActive(true);
       })
       .catch((err) => {
-        console.log(err.response.data);
         setToastClass("alert alert-error relative");
         if (err.response.data.error) {
           setToastMessage(["Your session has expired. Please login again"]);

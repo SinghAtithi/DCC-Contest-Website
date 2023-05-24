@@ -87,9 +87,9 @@ const UserSchema = mongoose.Schema({
   OTP: {
     type: Number,
   },
-  OTP_validity : {
-    type: Date
-  }
+  OTP_validity: {
+    type: Date,
+  },
 });
 
 // The custom function update solved array

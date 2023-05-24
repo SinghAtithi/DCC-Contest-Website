@@ -106,8 +106,6 @@ function Dashboard() {
     };
 
     const setLineChartData = (ChartData) => {
-        console.log("In for line chart");
-        console.log(ChartData);
         const n = ChartData.length;
         var label = [];
         var data = [];
@@ -157,7 +155,6 @@ function Dashboard() {
         // Set Text
         if (tooltipModel.body) {
             var titleLines = tooltipModel.title || [];
-            // console.log(titleLines)
 
             const label_array = line_data.labels;
             var n = label_array.length;
@@ -209,7 +206,6 @@ function Dashboard() {
             axios
                 .get(url)
                 .then((result) => {
-                    console.log(result);
 
                     if (result.data.profile_pic) setProfilePic(result.data.profile_pic);
                     setCurrentRating(result.data.current_rating);
@@ -263,11 +259,12 @@ function Dashboard() {
                         <div className="summary_area">
                             <p className="dashboard_title_div">Statistics</p>
                             <div className="dashboard_left_top">
-                                <div className="dashboard_profile_info">
+                                <div className="dashboard_profile_info p-2">
                                     <img
                                         src={profile_pic}
-                                        style={{ "border-radius": "50%" }}
+                                        style={{"height":"90px","width":"90px", "border-radius": "50%" }}
                                         alt="ProfilePic"
+                                        className="m-3"
                                     />
                                     <div className="dashboard-profile-user">
                                         <p>{username}</p>

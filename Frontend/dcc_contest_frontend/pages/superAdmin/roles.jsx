@@ -105,7 +105,6 @@ export default function AssignRoles() {
                     setLoadingButton("");
                 })
                 .catch((err) => {
-                    console.log(err);
 
                     setData([]);
                     setUpdateButtonLoading([]);

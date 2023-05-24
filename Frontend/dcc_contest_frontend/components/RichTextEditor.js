@@ -31,11 +31,10 @@ const MyCKEditor = (props) => {
             imagekit.upload(
               {
                 file: file,
-                fileName: "trial.jpg",
+                fileName: "problem.jpg",
               },
               function (err, result) {
                 if (err) {
-                  console.log(err);
                   reject(err);
                 } else {
                   const url = imagekit.url({
@@ -70,7 +69,6 @@ const MyCKEditor = (props) => {
           config={{ removePlugins: ['Heading'], extraPlugins: [uploadPlugin] }}
           onChange={(event, editor) => {
             const data = editor.getData();
-            console.log(data);
             props.setValue(data);
           }}
           data={props.value}

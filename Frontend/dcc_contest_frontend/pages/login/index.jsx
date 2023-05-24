@@ -5,7 +5,6 @@ import Lottie from "lottie-react";
 import { useRouter } from "next/router";
 import checkToken from "../../utils/checkToken";
 import { ADMIN, SUPER_ADMIN, ADMIN_DASHBOARD } from "../../utils/constants";
-import toggleLoaderBackdrop from "../../utils/toggleCustomBackdrop";
 import { useSelector } from "react-redux";
 import Head from "next/head";
 import LoginForm from "./LoginForm";
