@@ -20,7 +20,6 @@ import {
     SEARCH_QUESIONS_ENDPOINT_BACKEND,
     UPDATE_QUESTION_ENDPOINT_BACKEND,
 } from "../../../utils/constants";
-import toggleLoaderBackdrop from "../../../utils/toggleCustomBackdrop";
 import { useSelector } from "react-redux";
 import SideNavSkeleton from "../../../components/skeleton/SideNavSkeleton";
 import CreateProblemSkeleton from "../../../components/skeleton/CreateProblemSkeleton";
@@ -71,7 +70,6 @@ function CreateProblem() {
             searchString: ques_id,
         };
 
-        console.log(body);
         const options = {
             headers: {
                 "Content-Type": "application/json",
@@ -155,7 +153,6 @@ function CreateProblem() {
 
     const scrollToTestCase = (elID) => {
         const test_case = document.getElementById(elID);
-        console.log(test_case.offsetTop);
         test_case.scrollIntoView({ behavior: "smooth" });
     };
 
@@ -197,14 +194,12 @@ function CreateProblem() {
                 setToastActive(true);
             })
             .catch((err) => {
-                console.log(err);
                 if (err.response) {
                     if (err.response.data) {
                         if (err.response.data.message) {
                             let err_msg = err.response.data.message
                                 .substr(28)
                                 .split(",");
-                            console.log(err_msg[0].split(":"));
                             let err_list = err_msg[0].split(":");
                             if (err_list[0] == "time_limit") {
                                 setToastClass(
@@ -223,7 +218,6 @@ function CreateProblem() {
                             }
                         } else if (err.response.data.code) {
                             const err_tag = err.response.data.keyValue;
-                            console.log(err_tag);
                             const key = Object.keys(err_tag);
                             if (key[0] == "ques_id") {
                                 setToastClass(

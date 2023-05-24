@@ -2,9 +2,14 @@
 const express = require("express");
 const cors = require("cors");
 const bodyParser = require("body-parser");
+
 const dotenv = require("dotenv");
 dotenv.config();
+
 const mongoose = require("mongoose");
+const beautifyUnique = require('mongoose-beautiful-unique-validation');
+mongoose.plugin(beautifyUnique);
+
 const jwt = require("jsonwebtoken");
 require("./queue/ExecuteQueue/index.js");
 require("./queue/EmailQueue/index.js");
@@ -15,7 +20,6 @@ moment.tz.setDefault('Asia/Kolkata');
 
 const { Question } = require("./models/question.js");
 const { User } = require("./models/user.js");
-const { Code } = require("./models/code.js");
 const { Contest } = require("./models/contest.js");
 const { Submission } = require("./models/submission.js");
 

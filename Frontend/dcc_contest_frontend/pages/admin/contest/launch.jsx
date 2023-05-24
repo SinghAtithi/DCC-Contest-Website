@@ -101,7 +101,6 @@ const LaunchContest = () => {
                     setLoadingButton("");
                 })
                 .catch((err) => {
-                    console.log(err);
 
                     setData([]);
                     setUpdateRatingButtonLoading([]);

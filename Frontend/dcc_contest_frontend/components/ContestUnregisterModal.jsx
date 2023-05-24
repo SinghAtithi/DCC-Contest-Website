@@ -43,7 +43,6 @@ export default function ContestUnRegisterModal(props) {
             props.setOpen(false);
             setUnegisterButtonLoading("");
         }).catch((error) => {
-            console.log(error);
             if (error) {
                 if (error.response) {
                     if (error.response.data.error) {
@@ -51,7 +50,6 @@ export default function ContestUnRegisterModal(props) {
                     }
                     else if (Array.isArray(error.response.data)) {
                         let errorArray = error.response.data.map(error => `Error in ${error.error_field} - ${error.error_message}`);
-                        // console.log(errorArray[0]);
                         setError(errorArray[0]);
                     }
                     else {

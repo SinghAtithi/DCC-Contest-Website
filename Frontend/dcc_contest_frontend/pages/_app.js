@@ -27,6 +27,7 @@ import "../styles/ConsoleSkeleton.css";
 import "../styles/ProblemPreviewAdmin.css";
 import "../styles/ContestPreviewAdmin.css";
 import "../styles/SignUp.css";
+import "../styles/Accounts.css";
 
 import { Provider } from "react-redux";
 import store from "../store/baseStore";

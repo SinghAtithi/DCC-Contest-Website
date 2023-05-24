@@ -86,14 +86,12 @@ function ProblemPage() {
             .post(url, params, config)
             .then((result) => {
                 const submission_id = result.data.submission_id;
-                console.log(submission_id);
+            
 
                 let poll;
                 var count = 0;
 
                 poll = setInterval(async () => {
-                    console.log("Poll = ", poll);
-                    console.log("count = ", count);
                     count = count + 1;
                     if (count === 20) {
                         setConsoleData(
@@ -107,7 +105,6 @@ function ProblemPage() {
                         axios
                             .get(poll_url)
                             .then((result) => {
-                                console.log(result);
                                 if (result.data.verdict === "Accepted") {
                                     setConsoleData(
                                         `Verdict : Accepted\nTime : ${result.data.time_taken * 1000} milliseconds`
@@ -170,7 +167,6 @@ function ProblemPage() {
                                 }
                             })
                             .catch((error) => {
-                                console.log(error);
                                 setConsoleData(
                                     `Something Went Wrong. Please try again.`
                                 );
@@ -183,7 +179,6 @@ function ProblemPage() {
                 }, 3000);
             })
             .catch((err) => {
-                console.log(err);
                 if (err.response && err.response.data && err.response.data.error === "Invalid Token") setConsoleData("Your session has expired. Please login again");
                 else
                     setConsoleData(

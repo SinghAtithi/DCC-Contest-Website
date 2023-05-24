@@ -26,11 +26,11 @@ function ProblemSet() {
       .get(url,options)
       .then((res) => {
         setTotalPages(Math.ceil(res.data.length / 6));
-        console.log(res.data);
+        
         setProblems(res.data);
         setLoading(false);
       }).catch((error) => {
-        console.log(error);
+     
         setSevereError("Network Error. Please check your internet connectivity.")
         setLoading(false);
       });

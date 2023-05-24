@@ -15,12 +15,9 @@ export default function Auth(props) {
             checkToken()
                 .then((res) => {
                     // Token is valid
-                    console.log("From useEffect of Auth");
-                    console.log(Date());
                 })
                 .catch((err) => {
                     // Token is invalid or an error occurred
-                    console.log(err);
                 });
         }
     });

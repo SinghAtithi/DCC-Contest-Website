@@ -98,7 +98,6 @@ export default function UpdateResults() {
                     setLoadingButton("");
                 })
                 .catch((err) => {
-                    console.log(err);
 
                     setData([]);
                     setUpdateRatingButtonLoading([]);
@@ -151,7 +150,6 @@ export default function UpdateResults() {
                 return newLoadingStates;
             });
         }).catch((err) => {
-            console.log(err.response.data);
             setToastClass("alert alert-error relative");
             if(err.response){
                 const statusCode = err.response.status;

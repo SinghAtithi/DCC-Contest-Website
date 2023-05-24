@@ -101,7 +101,6 @@ export default function ForgotPasswordModal(props) {
                         }, 1500);
 
                     }).catch((error) => {
-                        console.log(error);
                         setMessage("");
                         if (error.response) {
                             const statusCode = error.response.status;

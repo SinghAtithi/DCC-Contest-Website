@@ -56,7 +56,7 @@ function ProblemPage() {
       };
 
       axios.get(url, options).then((res) => {
-        console.log(res);
+      
         setContestEndTime(res.data.end_time);
         if (!(res.data.ques_ids && res.data.ques_ids.some((item) => item.ques_id === pid))) router.push("/404");
       }).catch((error) => {
@@ -124,14 +124,12 @@ function ProblemPage() {
       .post(url, params, config)
       .then((result) => {
         const submission_id = result.data.submission_id;
-        console.log(submission_id);
+      
 
         let poll;
         var count = 0;
 
         poll = setInterval(async () => {
-          console.log("Poll = ", poll);
-          console.log("count = ", count);
           count = count + 1;
           if (count === 20) {
             setConsoleData(
@@ -221,7 +219,6 @@ function ProblemPage() {
         }, 3000);
       })
       .catch((err) => {
-        console.log(err);
         if (err.response.data.error === "Invalid Token") setConsoleData("Your session has expired. Please login again");
         else
           setConsoleData(

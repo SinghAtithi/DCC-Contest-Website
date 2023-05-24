@@ -13,12 +13,10 @@ const login = createSlice({
   initialState,
   reducers: {
     loginUser(state, actions) {
-      console.log("From store :", actions.payload);
       state.loggedIn = true;
       state.isLoading = false;
       state.role = actions.payload.role;
       state.username = actions.payload.username;
-      console.log(actions.payload.username);
       if (actions.payload.profile_pic)
         state.profile_pic = actions.payload.profile_pic;
     },
@@ -31,10 +29,13 @@ const login = createSlice({
     },
     setLoading(state, actions) {
       state.isLoading = actions.payload;
-      console.log(state.isLoading);
     },
+    setProfilePic(state,actions){
+      if (actions.payload.profile_pic)
+        state.profile_pic = actions.payload.profile_pic;
+    }
   },
 });
 
-export const { loginUser, logoutUser, setLoading } = login.actions;
+export const { loginUser, logoutUser, setLoading, setProfilePic } = login.actions;
 export default login.reducer;

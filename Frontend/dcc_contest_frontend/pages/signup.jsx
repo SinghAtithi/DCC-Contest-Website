@@ -16,7 +16,6 @@ import {
 import SignUpConfirmaionModal from "../components/SignUpConfirmationModal";
 import { useRouter } from "next/router";
 import { useSelector } from "react-redux";
-import toggleLoaderBackdrop from "../utils/toggleCustomBackdrop";
 import checkToken from "../utils/checkToken";
 import Head from "next/head";
 
@@ -86,7 +85,6 @@ function Signup() {
                 document.querySelector(".modal").classList.toggle("modal-open");
             })
             .catch((err) => {
-                console.log(err);
                 if (err.code == "ERR_NETWORK") {
                     setError(
                         "Something went wrong. Please check your Internet or refresh. If the problem persists, contact the adminstrator."
@@ -224,7 +222,7 @@ function Signup() {
                                 </div>
                             </div>
                         )}
-                        <div className="mt-8 text-3xl justify-center flex">
+                        <div className="mt-8 text-xl justify-center flex">
                             {signupQues[quesInd].question}
                         </div>
                         <div className="flex justify-center items-center">

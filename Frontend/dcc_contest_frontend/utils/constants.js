@@ -53,6 +53,8 @@ export const UPDATE_RATINGS_CONTEST_ENDPOINT_BACKEND = "/updateRating";
 
 export const UPDATE_ROLE_ENDPOINT_BACKEND = "/user/roles";
 export const SEARCH_USER_ENDPOINT_BACKEND = "/user/search";
+export const UPDATE_USER_ENDPOINT_BACKEND = "/user/update";
+export const GET_USER_ENDPOINT_BACKEND = "/user/data";
 
 export const PRE_FETCH_COLLABORATORS_AND_QUESTION_ENDPOINT_BACKEND =
   "/contest/collabAndQues";

@@ -39,7 +39,6 @@ const ContestProblem = () => {
 
       // This will return the data only when contest is running
       axios.get(url, options).then((res) => {
-        console.log(res.data);
         setSolved(res.data.solved);
         setProblems(res.data.ques_ids);
         setContestName(res.data.contest_name);
@@ -48,7 +47,6 @@ const ContestProblem = () => {
       }).catch((error) => {
         // Display an error message if the API request fails
         if (error) {
-          console.log(error);
           if (error.response) {
             const statusCode = error.response.status;
             if (statusCode == 403) setSevereError("Forbidden : Contest has not yet started.");

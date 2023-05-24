@@ -48,7 +48,6 @@ export default function LoginForm() {
                 else router.push(`/${res.data.username}`);
             })
             .catch((err) => {
-                console.log(err);
                 if (err.code == "ERR_NETWORK") {
                     setError(
                         "Something went wrong. Please check your Internet or refresh. If the problem persists, contact the adminstrator."
