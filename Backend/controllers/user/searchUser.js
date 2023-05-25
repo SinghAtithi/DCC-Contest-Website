@@ -4,7 +4,7 @@ async function searchUserController(req, res) {
   const { searchFilter, searchString, selectString } = req.body;
   try {
     // if all three are present
-    if (searchFilter && searchString && selectString) {
+    if (searchString && selectString) {
       searchParams = {};
 
       if (searchFilter == 0)

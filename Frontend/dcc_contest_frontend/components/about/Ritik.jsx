@@ -4,7 +4,6 @@ import { GrLinkedin } from "react-icons/gr";
 import { FaTwitter } from "react-icons/fa";
 import { FaInstagramSquare } from "react-icons/fa";
 import { ImInstagram, ImWhatsapp } from "react-icons/im";
-import Image from "next/image";
 
 function Ritik() {
   return (

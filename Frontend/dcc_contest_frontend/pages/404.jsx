@@ -1,10 +1,11 @@
 import React from "react";
 import Link from "next/link";
 import Head from "next/head";
+import TheFooter from "../components/Footer";
 
 function F404() {
   return (
-    <div>
+    <>
       <Head><title>DCC : 404 Not Found</title></Head>
       {/* This is an example component */}
       <div className="h-screen w-screen bg-gray-100 flex items-center">
@@ -202,7 +203,8 @@ function F404() {
           </div>
         </div>
       </div>
-    </div>
+      <TheFooter />
+    </>
   );
 }
 

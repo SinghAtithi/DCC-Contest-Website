@@ -13,7 +13,7 @@ import {
     SUBMIT_QUESTION,
     BASE_URL,
 } from "../../utils/constants";
-
+import TheFooter from "../../components/Footer";
 
 function ProblemPage() {
     const router = useRouter();
@@ -191,7 +191,7 @@ function ProblemPage() {
     };
 
     return (
-        <div>
+        <>
             <Head>
                 {problemId ? (
                     <title>DCC : {problemId}</title>
@@ -242,7 +242,8 @@ function ProblemPage() {
                     </div>
                 </div>
             </div>
-        </div>
+            <TheFooter />
+        </>
     );
 }
 

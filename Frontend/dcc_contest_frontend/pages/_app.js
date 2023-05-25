@@ -28,6 +28,7 @@ import "../styles/ProblemPreviewAdmin.css";
 import "../styles/ContestPreviewAdmin.css";
 import "../styles/SignUp.css";
 import "../styles/Accounts.css";
+import "../styles/Footer.css";
 
 import { Provider } from "react-redux";
 import store from "../store/baseStore";

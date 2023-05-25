@@ -9,6 +9,7 @@ import { BASE_URL, GET_USER_ENDPOINT_BACKEND } from "../../utils/constants";
 import axios from "axios";
 import SettingsSkeleton from "../../components/skeleton/SettingsSkeleton";
 import Head from "next/head";
+import TheFooter from "../../components/Footer";
 
 const toastCross = {
   position: "absolute",
@@ -220,6 +221,7 @@ export default function Settings() {
           </div>)
         )}
       </div>
+      <TheFooter />
     </>
   );
 }

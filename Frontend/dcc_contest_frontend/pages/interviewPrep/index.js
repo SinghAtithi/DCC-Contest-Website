@@ -1,6 +1,7 @@
 import Head from "next/head";
 import React from "react";
 import Navbar from "../../components/Navbar";
+import TheFooter from "../../components/Footer";
 
 export default function InterviewPrep() {
   return (
@@ -31,6 +32,7 @@ export default function InterviewPrep() {
           </div>
         </div>
       </div>
+      <TheFooter />
     </>
   );
 }

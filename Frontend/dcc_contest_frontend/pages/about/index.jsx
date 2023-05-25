@@ -4,6 +4,7 @@ import ThreePicAbout from "../../components/about/ThreePicAbout";
 import Atithi from "../../components/about/Atithi";
 import Ritik from "../../components/about/Ritik";
 import Head from "next/head";
+import TheFooter from "../../components/Footer";
 
 function About() {
   return (
@@ -13,6 +14,7 @@ function About() {
       <ThreePicAbout />
       <Ritik />
       <Atithi />
+      <TheFooter />
     </div>
   );
 }

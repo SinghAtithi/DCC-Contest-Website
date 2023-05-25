@@ -19,6 +19,7 @@ import axios from "axios";
 import { BASE_URL, GET_DASHBOARD_DATA } from "../utils/constants";
 import Image from "next/image";
 import SubmissionTableDashboard from "../components/dashboard/submissionTable";
+import TheFooter from "../components/Footer";
 
 Chart.register(
     ArcElement,
@@ -379,6 +380,7 @@ function Dashboard() {
                                     
                     </>}
             </div >
+            <TheFooter />
         </>
     );
 }

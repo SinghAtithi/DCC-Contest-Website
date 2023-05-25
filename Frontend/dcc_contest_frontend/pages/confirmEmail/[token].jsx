@@ -7,6 +7,7 @@ import {
     VERIFY_EMAIL_BACKEND,
 } from "../../utils/constants";
 import Head from "next/head";
+import TheFooter from "../../components/Footer";
 
 export default function ConfirmEmail() {
     const router = useRouter();
@@ -84,6 +85,7 @@ export default function ConfirmEmail() {
                             </div>
                         </div>)}
             </div>
+            <TheFooter />
         </>
     );
 }

@@ -18,6 +18,7 @@ import { useRouter } from "next/router";
 import { useSelector } from "react-redux";
 import checkToken from "../utils/checkToken";
 import Head from "next/head";
+import TheFooter from "../components/Footer";
 
 function Signup() {
     const router = useRouter();
@@ -281,6 +282,7 @@ function Signup() {
                     </div>
                 </div>
             </div>
+            <TheFooter />
         </>
     );
 }
