@@ -19,10 +19,11 @@ function QuestionStatement(props) {
   useEffect(() => {
     props.setLoader(true);
     if (props.problemId) {
+      let url = `${BASE_URL}/question/${props.problemId}`;
+      if(props.test) url = `${BASE_URL}/question/test/${props.problemId}`;
+
       axios
-        .get(
-          `${BASE_URL}/question/${props.problemId}`
-        )
+        .get(url)
         .then((res) => {
           if (question.name != res.data.name) {
             setQuestion({

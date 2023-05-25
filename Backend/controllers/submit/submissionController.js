@@ -1,10 +1,10 @@
 // submissionController.js
 
 const moment = require("moment");
-const { ExecuteQueue } = require("../queue/ExecuteQueue/index.js");
-const Submission = require("../models/submission.js");
-const User = require("../models/user.js");
-const isContestRunning = require("../utils/isContestRunning.js");
+const { ExecuteQueue } = require("../../queue/ExecuteQueue/index.js");
+const Submission = require("../../models/submission.js");
+const User = require("../../models/user.js");
+const isContestRunning = require("../../utils/isContestRunning.js");
 
 const createSubmission = async (req, res) => {
   try {

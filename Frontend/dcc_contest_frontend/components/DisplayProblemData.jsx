@@ -82,6 +82,11 @@ export default function DisplayProblemData(props) {
                                                 Delete
                                             </button>
                                         </span>
+                                        {problem.is_draft ? <></> : <span className="px-1">
+                                            <button className={`btn btn-outline btn-info min-w-fit w-20 min-h-8 h-8 ${buttonLoading}`} onClick={() => { router.push(`/admin/problems/execute/${problem.ques_id}`);}}>
+                                                Execute
+                                            </button>
+                                        </span>}
                                     </td>
                                 </tr>
                             ))}
@@ -121,6 +126,10 @@ export default function DisplayProblemData(props) {
                         {props.data[clickedIndex].topics && <div id="problem-preview-data">
                             <h1 >Topics : </h1>
                             <p>{props.data[clickedIndex].topics}</p>
+                        </div>}
+                        {props.data[clickedIndex].is_draft && <div id="problem-preview-data">
+                            <h1 >Draft Status: </h1>
+                            <p>{props.data[clickedIndex].is_draft}</p>
                         </div>}
                         <br />
                         {props.data[clickedIndex].public_test_cases.length != 0 && <div id="problem-preview-data">
