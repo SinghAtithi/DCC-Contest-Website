@@ -18,12 +18,12 @@ function TheFooter() {
           <span>Jirania, Tripura - 799046</span>
         </div>
         <ul className="socials">
-          <li><a href="https://mail.google.com/mail/?view=cm&fs=1&to=dccnita@gmail.com" target='_blank'><MdOutlineAlternateEmail size={30} /></a></li>
-          <li><a href="https://twitter.com/dccnita" target='_blank'><FaTwitter size={30} /></a></li>
-          <li><a href="https://www.instagram.com/dccnita/" target='_blank'><FaInstagramSquare size={30} /></a></li>
-          <li><a href="https://www.linkedin.com/company/dccnita/"><GrLinkedin size={30} /></a></li>
-          <li><a href="https://discord.com/invite/58qJhGtTaa"><RxDiscordLogo size={30} /></a></li>
-          <li><a href="https://www.youtube.com/@DCCNITA"><BsYoutube size={30} /></a></li>
+          <li><a href="https://mail.google.com/mail/?view=cm&fs=1&to=dccnita@gmail.com" target='_blank'  rel="noreferrer"><MdOutlineAlternateEmail size={30} /></a></li>
+          <li><a href="https://twitter.com/dccnita" target='_blank'  rel="noreferrer"><FaTwitter size={30} /></a></li>
+          <li><a href="https://www.instagram.com/dccnita/" target='_blank'  rel="noreferrer"><FaInstagramSquare size={30} /></a></li>
+          <li><a href="https://www.linkedin.com/company/dccnita/" target='_blank' rel="noreferrer"><GrLinkedin size={30} /></a></li>
+          <li><a href="https://discord.com/invite/58qJhGtTaa" target='_blank' rel="noreferrer"><RxDiscordLogo size={30} /></a></li>
+          <li><a href="https://www.youtube.com/@DCCNITA" target='_blank' rel="noreferrer"><BsYoutube size={30} /></a></li>
         </ul>
         {/* <p>DCC | NIT Agartala</p> */}
       </div>
