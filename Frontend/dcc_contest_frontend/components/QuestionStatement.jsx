@@ -98,7 +98,7 @@ function QuestionStatement(props) {
               <br></br>
               <div key={index}>
                 <h1 className="text-xl font-serif">Example {index + 1} :</h1>
-                <div className="bg-slate-700 ">
+                <div className="bg-slate-700 w-fit">
                   <pre>
                     <span className="font-mono font-bold">Input</span>
                     <br></br>

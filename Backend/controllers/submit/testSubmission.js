@@ -24,7 +24,10 @@ const createTestSubmission = async (req, res) => {
       } else {
         const formattedDate = moment().format("DD/MM/YYYY HH:mm").toString();
 
-        let display_after = formattedDate;
+        let display_after = moment()
+          .add(1000, "days")
+          .format("DD/MM/YYYY HH:mm")
+          .toString();
         const submission = await createSubmissionInDb(
           user.username,
           ques_name,
@@ -34,13 +37,8 @@ const createTestSubmission = async (req, res) => {
           formattedDate,
           display_after
         );
-        
-        addToQueue(
-          submission._id,
-          false,
-          user.username,
-          res
-        );
+
+        addToQueue(submission._id, false, user.username, "", res);
       }
     }
   } catch (error) {
