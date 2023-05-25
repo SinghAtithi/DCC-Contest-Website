@@ -32,8 +32,8 @@ export const END_USER = "end_user";
 
 export const ADMIN_DASHBOARD = "/admin/dashboard";
 
-export const BASE_URL = "https://c041-4-240-84-221.ngrok-free.app";
-// export const BASE_URL = "http://localhost:5000";
+// export const BASE_URL = "https://c041-4-240-84-221.ngrok-free.app";
+export const BASE_URL = "http://localhost:5000";
 export const LOGIN_ENDPOINT_BACKEND = "/auth/login";
 export const SIGNUP_ENDPOINT_BACKEND = "/auth/register";
 
@@ -64,6 +64,7 @@ export const FORGOT_PASSWORD_BACKEND = "/auth/forgotPassword";
 export const SEND_FORGOT_PASSWORD_EMAIL_BACKEND = "/auth/forgotPasswordEmail";
 export const RESEND_CONFIRMATION_EMAIL = "/auth/resendConfirmationEmail";
 export const SUBMIT_QUESTION = "/question/submit";
+export const SUBMIT_QUESTION_TEST = "/question/submit/test";
 export const GET_A_QUESTION = "/question/getOneForEdit";
 export const GET_SUBMISSION = "/question/getSubmission";
 

@@ -206,6 +206,34 @@ router.get("/:ques_id", (req, res) => {
   }
 });
 
+// Get question by ques_id for test by admin
+router.get("/test/:ques_id", verifyAdmin ,(req, res) => {
+  try {
+    Question.findOne(
+      {
+        ques_id: req.params.ques_id,
+        is_draft: false,
+      },
+
+      "ques_no name description constraints input_format output_format time_limit public_test_cases",
+      (error, result) => {
+        if (error) {
+          res.status(404).json({ error: error });
+        } else {
+          if (result === null || result === undefined) {
+            res.status(404).send({ error: "Not Found" });
+          } else {
+            console.log(result);
+            res.status(200).json(result);
+          }
+        }
+      }
+    );
+  } catch (error) {
+    res.status(500).send({ error: error });
+  }
+});
+
 router.delete("/delete/:ques_id", verifyAdmin, async (req, res) => {
   const ques_id = req.params.ques_id;
   const user = req.user;
