@@ -9,9 +9,11 @@ import Head from "next/head";
 import { useSelector } from "react-redux";
 import {
     GET_SUBMISSION,
-    SUBMIT_QUESTION,
     BASE_URL,
     SUBMIT_QUESTION_TEST,
+    ADMIN,
+    SUPER_ADMIN,
+    END_USER
 } from "../../../../utils/constants";
 import TheFooter from "../../../../components/Footer";
 import ConsolePanel from "../../../../components/console_panel";
@@ -34,7 +36,7 @@ function TestProblemPage() {
     const [submitting, setSubmitting] = useState("");
     const [background, setbackground] = useState("bg-warning"); // This stores the background of data in console - default is bg-warning, other values include bg-error, bg-success and bg-inherit
 
-    const { role, loggedIn } = useSelector((state) => state.login);
+    const { role, loggedIn, username } = useSelector((state) => state.login);
 
     const code_console = {
         display: lowerSpaceVisible ? "block" : "none",
@@ -49,7 +51,7 @@ function TestProblemPage() {
             checkToken().then((status) => {
                 if (status.verified) {
                     if (!(status.role === ADMIN || status.role === SUPER_ADMIN)) router.push(`/${username}`);
-                } else router.push(LOGIN_PAGE + "?next=admin/problems/view");
+                } else router.push(LOGIN_PAGE);
             });
         }
     }, []);
