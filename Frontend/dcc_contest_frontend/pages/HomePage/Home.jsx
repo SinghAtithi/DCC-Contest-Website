@@ -11,7 +11,7 @@ function HomePage() {
       <div className="home-page-content-general">
         <HeroLottie />
         <div>
-          <h1>Dream Code Create!</h1>
+          <h1>Dream Code Conquer!</h1>
           <p>
             Become a coding pro with our comprehensive practice materials. From
             data structures to algorithms, our platform covers all the

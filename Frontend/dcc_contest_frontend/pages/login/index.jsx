@@ -10,6 +10,7 @@ import Head from "next/head";
 import LoginForm from "./LoginForm";
 import { useState } from "react";
 import LoginPageSkeleton from "../../components/skeleton/LoginPageSkeleton";
+import TheFooter from "../../components/Footer";
 
 function Login() {
     const router = useRouter();
@@ -63,6 +64,7 @@ function Login() {
                     </>}
                 </div>
             </div>
+            <TheFooter />
         </>
     );
 }

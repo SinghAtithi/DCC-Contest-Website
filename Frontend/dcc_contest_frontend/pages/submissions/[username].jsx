@@ -7,6 +7,7 @@ import { useRouter } from "next/router";
 import Navbar from "../../components/Navbar";
 import SubmissionTable from "../../components/submission/submissionTable";
 import TableSkeleton from "../../components/skeleton/TableSkeleton";
+import TheFooter from "../../components/Footer";
 
 export default function Submissions() {
     const router = useRouter();
@@ -78,7 +79,7 @@ export default function Submissions() {
                     {skeletonLoading ? <TableSkeleton table_headers={["#", "Submitted At", "Name", "Verdict", "Time taken", "Actions"]} rows={5} /> : <SubmissionTable data={submissionData} />}
                 </div>}
             </div>
-
+            <TheFooter />
         </>
     )
 }

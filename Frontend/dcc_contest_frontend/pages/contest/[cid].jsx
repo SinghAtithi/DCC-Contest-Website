@@ -8,6 +8,7 @@ import Head from 'next/head';
 import TableSkeleton from '../../components/skeleton/TableSkeleton';
 import Countdown from '../../components/Countdown';
 import { useSelector } from 'react-redux';
+import TheFooter from '../../components/Footer';
 
 const ContestProblem = () => {
   const router = useRouter(); // router to access the url parameters, redirect etc.
@@ -107,6 +108,7 @@ const ContestProblem = () => {
         </div>
 
       </div>
+      <TheFooter />
     </>
   )
 }

@@ -11,6 +11,7 @@ import PastContestProblemModal from "../../components/PastContestProblemModal";
 import ContestLandingSkeleton from "../../components/skeleton/ContestLandingSkeleton";
 import { useSelector } from "react-redux";
 import ContestUnRegisterModal from "../../components/ContestUnregisterModal";
+import TheFooter from "../../components/Footer";
 
 
 // A function to get the duration of contests.
@@ -138,6 +139,7 @@ const ContestPage = () => {
               <PastContests pastContests={pastContests} setOpenPast={setOpenPast} setName={setName} setContestId={setContestId} setProblems={setProblems} /></>)
         }
       </div>
+      <TheFooter />
     </>
   );
 };

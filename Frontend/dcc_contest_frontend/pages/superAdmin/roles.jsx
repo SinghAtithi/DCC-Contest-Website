@@ -77,7 +77,7 @@ export default function AssignRoles() {
 
     function search_users() {
         setLoadingButton("loading");
-        if (search_text && search_option) {
+        if (search_text) {
             const url = BASE_URL + SEARCH_USER_ENDPOINT_BACKEND;
             const body = {
                 searchFilter: search_option,
@@ -105,6 +105,7 @@ export default function AssignRoles() {
                     setLoadingButton("");
                 })
                 .catch((err) => {
+                    console.log(err);
 
                     setData([]);
                     setUpdateButtonLoading([]);
@@ -150,6 +151,7 @@ export default function AssignRoles() {
             };
 
             axios.post(url, body, options).then((res) => {
+                console.log(res);
                 setToastClass("alert alert-success relative");
                 setToastMessage(["Role Updated Successfully."]);
                 setToastActive(true);

@@ -6,6 +6,7 @@ import LeaderboardProblemTable from "../../components/leaderboard/LeaderboardTab
 import TableSkeleton from "../../components/skeleton/TableSkeleton";
 import { BASE_URL } from "../../utils/constants";
 import axios from "axios";
+import TheFooter from "../../components/Footer";
 
 // Dummy data for the ranklist
 // const rankListData = [
@@ -119,6 +120,7 @@ function ContestLeaderboard() {
               </>)}
         </div>
       </div>
+      <TheFooter />
     </>
   );
 }
@@ -128,83 +130,3 @@ export default ContestLeaderboard;
 
 
 
-
-// const [page, setPage] = useState(1);
-// const [totalPages, setTotalPages] = useState(0);
-
-
-// setTotalPages(Math.ceil(rankListData.length / 10));
-// rankListData.sort(function (x, y) {
-//   if (x.score > y.score) {
-//     return -1;
-//   }
-//   if (x.score < y.score) {
-//     return 1;
-//   }
-//   return 0;
-// });
-
-// {/* <div className="text-3xl m-4 flex items-center justify-center font-mono">
-//         Ranklist
-//       </div>
-//       {/* Heading of the ranklist */}
-//       <div className="bg-grey-200 shadow-lg shadow-grey-500/50 grid grid-cols-4 gap-4 text-lg font-serif text-slate-50  py-2 my-2 border-b-2 border-slate-500">
-//         <div className="px-6">Rank</div>
-//         <div className="col-span-2 px-6">Name</div>
-//         <div className="px-6">Score</div>
-//       </div>
-
-//       {/* Ranklist data */}
-//       {rankListData
-//         .slice((page - 1) * dataPerPage, page * dataPerPage)
-//         .map((item, index) => (
-//           <div
-//             className={`bg-gray-800 grid grid-cols-4 gap-4 text-lg font-serif text-gray-200 py-2 my-2 border-b-2 border-gray-500 ${
-//               index > -1 ? "font-bold" : ""
-//             }`}
-//             key={item.id}
-//           >
-//             <div className="px-6">{(page - 1) * dataPerPage + index + 1}</div>
-//             <div className="col-span-2 px-6">
-//               <a
-//                 href={`/${item.username}`}
-//                 target="_blank"
-//                 rel="noreferrer"
-//                 className="text-green-400"
-//               >
-//                 {item.username}
-//               </a>
-//             </div>
-//             <div className="px-6">{item.score}</div>
-//           </div>
-//         ))}
-
-//       {/* Pagination */}
-
-//       <div className="my-4 flex justify-center">
-//         <button
-//           className={`btn mx-1`}
-//           onClick={() => setPage(Math.max(1, page - 1))}
-//         >
-//           Prev
-//         </button>
-//         {Array.from({ length: totalPages }, (_, index) => index + 1).map(
-//           (num,index) => (
-//             <button
-//               key={index}
-//               className={`btn btn-success mx-1 ${
-//                 num == page ? "btn-outline" : ""
-//               }`}
-//               onClick={() => setPage(num)}
-//             >
-//               {num}
-//             </button>
-//           )
-//         )}
-//         <button
-//           className={`btn mx-1`}
-//           onClick={() => setPage(Math.min(totalPages, page + 1))}
-//         >
-//           Next
-//         </button>
-//       </div> */}
