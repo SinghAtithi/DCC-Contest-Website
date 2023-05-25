@@ -1,9 +1,9 @@
 import ImageKit from "imagekit-javascript";
-import { BASE_URL } from "../../utils/constants";
+import { BASE_URL, IMAGEKIT_PUBLIC_KEY, IMAGEKIT_URL } from "../../utils/constants";
 
 var imageKit = new ImageKit({
-  publicKey: "public_/8n1ylBbpeZ+hb/0ttpwZxVDshE=",
-  urlEndpoint: "https://ik.imagekit.io/pqymxdgbi/Code-DCC",
+  publicKey: IMAGEKIT_PUBLIC_KEY,
+  urlEndpoint: IMAGEKIT_URL,
   authenticationEndpoint: `${BASE_URL}/auth/imagekitAuth`,
 });
 
