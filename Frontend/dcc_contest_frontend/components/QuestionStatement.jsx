@@ -20,10 +20,15 @@ function QuestionStatement(props) {
     props.setLoader(true);
     if (props.problemId) {
       let url = `${BASE_URL}/question/${props.problemId}`;
-      if(props.test) url = `${BASE_URL}/question/test/${props.problemId}`;
+      if (props.test) url = `${BASE_URL}/question/test/${props.problemId}`;
+      const options = {
+        headers: {
+          "token": localStorage.getItem('token'),
+        },
+      };
 
       axios
-        .get(url)
+        .get(url, options)
         .then((res) => {
           if (question.name != res.data.name) {
             setQuestion({
@@ -117,7 +122,7 @@ function QuestionStatement(props) {
                         }}
                       ></p>
                     </pre>
-                    
+
                   )}
                 </div>
               </div>
