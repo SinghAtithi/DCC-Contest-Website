@@ -15,7 +15,6 @@ export const AdminSideNavMap = {
   update_ratings: 16,
 };
 
-
 export const PROBLEM_SEARCH = [
   "ques_id",
   "contest_id",
@@ -68,8 +67,6 @@ export const SUBMIT_QUESTION = "/question/submit";
 export const GET_A_QUESTION = "/question/getOneForEdit";
 export const GET_SUBMISSION = "/question/getSubmission";
 
-
-
 export const HOME_PAGE = "/";
 export const LOGIN_PAGE = "/login";
 export const FORGET_PASSWORD_PAGE = "/forgotPassword";
@@ -94,3 +91,6 @@ export const UPDATE_RATINGS_PAGE = "/admin/contest/updateRatings";
 
 export const REPORT_VIOLATIONS = "/admin/report";
 export const BAN_USERS = "/superAdmin/banusers";
+
+export const IMAGEKIT_PUBLIC_KEY = "public_bkNkzRpT9kFSd7Flmfy8NYvGr6s=";
+export const IMAGEKIT_URL = "https://ik.imagekit.io/vkp8vbrb4/";

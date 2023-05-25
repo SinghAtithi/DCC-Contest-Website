@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import EditorSkeleton from "./skeleton/EditorSkeleton";
 
 import ImageKit from "imagekit-javascript";
-import { BASE_URL } from "../utils/constants";
+import { BASE_URL, IMAGEKIT_PUBLIC_KEY, IMAGEKIT_URL } from "../utils/constants";
 
 const MyCKEditor = (props) => {
   const editorRef = useRef();
@@ -18,8 +18,8 @@ const MyCKEditor = (props) => {
   }, []);
 
   var imagekit = new ImageKit({
-    publicKey: "public_/8n1ylBbpeZ+hb/0ttpwZxVDshE=",
-    urlEndpoint: "https://ik.imagekit.io/pqymxdgbi/Code-DCC",
+    publicKey: IMAGEKIT_PUBLIC_KEY,
+    urlEndpoint: IMAGEKIT_URL,
     authenticationEndpoint: `${BASE_URL}/auth/imagekitAuth`,
   });
 
@@ -66,13 +66,12 @@ const MyCKEditor = (props) => {
         <CKEditor
           className="wrap-ckeditor"
           editor={ClassicEditor}
-          config={{ removePlugins: ['Heading'], extraPlugins: [uploadPlugin] }}
+          config={{ removePlugins: ["Heading"], extraPlugins: [uploadPlugin] }}
           onChange={(event, editor) => {
             const data = editor.getData();
             props.setValue(data);
           }}
           data={props.value}
-
         />
       ) : (
         <EditorSkeleton />
