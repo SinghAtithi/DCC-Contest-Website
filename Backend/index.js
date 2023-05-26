@@ -34,8 +34,8 @@ const UserRoutes = require("./routes/user.js");
 const app = express();
 
 // ------------- Middlewares --------------
-app.use(bodyParser.json({ extended: true })); // To parse json objects
-app.use(bodyParser.urlencoded({ extended: true })); // To pass urlencoded messages
+app.use(bodyParser.json({ limit: '10mb' })); // To parse json objects
+app.use(bodyParser.urlencoded({ limit: '10mb', extended: true })); // To pass urlencoded messages
 app.use(cors()); // Allow Cross Origin Resource Sharing
 
 app.use("/question", QuesRoutes); // Routes for various operations with problems/questions

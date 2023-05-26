@@ -50,6 +50,7 @@ const createSubmission = async (req, res) => {
           contestRunning,
           user.username,
           contest_id,
+          false,
           res
         );
       }
@@ -87,6 +88,7 @@ const addToQueue = (
   contestRunning,
   username,
   contest_id,
+  testing,
   res
 ) => {
   ExecuteQueue.add({
@@ -94,6 +96,7 @@ const addToQueue = (
     contestRunning: contestRunning,
     username: username,
     contest_id: contest_id,
+    testing: testing
   })
     .then(() => {
       console.log("Successfully added to the queue");

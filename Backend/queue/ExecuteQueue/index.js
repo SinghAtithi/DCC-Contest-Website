@@ -42,6 +42,7 @@ ExecuteQueue.process(5, async (job, done) => {
   const contestRunning = job.data.contestRunning;
   const username = job.data.username;
   const contest_id = job.data.contest_id;
+  const testing = job.data.testing;
   console.log("Contest Running - ", contestRunning);
   try {
     // Find the submission in the database
@@ -221,8 +222,8 @@ ExecuteQueue.process(5, async (job, done) => {
             { new: true }
           );
 
-          // Update the solved array of user
-          await User.updateSolved(ques.ques_id, username);
+          // Update the solved array of user if question is not being testes
+          if(!testing) await User.updateSolved(ques.ques_id, username);
 
           // If contest is running, update the results,
           if (contestRunning)
