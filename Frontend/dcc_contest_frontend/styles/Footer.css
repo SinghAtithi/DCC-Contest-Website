@@ -3,12 +3,13 @@ footer{
     bottom: 0;
     left: 0;
     right: 0;
-    background: #383838;
+    background: #035330;
     height: auto;
     width: 100%;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     padding-top: 40px;
     color: #fff;
+    margin-top: auto;
 }
 .footer-content{
     display: flex;
@@ -53,7 +54,7 @@ footer{
 }
 
 .footer-bottom{
-    background: #242424;
+    background: #045c2a;
     width: 100%;
     padding: 20px 0;
     text-align: center;
@@ -64,7 +65,6 @@ footer{
     text-transform: capitalize;
 }
 .footer-bottom span{
-    text-transform: uppercase;
     opacity: .4;
     font-weight: 200;
 }

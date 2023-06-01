@@ -77,7 +77,9 @@ export default function App({ Component, pageProps }) {
       </Head>
       <Provider store={store}>
         <Auth>
-          <Component {...pageProps} />
+          <div className="flex flex-col min-h-screen">
+            <Component {...pageProps} />
+          </div>
         </Auth>
       </Provider>
     </>
