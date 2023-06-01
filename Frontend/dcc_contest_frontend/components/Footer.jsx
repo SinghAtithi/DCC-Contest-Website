@@ -27,7 +27,7 @@ function TheFooter() {
         </ul>
       </div>
       <div className="footer-bottom">
-        <p>copyright &copy;2023 DCC. designed by <span>Atithi, Ritik</span></p>
+        <p>copyright &copy;2023 DCC. designed by <span>Atithi Kumar Singh,  Ritik Kaushal</span></p>
       </div>
     </footer>
   )

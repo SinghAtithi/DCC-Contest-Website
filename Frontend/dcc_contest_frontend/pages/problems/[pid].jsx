@@ -242,7 +242,7 @@ function ProblemPage() {
                     </div>
                 </div>
             </div>
-            <TheFooter />
+            {/* <TheFooter /> */}
         </>
     );
 }

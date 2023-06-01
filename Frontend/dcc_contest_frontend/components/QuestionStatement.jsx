@@ -98,32 +98,34 @@ function QuestionStatement(props) {
               <br></br>
               <div key={index}>
                 <h1 className="text-xl font-serif">Example {index + 1} :</h1>
-                <div className="bg-slate-700 w-fit">
-                  <pre>
-                    <span className="font-mono font-bold">Input</span>
-                    <br></br>
-                    {public_test_case.input}
-                  </pre>
-                  <hr></hr>
-                  <pre>
-                    <span className="font-mono font-bold">Output</span>
-                    <br></br>
-                    {public_test_case.output}
-                  </pre>
-                  <hr></hr>
-                  {public_test_case.explanation && (
+                <div className="bg-slate-700 p-2 rounded-md">
+                  <div className="w-full overflow-auto">
                     <pre>
-                      <span className="font-mono font-bold">Explanation</span>
+                      <span className="font-mono text-green-600 font-semibold">Input</span>
                       <br></br>
-                      <p
-                        className="ck-content"
-                        dangerouslySetInnerHTML={{
-                          __html: public_test_case.explanation,
-                        }}
-                      ></p>
+                      {public_test_case.input}
                     </pre>
+                    <hr className="flex justify-end" />
+                    <pre>
+                      <span className="font-mono text-green-600 font-semibold">Output</span>
+                      <br></br>
+                      {public_test_case.output}
+                    </pre>
+                    <hr></hr>
+                    {public_test_case.explanation && (
+                      <pre>
+                        <span className="font-mono text-green-600 font-semibold">Explanation</span>
+                        <br></br>
+                        <p
+                          className="ck-content"
+                          dangerouslySetInnerHTML={{
+                            __html: public_test_case.explanation,
+                          }}
+                        ></p>
+                      </pre>
 
-                  )}
+                    )}
+                  </div>
                 </div>
               </div>
             </div>
