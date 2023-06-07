@@ -263,7 +263,6 @@ function TestProblemPage() {
                     </div>
                 </div>
             </div>
-            <TheFooter />
         </>
     );
 }
