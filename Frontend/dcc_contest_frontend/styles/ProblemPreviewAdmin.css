@@ -29,7 +29,14 @@
         margin-bottom: 16px;
         height: auto;
         width: 100%;
-        overflow-x: scroll;
+        overflow:hidden;
+        border-radius: 8px;
+        padding: 4px;
+}
+
+.problem-test-case-preview-area-data{
+        width: 100%;
+        overflow-x: auto;
 }
 
 .problem-test-case-preview-area span {

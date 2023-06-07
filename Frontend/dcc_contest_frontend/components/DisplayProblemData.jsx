@@ -2,6 +2,7 @@ import { useState } from "react";
 import { BASE_URL, DELETE_QUESION_ENDPOINT_BACKEND, PROBLEM_SEARCH } from "../utils/constants";
 import { useRouter } from "next/router";
 import axios from "axios";
+import TestCaseContainer from "./TestCaseContainer";
 
 
 export default function DisplayProblemData(props) {
@@ -83,7 +84,7 @@ export default function DisplayProblemData(props) {
                                             </button>
                                         </span>
                                         {problem.is_draft ? <></> : <span className="px-1">
-                                            <button className={`btn btn-outline btn-info min-w-fit w-20 min-h-8 h-8 ${buttonLoading}`} onClick={() => { router.push(`/admin/problems/execute/${problem.ques_id}`);}}>
+                                            <button className={`btn btn-outline btn-info min-w-fit w-20 min-h-8 h-8`} onClick={() => { router.push(`/admin/problems/execute/${problem.ques_id}`); }}>
                                                 Execute
                                             </button>
                                         </span>}
@@ -127,42 +128,26 @@ export default function DisplayProblemData(props) {
                             <h1 >Topics : </h1>
                             <p>{props.data[clickedIndex].topics}</p>
                         </div>}
+                        <br />
                         {props.data[clickedIndex].is_draft && <div id="problem-preview-data">
-                            <h1 >Draft Status: </h1>
-                            <p>{props.data[clickedIndex].is_draft}</p>
+                            <h1 >Draft Status : </h1>
+                            <p>true</p>
                         </div>}
                         <br />
-                        {props.data[clickedIndex].public_test_cases.length != 0 && <div id="problem-preview-data">
+                        <div id="problem-preview-data">
                             <h1 >Public Test Cases : </h1>
                             {props.data[clickedIndex].public_test_cases.map((public_test_case, index) => (
-                                <div key={index} >
-                                    <h1 >Test Case : {index}</h1>
-                                    <div className="problem-test-case-preview-area">
-                                        <p><span>Input</span><br></br>{public_test_case.input}</p>
-                                        <hr></hr>
-                                        <p><span>Output</span><br></br>{public_test_case.output}</p>
-                                        <hr></hr>
-                                        {public_test_case.explanation && <div><span>Explanation</span><br></br><p className="ck-content" dangerouslySetInnerHTML={{ __html: public_test_case.explanation }}></p></div>}
-                                    </div>
-                                </div>
+                                <TestCaseContainer key={index} index={index} input={public_test_case.input} output={public_test_case.output} explanation={public_test_case.explanation} />
                             ))}
-                        </div>}
+                        </div>
                         <br />
                         {props.data[clickedIndex].private_test_cases.length != 0 && <div id="problem-preview-data">
                             <h1 >Private Test Cases : </h1>
                             {props.data[clickedIndex].private_test_cases.map((private_test_case, index) => (
-                                <div key={index}>
-                                    <h1 >Test Case : {index}</h1>
-                                    <div className="problem-test-case-preview-area">
-                                        <p><span>Input</span><br></br>{private_test_case.input}</p>
-                                        <hr></hr>
-                                        <p><span>Output</span><br></br>{private_test_case.output}</p>
-                                        <hr></hr>
-                                    </div>
-                                </div>
+                                <TestCaseContainer key={index} index={index} input={private_test_case.input} output={private_test_case.output} />
                             ))}
                         </div>}
-                        <div id="problem-preview-data"><button className="btn btn-outline btn-success" onClick={() => {
+                        <div id="problem-preview-data"><button className="btn btn-outline btn-success rounded-lg" onClick={() => {
                             setPreviewActive(false);
                         }}>Close Preview</button></div>
                     </div>

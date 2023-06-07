@@ -3,6 +3,7 @@ import axios from "axios";
 import Router from "next/router";
 import QuestionSkeleton from "./skeleton/QuestionSkeleton";
 import { BASE_URL } from "../utils/constants";
+import TestCaseContainer from "./TestCaseContainer";
 
 function QuestionStatement(props) {
   const [question, setQuestion] = React.useState({
@@ -43,7 +44,6 @@ function QuestionStatement(props) {
             });
             props.setQuestionId(res.data._id);
             props.setQuesName(res.data.name);
-            // alert(res.data._id);
           }
           props.setLoader(false);
         })
@@ -92,45 +92,13 @@ function QuestionStatement(props) {
             dangerouslySetInnerHTML={{ __html: question.output_format }}
           ></p>
         </div>
-        <div>
-          {question.public_test_cases.map((public_test_case, index) => (
-            <div key={index}>
-              <br></br>
-              <div key={index}>
-                <h1 className="text-xl font-serif">Example {index + 1} :</h1>
-                <div className="bg-slate-700 p-2 rounded-md">
-                  <div className="w-full overflow-auto">
-                    <pre>
-                      <span className="font-mono text-green-600 font-semibold">Input</span>
-                      <br></br>
-                      {public_test_case.input}
-                    </pre>
-                    <hr className="flex justify-end" />
-                    <pre>
-                      <span className="font-mono text-green-600 font-semibold">Output</span>
-                      <br></br>
-                      {public_test_case.output}
-                    </pre>
-                    <hr></hr>
-                    {public_test_case.explanation && (
-                      <pre>
-                        <span className="font-mono text-green-600 font-semibold">Explanation</span>
-                        <br></br>
-                        <p
-                          className="ck-content"
-                          dangerouslySetInnerHTML={{
-                            __html: public_test_case.explanation,
-                          }}
-                        ></p>
-                      </pre>
 
-                    )}
-                  </div>
-                </div>
-              </div>
-            </div>
+        {question.public_test_cases.length != 0 && <div id="problem-preview-data">
+          <br />
+          {question.public_test_cases.map((public_test_case, index) => (
+            <TestCaseContainer key = {index} index={index+1} input={public_test_case.input} output={public_test_case.output} explanation={public_test_case.explanation} />
           ))}
-        </div>
+        </div>}
       </div>
     )
   );
