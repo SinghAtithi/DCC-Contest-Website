@@ -144,7 +144,7 @@ function ProblemPage() {
               .get(poll_url)
               .then((result) => {
                 if (result.data.verdict === "Accepted") {
-                  const timeTaken = result.data.time_taken;
+                  const timeTaken = parseFloat(result.data.time_taken);
                   const timeTakenFormatted = timeTaken.toFixed(3);
                   setConsoleData(
                       `Verdict: Accepted\nTime: ${timeTakenFormatted} milliseconds`
