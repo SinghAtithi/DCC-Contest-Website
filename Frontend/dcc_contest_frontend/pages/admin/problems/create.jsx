@@ -172,7 +172,7 @@ function CreateProblem() {
             is_draft: is_draft,
         };
         let url = BASE_URL + CREATE_QUESTION_ENDPOINT_BACKEND;
-        if(router.query["edit"]){
+        if (router.query["edit"]) {
             url = BASE_URL + UPDATE_QUESTION_ENDPOINT_BACKEND;
         }
         const options = {
@@ -188,7 +188,7 @@ function CreateProblem() {
                 reinitialiseQuestionState();
                 setToastClass("alert left-16 alert-success relative");
                 setToastMessage("Question Successfully created.");
-                if(router.query["edit"]){
+                if (router.query["edit"]) {
                     setToastMessage("Question Successfully updated.");
                 }
                 setToastActive(true);
@@ -619,40 +619,44 @@ function CreateProblem() {
                                                         />
                                                     </div>
                                                     <div className="test-case-preview-area">
-                                                        <p>
-                                                            <span>Input</span>
-                                                            <br></br>
-                                                            {public_test_case.input}
-                                                        </p>
+                                                        <span>Input</span>
+                                                        <div className="problem-test-case-preview-area-data">
+                                                            <pre>{public_test_case.input}</pre>
+                                                        </div>
+
                                                         <hr></hr>
-                                                        <p>
-                                                            <span>Output</span>
-                                                            <br></br>
-                                                            {
-                                                                public_test_case.output
-                                                            }
-                                                        </p>
-                                                        <hr></hr>
+
+                                                        <span>Output</span>
+                                                        <div className="problem-test-case-preview-area-data">
+                                                            <pre>{public_test_case.output}</pre>
+                                                        </div>
+
                                                         {public_test_case.explanation && (
-                                                            <div>
+                                                            <>
+                                                                <hr></hr>
                                                                 <span>
                                                                     Explanation
                                                                 </span>
-                                                                <br></br>
-                                                                <p
-                                                                    className="ck-content"
-                                                                    dangerouslySetInnerHTML={{
-                                                                        __html: public_test_case.explanation,
-                                                                    }}
-                                                                ></p>
-                                                            </div>
+                                                                <div className="problem-test-case-preview-area-data">
+                                                                    <p
+                                                                        className="ck-content"
+                                                                        dangerouslySetInnerHTML={{
+                                                                            __html: public_test_case.explanation,
+                                                                        }}
+                                                                    ></p>
+                                                                </div>
+                                                            </>
                                                         )}
                                                     </div>
+
+
                                                 </div>
                                             )
                                         )}
                                     </div>
                                 )}
+
+
                                 {private_test_cases.length != 0 && (
                                     <div id="question-preview-data">
                                         <h1>Private Test Cases : </h1>
@@ -713,21 +717,17 @@ function CreateProblem() {
                                                         />
                                                     </div>
                                                     <div className="test-case-preview-area">
-                                                        <p>
-                                                            <span>Input</span>
-                                                            <br></br>
-                                                            {
-                                                                private_test_case.input
-                                                            }
-                                                        </p>
+                                                        <span>Input</span>
+                                                        <div className="problem-test-case-preview-area-data">
+                                                            <pre>{private_test_case.input}</pre>
+                                                        </div>
+
                                                         <hr></hr>
-                                                        <p>
-                                                            <span>Output</span>
-                                                            <br></br>
-                                                            {
-                                                                private_test_case.output
-                                                            }
-                                                        </p>
+
+                                                        <span>Output</span>
+                                                        <div className="problem-test-case-preview-area-data">
+                                                            <pre>{private_test_case.output}</pre>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             )

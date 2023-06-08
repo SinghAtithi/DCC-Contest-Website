@@ -86,7 +86,7 @@ function ProblemPage() {
             .post(url, params, config)
             .then((result) => {
                 const submission_id = result.data.submission_id;
-            
+
 
                 let poll;
                 var count = 0;
@@ -106,8 +106,10 @@ function ProblemPage() {
                             .get(poll_url)
                             .then((result) => {
                                 if (result.data.verdict === "Accepted") {
+                                    const timeTaken = result.data.time_taken;
+                                    const timeTakenFormatted = timeTaken.toFixed(3);
                                     setConsoleData(
-                                        `Verdict : Accepted\nTime : ${result.data.time_taken * 1000} milliseconds`
+                                        `Verdict: Accepted\nTime: ${timeTakenFormatted} milliseconds`
                                     );
                                     setSubmitting("");
                                     setbackground("bg-success");

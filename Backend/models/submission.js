@@ -35,6 +35,7 @@ const SubmissionSchema = mongoose.Schema(
       type: String,
       default: "",
     },
+    // In milliseconds
     time_taken: {
       type: String,
       default: "",
@@ -91,7 +92,6 @@ const SubmissionSchema = mongoose.Schema(
   },
   { toJSON: { getters: true } }
 );
-
 
 const Submission = new mongoose.model("submission", SubmissionSchema);
 module.exports = Submission;
