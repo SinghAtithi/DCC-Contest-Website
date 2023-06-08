@@ -7,11 +7,12 @@ const runCpp = async (compiledFileName, inputPath, time_limit, username) => {
 
     // use ./ before ${outFileName} to run the file in the same directory in linux
     process = exec(
-      `cd UsersCodes && cd codeFiles && cd ${username} && start=$(date +%s%N); output=$(./${compiledFileName} < ${inputPath} 2>&1); end=$(date +%s%N); runtime=$(echo "scale=3; ($end - $start) / 1000000" | bc); echo "Execution time: $runtime" >&2; echo "$output";`(
+      `cd UsersCodes && cd codeFiles && cd ${username} && start=$(date +%s%N); output=$(./${compiledFileName} < ${inputPath} 2>&1); end=$(date +%s%N); runtime=$(echo "scale=3; ($end - $start) / 1000000" | bc); echo "Execution time: $runtime" >&2; echo "$output";`,(
         (options = { maxBuffer: 1024 * 1024 * 512 })
       ),
       (err, std_out, std_err) => {
         // If there is some error, reject the promise with the error
+        console.log(err);
         if (err) {
           rej({ err });
         }
@@ -39,7 +40,7 @@ const runCpp = async (compiledFileName, inputPath, time_limit, username) => {
       }
     );
 
-    // kill the process if it runs for more than 30 seconds
+    // kill the process if it runs for more than 15 seconds
     setTimeout(() => {
       process.kill();
       rej({ error: "Time Limit Exceeded", difference: 15 });
