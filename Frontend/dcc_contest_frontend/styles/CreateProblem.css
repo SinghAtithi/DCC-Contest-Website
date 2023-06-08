@@ -128,7 +128,9 @@
     margin-bottom: 16px;
     height: auto;
     width: 100%;
-    overflow-x: scroll;
+    overflow: hidden;
+    border-radius: 8px;
+    padding: 8px;
   }
   
   .test-case-preview-area span{
