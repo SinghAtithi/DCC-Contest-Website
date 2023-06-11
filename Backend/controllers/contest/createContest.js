@@ -47,7 +47,7 @@ async function createContestController(req, res) {
     if (ques_ids) {
       for (var i = 0; i < ques_ids.length; i++) {
         await Question.findOneAndUpdate(
-          { ques_no: ques_ids[i] },
+          { ques_id: ques_ids[i].ques_id },
           { display_after: start_time, assigned: true }
         );
       }

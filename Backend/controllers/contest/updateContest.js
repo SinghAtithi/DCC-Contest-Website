@@ -46,8 +46,6 @@ async function updateContestController(req, res) {
       is_draft: is_draft,
     };
 
-    console.log(update);
-
     const contest = await Contest.findOne(filter, "collaborators creator");
     if (contest) {
       if (
@@ -59,7 +57,7 @@ async function updateContestController(req, res) {
         if (ques_ids) {
           for (var i = 0; i < ques_ids.length; i++) {
             await Question.findOneAndUpdate(
-              { ques_no: ques_ids[i] },
+              { ques_id: ques_ids[i].ques_id },
               { display_after: start_time, assigned: true }
             );
           }
