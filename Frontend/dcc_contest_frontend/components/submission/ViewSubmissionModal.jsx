@@ -35,7 +35,7 @@ export default function ViewSubmissionModal(props) {
                   <div className="sm:flex sm:items-start">
                     <div className="mt-3 sm:ml-4 sm:mt-0 sm:text-left">
                       <Dialog.Title as="h3" className="text-base font-semibold leading-6 text-gray-900">
-                        Code for Submission ID - {props.submission_id}
+                        Code for Question - {props.ques_name}
                       </Dialog.Title>
                       <div className="overflow-auto mt-2 sm:-mx-5 sm:w-full sm:max-w-lg">
                         <p className="text-sm text-gray-500">
