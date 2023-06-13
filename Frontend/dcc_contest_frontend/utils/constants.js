@@ -12,6 +12,7 @@ export const AdminSideNavMap = {
   create_contest: 10,
 
   launch_contest: 13,
+  registrations : 14,
   update_ratings: 16,
 };
 
@@ -88,6 +89,7 @@ export const CREATE_PROBLEM_PAGE = "/admin/problems/create";
 export const VIEW_CONTESTS_CREATED_PAGE = "/admin/contest/view";
 export const CREATE_CONTEST_PAGE = "/admin/contest/create";
 export const LAUNCH_CONTEST_PAGE = "/admin/contest/launch";
+export const VIEW_CONTEST_REGISTRATIONS = "/admin/contest/registrations";
 export const UPDATE_RATINGS_PAGE = "/admin/contest/updateRatings";
 
 export const REPORT_VIOLATIONS = "/admin/report";
