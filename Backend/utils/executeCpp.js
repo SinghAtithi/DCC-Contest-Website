@@ -43,7 +43,7 @@ const runCpp = async (compiledFileName, inputPath, time_limit, username) => {
     // kill the process if it runs for more than 15 seconds
     setTimeout(() => {
       process.kill();
-      rej({ error: "Time Limit Exceeded", difference: 15 });
+      rej({ error: "Time Limit Exceeded", difference: 15000 });
     }, 15000);
   });
 };

@@ -1,0 +1,130 @@
+import { useRouter } from "next/router";
+import { useState, useEffect } from "react";
+import { useSelector } from "react-redux";
+import SideNav from "../../../components/SideNavAdmin";
+import checkToken from "../../../utils/checkToken";
+import {
+  ADMIN,
+  END_USER,
+  LOGIN_PAGE,
+  SUPER_ADMIN,
+  AdminSideNavMap,
+  SEARCH_CONTESTS_ENDPOINT_BACKEND,
+  CONTEST_SEARCH,
+  BASE_URL
+} from "../../../utils/constants";
+import axios from "axios";
+import Head from "next/head";
+import SearchBar from "../../../components/SearchBar";
+import DisplayContestData from "../../../components/DisplayContestData";
+import ViewContestSkeleton from "../../../components/skeleton/ViewContestSkeleton";
+import DisplayContestRegistrationData from "../../../components/DisplayContestRegistrationData";
+
+
+const Registrations = () => {
+  const router = useRouter();
+  const [search_option, SetSearchOption] = useState(0);
+  const [search_text, setSearchText] = useState("");
+  const [data, setData] = useState([]);
+  const [loadingSkeleton, setLoadingSkeleton] = useState(true);
+  const [loadingButton, setLoadingButton] = useState("");
+
+  const [message, setMessage] = useState("Nothing matches your current search.");
+
+  const { role, loggedIn } = useSelector((state) => state.login);
+
+  useEffect(() => {
+    if (loggedIn && (role === ADMIN || role === SUPER_ADMIN)) {
+      setLoadingSkeleton(false);
+    }
+    else if (loggedIn && role === END_USER) Router.push(`/${username}`);
+    else {
+      setLoadingSkeleton(true);
+      checkToken().then((status) => {
+        if (status.verified) {
+          if (status.role === ADMIN || status.role === SUPER_ADMIN) {
+            setLoadingSkeleton(false);
+          } else router.push(`/${username}`);
+        } else router.push(LOGIN_PAGE + "?next=admin/contest/view");
+      });
+    }
+  }, []);
+
+
+  function search_contests() {
+    setLoadingButton("loading");
+    if (search_text) {
+      const url = BASE_URL + SEARCH_CONTESTS_ENDPOINT_BACKEND;
+      const body = {
+        searchFilter: search_option,
+        searchString: search_text,
+        selectString: "contest_name contest_id registrations"
+      };
+      const options = {
+        headers: {
+          "Content-Type": "application/json",
+          token: localStorage.getItem("token"),
+        },
+      };
+      axios
+        .post(url, body, options)
+        .then((result) => {
+          setData(result.data.data);
+          console.log(result);
+          setLoadingButton("");
+        })
+        .catch((err) => {
+          setData([]);
+          setLoadingButton("");
+          setMessage("You have been logged out. Please login");
+        });
+    } else {
+      setData([]);
+      setLoadingButton("");
+      setMessage("Cannot search with empty string or no filter.");
+    }
+  }
+
+  return (
+    <>
+      <Head>
+        <title>DCC : Registrations</title>
+      </Head>
+      <SideNav role={role} highlight={AdminSideNavMap.registrations} />
+      {loadingSkeleton ? <>
+        <ViewContestSkeleton />
+      </> : <>
+        <div className="data-area">
+          <SearchBar
+            setFilter={SetSearchOption}
+            filter={search_option}
+            setText={setSearchText}
+            text={search_text}
+            search_options={["contest_name", "contest_id"]}
+            triggerSearch={search_contests}
+            loadingButton={loadingButton}
+          />
+          {data.length != 0 ? (
+            <DisplayContestRegistrationData
+              data={data}
+              setData={setData}
+              heading={CONTEST_SEARCH[search_option]}
+            />
+          ) : (
+            <div className="!flex justify-center">
+              <div className="alert alert-warning shadow-lg !w-fit">
+                <div>
+                  <svg xmlns="http://www.w3.org/2000/svg" className="stroke-current flex-shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" /></svg>
+                  <span>{message}</span>
+                </div>
+              </div>
+            </div>
+          )}
+        </div>
+      </>}
+    </>
+  );
+};
+
+
+export default Registrations;

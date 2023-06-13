@@ -223,7 +223,7 @@ ExecuteQueue.process(5, async (job, done) => {
           );
 
           // Update the solved array of user if question is not being testes
-          if(!testing) await User.updateSolved(ques.ques_id, username);
+          if (!testing) await User.updateSolved(ques.ques_id, username);
 
           // If contest is running, update the results,
           if (contestRunning)
@@ -271,7 +271,7 @@ ExecuteQueue.process(5, async (job, done) => {
           let run_time = Number(error.difference);
           let verdict = "Time Limit Exceeded";
 
-          if (run_time === 30) verdict = "May be Infinite Loop";
+          if (run_time === 15000) verdict = "May be Infinite Loop";
 
           // Update the database
           await Submission.findOneAndUpdate(
