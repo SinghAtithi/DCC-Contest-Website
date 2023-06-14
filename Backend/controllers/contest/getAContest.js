@@ -39,7 +39,8 @@ async function getAContestController(req, res) {
             solved: solved,
           });
       } else {
-        res.status(403).send("Forbidden : Contest not started");
+        if(currentTime.isAfter(contestEndTime)) res.status(403).send("Forbidden : Contest has ended");
+        else res.status(403).send("Forbidden : Contest not started");
       }
     } else {
       res.status(404).send("Contest not found");

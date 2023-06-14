@@ -16,6 +16,7 @@ import {
     BAN_USERS,
     UPDATE_RATINGS_PAGE,
     VIEW_CONTEST_REGISTRATIONS,
+    CONTEST_STATS_PAGE,
 } from "../utils/constants";
 
 import { GiHamburgerMenu } from "react-icons/gi";
@@ -298,6 +299,32 @@ export default function SideNav(props) {
 
                     <li id="nav-li">
                         <div id="nav-heading">CONTEST MANAGEMENT</div>
+                    </li>
+                    <li id="nav-li">
+                        <Link
+                            href={CONTEST_STATS_PAGE}
+                        >
+                            <span id="nav-items">
+                                <span>
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill={
+                                        props.highlight === 15
+                                            ? "white"
+                                            : "gray"
+                                    } class="bi bi-bar-chart-fill" viewBox="0 0 16 16">
+                                        <path d="M1 11a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v3a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1v-3zm5-4a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v7a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V7zm5-5a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1h-2a1 1 0 0 1-1-1V2z" />
+                                    </svg>
+                                </span>
+                                <span
+                                    className={
+                                        props.highlight === 15
+                                            ? "active"
+                                            : "none"
+                                    }
+                                >
+                                    Statistics
+                                </span>
+                            </span>
+                        </Link>
                     </li>
                     <li id="nav-li">
                         <Link
