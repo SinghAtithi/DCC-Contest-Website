@@ -98,6 +98,11 @@ export default function DisplayContestData(props) {
                                                 Delete
                                             </button>
                                         </span>
+                                        <span className="px-1">
+                                            <button className={`btn btn-outline btn-info min-w-fit w-20 min-h-8 h-8`} onClick={() => { router.push(`/admin/contest/stats?id=${contest.contest_id}`) }}>
+                                                Statistics
+                                            </button>
+                                        </span>
                                     </td>
                                 </tr>
                             ))}

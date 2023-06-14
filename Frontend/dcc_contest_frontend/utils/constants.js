@@ -13,6 +13,7 @@ export const AdminSideNavMap = {
 
   launch_contest: 13,
   registrations : 14,
+  contest_stats : 15,
   update_ratings: 16,
 };
 
@@ -50,6 +51,7 @@ export const DELETE_CONTEST_ENDPOINT_BACKEND = "/contest/delete";
 export const LAUNCH_CANCEL_CONTEST_ENDPOINT_BACKEND = "/contest/launch";
 export const REGISTER_CONTEST_ENDPOINT_BACKEND = "/contest/register";
 export const UPDATE_RATINGS_CONTEST_ENDPOINT_BACKEND = "/updateRating";
+export const GET_CONTEST_STATISTICS_BACKEND = "/contest/statistics";
 
 export const UPDATE_ROLE_ENDPOINT_BACKEND = "/user/roles";
 export const SEARCH_USER_ENDPOINT_BACKEND = "/user/search";
@@ -91,6 +93,7 @@ export const CREATE_CONTEST_PAGE = "/admin/contest/create";
 export const LAUNCH_CONTEST_PAGE = "/admin/contest/launch";
 export const VIEW_CONTEST_REGISTRATIONS = "/admin/contest/registrations";
 export const UPDATE_RATINGS_PAGE = "/admin/contest/updateRatings";
+export const CONTEST_STATS_PAGE = "/admin/contest/stats";
 
 export const REPORT_VIOLATIONS = "/admin/report";
 export const BAN_USERS = "/superAdmin/banusers";

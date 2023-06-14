@@ -36,7 +36,7 @@ const ViewContest = () => {
     if (loggedIn && (role === ADMIN || role === SUPER_ADMIN)) {
       setLoadingSkeleton(false);
     }
-    else if (loggedIn && role === END_USER) Router.push(`/${username}`);
+    else if (loggedIn && role === END_USER) router.push(`/${username}`);
     else {
       setLoadingSkeleton(true);
       checkToken().then((status) => {
