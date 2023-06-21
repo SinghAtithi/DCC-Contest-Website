@@ -24,8 +24,8 @@ async function forgetPasswordEmailController(req, res) {
             EmailQueue.add({
               receiver: email,
               message: {
-                subject: "DCC : Reset Password",
-                template: "reset_password",
+                subject: "DCC : Role Updates",
+                template: "role_update",
                 context: {
                   name: user.name,
                   username: user.username,
@@ -34,7 +34,7 @@ async function forgetPasswordEmailController(req, res) {
               },
             })
               .then(() => {
-                console.log("Added to email queue");
+                console.log("Added to email queue from role update");
                 res.status(200).send({
                   message: "Successfully sent the email.",
                 });
