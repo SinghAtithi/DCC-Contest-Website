@@ -12,8 +12,8 @@ export const AdminSideNavMap = {
   create_contest: 10,
 
   launch_contest: 13,
-  registrations : 14,
-  contest_stats : 15,
+  registrations: 14,
+  contest_stats: 15,
   update_ratings: 16,
 };
 
@@ -34,7 +34,7 @@ export const END_USER = "end_user";
 
 export const ADMIN_DASHBOARD = "/admin/dashboard";
 
-export const BASE_URL = "https://1307-4-240-84-221.ngrok-free.app";
+export const BASE_URL = "https://dee8-4-240-84-221.ngrok-free.app";
 // export const BASE_URL = "http://localhost:5000";
 export const LOGIN_ENDPOINT_BACKEND = "/auth/login";
 export const SIGNUP_ENDPOINT_BACKEND = "/auth/register";
