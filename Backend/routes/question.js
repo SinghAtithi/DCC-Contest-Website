@@ -101,8 +101,17 @@ router.post("/create", verifyAdmin, async (req, res) => {
     var public_tc = public_test_cases;
     var private_tc = private_test_cases;
 
+    var isCPZEN = false;
+
+    //if ques_id is CPZEN_xyz then it is a CPZEN question
+    if (ques_id.includes("CPZEN")) {
+      isCPZEN = true;
+    }
+
+
+
     var display_after = moment()
-      .add(1000, "days")
+      .add((isCPZEN ? 0 : 1000), "days")
       .format("DD/MM/YYYY HH:mm")
       .toString();
     const author = await User.findOne({ _id: user.userId }, "username").exec();
@@ -120,6 +129,7 @@ router.post("/create", verifyAdmin, async (req, res) => {
       ques_id: ques_id,
       display_after: display_after,
       author: author.username,
+      assigned: isCPZEN ? true : false,
       is_draft: is_draft,
     }).save();
 
@@ -207,7 +217,7 @@ router.get("/:ques_id", (req, res) => {
 });
 
 // Get question by ques_id for test by admin
-router.get("/test/:ques_id", verifyAdmin ,(req, res) => {
+router.get("/test/:ques_id", verifyAdmin, (req, res) => {
   try {
     Question.findOne(
       {
