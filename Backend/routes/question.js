@@ -108,6 +108,7 @@ router.post("/create", verifyAdmin, async (req, res) => {
       isCPZEN = true;
     }
 
+    console.log(isCPZEN);
 
 
     var display_after = moment()
@@ -115,6 +116,7 @@ router.post("/create", verifyAdmin, async (req, res) => {
       .format("DD/MM/YYYY HH:mm")
       .toString();
     const author = await User.findOne({ _id: user.userId }, "username").exec();
+    // const author = { username: "coder_ravan"}
 
     const ques = await new Question({
       name: name,
@@ -132,6 +134,8 @@ router.post("/create", verifyAdmin, async (req, res) => {
       assigned: isCPZEN ? true : false,
       is_draft: is_draft,
     }).save();
+
+    console.log(ques);
 
     generateTestCaseFiles(public_tc, private_tc, ques._id);
     res.status(200).json({ message: "Question created successfully" });
