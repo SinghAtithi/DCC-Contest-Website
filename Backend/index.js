@@ -38,6 +38,10 @@ app.use(bodyParser.json({ limit: '10mb' })); // To parse json objects
 app.use(bodyParser.urlencoded({ limit: '10mb', extended: true })); // To pass urlencoded messages
 app.use(cors()); // Allow Cross Origin Resource Sharing
 
+app.get("/isItWorking", (req, res) => {
+  res.send("Yes, it is working");
+});
+
 app.use("/question", QuesRoutes); // Routes for various operations with problems/questions
 app.use("/question", SubmitRoutes); // Routes to handle submission of code of a problem
 app.use("/auth", AuthRoutes); // Routes to handle authentication related requests
