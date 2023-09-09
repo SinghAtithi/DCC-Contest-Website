@@ -1,0 +1,45 @@
+name: Trigger auto deployment for dcc-code-api
+
+# When this action will be executed
+on:
+  # Automatically trigger it when detected changes in repo
+  push:
+    branches: 
+      [ main ]
+    paths:
+    - '"./Backend"/**'
+    - '.github/workflows/dcc-code-api-AutoDeployTrigger-e1da3742-66a0-495c-89c0-f52572470393.yml'
+
+  # Allow manual trigger 
+  workflow_dispatch:      
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    permissions: 
+      id-token: write #This is required for requesting the OIDC JWT Token
+
+    steps:
+      - name: Checkout to the branch
+        uses: actions/checkout@v2
+
+      - name: Azure Login
+        uses: azure/login@v1
+        with:
+          client-id: ${{ secrets.DCCCODEAPI_AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.DCCCODEAPI_AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.DCCCODEAPI_AZURE_SUBSCRIPTION_ID }}
+
+      - name: Build and push container image to registry
+        uses: azure/container-apps-deploy-action@v1
+        with:
+          appSourcePath: ${{ github.workspace }}"./Backend" 
+          registryUrl: codedcc.azurecr.io
+          registryUsername: ${{ secrets.DCCCODEAPI_REGISTRY_USERNAME }}
+          registryPassword: ${{ secrets.DCCCODEAPI_REGISTRY_PASSWORD }}
+          containerAppName: dcc-code-api
+          resourceGroup: Code-DCC_VM
+          imageToBuild: codedcc.azurecr.io/dcc-code-api:${{ github.sha }}
+          dockerfilePath: Dockerfile
+
+
