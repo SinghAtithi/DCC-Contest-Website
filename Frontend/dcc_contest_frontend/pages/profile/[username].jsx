@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import Head from "next/head";
-import Navbar from "../components/Navbar";
+import Navbar from "../../components/Navbar";
 import { Doughnut, Line } from "react-chartjs-2";
-import SubmissionRow from "../components/submission_row";
+import SubmissionRow from "../../components/submission_row";
 import { AiFillCaretDown } from "react-icons/ai";
 import {
     Chart,
@@ -16,10 +16,10 @@ import {
 } from "chart.js";
 import { useRouter } from "next/router";
 import axios from "axios";
-import { BASE_URL, GET_DASHBOARD_DATA } from "../utils/constants";
+import { BASE_URL, GET_DASHBOARD_DATA } from "../../utils/constants";
 import Image from "next/image";
-import SubmissionTableDashboard from "../components/dashboard/submissionTable";
-import TheFooter from "../components/Footer";
+import SubmissionTableDashboard from "../../components/dashboard/submissionTable";
+import TheFooter from "../../components/Footer";
 
 Chart.register(
     ArcElement,
