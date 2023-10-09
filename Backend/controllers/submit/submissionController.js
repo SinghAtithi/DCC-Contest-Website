@@ -4,10 +4,13 @@ const { ExecuteQueue } = require("../../queue/ExecuteQueue/index.js");
 const Submission = require("../../models/submission.js");
 const Question = require("../../models/question.js");
 const User = require("../../models/user.js");
-const { COMPILER_API } = require("../../utils/constants.js");
+const dotenv = require("dotenv");
 const isContestRunning = require("../../utils/isContestRunning.js");
 
+const COMPILER_API = process.env.COMPILER_API;
+
 const createSubmission = async (req, res) => {
+  console.log(COMPILER_API);
   try {
     const { code, language: lang, ques_id, ques_name } = req.body;
     console.log(req.body);
