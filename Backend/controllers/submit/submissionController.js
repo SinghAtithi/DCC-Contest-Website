@@ -1,117 +1,41 @@
-// submissionController.js
-
 const moment = require("moment");
+const axios = require("axios");
 const { ExecuteQueue } = require("../../queue/ExecuteQueue/index.js");
 const Submission = require("../../models/submission.js");
+const Question = require("../../models/question.js");
 const User = require("../../models/user.js");
+const { COMPILER_API } = require("../../utils/constants.js");
 const isContestRunning = require("../../utils/isContestRunning.js");
 
 const createSubmission = async (req, res) => {
   try {
-    // send contest_id in the body
-    const contest_id = req.body.contest_id;
-    const resp = await isContestRunning(contest_id);
-    const contest_end_time = resp.end_time;
-    const contestRunning = resp.verdict;
-    const { userId, username } = req.user;
-    const user = await User.findOne({ _id: userId }, "username").exec();
-    if (!user) {
-      return res.status(404).json({
-        error_code: "UNF",
-        error: "User not found.",
-      });
-    } else {
-      const { lang, code, ques_id, ques_name } = req.body;
-      if (!code) {
-        return res.status(400).json({
-          error_code: "ECCBE",
-          error: "Empty code cannot be executed.",
-        });
-      } else {
-        const formattedDate = moment().format("DD/MM/YYYY HH:mm").toString();
+    const { code, language: lang, ques_id, ques_name } = req.body;
+    console.log(req.body);
+    const { username } = req.user;
 
-        let display_after = formattedDate;
-        if (contestRunning) display_after = contest_end_time;
-        const submission = await createSubmissionInDb(
-          user.username,
-          ques_name,
-          lang,
-          code,
-          ques_id,
-          formattedDate,
-          display_after,
-          contest_id
-        );
+    const data = {
+      code,
+      lang,
+      ques_name,
+      username,
+      ques_id,
+    };
 
-        if (contest_id) await User.updateContestStatus(contest_id, username);
-        
-        addToQueue(
-          submission._id,
-          contestRunning,
-          user.username,
-          contest_id,
-          false,
-          res
-        );
-      }
-    }
+    console.log(data);
+
+    const CompilerApi = `${COMPILER_API}/api/compileWithInput`;
+
+    const compilerResponse = await axios.post(CompilerApi, data);
+
+    console.log("compilerResponse", compilerResponse.data);
+
+    res
+      .status(200)
+      .send({ submission_id: compilerResponse.data.submission_id });
   } catch (error) {
-    console.log("From last catch ", error);
+    console.error("Internal Server Error:", error);
     res.status(500).send("Internal Server Error");
   }
-};
-
-const createSubmissionInDb = async (
-  username,
-  ques_name,
-  language = "cpp",
-  code,
-  ques_id,
-  timestamp,
-  display_after,
-  contest_id = ""
-) => {
-  return await new Submission({
-    ques_id: ques_id,
-    ques_name: ques_name,
-    contest_id: contest_id,
-    username: username,
-    language: language,
-    code: code,
-    time_stamp: timestamp,
-    display_after: display_after,
-  }).save();
-};
-
-const addToQueue = (
-  submissionId,
-  contestRunning,
-  username,
-  contest_id,
-  testing,
-  res
-) => {
-  ExecuteQueue.add({
-    submission_id: submissionId,
-    contestRunning: contestRunning,
-    username: username,
-    contest_id: contest_id,
-    testing: testing
-  })
-    .then(() => {
-      console.log("Successfully added to the queue");
-      res.status(200).send({
-        message: "Successfully added to the queue",
-        submission_id: submissionId,
-      });
-    })
-    .catch((err) => {
-      console.log("From first catch ", err);
-      res.status(400).json({
-        error_code: "SWR",
-        error: "Something went wrong. Please try again.",
-      });
-    });
 };
 
 module.exports = createSubmission;
