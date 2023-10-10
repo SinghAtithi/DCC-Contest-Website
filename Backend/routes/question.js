@@ -26,7 +26,9 @@ router.get("/", passby, async (req, res) => {
     const allQues = await Question.find(
       { display_after: { $lte: currDate }, assigned: true },
       "ques_id name topics"
-    ).lean(); // lean() converts it to plain javascript object so thay direct manipu;ation can be done.
+    )
+      .sort({ display_after: -1 })
+      .lean(); // lean() converts it to plain javascript object so thay direct manipu;ation can be done.
 
     if (currUser) {
       const updatedAllQues = allQues.map((question) =>
@@ -36,7 +38,6 @@ router.get("/", passby, async (req, res) => {
             : false,
         })
       );
-
       res.status(200).json(updatedAllQues);
     } else res.status(200).json(allQues);
   } catch (err) {
@@ -110,9 +111,8 @@ router.post("/create", verifyAdmin, async (req, res) => {
 
     console.log(isCPZEN);
 
-
     var display_after = moment()
-      .add((isCPZEN ? 0 : 1000), "days")
+      .add(isCPZEN ? 0 : 1000, "days")
       .format("DD/MM/YYYY HH:mm")
       .toString();
     const author = await User.findOne({ _id: user.userId }, "username").exec();

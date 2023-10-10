@@ -3,4 +3,5 @@ node_modules
 TestCases
 UsersCodes
 .vscode
+yarn.lock
 package-lock.json
