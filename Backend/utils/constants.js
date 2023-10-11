@@ -1,2 +1,2 @@
-const BASE_URL = "https://code-dcc.vercel.app";
+const BASE_URL = "https://code-dcc.tech";
 module.exports = { BASE_URL };
