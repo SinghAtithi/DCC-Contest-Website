@@ -201,7 +201,7 @@ router.get("/:ques_id", (req, res) => {
         assigned: true,
       },
 
-      "ques_no name description constraints input_format output_format time_limit public_test_cases",
+      "ques_id name description constraints input_format output_format time_limit public_test_cases",
       (error, result) => {
         if (error) {
           res.status(404).json({ error: error });
@@ -229,7 +229,7 @@ router.get("/test/:ques_id", verifyAdmin, (req, res) => {
         is_draft: false,
       },
 
-      "ques_no name description constraints input_format output_format time_limit public_test_cases",
+      "ques_id name description constraints input_format output_format time_limit public_test_cases",
       (error, result) => {
         if (error) {
           res.status(404).json({ error: error });
