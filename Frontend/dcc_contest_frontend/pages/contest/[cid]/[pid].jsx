@@ -56,7 +56,7 @@ function ProblemPage() {
       };
 
       axios.get(url, options).then((res) => {
-      
+
         setContestEndTime(res.data.end_time);
         if (!(res.data.ques_ids && res.data.ques_ids.some((item) => item.ques_id === pid))) router.push("/404");
       }).catch((error) => {
@@ -124,7 +124,7 @@ function ProblemPage() {
       .post(url, params, config)
       .then((result) => {
         const submission_id = result.data.submission_id;
-      
+
 
         let poll;
         var count = 0;
@@ -147,7 +147,7 @@ function ProblemPage() {
                   const timeTaken = parseFloat(result.data.time_taken);
                   const timeTakenFormatted = timeTaken.toFixed(3);
                   setConsoleData(
-                      `Verdict: Accepted\nTime: ${timeTakenFormatted} milliseconds`
+                    `Verdict: Accepted\nTime: ${timeTakenFormatted} milliseconds`
                   );
                   setSubmitting("");
                   setbackground("bg-success");
@@ -184,25 +184,9 @@ function ProblemPage() {
                   setbackground("bg-error");
                   setConsoleLoader(false);
                   clearInterval(poll);
-                } else if (
-                  result.data.verdict === "Server Error"
-                ) {
+                } else if (result.data.verdict === "Memory Limit Exceeded") {
                   setSubmitting("");
-                  setConsoleData(`Server Error`);
-                  setbackground("bg-error");
-                  setConsoleLoader(false);
-                  clearInterval(poll);
-                }
-                else if (result.data.verdict === "May be Infinite Loop") {
-                  setSubmitting("");
-                  setConsoleData("May be Infinite Loop");
-                  setbackground("bg-error");
-                  setConsoleLoader(false);
-                  clearInterval(poll);
-                }
-                else if (result.data.verdict === "Error in IO") {
-                  setSubmitting("");
-                  setConsoleData("Error in IO");
+                  setConsoleData("Memory Limit Exceeded");
                   setbackground("bg-error");
                   setConsoleLoader(false);
                   clearInterval(poll);
