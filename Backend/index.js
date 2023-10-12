@@ -30,6 +30,7 @@ const ContestRoutes = require("./routes/contest.js");
 const UpdateRating = require("./routes/updateRating.js");
 const DashboardRoutes = require("./routes/dashboard.js");
 const UserRoutes = require("./routes/user.js");
+const challengeRoutes=require("./routes/challenge21days.js");
 
 const app = express();
 
@@ -49,7 +50,7 @@ app.use("/contest", ContestRoutes); // Routes to handle queries related to conte
 app.use("/", UpdateRating); // Routes to facilitate updating the rating after contest 
 app.use("/dashboard", DashboardRoutes); // Routes for user dashbaord
 app.use("/user", UserRoutes); // Routes to handle updates in user
-
+app.use ("/21days",challengeRoutes); // Routes to handle 21 days challenge
 
 // ------------- Database connection and starting the server --------------
 const PORT = process.env.PORT || 5000;

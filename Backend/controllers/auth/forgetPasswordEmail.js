@@ -1,7 +1,7 @@
+const { sendEmail } = require("../../email/sendEmail");
 const User = require("../../models/user");
-const { EmailQueue } = require("../../queue/EmailQueue");
-const { BASE_URL } = require("../../utils/constants");
 const moment = require("moment");
+
 async function forgetPasswordEmailController(req, res) {
   const { email } = req.body;
   try {
@@ -12,6 +12,7 @@ async function forgetPasswordEmailController(req, res) {
           "username name confirmed_email"
         ).exec();
         if (user) {
+          console.log(user)
           if (user.confirmed_email) {
             var otp = Math.floor(100000 + Math.random() * 900000);
 
@@ -19,11 +20,10 @@ async function forgetPasswordEmailController(req, res) {
             const OTP_validity = moment().add(5, "minutes");
             user.OTP_validity = OTP_validity;
 
-            user.save();
+            await user.save();
 
-            EmailQueue.add({
-              receiver: email,
-              message: {
+            try {
+              const messageBody = {
                 subject: "DCC : Reset Password",
                 template: "reset_password",
                 context: {
@@ -31,21 +31,44 @@ async function forgetPasswordEmailController(req, res) {
                   username: user.username,
                   otp: otp,
                 },
-              },
-            })
-              .then(() => {
-                console.log("Added to email queue from role update");
-                res.status(200).send({
-                  message: "Successfully sent the email.",
-                });
-              })
-              .catch((err) => {
-                console.log(err);
-                res.status(405).send({
-                  error:
-                    "Could not send the email. Please re-initiate the process of sending email.",
-                });
+              }
+              await sendEmail(email, messageBody);
+              return res.status(200).send({
+                message: "Successfully sent the email.",
               });
+            }
+            catch (err) {
+              return res.status(401).json({
+                error: "Could not send the email.",
+              });
+            }
+
+            // EmailQueue.add({
+            //   receiver: email,
+            //   message: {
+            //     subject: "DCC : Reset Password",
+            //     template: "reset_password",
+            //     context: {
+            //       name: user.name,
+            //       username: user.username,
+            //       otp: otp,
+            //     },
+            //   },
+            // })
+            //   .then(() => {
+            //     console.log("Added to email queue from role update");
+            //     res.status(200).send({
+            //       message: "Successfully sent the email.",
+            //     });
+            //   })
+            //   .catch((err) => {
+            //     console.log(err);
+            //     res.status(405).send({
+            //       error:
+            //         "Could not send the email. Please re-initiate the process of sending email.",
+            //     });
+            //   });
+
           } else {
             res.status(401).json({
               error: "Please confirm your email before any further operations.",
