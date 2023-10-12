@@ -38,6 +38,7 @@ router.get("/getQuestion", async (req, res) => {
     //{status:500,message:err,questions:[{name,ques_id,day,isToday}]}
     console.log(err);
     res.status(500).json({ message: err, questions: [] });
+    //questions=req.body.questions
   }
 });
 
@@ -93,11 +94,14 @@ router.post("/userDetails", async (req, resp) => {
       )
       .exec();
 
-    resp.status(200).json({ data: { headMap: heatMap, point: scoreNow } });
+    resp.status(200).json({ data: { headMap: heatMap, point: scoreNow ,codeForcesURL:codeForcesURL} });
   } catch (err) {
-    resp.status(500).json({ data: { headMap: "0".repeat(22), point: 0 } });
+    resp.status(500).json({ data: { headMap: "0".repeat(22), point: 0 ,codeForcesURL:"https://codeforces.com/profile"} });
   }
   //{status:200,body{data:{headMap:"101111100",point:0}}}
+  //data=req.body.data
+  //headMap=data.headMap
+  //point=data.point
 });
 
 router.get("/leaderBoard", async (req, resp) => {
@@ -108,9 +112,58 @@ router.get("/leaderBoard", async (req, resp) => {
       .sort({ totalScore: -1 })
       .exec();
     resp.status(200).json({ data: leaderBoardData });
-    //[{name,userName,codeForces,totalScore}]
+    //[{name,userName,codeForces,totalScore,heatMap}]
   } catch (err) {
     resp.status(500).json({ data: {} });
+  }
+  //data=req.body.data
+  //data=[{name,userName,codeForces,totalScore,heatMap}]
+  //ref=model of leaderBoard
+
+  //`process.env.baseurl/21days/leaderBoard`
+
+});
+
+
+router.post("/topicCodeForces", async (req, res) => {
+  try{
+
+    const username = req.body.username;
+    const queBank = req.body.queBank;
+    const today = new Date();  // Get the current date
+    const startDate = new Date("2023-09-25");  // Start date for the challenge
+    const curDay = Math.ceil((today - startDate) / (1000 * 60 * 60 * 24)); // Calculate the difference in days
+
+    const codeforcesUrl =  `https://codeforces.com/api/user.status?handle=${username}&from=1&count=500`;
+    const response = await fetch(codeforcesUrl, { method: "GET" });
+    const jsonObject = await response.json();
+    const status = jsonObject.result;
+
+    let binaryString = '0';
+
+    for (let i = 0; i < curDay; i++) {
+            const questionUrl = queBank[i];
+            const contestId = questionUrl.match(/contest\/(\d+)/)[1];
+            const code = questionUrl.slice(-1);
+
+            let problemSolved = false;
+            for (const submission of status) {
+              if (submission.creationTimeSeconds < startDate.getTime() / 1000) break;
+                if (submission.contestId == parseInt(contestId) && 
+                    submission.problem.index == code && submission.verdict == "OK") {
+                    problemSolved = true;
+                    break;
+                }
+            }
+            binaryString += problemSolved ? '1' : '0';
+    }
+    for (let i = curDay; i < 21; i++)  binaryString += '0';
+
+    res.status(200).send({ binaryString, success: true });
+  }
+  catch (err) {
+    console.log("Error: " + err);
+    res.status(400).send({ message: "Problem Status Failed", success: false });
   }
 });
 
