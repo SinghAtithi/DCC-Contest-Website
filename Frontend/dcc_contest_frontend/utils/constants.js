@@ -80,6 +80,7 @@ export const PROBLEM_SET_PAGE = "/problemset";
 export const CONTEST_PAGE = "/contest";
 export const INTERVIEW_PREP_PAGE = "/interviewPrep";
 export const ABOUT_PAGE = "/about";
+export const EVENT_PAGE = "/events";
 
 export const SETTINGS_PAGE = "/settings";
 
