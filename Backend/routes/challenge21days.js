@@ -29,7 +29,7 @@ router.get("/getQuestion", async (req, res) => {
     }
     //{status:200,questions:[{name,ques_id,day,isToday}]}
     // {status:200,body:{questions:[{name,ques_id,day,isToday}],message:"OKAY"}}
-    res.status(200).json({ message:"OKAY",questions: questions });
+    res.status(200).json({ message: "OKAY", questions: questions });
   } catch (err) {
     //{status:500,message:err,questions:[{name,ques_id,day,isToday}]}
     res.status(500).json({ message: err, questions: [] });
@@ -67,7 +67,9 @@ router.post("/userDetails", async (req, resp) => {
     const codeForcesURL = userData[0].codeforcesURL;
 
     if (userData[0].questions_solved.includes(searchParameter)) {
-      heatMap[new Date().getDate() - 13] = "1";
+      const heatMapArray = heatMap.split("");
+      heatMapArray[new Date().getDate() - 13] = "1";
+      heatMap = heatMapArray.join("");
       scoreNow += 1;
     }
     const data = await leaderBoard
