@@ -37,7 +37,7 @@ async function populateDataToOriginalServer()
         question.ques_id = question.ques_id.replace("21days", "CPZEN");
 
         const response2=await axios.post(`${process.env.COMPILER_API}/question/create`,{
-            headers:{
+            header:{
                 token: `${token}`,
                 role: `${role}`,
                 profile_pic: `${profilePic}`,
@@ -49,13 +49,13 @@ async function populateDataToOriginalServer()
         {
             throw new Error("Error in adding question");
         }
-        return json({ status:200,message:"Question added successfully"})
+        return ({ status:200,message:"Question added successfully"})
         
     }
     catch (err) 
     {
 
-        return json({ status:400,message:err.message})
+        return ({ status:400,message:err.message})
     }
 }
 
