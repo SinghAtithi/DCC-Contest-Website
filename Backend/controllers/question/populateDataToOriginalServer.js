@@ -36,7 +36,7 @@ async function populateDataToOriginalServer()
         const question=questions[0];
         question.ques_id = question.ques_id.replace("21days", "CPZEN");
 
-        const response2=await axios.post(process.env.ADD_QUESTION_URL,question,{
+        const response2=await axios.post(`${process.env.COMPILER_API}/question/create`,{
             headers:{
                 token: `${token}`,
                 role: `${role}`,
