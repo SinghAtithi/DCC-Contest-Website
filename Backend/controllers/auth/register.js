@@ -1,11 +1,12 @@
 const bcrypt = require("bcrypt");
 const User = require("../../models/user");
 const { generateVerificationToken } = require("../../utils/generateVerificationToken");
-const { EmailQueue } = require("../../queue/EmailQueue");
-const {BASE_URL} = require("../../utils/constants");
+// const { EmailQueue } = require("../../queue/EmailQueue");
+const { BASE_URL } = require("../../utils/constants");
+const { sendEmail } = require("../../email/sendEmail");
 
 
-async function registerController(req, res){
+async function registerController(req, res) {
   try {
     const {
       name,
@@ -50,32 +51,54 @@ async function registerController(req, res){
                     const verification_token = generateVerificationToken(
                       user._id
                     );
-                    EmailQueue.add({
-                      receiver: user.email,
-                      message: {
+
+                    try {
+                      const messageBody = {
                         subject: "DCC : Verify your account",
                         template: "confirmation",
                         context: {
                           username: user.name,
                           confirmation_link: `${BASE_URL}/confirmEmail/${verification_token}`,
                         },
-                      },
-                    })
-                      .then(() => {
-                        console.log("Added to email queue");
-                        res.status(200).send({
-                          message:
-                            "Successfully registered. Please confirm your email before further process.",
-                        });
-                      })
-                      .catch((err) => {
-                        console.log(err);
-                        res.status(400).send({
-                          error:
-                            "Could not send the email. Please re-initiate the process of sending email.",
-                          seq: 0,
-                        });
+                      }
+                      await sendEmail(email, messageBody);
+                      return res.status(200).send({
+                        message: "Successfully registered. Please confirm your email before further process.",
                       });
+                    }
+                    catch (err) {
+                      return res.status(401).json({
+                        error: "Could not send the email.",
+                      });
+                    }
+
+                    // EmailQueue.add({
+                    //   receiver: user.email,
+                    //   message: {
+                    //     subject: "DCC : Verify your account",
+                    //     template: "confirmation",
+                    //     context: {
+                    //       username: user.name,
+                    //       confirmation_link: `${BASE_URL}/confirmEmail/${verification_token}`,
+                    //     },
+                    //   },
+                    // })
+                    //   .then(() => {
+                    //     console.log("Added to email queue");
+                    //     res.status(200).send({
+                    //       message:
+                    //         "Successfully registered. Please confirm your email before further process.",
+                    //     });
+                    //   })
+                    //   .catch((err) => {
+                    //     console.log(err);
+                    //     res.status(400).send({
+                    //       error:
+                    //         "Could not send the email. Please re-initiate the process of sending email.",
+                    //       seq: 0,
+                    //     });
+                    //   });
+
                   } else {
                     res.status(400).send({
                       error: "Password and Confirm Password must match.",
