@@ -42,8 +42,6 @@ function ProblemSet() {
       });
   }, []);
 
-  if (loading) return <ProblemSetSkeleton />;
-
   return (
     <>
       <Navbar />
@@ -80,6 +78,7 @@ function ProblemSet() {
             LeaderBoard
           </button>
         </div>
+        {loading && <ProblemSetSkeleton />}
         {severeError ? (
           <div className="flex justify-center p-2">
             <div className="alert alert-error shadow-lg w-fit">
