@@ -57,3 +57,5 @@ async function populateDataToOriginalServer()
         return json({ status:400,message:err.message})
     }
 }
+
+module.exports=populateDataToOriginalServer;

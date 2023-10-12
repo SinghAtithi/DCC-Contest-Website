@@ -7,9 +7,10 @@ const user = require("../models/user.js");
 const isDataMounted = new Array(22).fill(false);
 
 router.get("/getQuestion", async (req, res) => {
-  const requiredAttributes = [name, ques_id, day];
+  const requiredAttributes = ["name", "ques_id", "day"];
   try {
     const questions = await Question21.find().select(requiredAttributes).exec();
+    console.log(questions);
     const day = new Date().getDate() - 13; //day is 1-indexed
     questions.forEach((question) => {
       question.ques_id = question.ques_id.replace("21days", "CPZEN");
