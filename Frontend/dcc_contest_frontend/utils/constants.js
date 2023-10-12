@@ -36,6 +36,7 @@ export const ADMIN_DASHBOARD = "/admin/dashboard";
 
 export const BASE_URL = "https://ill-pear-dalmatian-slip.cyclic.app";
 // export const BASE_URL = "http://localhost:5000";
+
 export const LOGIN_ENDPOINT_BACKEND = "/auth/login";
 export const SIGNUP_ENDPOINT_BACKEND = "/auth/register";
 

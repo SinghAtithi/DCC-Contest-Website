@@ -21,7 +21,7 @@ const createSubmission = async (req, res) => {
       lang,
       ques_name,
       username,
-      ques_id,
+      ques_id, // This is mongodb id
     };
 
     console.log(data);
