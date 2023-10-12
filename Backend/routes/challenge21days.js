@@ -28,7 +28,8 @@ router.get("/getQuestion", async (req, res) => {
       isDataMounted[day] = true;
     }
     //{status:200,questions:[{name,ques_id,day,isToday}]}
-    res.status(200).json({ questions: questions });
+    // {status:200,body:{questions:[{name,ques_id,day,isToday}],message:"OKAY"}}
+    res.status(200).json({ message:"OKAY",questions: questions });
   } catch (err) {
     //{status:500,message:err,questions:[{name,ques_id,day,isToday}]}
     res.status(500).json({ message: err, questions: [] });
@@ -89,7 +90,7 @@ router.post("/userDetails", async (req, resp) => {
   } catch (err) {
     resp.status(500).json({ data: { headMap: "0".repeat(22), point: 0 } });
   }
-  //{status:200,data:{headMap:"101111100",point:0}}
+  //{status:200,body{data:{headMap:"101111100",point:0}}}
 });
 
 router.get("/leaderBoard", async (req, resp) => {
