@@ -145,21 +145,9 @@ function ProblemPage() {
                   setbackground("bg-error");
                   setConsoleLoader(false);
                   clearInterval(poll);
-                } else if (result.data.verdict === "Server Error") {
+                } else if (result.data.verdict === "Memory Limit Exceeded") {
                   setSubmitting("");
-                  setConsoleData(`Server Error`);
-                  setbackground("bg-error");
-                  setConsoleLoader(false);
-                  clearInterval(poll);
-                } else if (result.data.verdict === "May be Infinite Loop") {
-                  setSubmitting("");
-                  setConsoleData("May be Infinite Loop");
-                  setbackground("bg-error");
-                  setConsoleLoader(false);
-                  clearInterval(poll);
-                } else if (result.data.verdict === "Error in IO") {
-                  setSubmitting("");
-                  setConsoleData("Error in IO");
+                  setConsoleData("Memory Limit Exceeded");
                   setbackground("bg-error");
                   setConsoleLoader(false);
                   clearInterval(poll);
