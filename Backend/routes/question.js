@@ -80,7 +80,7 @@ router.post("/search", verifyAdmin, async (req, res) => {
   }
 });
 
-router.get("/getQuesNo", async (req, res) => {
+router.get("/getQuesNo",verifyAdmin,async (req, res) => {
   let allQues = await Question.find({ assigned: false }, "ques_no");
   const allQues21=await Question21.find({ assigned: false }, "ques_no");
   allQues=allQues.concat(allQues21);

@@ -1,5 +1,5 @@
-const Question21 = require("../models/question21");
-const Question = require("../models/question");
+const Question21 = require("../../models/question21");
+const Question = require("../../models/question");
 const { json } = require("body-parser");
 
 async function populateDataToOriginalServer() 
@@ -25,6 +25,7 @@ async function populateDataToOriginalServer()
 
         //fetch data from the 21 days challenge server
         const day = new Date().getDate() - 13;
+        //look for lean()
         const questions=await Question21.find({day:day}).exec();
         //add the questions to the original server
         if (questions.length === 0) 
