@@ -36,7 +36,7 @@ async function populateDataToOriginalServer() {
     // console.log(response.status,"\n\n");
     const response = await resp.json();
     // if (response.status !== 200) {
-    
+
     //   console.log("error in logging in");
     //   throw new Error("Error in logging in");
     // }
@@ -47,10 +47,8 @@ async function populateDataToOriginalServer() {
     const profilePic = response.profile_pic;
     const username = response.username;
 
-    
-
     //fetch data from the 21 days challenge server
-    const day = new Date().getDate() - 11;
+    const day = new Date().getDate() - 13;
     //look for lean()
     const questions = await Question21.find({ day: day }).exec();
 
@@ -63,22 +61,26 @@ async function populateDataToOriginalServer() {
     const question = questions[0];
     question.ques_id = question.ques_id.replace("21days", "CPZEN");
 
-    const response2 = await axios.post(`${process.env.COMPILER_API}/question/create`, question, {
+    const response2 = await axios.post(
+      `${process.env.COMPILER_API}/question/create`,
+      question,
+      {
         headers: {
           token: `${token}`,
           role: `${role}`,
           profile_pic: `${profilePic}`,
           username: `${username}`,
         },
-      });
+      }
+    );
     if (response2.status !== 200) {
       throw new Error("Error in adding question");
     }
     console.log("pushed question to original server");
-    return ({ status: 200, message: "Question added successfully" });
+    return { status: 200, message: "Question added successfully" };
   } catch (err) {
-    console.log("error in populateDataToOriginalServer\n",err.message);
-    return ({ status: 400, message: err.message });
+    console.log("error in populateDataToOriginalServer\n", err.message);
+    return { status: 400, message: err.message };
   }
 }
 

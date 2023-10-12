@@ -7,10 +7,10 @@ const user = require("../models/user.js");
 const isDataMounted = new Array(22).fill(false);
 
 router.get("/getQuestion", async (req, res) => {
-  const requiredAttributes = ["name", "ques_id","day"];
+  const requiredAttributes = ["name", "ques_id", "day"];
   try {
     const questions = await Question21.find().select(requiredAttributes).exec();
-    const day = new Date().getDate() - 11; //day is 1-indexed
+    const day = new Date().getDate() - 13; //day is 1-indexed
     questions.forEach((question) => {
       question.ques_id = question.ques_id.replace("21days", "CPZEN");
       if (question.day == day) {
@@ -23,14 +23,14 @@ router.get("/getQuestion", async (req, res) => {
     //{[name,ques_id,day,isToday]}
     if (isDataMounted[day] === false) {
       const resultMounted = await populateDataToOriginalServer();
-      console.log("result from populated function ",resultMounted);
+      console.log("result from populated function ", resultMounted);
       if (resultMounted.status !== 200) {
         throw new Error("Error in mounting data");
       }
       isDataMounted[day] = true;
       console.log("data mounted");
     }
-    console.log("already mounted")
+    console.log("already mounted");
     //{status:200,questions:[{name,ques_id,day,isToday}]}
     // {status:200,body:{questions:[{name,ques_id,day,isToday}],message:"OKAY"}}
     res.status(200).json({ message: "OKAY", questions: questions });
@@ -62,7 +62,7 @@ router.post("/userDetails", async (req, resp) => {
       return;
     }
 
-    const searchParameter = "CPZEN_" + (new Date().getDate() - 11).toString();
+    const searchParameter = "CPZEN_" + (new Date().getDate() - 13).toString();
 
     const currentData = await leaderBoard
       .findOne({ userName: userName })
@@ -73,7 +73,7 @@ router.post("/userDetails", async (req, resp) => {
 
     if (userData[0].questions_solved.includes(searchParameter)) {
       const heatMapArray = heatMap.split("");
-      heatMapArray[new Date().getDate() - 11] = "1";
+      heatMapArray[new Date().getDate() - 13] = "1";
       heatMap = heatMapArray.join("");
       scoreNow += 1;
     }
