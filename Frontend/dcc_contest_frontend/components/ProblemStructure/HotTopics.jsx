@@ -11,7 +11,7 @@ function getDay() {
 
   return day;
 }
-export default function ProblemTable(props) {
+export default function HotTopics(props) {
   const [selectedProblem, setSelectedProblem] = useState(null);
   const [disabled, setDisable] = useState(false);
   const day = getDay();
@@ -67,28 +67,70 @@ export default function ProblemTable(props) {
                   </th>
                 )}
                 <td>Day {problem.day}</td>
-
-                <td>{problem.name}</td>
-
+                {day >= problem.day ? (
+                  <td>{problem.topic}</td>
+                ) : (
+                  <td>
+                    <span className="text-2xl">🔒</span>
+                  </td>
+                )}
                 <td>
-                  <Link
-                    href={
-                      problem.day <= day ? `/problems/${problem.ques_id}` : ``
-                    }
-                    target={problem.day <= day ? "_blank" : ""}
-                    disabled={problem.day > day}
-                  >
-                    <button
-                      className={`btn ${
-                        problem.day < day
-                          ? "bg-slate-600 border-none hover:bg-black hover:text-white"
-                          : "hover:bg-blue-800"
-                      } btn-info w-40 min-h-8 h-8`}
-                      disabled={problem.day > day}
-                    >
-                      {problem.status ? "Solve Again" : "Solve"}
-                    </button>
-                  </Link>
+                  <>
+                    {day >= problem.day ? (
+                      <div className="shadow-xl">
+                        <label
+                          htmlFor="my_modal_7"
+                          className="btn  btn-outline btn-info w-40 min-h-8 h-8"
+                          onClick={() => handleViewClick(problem)}
+                        >
+                          view
+                        </label>
+
+                        <input
+                          type="checkbox"
+                          id="my_modal_7"
+                          className="modal-toggle"
+                        />
+                        <div className="modal">
+                          <div className="modal-box bg-stone-700 overflow-x-hidden flex flex-col rounded-md">
+                            <div className="flex w-full items-center">
+                              <div className="text-lg font-bold flex-grow">
+                                {selectedProblem?.topic}
+                              </div>
+                              <label
+                                className="modal-backdrop bg-stone-600 px-4 py-1 rounded-md hover:bg-white hover:text-black"
+                                htmlFor="my_modal_7"
+                              >
+                                Close
+                              </label>
+                            </div>
+
+                            <i className="py-4 whitespace-normal overflow-auto">
+                              {selectedProblem?.description}
+                            </i>
+                            <div className="flex justify-between">
+                              <a
+                                className="btn  btn-outline btn-info w-40 min-h-8 h-8"
+                                href={problem.resourceURL}
+                                target="_blank"
+                              >
+                                Visit Topic
+                              </a>
+                              <a
+                                className="btn  btn-outline btn-info w-40 min-h-8 h-8"
+                                href={problem.codeforcesURL}
+                                target="_blank"
+                              >
+                                Solve Problem
+                              </a>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    ) : (
+                      <h2>🔑</h2>
+                    )}
+                  </>
                 </td>
               </tr>
             ))

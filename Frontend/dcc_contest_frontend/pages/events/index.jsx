@@ -10,6 +10,7 @@ import Progress from "../../components/progressBar/Progress";
 import Navbar from "../../components/Navbar";
 import TheFooter from "../../components/Footer";
 import LeaderBoard from "../../components/ProblemStructure/LeaderBoard";
+import HotTopics from "../../components/ProblemStructure/HotTopics";
 
 function ProblemSet() {
   const [problems, setProblems] = React.useState([]);
@@ -19,27 +20,45 @@ function ProblemSet() {
   const [loading, setLoading] = useState(true);
   const [severeError, setSevereError] = useState(""); // Error in case backend is not able to give proper response
   const [tabActive, setTabActive] = useState("Problem");
-  useEffect(() => {
-    const url = `${BASE_URL}/question`;
-    const options = {
-      headers: {
-        token: localStorage.getItem("token"),
-      },
-    };
-    axios
-      .get(url, options)
-      .then((res) => {
-        setTotalPages(Math.ceil(res.data.length / 6));
+  // useEffect(() => {
+  //   const url = `${BASE_URL}/question`;
+  //   const options = {
+  //     headers: {
+  //       token: localStorage.getItem("token"),
+  //     },
+  //   };
+  //   axios
+  //     .get(url, options)
+  //     .then((res) => {
+  //       setTotalPages(Math.ceil(res.data.length / 6));
 
-        setProblems(res.data);
+  //       setProblems(res.data);
+  //       setLoading(false);
+  //     })
+  //     .catch((error) => {
+  //       setSevereError(
+  //         "Network Error. Please check your internet connectivity."
+  //       );
+  //       setLoading(false);
+  //     });
+  // }, []);
+  useEffect(() => {
+    async function fetchQuestions() {
+      try {
+        const questionData = await getQuestion();
+
+        setProblems(questionData);
+      } catch (error) {
+        // setSevereError(
+        //   "Network Error. Please check your internet connectivity."
+        // );
+        console.error("Error fetching questions:", error.message);
+      } finally {
         setLoading(false);
-      })
-      .catch((error) => {
-        setSevereError(
-          "Network Error. Please check your internet connectivity."
-        );
-        setLoading(false);
-      });
+      }
+    }
+
+    fetchQuestions();
   }, []);
 
   return (
@@ -153,24 +172,15 @@ function ProblemSet() {
                 <h1>Hot Topics</h1>
               )}
             </div>
-            {tabActive === "ProblemSet" ? (
+            {tabActive === "Problem" ? (
               <>
                 <ProblemTable problems={problems} page={page} />
-                <PageButtons
-                  setPage={setPage}
-                  totalPages={totalPages}
-                  page={page}
-                  setAlert={setAlert}
-                />
+
                 <AlertError alert={alert} />
               </>
             ) : (
               <>
-                <ProblemTable
-                  problems={problems}
-                  page={page}
-                  tabActive={tabActive}
-                />
+                <HotTopics />
                 <AlertError alert={alert} />
               </>
             )}

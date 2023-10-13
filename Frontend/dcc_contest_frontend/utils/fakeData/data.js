@@ -23,269 +23,179 @@ export const problemSet = [
 ];
 export const problemDescription = [
   {
-    name: "Problem 1",
+    topic: "Input/Output",
+    description:
+      "In C++, input is managed through cin for user interaction or file streams for reading from files. Output is handled using cout for console display or file streams for writing to files.",
+    day: 1,
+    resourceURL: "https://www.geeksforgeeks.org/basic-input-output-c/",
+    codeforcesURL: "https://codeforces.com/contest/50/problem/A",
+  },
+  {
+    topic: "Loops",
+    description:
+      "C++ for loops offer a compact syntax for iterating over a range or condition, comprising initialization, a condition, and an update statement. They enhance code readability and efficiency in repetitive tasks.",
+    day: 2,
+    resourceURL: "https://www.geeksforgeeks.org/cpp-loops/",
+    codeforcesURL: "https://codeforces.com/contest/546/problem/A",
+  },
+  {
+    topic: "Array and String",
+    description:
+      "Arrays in C++ provide a fixed-size, sequential collection of elements. Strings, often implemented as arrays of characters, represent text. Both facilitate data storage and manipulation in compact form.",
+    day: 3,
+    resourceURL: "https://www.geeksforgeeks.org/arrays-and-strings-in-c/",
+    codeforcesURL: "https://codeforces.com/contest/41/problem/A",
+  },
+  {
+    topic: "Sorting",
+    description:
+      "In C++, you can sort an array in one line using the sort algorithm from the <algorithm> header.",
+    day: 4,
+    resourceURL: "https://www.geeksforgeeks.org/sort-c-stl/",
+    codeforcesURL: "https://codeforces.com/contest/339/problem/A",
+  },
+  {
+    topic: "More of sorting",
+    description:
+      "In C++, you can sort an array in one line using the sort algorithm from the <algorithm> header.",
+    day: 5,
+    resourceURL: "https://www.geeksforgeeks.org/sorting-algorithms/",
+    codeforcesURL: "https://codeforces.com/contest/432/problem/A",
+  },
+  {
+    topic: "More of String",
+    description:
+      "In competitive programming, 'string' refers to a sequence of characters, typically represented as an array or a data structure. Strings are used to store and manipulate text data, and they play a crucial role in a wide range of problems. Competitive programming tasks involving strings often require operations like searching for substrings, pattern matching, sorting, and various text manipulation tasks. Competitors use string algorithms and techniques to efficiently solve these problems within strict time constraints.",
+    day: 6,
+    resourceURL: "https://www.geeksforgeeks.org/stdstring-class-in-c/",
+    codeforcesURL: "https://codeforces.com/contest/71/problem/A",
+  },
+  {
+    topic: "Maps and Frequency Map",
+    description:
+      "In competitive programming, a map typically refers to a data structure like a dictionary or associative array. It stores key-value pairs and allows for efficient lookup and retrieval of values associated with specific keys. Maps are commonly used to solve problems where you need to store, retrieve, or update data quickly, such as counting occurrences of elements, maintaining frequency information, or creating data structures for efficient problem-solving. They are an essential tool for tasks that require organizing and managing data efficiently.",
+    day: 7,
+    resourceURL:
+      "https://www.geeksforgeeks.org/map-associative-containers-the-c-standard-template-library-stl/",
+    codeforcesURL: "https://codeforces.com/contest/4/problem/C",
+  },
+  {
+    topic: "Set",
+    description:
+      "In competitive programming, a set is a data structure that stores a collection of distinct elements without any specific order. It is used to efficiently check for the existence of an element in the collection or perform operations like insertion, deletion, and finding unique values. Sets are valuable for solving problems where you need to maintain a unique collection of elements, eliminate duplicates, or perform set-based operations like intersection or union. They are a fundamental tool for tasks that require handling unique values or ensuring the absence of duplicates in data.",
+    day: 8,
+    resourceURL: "https://www.geeksforgeeks.org/set-in-cpp-stl/",
+    codeforcesURL: "https://codeforces.com/contest/855/problem/A",
+  },
+  {
+    topic: "Multidimensional Array",
+    description:
+      "In competitive programming, a multi-dimensional array is a data structure used to store elements in a grid or table-like format. It's essential for representing structured data and solving problems involving grids, matrices, or multi-dimensional datasets.",
+    day: 9,
+    resourceURL:
+      "https://www.programiz.com/cpp-programming/multidimensional-arrays/",
+    codeforcesURL: "https://codeforces.com/contest/1850/problem/C",
+  },
+  {
+    topic: "MEX",
+    description:
+      "In competitive programming, MEX stands for Minimum EXcluded. It refers to finding the smallest non-negative integer that is not present in a given set of numbers or an array. Solving MEX problems often involves identifying the missing element or determining the first non-occurring integer efficiently, and it is a common task in competitive programming, especially in combinatorial and set-related problems.",
+    day: 10,
+    resourceURL:
+      "https://cp-algorithms.com/sequences/mex.html#:~:text=Given%20an%20array%20of%20size,the%20MEX%20(minimal%20excluded).",
+    codeforcesURL: "https://codeforces.com/contest/1497/problem/A",
+  },
+  {
     topic: "Prefix Sum",
     description:
-      "Prefix sum is a technique used to calculate the cumulative sum of elements in an array from 0 to the ith index. It helps in efficiently finding the sum of elements within a given range.",
-    day: 1,
-    resourceURL: "https://www.google.com",
-    codeforcesURL: "https://codeforces.com/contest/1744/problem/F",
+      "Prefix sum is a technique used in computer science to efficiently calculate the cumulative sum of elements in an array. It involves storing the sum of elements from the beginning of the array to each index. This technique is particularly useful in algorithms involving range queries or cumulative calculations.",
+    day: 11,
+    resourceURL:
+      "https://www.geeksforgeeks.org/prefix-sum-array-implementation-applications-competitive-programming/",
+    codeforcesURL: "https://codeforces.com/contest/1738/problem/B",
   },
   {
-    name: "Problem 2",
+    topic: "Two Pointers",
+    description:
+      "In competitive programming, the 'two pointers' technique involves using two pointers or indices to navigate through an array or sequence simultaneously. The pointers move towards each other or in opposite directions, efficiently searching for a specific condition or range within the data. This technique is valuable for solving problems that involve finding subarrays, subsequences, or pairs of elements that satisfy certain criteria, optimizing time complexity by avoiding redundant calculations. It is commonly used for tasks like finding subarrays with a specific sum or pairs of elements with a given difference.",
+    day: 12,
+    resourceURL: "https://www.geeksforgeeks.org/two-pointers-technique/",
+    codeforcesURL: "https://codeforces.com/contest/1873/problem/D",
+  },
+  {
+    topic: "KMP ALgorithm",
+    description:
+      "The KMP (Knuth-Morris-Pratt) algorithm is a string matching algorithm used in competitive programming and computer science. It efficiently finds all occurrences of a pattern (substring) within a longer text (string) without unnecessary backtracking. It does this by preprocessing the pattern to create a failure function or partial match table, which helps determine where to resume the search when a mismatch occurs. The KMP algorithm significantly reduces the time complexity of substring search, making it a valuable tool for solving string matching problems in an efficient manner.",
+    day: 13,
+    resourceURL:
+      "https://www.geeksforgeeks.org/kmp-algorithm-for-pattern-searching/",
+    codeforcesURL: "https://codeforces.com/contest/625/problem/B",
+  },
+  {
     topic: "Binary Search",
     description:
-      "Binary search is a divide-and-conquer algorithm used to efficiently locate a target value within a sorted array or list. It works by repeatedly dividing the search interval in half.",
-    day: 2,
-    resourceURL: "https://www.example.com/binary-search-guide",
-    codeforcesURL: "https://codeforces.com/contest/1744/problem/G",
-  },
-  {
-    name: "Problem 3",
-    topic: "Dynamic Programming",
-    description:
-      "Dynamic programming is a method for solving complex problems by breaking them down into simpler overlapping subproblems. It is particularly useful for optimization and counting problems.",
-    day: 3,
-    resourceURL: "https://www.example.com/dynamic-programming-tutorial",
-    codeforcesURL: "https://codeforces.com/contest/1744/problem/D",
-  },
-  {
-    name: "Problem 4",
-    topic: "Graph Theory",
-    description:
-      "Graph theory is the study of graphs, which are mathematical structures representing pairwise relations between objects. It has numerous applications in various fields, including computer science and network analysis.",
-    day: 4,
-    resourceURL: "https://www.example.com/graph-theory-intro",
-    codeforcesURL: "https://codeforces.com/contest/1744/problem/A",
-  },
-  {
-    name: "Problem 5",
-    topic: "Greedy Algorithms",
-    description:
-      "Greedy algorithms make locally optimal choices at each step with the hope of finding a global optimum. They are commonly used for optimization problems, where a sequence of choices must be made.",
-    day: 5,
-    resourceURL: "https://www.example.com/greedy-algorithms-explained",
-    codeforcesURL: "https://codeforces.com/contest/1744/problem/B",
-  },
-  {
-    name: "Problem 6",
-    topic: "Hashing",
-    description:
-      "Hashing is a technique that maps data to a fixed-size array, enabling efficient data retrieval. It is widely used in data structures and algorithms for tasks like data indexing and dictionary operations.",
-    day: 6,
-    resourceURL: "https://www.example.com/hashing-tutorial",
-    codeforcesURL: "https://codeforces.com/contest/1744/problem/E",
-  },
-  {
-    name: "Problem 7",
-    topic: "Sorting Algorithms",
-    description:
-      "Sorting algorithms are used to arrange elements in a specific order. Common sorting algorithms include quicksort, mergesort, and heapsort, each with its own advantages and trade-offs.",
-    day: 7,
-    resourceURL: "https://www.example.com/sorting-algorithms-guide",
-    codeforcesURL: "https://codeforces.com/contest/1744/problem/C",
-  },
-  {
-    name: "Problem 8",
-    topic: "Recursion",
-    description:
-      "Recursion is a programming technique where a function calls itself to solve a problem. It is commonly used for tasks that can be broken down into smaller, similar subproblems.",
-    day: 8,
-    resourceURL: "https://www.example.com/recursion-explained",
-    codeforcesURL: "https://codeforces.com/contest/1744/problem/H",
-  },
-  {
-    name: "Problem 9",
-    topic: "Tree Data Structures",
-    description:
-      "Tree data structures are hierarchical data structures with nodes connected by edges. They have various applications, such as representing hierarchical relationships or organizing data efficiently.",
-    day: 9,
-    resourceURL: "https://www.example.com/tree-data-structures-guide",
-    codeforcesURL: "https://codeforces.com/contest/1744/problem/J",
-  },
-  {
-    name: "Problem 10",
-    topic: "Divide and Conquer",
-    description:
-      "Divide and conquer is a problem-solving paradigm where a problem is divided into smaller subproblems that are easier to solve. It is used in algorithms like merge sort and quicksort.",
-    day: 10,
-    resourceURL: "https://www.example.com/divide-and-conquer-explained",
-    codeforcesURL: "https://codeforces.com/contest/1744/problem/I",
-  },
-  {
-    name: "Problem 11",
-    topic: "Linked Lists",
-    description:
-      "A linked list is a data structure consisting of a sequence of elements where each element points to the next one. It is used for dynamic data storage and has various variations like singly linked lists and doubly linked lists.",
-    day: 11,
-    resourceURL: "https://www.example.com/linked-lists-tutorial",
-    codeforcesURL: "https://codeforces.com/contest/1744/problem/K",
-  },
-  {
-    name: "Problem 12",
-    topic: "Searching Algorithms",
-    description:
-      "Searching algorithms are used to find a specific item in a data structure. Common search algorithms include linear search and binary search, each with different time complexities.",
-    day: 12,
-    resourceURL: "https://www.example.com/searching-algorithms-guide",
-    codeforcesURL: "https://codeforces.com/contest/1744/problem/L",
-  },
-  {
-    name: "Problem 13",
-    topic: "Dynamic Programming",
-    description:
-      "Dynamic programming is a method for solving complex problems by breaking them down into simpler overlapping subproblems. It is particularly useful for optimization and counting problems.",
-    day: 13,
-    resourceURL: "https://www.example.com/dynamic-programming-tutorial",
-    codeforcesURL: "https://codeforces.com/contest/1744/problem/M",
-  },
-  {
-    name: "Problem 14",
-    topic: "Graph Theory",
-    description:
-      "Graph theory is the study of graphs, which are mathematical structures representing pairwise relations between objects. It has numerous applications in various fields, including computer science and network analysis.",
+      "Binary search is a fundamental algorithm used in competitive programming to efficiently search for an element in a sorted array or perform other operations on a sorted dataset. It works by repeatedly dividing the search space in half, eliminating half of the remaining elements in each step until the desired element is found or determined to be absent. Binary search is an essential technique for optimizing time complexity in various problem-solving scenarios and is often a go-to choice for solving problems that involve searching, counting, or finding specific elements in ordered lists or arrays. Its time complexity is O(log N), making it highly efficient for large datasets.",
     day: 14,
-    resourceURL: "https://www.example.com/graph-theory-intro",
-    codeforcesURL: "https://codeforces.com/contest/1744/problem/N",
+    resourceURL: "https://www.geeksforgeeks.org/binary-search/",
+    codeforcesURL: "https://codeforces.com/contest/1611/problem/B",
   },
   {
-    name: "Problem 15",
-    topic: "Greedy Algorithms",
+    topic: "Activity Selection Problem",
     description:
-      "Greedy algorithms make locally optimal choices at each step with the hope of finding a global optimum. They are commonly used for optimization problems, where a sequence of choices must be made.",
+      "In competitive programming, the greedy algorithm is a strategy where you make a series of choices that seem best at each step with the hope of reaching an optimal solution. Greedy algorithms work well when the problem exhibits the greedy-choice property, meaning that selecting the locally optimal choice at each step leads to a globally optimal solution. This approach often simplifies problem-solving and is used for a wide range of optimization problems, such as scheduling, sorting, and some graph algorithms.",
     day: 15,
-    resourceURL: "https://www.example.com/greedy-algorithms-explained",
-    codeforcesURL: "https://codeforces.com/contest/1744/problem/O",
+    resourceURL:
+      "https://www.geeksforgeeks.org/activity-selection-problem-greedy-algo-1/",
+    codeforcesURL: "https://codeforces.com/contest/903/problem/C",
   },
   {
-    name: "Problem 16",
-    topic: "Greedy Algorithms",
+    topic: "Bit Manipulation",
     description:
-      "Greedy algorithms make locally optimal choices at each step with the hope of finding a global optimum. They are commonly used for optimization problems, where a sequence of choices must be made.",
+      "Bit manipulation is a technique in competitive programming that involves manipulating individual bits of binary representations to perform various operations, such as setting, clearing, toggling, or checking specific bits. It's used to optimize and solve problems that require efficient binary arithmetic, bitmasking, and bitwise operations. This technique is valuable for tasks like binary representation, counting set bits (popcount), and handling flags and masks within a compact memory space.",
     day: 16,
-    resourceURL: "https://www.example.com/greedy-algorithms-explained",
-    codeforcesURL: "https://codeforces.com/contest/1744/problem/O",
+    resourceURL: "https://www.geeksforgeeks.org/all-about-bit-manipulation/",
+    codeforcesURL: "https://codeforces.com/contest/1698/problem/A",
   },
   {
-    name: "Problem 17",
-    topic: "Greedy Algorithms",
+    topic: "Window Sliding",
     description:
-      "Greedy algorithms make locally optimal choices at each step with the hope of finding a global optimum. They are commonly used for optimization problems, where a sequence of choices must be made.",
+      "Window sliding is a technique in competitive programming that involves efficiently maintaining a 'window' of elements in an array or sequence, often using two pointers to navigate through the data. It's used for solving problems requiring subarray or subsequence analysis, optimizing time complexity by minimizing redundant calculations.",
     day: 17,
-    resourceURL: "https://www.example.com/greedy-algorithms-explained",
-    codeforcesURL: "https://codeforces.com/contest/1744/problem/O",
+    resourceURL: "https://www.geeksforgeeks.org/window-sliding-technique/",
+    codeforcesURL: "https://codeforces.com/contest/1881/problem/A",
   },
   {
-    name: "Problem 18",
-    topic: "Greedy Algorithms",
+    topic: "Recursion, Dynamic Programming",
     description:
-      "Greedy algorithms make locally optimal choices at each step with the hope of finding a global optimum. They are commonly used for optimization problems, where a sequence of choices must be made.",
+      "Recursion and dynamic programming are fundamental techniques in competitive programming. Recursion involves breaking down problems into smaller, similar subproblems by calling a function itself, while dynamic programming optimizes solutions by storing and reusing intermediate results to avoid redundant computation. These methods are used to efficiently tackle complex or recursive problems, with dynamic programming often providing improved time complexity and avoiding repetition compared to pure recursion.",
     day: 18,
-    resourceURL: "https://www.example.com/greedy-algorithms-explained",
-    codeforcesURL: "https://codeforces.com/contest/1744/problem/O",
+    resourceURL:
+      "https://www.geeksforgeeks.org/introduction-to-backtracking-data-structure-and-algorithm-tutorials/",
+    codeforcesURL: "https://codeforces.com/contest/1862/problem/A",
   },
   {
-    name: "Problem 19",
-    topic: "Greedy Algorithms",
+    topic: "Dynamic Programming",
     description:
-      "Greedy algorithms make locally optimal choices at each step with the hope of finding a global optimum. They are commonly used for optimization problems, where a sequence of choices must be made.",
+      "Recursion and dynamic programming are fundamental techniques in competitive programming. Recursion involves breaking down problems into smaller, similar subproblems by calling a function itself, while dynamic programming optimizes solutions by storing and reusing intermediate results to avoid redundant computation. These methods are used to efficiently tackle complex or recursive problems, with dynamic programming often providing improved time complexity and avoiding repetition compared to pure recursion.",
     day: 19,
-    resourceURL: "https://www.example.com/greedy-algorithms-explained",
-    codeforcesURL: "https://codeforces.com/contest/1744/problem/O",
+    resourceURL: "https://www.geeksforgeeks.org/dynamic-programming/",
+    codeforcesURL: "https://codeforces.com/contest/1182/problem/A",
   },
   {
-    name: "Problem 20",
-    topic: "Greedy Algorithms",
+    topic: "More of Binary Search",
     description:
-      "Greedy algorithms make locally optimal choices at each step with the hope of finding a global optimum. They are commonly used for optimization problems, where a sequence of choices must be made.",
+      "Binary search is a fundamental algorithm used in competitive programming to efficiently search for an element in a sorted array or perform other operations on a sorted dataset. It works by repeatedly dividing the search space in half, eliminating half of the remaining elements in each step until the desired element is found or determined to be absent. Binary search is an essential technique for optimizing time complexity in various problem-solving scenarios and is often a go-to choice for solving problems that involve searching, counting, or finding specific elements in ordered lists or arrays. Its time complexity is O(log N), making it highly efficient for large datasets.",
     day: 20,
-    resourceURL: "https://www.example.com/greedy-algorithms-explained",
-    codeforcesURL: "https://codeforces.com/contest/1744/problem/O",
+    resourceURL: "https://www.geeksforgeeks.org/cpp-binary-search/",
+    codeforcesURL: "https://codeforces.com/contest/1592/problem/A",
   },
   {
-    name: "Problem 21",
-    topic: "Greedy Algorithms",
+    topic: "Number Theory",
     description:
-      "Greedy algorithms make locally optimal choices at each step with the hope of finding a global optimum. They are commonly used for optimization problems, where a sequence of choices must be made.",
+      "Number theory in competitive programming involves solving problems related to integers and their properties. It deals with various concepts and techniques for manipulating and analyzing integers to find patterns, relationships, and solutions to mathematical problems efficiently. Key topics in number theory for competitive programming include prime numbers, divisibility, modular arithmetic, congruences, and algorithms like Euclidean algorithm and Sieve of Eratosthenes. Competitors use these concepts to solve a wide range of problems, from finding prime factors to solving modular equations and more, often requiring optimized algorithms to handle large numbers and reduce time complexity.",
     day: 21,
-    resourceURL: "https://www.example.com/greedy-algorithms-explained",
-    codeforcesURL: "https://codeforces.com/contest/1744/problem/O",
-  },
-];
-
-export const data2 = [
-  {
-    id: 1,
-    name: "Chetan Saini",
-    image: "https://i.pravatar.cc/48",
-    species: "warrior",
-    status: "21 din baat me skills double",
-    points: 30,
-    consistency: "4 days",
-  },
-
-  {
-    id: 2,
-    name: "Chetan Saini",
-    image: "https://i.pravatar.cc/48",
-    species: "warrior",
-    status: "21 din baat me skills double",
-    points: 30,
-    consistency: "4 days",
-  },
-  {
-    id: 3,
-    name: "Chetan Saini",
-    image: "https://i.pravatar.cc/48",
-    species: "warrior",
-    status: "21 din baat me skills double",
-    points: 30,
-    consistency: "4 days",
-  },
-  {
-    id: 4,
-    name: "Chetan Saini",
-    image: "https://i.pravatar.cc/48",
-    species: "warrior",
-    status: "21 din baat me skills double",
-    points: 30,
-    consistency: "4 days",
-  },
-  {
-    id: 5,
-    name: "Chetan Saini",
-    image: "https://i.pravatar.cc/48",
-    species: "warrior",
-    status: "21 din baat me skills double",
-    points: 30,
-    consistency: "4 days",
-  },
-
-  {
-    id: 6,
-    name: "Chetan Saini",
-    image: "https://i.pravatar.cc/48",
-    species: "warrior",
-    status: "21 din baat me skills double",
-    points: 30,
-    consistency: "4 days",
-  },
-  {
-    id: 7,
-    name: "Chetan Saini",
-    image: "https://i.pravatar.cc/48",
-    species: "warrior",
-    status: "21 din baat me skills double",
-    points: 30,
-    consistency: "4 days",
-  },
-  {
-    id: 8,
-    name: "Chetan Saini",
-    image: "https://i.pravatar.cc/48",
-    species: "warrior",
-    status: "21 din baat me skills double",
-    points: 30,
-    consistency: "4 days",
+    resourceURL:
+      "https://www.geeksforgeeks.org/number-theory-competitive-programming/",
+    codeforcesURL: "https://codeforces.com/contest/742/problem/A",
   },
 ];
