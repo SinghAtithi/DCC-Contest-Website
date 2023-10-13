@@ -1,5 +1,6 @@
 const express = require("express");
 const Question21 = require("../models/question21");
+const Question=require("../models/question.js");
 const populateDataToOriginalServer = require("../controllers/question/populateDataToOriginalServer.js");
 const router = express.Router();
 const leaderBoard = require("../models/leaderBoard.js");
