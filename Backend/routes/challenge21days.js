@@ -11,7 +11,7 @@ router.get("/getQuestion", async (req, res) => {
   const requiredAttributes = ["name", "ques_id", "day"];
   try {
     const questions = await Question21.find().select(requiredAttributes).exec();
-    const day = new Date().getDate() - 12; //day is 1-indexed
+    const day = new Date().getDate() - 13; //day is 1-indexed
     questions.forEach((question) => {
       question.ques_id = question.ques_id.replace("21days", "CPZEN");
       if (question.day == day) {
@@ -23,7 +23,7 @@ router.get("/getQuestion", async (req, res) => {
     console.log(questions);
     //{[name,ques_id,day,isToday]}
     if (isDataMounted[day] === false) {
-      let dayToSearch = (new Date().getDate() - 12).toString();
+      let dayToSearch = (new Date().getDate() - 13).toString();
       if (dayToSearch.length === 1) {
         dayToSearch = "0" + dayToSearch;
       }
@@ -67,15 +67,15 @@ router.post("/userDetails", async (req, resp) => {
   try {
     console.log("hello hi");
     const userData = await user
-    .find({ username: username }, "codeforcesURL questions_solved")
-    .exec();
+      .find({ username: username }, "codeforcesURL questions_solved")
+      .exec();
     if (userData.length === 0) {
       //user not found
       resp.status(400).json({ message: "user not found" });
       return;
     }
 
-    const searchParameter = "CPZEN_" + (new Date().getDate() - 12).toString();
+    const searchParameter = "CPZEN_" + (new Date().getDate() - 13).toString();
 
     const currentData = await leaderBoard
       .findOne({ username: username })
@@ -87,11 +87,11 @@ router.post("/userDetails", async (req, resp) => {
     // console.log(currentData);
     if (userData[0].questions_solved.includes(searchParameter)) {
       const heatMapArray = heatMap.split("");
-      heatMapArray[new Date().getDate() - 12] = "1";
+      heatMapArray[new Date().getDate() - 13] = "1";
       heatMap = heatMapArray.join("");
       scoreNow += 1;
     }
-    console.log(userData);
+    // console.log(userData);
     const data = await leaderBoard
       .updateOne(
         { username: username },
@@ -107,7 +107,7 @@ router.post("/userDetails", async (req, resp) => {
         { upsert: true }
       )
       .exec();
-
+    // console.log(data);
     resp.status(200).json({
       data: {
         headMap: heatMap,
