@@ -1,6 +1,6 @@
 const express = require("express");
 const Question21 = require("../models/question21");
-const Question=require("../models/question.js");
+const Question = require("../models/question.js");
 const populateDataToOriginalServer = require("../controllers/question/populateDataToOriginalServer.js");
 const router = express.Router();
 const leaderBoard = require("../models/leaderBoard.js");
@@ -11,7 +11,7 @@ router.get("/getQuestion", async (req, res) => {
   const requiredAttributes = ["name", "ques_id", "day"];
   try {
     const questions = await Question21.find().select(requiredAttributes).exec();
-    const day = new Date().getDate() - 13; //day is 1-indexed
+    const day = new Date().getDate() - 12; //day is 1-indexed
     questions.forEach((question) => {
       question.ques_id = question.ques_id.replace("21days", "CPZEN");
       if (question.day == day) {
@@ -23,25 +23,21 @@ router.get("/getQuestion", async (req, res) => {
     console.log(questions);
     //{[name,ques_id,day,isToday]}
     if (isDataMounted[day] === false) {
-      let dayToSearch=(new Date().getDate() - 13).toString();
-      if(dayToSearch.length===1)
-      {
-        dayToSearch="0"+dayToSearch;
+      let dayToSearch = (new Date().getDate() - 12).toString();
+      if (dayToSearch.length === 1) {
+        dayToSearch = "0" + dayToSearch;
       }
       const isQuestionPresentInDB = await Question.findOne({
         ques_id: `CPZEN_${dayToSearch}`,
       }).exec();
-      if (!isQuestionPresentInDB) 
-      {
+      if (!isQuestionPresentInDB) {
         const resultMounted = await populateDataToOriginalServer();
         console.log("result from populated function ", resultMounted);
         if (resultMounted.status !== 200) {
           throw new Error("Error in mounting data");
         }
         console.log("data mounted");
-      }
-      else
-      {
+      } else {
         console.log("server restarted but data already mounted");
       }
       isDataMounted[day] = true;
@@ -70,27 +66,27 @@ router.post("/userDetails", async (req, resp) => {
   }
   try {
     const userData = await user
-      .find({ username: username }, { codeforcesURL, questions_solved })
-      .exec();
-
+    .find({ username: username }, "codeforcesURL questions_solved")
+    .exec();
     if (userData.length === 0) {
       //user not found
       resp.status(400).json({ message: "user not found" });
       return;
     }
 
-    const searchParameter = "CPZEN_" + (new Date().getDate() - 13).toString();
+    const searchParameter = "CPZEN_" + (new Date().getDate() - 12).toString();
 
     const currentData = await leaderBoard
       .findOne({ username: username })
       .exec();
     let scoreNow = currentData ? currentData.totalScore : 0;
     let heatMap = currentData ? currentData.heatMap : "0".repeat(22);
-    const codeForcesURL = userData[0].codeforcesURL;
+    const codeforcesURL = userData[0].codeforcesURL;
 
+    // console.log(currentData);
     if (userData[0].questions_solved.includes(searchParameter)) {
       const heatMapArray = heatMap.split("");
-      heatMapArray[new Date().getDate() - 13] = "1";
+      heatMapArray[new Date().getDate() - 12] = "1";
       heatMap = heatMapArray.join("");
       scoreNow += 1;
     }
@@ -101,7 +97,7 @@ router.post("/userDetails", async (req, resp) => {
           $set: {
             totalScore: scoreNow,
             heatMap: heatMap,
-            codeforcesURL: codeForcesURL,
+            codeforcesURL: codeforcesURL,
             username: username,
             name: name,
           },
@@ -110,9 +106,22 @@ router.post("/userDetails", async (req, resp) => {
       )
       .exec();
 
-    resp.status(200).json({ data: { headMap: heatMap, point: scoreNow ,codeForcesURL:codeForcesURL} });
+    resp.status(200).json({
+      data: {
+        headMap: heatMap,
+        point: scoreNow,
+        codeforcesURL: codeforcesURL,
+      },
+    });
   } catch (err) {
-    resp.status(500).json({ data: { headMap: "0".repeat(22), point: 0 ,codeForcesURL:"https://codeforces.com/profile"} });
+    console.log(err.message);
+    resp.status(500).json({
+      data: {
+        headMap: "0".repeat(22),
+        point: 0,
+        codeforcesURL: "https://codeforces.com/profile",
+      },
+    });
   }
   //{status:200,body{data:{headMap:"101111100",point:0}}}
   //data=req.body.data
@@ -137,47 +146,46 @@ router.get("/leaderBoard", async (req, resp) => {
   //ref=model of leaderBoard
 
   //`process.env.baseurl/21days/leaderBoard`
-
 });
 
-
 router.post("/topicCodeForces", async (req, res) => {
-  try{
-
+  try {
     const username = req.body.username;
     const queBank = req.body.queBank;
-    const today = new Date();  // Get the current date
-    const startDate = new Date("2023-09-25");  // Start date for the challenge
+    const today = new Date(); // Get the current date
+    const startDate = new Date("2023-09-25"); // Start date for the challenge
     const curDay = Math.ceil((today - startDate) / (1000 * 60 * 60 * 24)); // Calculate the difference in days
 
-    const codeforcesUrl =  `https://codeforces.com/api/user.status?handle=${username}&from=1&count=500`;
-    const response = await fetch(codeforcesUrl, { method: "GET" });
+    const codeforcesURL = `https://codeforces.com/api/user.status?handle=${username}&from=1&count=500`;
+    const response = await fetch(codeforcesURL, { method: "GET" });
     const jsonObject = await response.json();
     const status = jsonObject.result;
 
-    let binaryString = '0';
+    let binaryString = "0";
 
     for (let i = 0; i < curDay; i++) {
-            const questionUrl = queBank[i];
-            const contestId = questionUrl.match(/contest\/(\d+)/)[1];
-            const code = questionUrl.slice(-1);
+      const questionUrl = queBank[i];
+      const contestId = questionUrl.match(/contest\/(\d+)/)[1];
+      const code = questionUrl.slice(-1);
 
-            let problemSolved = false;
-            for (const submission of status) {
-              if (submission.creationTimeSeconds < startDate.getTime() / 1000) break;
-                if (submission.contestId == parseInt(contestId) && 
-                    submission.problem.index == code && submission.verdict == "OK") {
-                    problemSolved = true;
-                    break;
-                }
-            }
-            binaryString += problemSolved ? '1' : '0';
+      let problemSolved = false;
+      for (const submission of status) {
+        if (submission.creationTimeSeconds < startDate.getTime() / 1000) break;
+        if (
+          submission.contestId == parseInt(contestId) &&
+          submission.problem.index == code &&
+          submission.verdict == "OK"
+        ) {
+          problemSolved = true;
+          break;
+        }
+      }
+      binaryString += problemSolved ? "1" : "0";
     }
-    for (let i = curDay; i < 21; i++)  binaryString += '0';
+    for (let i = curDay; i < 21; i++) binaryString += "0";
 
     res.status(200).send({ binaryString, success: true });
-  }
-  catch (err) {
+  } catch (err) {
     console.log("Error: " + err);
     res.status(400).send({ message: "Problem Status Failed", success: false });
   }
