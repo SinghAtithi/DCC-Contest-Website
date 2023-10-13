@@ -160,8 +160,6 @@ router.post("/topicCodeForces", async (req, res) => {
 
     const codeforcesUrl = `https://codeforces.com/api/user.status?handle=${username}&from=1&count=500`;
     const response = await fetch(codeforcesUrl, { method: "GET" });
-    const codeforcesURL = `https://codeforces.com/api/user.status?handle=${username}&from=1&count=500`;
-    const response = await fetch(codeforcesURL, { method: "GET" });
     const jsonObject = await response.json();
     const status = jsonObject.result;
 
