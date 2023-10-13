@@ -22,13 +22,28 @@ router.get("/getQuestion", async (req, res) => {
     console.log(questions);
     //{[name,ques_id,day,isToday]}
     if (isDataMounted[day] === false) {
-      const resultMounted = await populateDataToOriginalServer();
-      console.log("result from populated function ", resultMounted);
-      if (resultMounted.status !== 200) {
-        throw new Error("Error in mounting data");
+      let dayToSearch=(new Date().getDate() - 13).toString();
+      if(dayToSearch.length===1)
+      {
+        dayToSearch="0"+dayToSearch;
+      }
+      const isQuestionPresentInDB = await Question.findOne({
+        ques_id: `CPZEN_${dayToSearch}`,
+      }).exec();
+      if (!isQuestionPresentInDB) 
+      {
+        const resultMounted = await populateDataToOriginalServer();
+        console.log("result from populated function ", resultMounted);
+        if (resultMounted.status !== 200) {
+          throw new Error("Error in mounting data");
+        }
+        console.log("data mounted");
+      }
+      else
+      {
+        console.log("server restarted but data already mounted");
       }
       isDataMounted[day] = true;
-      console.log("data mounted");
     }
     console.log("already mounted");
     //{status:200,questions:[{name,ques_id,day,isToday}]}
