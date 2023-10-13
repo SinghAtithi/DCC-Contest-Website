@@ -65,6 +65,7 @@ router.post("/userDetails", async (req, resp) => {
     return;
   }
   try {
+    console.log("hello hi");
     const userData = await user
     .find({ username: username }, "codeforcesURL questions_solved")
     .exec();
@@ -90,6 +91,7 @@ router.post("/userDetails", async (req, resp) => {
       heatMap = heatMapArray.join("");
       scoreNow += 1;
     }
+    console.log(userData);
     const data = await leaderBoard
       .updateOne(
         { username: username },
