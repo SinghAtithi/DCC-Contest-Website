@@ -43,18 +43,18 @@ router.get("/getQuestion", async (req, res) => {
 });
 
 router.post("/userDetails", async (req, resp) => {
-  //req.body.userName
+  //req.body.username
   //req.body.name
   const name = req.body.name;
-  const userName = req.body.userName;
+  const username = req.body.username;
 
-  if (name == null || userName == null) {
-    resp.status(400).json({ message: "userName or name not provided" });
+  if (name == null || username == null) {
+    resp.status(400).json({ message: "username or name not provided" });
     return;
   }
   try {
     const userData = await user
-      .find({ userName: userName }, { codeforcesURL, questions_solved })
+      .find({ username: username }, { codeforcesURL, questions_solved })
       .exec();
 
     if (userData.length === 0) {
@@ -66,7 +66,7 @@ router.post("/userDetails", async (req, resp) => {
     const searchParameter = "CPZEN_" + (new Date().getDate() - 13).toString();
 
     const currentData = await leaderBoard
-      .findOne({ userName: userName })
+      .findOne({ username: username })
       .exec();
     let scoreNow = currentData ? currentData.totalScore : 0;
     let heatMap = currentData ? currentData.heatMap : "0".repeat(22);
@@ -80,13 +80,13 @@ router.post("/userDetails", async (req, resp) => {
     }
     const data = await leaderBoard
       .updateOne(
-        { userName: userName },
+        { username: username },
         {
           $set: {
             totalScore: scoreNow,
             heatMap: heatMap,
             codeforcesURL: codeForcesURL,
-            userName: userName,
+            username: username,
             name: name,
           },
         },
@@ -105,19 +105,19 @@ router.post("/userDetails", async (req, resp) => {
 });
 
 router.get("/leaderBoard", async (req, resp) => {
-  //[{status:200,data:{userName:"",name:"",point:"",codeForces:""}}]
+  //[{status:200,data:{username:"",name:"",point:"",codeForces:""}}]
   try {
     const leaderBoardData = await leaderBoard
       .find()
       .sort({ totalScore: -1 })
       .exec();
     resp.status(200).json({ data: leaderBoardData });
-    //[{name,userName,codeForces,totalScore,heatMap}]
+    //[{name,username,codeForces,totalScore,heatMap}]
   } catch (err) {
     resp.status(500).json({ data: {} });
   }
   //data=req.body.data
-  //data=[{name,userName,codeForces,totalScore,heatMap}]
+  //data=[{name,username,codeForces,totalScore,heatMap}]
   //ref=model of leaderBoard
 
   //`process.env.baseurl/21days/leaderBoard`
