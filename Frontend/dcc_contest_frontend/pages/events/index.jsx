@@ -44,14 +44,16 @@ function ProblemSet() {
   // }, []);
   useEffect(() => {
     async function fetchQuestions() {
+      const url = `http://localhost:5000/21days/getQuestion`;
       try {
-        const questionData = await getQuestion();
+        const res = await fetch(url);
+        const data = await res.json();
 
-        setProblems(questionData);
+        setProblems(data.questions);
       } catch (error) {
-        // setSevereError(
-        //   "Network Error. Please check your internet connectivity."
-        // );
+        setSevereError(
+          "Network Error. Please check your internet connectivity."
+        );
         console.error("Error fetching questions:", error.message);
       } finally {
         setLoading(false);
@@ -174,7 +176,7 @@ function ProblemSet() {
             </div>
             {tabActive === "Problem" ? (
               <>
-                <ProblemTable problems={problems} page={page} />
+                <ProblemTable problems={problems} />
 
                 <AlertError alert={alert} />
               </>

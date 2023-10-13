@@ -1,21 +1,18 @@
+import axios from "axios";
+
 const base_url = "http://localhost:5000";
 export async function getQuestion() {
-  const res = await fetch(`${base_url}/21days/getQuestion`);
-  try {
-    if (!res.ok) {
-      throw new Error("Failed getting Question");
-    }
+  const url = `http://localhost:5000/21days/getQuestion`;
 
-    const response = await res.json();
-
-    if (response.message === "OKAY") {
-      return response.questions;
-    } else {
-      throw new Error(response.message);
-    }
-  } catch (error) {
-    console.log(error.message);
-  }
+  return axios
+    .get(url)
+    .then((response) => {
+      return response.data;
+    })
+    .catch((error) => {
+      console.log(error.message);
+      throw error; // Re-throw the error to propagate it further if needed
+    });
 }
 export async function getHeatMapPoints(userName, name) {
   const res = await fetch(`${base_url}/userDetails`, {

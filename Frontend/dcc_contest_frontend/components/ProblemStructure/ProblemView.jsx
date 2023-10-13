@@ -15,27 +15,24 @@ export default function ProblemTable(props) {
   const [selectedProblem, setSelectedProblem] = useState(null);
   const [disabled, setDisable] = useState(false);
   const day = getDay();
-
+  console.log("Problems" + props.problems);
   console.log("Day number " + day);
-  const handleViewClick = (problem) => {
-    setSelectedProblem(problem);
-  };
 
   return (
     <div>
-      <table className="table w-full custom-table mx-auto">
+      <table className="table w-full custom-table">
         <thead>
           <tr>
             <th></th>
             <th>Day</th>
 
-            {props.tabActive === "Problem" ? <th>Name</th> : <th>Topic</th>}
+            {props.tabActive !== "Problem" ? <th>Name</th> : <th>Topic</th>}
             <th>Action</th>
           </tr>
         </thead>
         <tbody>
-          {problemDescription && problemDescription.length != 0 ? (
-            problemDescription.map((problem) => (
+          {props.problems && props.problems.length != 0 ? (
+            props.problems.map((problem) => (
               <tr key={problem.day} className="hover cursor-pointer">
                 {problem.status ? (
                   <th>
