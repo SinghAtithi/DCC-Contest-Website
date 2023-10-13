@@ -11,7 +11,7 @@ router.get("/getQuestion", async (req, res) => {
   const requiredAttributes = ["name", "ques_id", "day"];
   try {
     const questions = await Question21.find().select(requiredAttributes).exec();
-    const day = new Date().getDate() - 13; //day is 1-indexed
+    const day = new Date().getDate() - 12; //day is 1-indexed
     questions.forEach((question) => {
       question.ques_id = question.ques_id.replace("21days", "CPZEN");
       if (question.day == day) {
@@ -75,7 +75,7 @@ router.post("/userDetails", async (req, resp) => {
       return;
     }
 
-    const searchParameter = "CPZEN_" + (new Date().getDate() - 13).toString();
+    const searchParameter = "CPZEN_" + (new Date().getDate() - 12).toString();
 
     const currentData = await leaderBoard
       .findOne({ username: username })
@@ -87,7 +87,7 @@ router.post("/userDetails", async (req, resp) => {
     // console.log(currentData);
     if (userData[0].questions_solved.includes(searchParameter)) {
       const heatMapArray = heatMap.split("");
-      heatMapArray[new Date().getDate() - 13] = "1";
+      heatMapArray[new Date().getDate() - 12] = "1";
       heatMap = heatMapArray.join("");
       scoreNow += 1;
     }
@@ -158,6 +158,8 @@ router.post("/topicCodeForces", async (req, res) => {
     const startDate = new Date("2023-09-25"); // Start date for the challenge
     const curDay = Math.ceil((today - startDate) / (1000 * 60 * 60 * 24)); // Calculate the difference in days
 
+    const codeforcesUrl = `https://codeforces.com/api/user.status?handle=${username}&from=1&count=500`;
+    const response = await fetch(codeforcesUrl, { method: "GET" });
     const codeforcesURL = `https://codeforces.com/api/user.status?handle=${username}&from=1&count=500`;
     const response = await fetch(codeforcesURL, { method: "GET" });
     const jsonObject = await response.json();
