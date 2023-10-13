@@ -1,6 +1,6 @@
 const express = require("express");
 const Question21 = require("../models/question21");
-const Question = require("../models/question");
+const Question = require("../models/question.js");
 const populateDataToOriginalServer = require("../controllers/question/populateDataToOriginalServer.js");
 const router = express.Router();
 const leaderBoard = require("../models/leaderBoard.js");
@@ -23,7 +23,7 @@ router.get("/getQuestion", async (req, res) => {
     console.log(questions);
     //{[name,ques_id,day,isToday]}
     if (isDataMounted[day] === false) {
-      let dayToSearch = (new Date().getDate() - 12).toString();
+      let dayToSearch = (new Date().getDate() - 13).toString();
       if (dayToSearch.length === 1) {
         dayToSearch = "0" + dayToSearch;
       }
@@ -65,10 +65,10 @@ router.post("/userDetails", async (req, resp) => {
     return;
   }
   try {
+    console.log("hello hi");
     const userData = await user
-      .find({ username: username }, { codeforcesURL, questions_solved })
+      .find({ username: username }, "codeforcesURL questions_solved")
       .exec();
-
     if (userData.length === 0) {
       //user not found
       resp.status(400).json({ message: "user not found" });
@@ -82,14 +82,16 @@ router.post("/userDetails", async (req, resp) => {
       .exec();
     let scoreNow = currentData ? currentData.totalScore : 0;
     let heatMap = currentData ? currentData.heatMap : "0".repeat(22);
-    const codeForcesURL = userData[0].codeforcesURL;
+    const codeforcesURL = userData[0].codeforcesURL;
 
+    // console.log(currentData);
     if (userData[0].questions_solved.includes(searchParameter)) {
       const heatMapArray = heatMap.split("");
       heatMapArray[new Date().getDate() - 12] = "1";
       heatMap = heatMapArray.join("");
       scoreNow += 1;
     }
+    // console.log(userData);
     const data = await leaderBoard
       .updateOne(
         { username: username },
@@ -97,7 +99,7 @@ router.post("/userDetails", async (req, resp) => {
           $set: {
             totalScore: scoreNow,
             heatMap: heatMap,
-            codeforcesURL: codeForcesURL,
+            codeforcesURL: codeforcesURL,
             username: username,
             name: name,
           },
@@ -105,20 +107,21 @@ router.post("/userDetails", async (req, resp) => {
         { upsert: true }
       )
       .exec();
-
+    // console.log(data);
     resp.status(200).json({
       data: {
         headMap: heatMap,
         point: scoreNow,
-        codeForcesURL: codeForcesURL,
+        codeforcesURL: codeforcesURL,
       },
     });
   } catch (err) {
+    console.log(err.message);
     resp.status(500).json({
       data: {
         headMap: "0".repeat(22),
         point: 0,
-        codeForcesURL: "https://codeforces.com/profile",
+        codeforcesURL: "https://codeforces.com/profile",
       },
     });
   }
@@ -157,6 +160,8 @@ router.post("/topicCodeForces", async (req, res) => {
 
     const codeforcesUrl = `https://codeforces.com/api/user.status?handle=${username}&from=1&count=500`;
     const response = await fetch(codeforcesUrl, { method: "GET" });
+    const codeforcesURL = `https://codeforces.com/api/user.status?handle=${username}&from=1&count=500`;
+    const response = await fetch(codeforcesURL, { method: "GET" });
     const jsonObject = await response.json();
     const status = jsonObject.result;
 

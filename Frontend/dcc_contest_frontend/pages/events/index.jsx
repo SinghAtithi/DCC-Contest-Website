@@ -48,7 +48,6 @@ function ProblemSet() {
       try {
         const res = await fetch(url);
         const data = await res.json();
-
         setProblems(data.questions);
       } catch (error) {
         setSevereError(
