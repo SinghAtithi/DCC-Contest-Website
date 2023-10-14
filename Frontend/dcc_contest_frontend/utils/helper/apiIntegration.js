@@ -1,4 +1,5 @@
 import axios from "axios";
+import { func } from "prop-types";
 
 const base_url = "http://localhost:5000";
 export async function getQuestion() {
@@ -47,10 +48,11 @@ export async function getLeaderboardData() {
   }
 }
 export function streak(binaryString) {
+  console.log(binaryString);
   let maxStreak = 0;
   let currentStreak = 0;
 
-  for (let i = 0; i < binaryString.length; i++) {
+  for (let i = 0; i < binaryString?.length; i++) {
     if (binaryString[i] === "1") {
       currentStreak++;
       maxStreak = Math.max(maxStreak, currentStreak);
@@ -65,4 +67,13 @@ export function codeforcesName(url) {
   const parts = url.split("/");
   const username = parts.pop();
   return username;
+}
+export function progressBar(binaryString) {
+  let count = 0;
+  for (let i = 0; i < binaryString?.length; i++) {
+    if (binaryString[i] === "1") {
+      count++;
+    }
+  }
+  return count;
 }

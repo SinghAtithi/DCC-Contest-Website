@@ -11,7 +11,8 @@ import Navbar from "../../components/Navbar";
 import TheFooter from "../../components/Footer";
 import LeaderBoard from "../../components/ProblemStructure/LeaderBoard";
 import HotTopics from "../../components/ProblemStructure/HotTopics";
-
+import { useSelector } from "react-redux";
+import { codeforcesName, progressBar } from "../../utils/helper/apiIntegration";
 function ProblemSet() {
   const [problems, setProblems] = React.useState([]);
   const [page, setPage] = useState(1);
@@ -20,28 +21,11 @@ function ProblemSet() {
   const [loading, setLoading] = useState(true);
   const [severeError, setSevereError] = useState(""); // Error in case backend is not able to give proper response
   const [tabActive, setTabActive] = useState("Problem");
-  // useEffect(() => {
-  //   const url = `${BASE_URL}/question`;
-  //   const options = {
-  //     headers: {
-  //       token: localStorage.getItem("token"),
-  //     },
-  //   };
-  //   axios
-  //     .get(url, options)
-  //     .then((res) => {
-  //       setTotalPages(Math.ceil(res.data.length / 6));
+  const [points, setPoints] = useState(0);
+  const [url1, setUrl1] = useState("");
+  const [binaryString, setBinaryString] = useState("");
+  const loginState = useSelector((state) => state.login);
 
-  //       setProblems(res.data);
-  //       setLoading(false);
-  //     })
-  //     .catch((error) => {
-  //       setSevereError(
-  //         "Network Error. Please check your internet connectivity."
-  //       );
-  //       setLoading(false);
-  //     });
-  // }, []);
   useEffect(() => {
     async function fetchQuestions() {
       const url = `http://localhost:5000/21days/getQuestion`;
@@ -61,6 +45,48 @@ function ProblemSet() {
 
     fetchQuestions();
   }, []);
+  useEffect(() => {
+    async function fetch() {
+      if (loginState.loggedIn) {
+        const requestData = {
+          username: loginState.username, // Use the username from the Redux state.
+        };
+
+        axios
+          .post("http://localhost:5000/21days/userDetails", requestData)
+          .then(function (response) {
+            const { data } = response.data; // Add heatMap here if you need it.
+            console.log(data.headMap);
+            setBinaryString(data.headMap);
+            setPoints(data.point);
+            setUrl1(data.codeforcesURL);
+          })
+          .catch(function (error) {
+            console.log(error);
+          });
+      }
+    }
+    fetch();
+  }, [loginState.loggedIn, loginState.username]);
+  useEffect(() => {
+    async function getHotTopic() {
+      const codeForcesNames = {
+        username: codeforcesName(url1),
+      };
+      axios
+        .post("http://localhost:5000/21days/topicCodeForces", codeForcesNames)
+        .then(function (response) {
+          const { binaryString, success } = response.data;
+
+          // console.log("api", binaryString, success);
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
+    }
+    getHotTopic();
+  }, []);
+  const progress = progressBar(binaryString);
 
   return (
     <>
@@ -127,10 +153,10 @@ function ProblemSet() {
             <div className="text-3xl m-4 mb-9 flex items-center justify-center font-serif">
               {tabActive === "Problem" ? (
                 <div className="flex justify-between w-3/4 items-center mr-20">
-                  <Progress />
+                  <Progress progress={progress} />
                   <h1>Problem Set</h1>
                   <div className="flex gap-3 items-center justify-center">
-                    <h2>Streak</h2>
+                    <h2>Points</h2>
                     <div className="flex">
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
@@ -165,7 +191,7 @@ function ProblemSet() {
                         ></path>
                       </svg>
 
-                      <h2>10+</h2>
+                      <h2>{points}</h2>
                     </div>
                   </div>
                 </div>
@@ -175,7 +201,7 @@ function ProblemSet() {
             </div>
             {tabActive === "Problem" ? (
               <>
-                <ProblemTable problems={problems} />
+                <ProblemTable problems={problems} binaryString={binaryString} />
 
                 <AlertError alert={alert} />
               </>

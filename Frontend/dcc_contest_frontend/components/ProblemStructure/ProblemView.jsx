@@ -1,7 +1,10 @@
 import Link from "next/link";
-import React, { useState } from "react";
+import axios from "axios";
+import React, { useState, useEffect } from "react";
 import { flushSync } from "react-dom";
 import { problemSet, problemDescription } from "../../utils/fakeData/data";
+import { useSelector } from "react-redux";
+import { progressBar } from "../../utils/helper/apiIntegration";
 
 function getDay() {
   const startingDay = 10;
@@ -12,8 +15,6 @@ function getDay() {
   return day;
 }
 export default function ProblemTable(props) {
-  const [selectedProblem, setSelectedProblem] = useState(null);
-  const [disabled, setDisable] = useState(false);
   const day = getDay();
   console.log("Problems" + props.problems);
   console.log("Day number " + day);
@@ -32,9 +33,9 @@ export default function ProblemTable(props) {
         </thead>
         <tbody>
           {props.problems && props.problems.length != 0 ? (
-            props.problems.map((problem) => (
+            props.problems.map((problem, index) => (
               <tr key={problem.day} className="hover cursor-pointer">
-                {problem.status ? (
+                {props.binaryString[index] == "1" ? (
                   <th>
                     <svg
                       xmlns="http://www.w3.org/2000/svg"

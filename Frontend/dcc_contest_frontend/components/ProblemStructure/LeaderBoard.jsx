@@ -1,6 +1,53 @@
+import { useState, useEffect } from "react";
 import leaddata from "../../utils/fakeData/leaddata";
+import { streak } from "../../utils/helper/apiIntegration";
 
 export default function LeaderBoard() {
+  const [leaderBoard, setLeaderBoard] = useState([]);
+  const [serverError, setServerError] = useState("");
+
+  useEffect(() => {
+    async function fetchQuestions() {
+      const url = `http://localhost:5000/21days/leaderboard`;
+      try {
+        const res = await fetch(url);
+        const { data } = await res.json();
+        console.log(data);
+        setLeaderBoard(data);
+      } catch (error) {
+        setServerError(
+          "Network Error. Please check your internet connectivity."
+        );
+        console.error("Error fetching questions:", error.message);
+      }
+    }
+
+    fetchQuestions();
+  }, []);
+  if (serverError)
+    return (
+      <div className="flex justify-center p-2">
+        <div className="alert alert-error shadow-lg w-fit">
+          <div>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="stroke-current flex-shrink-0 h-6 w-6"
+              fill="none"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
+                d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"
+              />
+            </svg>
+            <span>{serverError}</span>
+          </div>
+        </div>
+      </div>
+    );
+
   return (
     <>
       <div className="flex items-center justify-between mx-[500px]">
@@ -114,45 +161,36 @@ export default function LeaderBoard() {
           <tr>
             <th>Rank</th>
             <th>Username</th>
-            <th>Commitment</th>
             <th>Points</th>
             <th>Streak</th>
           </tr>
-          {leaddata?.map((item, index) => (
+          {leaderBoard?.map((item, index) => (
             <tr key={item.id}>
               <td>
                 <label className="text-2xl">
-                  {item.id === 1 ? (
-                    <span className="text-3xl">{item.id}👑</span>
-                  ) : item.id === 2 ? (
-                    <span className="text-3xl">{item.id}🌟</span>
-                  ) : item.id === 3 ? (
-                    <span className="text-3xl">{item.id}🥇</span>
+                  {index === 0 ? (
+                    <span className="text-3xl">{index + 1}👑</span>
+                  ) : index === 1 ? (
+                    <span className="text-3xl">{index + 1}🌟</span>
+                  ) : index === 2 ? (
+                    <span className="text-3xl">{index + 1}🥇</span>
                   ) : (
-                    <span className="text-3xl">{item.id}</span>
+                    <span className="text-3xl">{index + 1}</span>
                   )}
                 </label>
               </td>
               <td>
                 <div className="flex items-center space-x-3">
-                  <div className="avatar">
-                    <div className="mask mask-squircle w-12 h-12">
-                      <img
-                        src={item.image}
-                        alt="Avatar Tailwind CSS Component"
-                      />
-                    </div>
-                  </div>
                   <div>
-                    <div className="font-bold text-1xl">{item.name}</div>
-                    <div className="text-sm opacity-50">Computer Science</div>
+                    <div className="font-bold text-1xl">{item.username}</div>
+                    <div className="text-sm opacity-50">Coder</div>
                   </div>
                 </div>
               </td>
-              <td className="font-extrabold"> {item.status}</td>
-              <td className="font-bold text-2xl">{item.points}</td>
+
+              <td className="font-bold text-2xl">{item.totalScore}</td>
               <td>
-                <label className="text-2xl">{item.consistency}</label>
+                <label className="text-2xl">{streak(item.heatMap)}</label>
               </td>
             </tr>
           ))}

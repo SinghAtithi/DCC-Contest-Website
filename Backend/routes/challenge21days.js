@@ -6,6 +6,7 @@ const router = express.Router();
 const leaderBoard = require("../models/leaderBoard.js");
 const user = require("../models/user.js");
 const isDataMounted = new Array(22).fill(false);
+const queBank = require("../utils/queBank");
 
 router.get("/getQuestion", async (req, res) => {
   const requiredAttributes = ["name", "ques_id", "day"];
@@ -57,17 +58,16 @@ router.get("/getQuestion", async (req, res) => {
 router.post("/userDetails", async (req, resp) => {
   //req.body.username
   //req.body.name
-  const name = req.body.name;
   const username = req.body.username;
 
-  if (name == null || username == null) {
+  if (username == null) {
     resp.status(400).json({ message: "username or name not provided" });
     return;
   }
   try {
     console.log("hello hi");
     const userData = await user
-      .find({ username: username }, "codeforcesURL questions_solved")
+      .find({ username: username }, "codeforcesURL name questions_solved")
       .exec();
     if (userData.length === 0) {
       //user not found
@@ -83,6 +83,7 @@ router.post("/userDetails", async (req, resp) => {
     let scoreNow = currentData ? currentData.totalScore : 0;
     let heatMap = currentData ? currentData.heatMap : "0".repeat(22);
     const codeforcesURL = userData[0].codeforcesURL;
+    const name = userData[0].name;
 
     // console.log(currentData);
     if (userData[0].questions_solved.includes(searchParameter)) {
@@ -153,7 +154,9 @@ router.get("/leaderBoard", async (req, resp) => {
 router.post("/topicCodeForces", async (req, res) => {
   try {
     const username = req.body.username;
-    const queBank = req.body.queBank;
+    console.log(queBank);
+    console.log(username);
+    // const queBank = req.body.queBank;
     const today = new Date(); // Get the current date
     const startDate = new Date("2023-09-25"); // Start date for the challenge
     const curDay = Math.ceil((today - startDate) / (1000 * 60 * 60 * 24)); // Calculate the difference in days
@@ -185,7 +188,7 @@ router.post("/topicCodeForces", async (req, res) => {
       binaryString += problemSolved ? "1" : "0";
     }
     for (let i = curDay; i < 21; i++) binaryString += "0";
-
+    console.log({ binaryString, success: true });
     res.status(200).send({ binaryString, success: true });
   } catch (err) {
     console.log("Error: " + err);
