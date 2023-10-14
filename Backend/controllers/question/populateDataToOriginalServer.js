@@ -2,7 +2,7 @@ const axios = require("axios");
 const Question21 = require("../../models/question21");
 const Question = require("../../models/question");
 const { json } = require("body-parser");
-const calculateCurrDays = require("../utils/calculateCurrDays.js");
+const calculateCurrDays = require("../../utils/calculateCurrDays.js");
 
 async function populateDataToOriginalServer() {
   try {
