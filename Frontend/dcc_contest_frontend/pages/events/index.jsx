@@ -26,14 +26,13 @@ function ProblemSet() {
   const loginState = useSelector((state) => state.login);
   const [binaryStringProblem, setBinaryStringProblem] = useState("");
   const [binaryStringTopic, setBinaryStringTopic] = useState("");
-
-
   useEffect(() => {
     async function fetchQuestions() {
       const url = `http://localhost:5000/21days/getQuestion`;
       try {
         const res = await fetch(url);
         const data = await res.json();
+
         setProblems(data.questions);
       } catch (error) {
         setSevereError(
@@ -55,13 +54,14 @@ function ProblemSet() {
         };
 
         axios
-          .post("http://localhost:5000/21days/userDetails", requestData)
+          .post(`http://localhost:5000/21days/userDetails`, requestData)
           .then(function (response) {
             const { data } = response.data; // Add heatMap here if you need it.
+            console.log(data);
+
             setLoading(false);
 
             setBinaryStringProblem(data.headMap);
-
             setPoints(data.point);
             setUrl1(data.codeforcesURL);
           })
@@ -80,9 +80,11 @@ function ProblemSet() {
       };
       if (!codeForcesNames.username) return;
       axios
-        .post("http://localhost:5000/21days/topicCodeForces", codeForcesNames)
+
+        .post(`http://localhost:5000/21days/topicCodeForces`, codeForcesNames)
         .then(function (response) {
           const data = response.data;
+          console.log(data.binaryString);
           if (data.success == false) {
             setSevereError("Error!Posting codeForces Url");
           }
@@ -97,7 +99,6 @@ function ProblemSet() {
     getHotTopic();
   }, []);
   const progress = progressBar(binaryStringProblem);
-
 
   return (
     <>
@@ -216,7 +217,6 @@ function ProblemSet() {
                   problems={problems}
                   binaryStringProblem={binaryStringProblem}
                 />
-
 
                 <AlertError alert={alert} />
               </>

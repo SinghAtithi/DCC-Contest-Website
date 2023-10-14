@@ -2,21 +2,16 @@ import { useState, useEffect } from "react";
 import leaddata from "../../utils/fakeData/leaddata";
 import { streak } from "../../utils/helper/apiIntegration";
 import Spinner from "../Spinner/Spinner";
-
-
 export default function LeaderBoard() {
   const [leaderBoard, setLeaderBoard] = useState([]);
   const [serverError, setServerError] = useState("");
   const [loading, setLoading] = useState(true);
-
-
   useEffect(() => {
     async function fetchQuestions() {
       const url = `http://localhost:5000/21days/leaderboard`;
       try {
         const res = await fetch(url);
         const { data } = await res.json();
-
         setLoading(false);
         setLeaderBoard(data);
       } catch (error) {
@@ -26,7 +21,6 @@ export default function LeaderBoard() {
         console.error("Error fetching questions:", error.message);
       } finally {
         setLoading(false);
-
       }
     }
 
@@ -38,7 +32,6 @@ export default function LeaderBoard() {
         <Spinner />
       </div>
     );
-
   if (serverError)
     return (
       <div className="flex justify-center p-2">
