@@ -16,9 +16,6 @@ function getDay() {
 }
 export default function ProblemTable(props) {
   const day = getDay();
-  console.log("Problems" + props.problems);
-  console.log("Day number " + day);
-
   return (
     <div>
       <table className="table w-full custom-table">
@@ -33,9 +30,10 @@ export default function ProblemTable(props) {
         </thead>
         <tbody>
           {props.problems && props.problems.length != 0 ? (
-            props.problems.map((problem, index) => (
+            props.problems?.map((problem, index) => (
               <tr key={problem.day} className="hover cursor-pointer">
-                {props.binaryString[index] == "1" ? (
+                {props.binaryStringProblem[index] == "1" ? (
+
                   <th>
                     <svg
                       xmlns="http://www.w3.org/2000/svg"

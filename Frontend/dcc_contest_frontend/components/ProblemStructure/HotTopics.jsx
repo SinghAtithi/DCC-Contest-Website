@@ -15,32 +15,6 @@ export default function HotTopics(props) {
   const [selectedProblem, setSelectedProblem] = useState(null);
   const [disabled, setDisable] = useState(false);
   const day = getDay();
-  // useEffect(() => {
-  //   async function fetchQuestions() {
-  //     const url = `http://localhost:5000/21days/topicCodeForces`;
-  //     try {
-  //       const res = await fetch(url, {
-  //         method: "POST",
-  //         body: JSON.stringify(),
-  //         headers: {
-  //           "Content-Type": "application/json",
-  //         },
-  //       });
-  //       const { data } = await res.json();
-  //       console.log(data);
-  //       setLeaderBoard(data);
-  //     } catch (error) {
-  //       setServerError(
-  //         "Network Error. Please check your internet connectivity."
-  //       );
-  //       console.error("Error fetching questions:", error.message);
-  //     }
-  //   }
-
-  //   fetchQuestions();
-  // }, []);
-
-  console.log("Day number " + day);
   const handleViewClick = (problem) => {
     setSelectedProblem(problem);
   };
@@ -59,9 +33,9 @@ export default function HotTopics(props) {
         </thead>
         <tbody>
           {problemDescription && problemDescription.length != 0 ? (
-            problemDescription.map((problem) => (
+            problemDescription.map((problem, index) => (
               <tr key={problem.day} className="hover cursor-pointer">
-                {problem.status ? (
+                {props.binaryStringTopic[index] == "1" ? (
                   <th>
                     <svg
                       xmlns="http://www.w3.org/2000/svg"

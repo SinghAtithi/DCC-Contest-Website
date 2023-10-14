@@ -25,7 +25,9 @@ router.get("/getQuestion", async (req, res) => {
     console.log(questions);
     //{[name,ques_id,day,isToday]}
     if (isDataMounted[day] === false) {
+
       let dayToSearch = calculateCurrDays.toString();
+
       if (dayToSearch.length === 1) {
         dayToSearch = "0" + dayToSearch;
       }

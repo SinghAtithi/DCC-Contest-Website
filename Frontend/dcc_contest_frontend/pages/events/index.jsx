@@ -23,8 +23,10 @@ function ProblemSet() {
   const [tabActive, setTabActive] = useState("Problem");
   const [points, setPoints] = useState(0);
   const [url1, setUrl1] = useState("");
-  const [binaryString, setBinaryString] = useState("");
   const loginState = useSelector((state) => state.login);
+  const [binaryStringProblem, setBinaryStringProblem] = useState("");
+  const [binaryStringTopic, setBinaryStringTopic] = useState("");
+
 
   useEffect(() => {
     async function fetchQuestions() {
@@ -56,13 +58,16 @@ function ProblemSet() {
           .post("http://localhost:5000/21days/userDetails", requestData)
           .then(function (response) {
             const { data } = response.data; // Add heatMap here if you need it.
-            console.log(data.headMap);
-            setBinaryString(data.headMap);
+            setLoading(false);
+
+            setBinaryStringProblem(data.headMap);
+
             setPoints(data.point);
             setUrl1(data.codeforcesURL);
           })
           .catch(function (error) {
-            console.log(error);
+            setSevereError("Error! Posting User Name");
+            console.log(error.message);
           });
       }
     }
@@ -73,20 +78,26 @@ function ProblemSet() {
       const codeForcesNames = {
         username: codeforcesName(url1),
       };
+      if (!codeForcesNames.username) return;
       axios
         .post("http://localhost:5000/21days/topicCodeForces", codeForcesNames)
         .then(function (response) {
-          const { binaryString, success } = response.data;
-
-          // console.log("api", binaryString, success);
+          const data = response.data;
+          if (data.success == false) {
+            setSevereError("Error!Posting codeForces Url");
+          }
+          setLoading(false);
+          setBinaryStringTopic(data.binaryString);
         })
         .catch(function (error) {
+          setSevereError("Error!Posting codeForces Url");
           console.log(error);
         });
     }
     getHotTopic();
   }, []);
-  const progress = progressBar(binaryString);
+  const progress = progressBar(binaryStringProblem);
+
 
   return (
     <>
@@ -201,13 +212,17 @@ function ProblemSet() {
             </div>
             {tabActive === "Problem" ? (
               <>
-                <ProblemTable problems={problems} binaryString={binaryString} />
+                <ProblemTable
+                  problems={problems}
+                  binaryStringProblem={binaryStringProblem}
+                />
+
 
                 <AlertError alert={alert} />
               </>
             ) : (
               <>
-                <HotTopics />
+                <HotTopics binaryStringTopic={binaryStringTopic} />
                 <AlertError alert={alert} />
               </>
             )}
