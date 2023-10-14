@@ -1,9 +1,10 @@
 import axios from "axios";
 import { func } from "prop-types";
+import { BASE_URL } from "../../utils/constants"
 
-const base_url = "http://localhost:5000";
+const base_url = BASE_URL;
 export async function getQuestion() {
-  const url = `http://localhost:5000/21days/getQuestion`;
+  const url = `${base_url}/21days/getQuestion`;
 
   return axios
     .get(url)

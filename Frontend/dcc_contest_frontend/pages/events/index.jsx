@@ -28,7 +28,7 @@ function ProblemSet() {
   const [binaryStringTopic, setBinaryStringTopic] = useState("");
   useEffect(() => {
     async function fetchQuestions() {
-      const url = `http://localhost:5000/21days/getQuestion`;
+      const url = `${BASE_URL}/21days/getQuestion`;
       try {
         const res = await fetch(url);
         const data = await res.json();
@@ -54,7 +54,7 @@ function ProblemSet() {
         };
 
         axios
-          .post(`http://localhost:5000/21days/userDetails`, requestData)
+          .post(`${BASE_URL}/21days/userDetails`, requestData)
           .then(function (response) {
             const { data } = response.data; // Add heatMap here if you need it.
             console.log(data);
@@ -81,7 +81,7 @@ function ProblemSet() {
       if (!codeForcesNames.username) return;
       axios
 
-        .post(`http://localhost:5000/21days/topicCodeForces`, codeForcesNames)
+        .post(`${BASE_URL}/21days/topicCodeForces`, codeForcesNames)
         .then(function (response) {
           const data = response.data;
           console.log(data.binaryString);
