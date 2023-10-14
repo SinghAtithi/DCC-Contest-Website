@@ -49,7 +49,7 @@ async function populateDataToOriginalServer() {
     const username = response.username;
 
     //fetch data from the 21 days challenge server
-    const day = calculateCurrDays;
+    const day = calculateCurrDays();
     //look for lean()
     const questions = await Question21.find({ day: day }).exec();
 

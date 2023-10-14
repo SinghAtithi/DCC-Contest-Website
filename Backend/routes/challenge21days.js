@@ -13,7 +13,7 @@ router.get("/getQuestion", async (req, res) => {
   const requiredAttributes = ["name", "ques_id", "day"];
   try {
     const questions = await Question21.find().select(requiredAttributes).exec();
-    const day = calculateCurrDays; //day is 1-indexed
+    const day = calculateCurrDays(); //day is 1-indexed
     questions.forEach((question) => {
       question.ques_id = question.ques_id.replace("21days", "CPZEN");
       if (question.day == day) {
@@ -25,7 +25,7 @@ router.get("/getQuestion", async (req, res) => {
     console.log(questions);
     //{[name,ques_id,day,isToday]}
     if (isDataMounted[day] === false) {
-      let dayToSearch = calculateCurrDays.toString();
+      let dayToSearch = calculateCurrDays().toString();
       if (dayToSearch.length === 1) {
         dayToSearch = "0" + dayToSearch;
       }
@@ -76,7 +76,13 @@ router.post("/userDetails", async (req, resp) => {
       return;
     }
 
-    const searchParameter = "CPZEN_" + calculateCurrDays.toString();
+    //update the search parameter
+    let currentDayCalculated = calculateCurrDays().toString();
+    if (currentDayCalculated.length === 1) 
+    {
+      currentDayCalculated = "0" + currentDayCalculated;
+    }
+    const searchParameter = "CPZEN_" + currentDayCalculated ;
 
     const currentData = await leaderBoard
       .findOne({ username: username })
@@ -86,13 +92,15 @@ router.post("/userDetails", async (req, resp) => {
     const codeforcesURL = userData[0].codeforcesURL;
     const name = userData[0].name;
 
+    // console.log("\n\n\n",userData[0].questions_solved);
     // console.log(currentData);
-    if (userData[0].questions_solved.includes(searchParameter)) {
+    if (heatMap[calculateCurrDays()]=='0' && userData[0].questions_solved.includes(searchParameter)) {
       const heatMapArray = heatMap.split("");
-      heatMapArray[calculateCurrDays] = "1";
+      heatMapArray[calculateCurrDays()] = "1";
       heatMap = heatMapArray.join("");
       scoreNow += 1;
     }
+    // console.log(heatMap);
     // console.log(userData);
     const data = await leaderBoard
       .updateOne(
