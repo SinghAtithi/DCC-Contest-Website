@@ -34,7 +34,7 @@ export default function ProblemTable(props) {
           {props.problems && props.problems.length != 0 ? (
             props.problems?.map((problem, index) => (
               <tr key={problem.day} className="hover cursor-pointer">
-                {props.binaryStringProblem[index] == "1" ? (
+                {props.binaryStringProblem[index+1] == "1" ? (
                   <th className="flex items-center justify-center">
                     <td>
                       <svg
