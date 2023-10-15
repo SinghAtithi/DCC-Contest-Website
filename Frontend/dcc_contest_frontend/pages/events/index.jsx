@@ -25,7 +25,7 @@ function ProblemSet() {
   const [url1, setUrl1] = useState("");
   const loginState = useSelector((state) => state.login);
   const [binaryStringProblem, setBinaryStringProblem] = useState("");
-  const [binaryStringTopic, setBinaryStringTopic] = useState("");
+  const [binaryStringTopic, setBinaryStringTopic] = useState('0'.repeat(22));
   useEffect(() => {
     async function fetchQuestions() {
       const url = `${BASE_URL}/21days/getQuestion`;

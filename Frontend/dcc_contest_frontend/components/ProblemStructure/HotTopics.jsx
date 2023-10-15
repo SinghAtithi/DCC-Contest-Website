@@ -17,6 +17,8 @@ export default function HotTopics(props) {
     setSelectedProblem(problem);
   };
 
+  
+
   return (
     <div className="mb-5">
       <table className="table w-full custom-table mx-auto">
@@ -33,7 +35,7 @@ export default function HotTopics(props) {
           {problemDescription && problemDescription.length != 0 ? (
             problemDescription.map((problem, index) => (
               <tr key={problem.day} className="hover cursor-pointer">
-                {props.binaryStringTopic[index] == "1" ? (
+                {props.binaryStringTopic[index+1] == "1" ? (
                   <th>
                     <td>
                       <svg

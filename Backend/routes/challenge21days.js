@@ -78,11 +78,10 @@ router.post("/userDetails", async (req, resp) => {
 
     //update the search parameter
     let currentDayCalculated = calculateCurrDays().toString();
-    if (currentDayCalculated.length === 1) 
-    {
+    if (currentDayCalculated.length === 1) {
       currentDayCalculated = "0" + currentDayCalculated;
     }
-    const searchParameter = "CPZEN_" + currentDayCalculated ;
+    const searchParameter = "CPZEN_" + currentDayCalculated;
 
     const currentData = await leaderBoard
       .findOne({ username: username })
@@ -94,7 +93,10 @@ router.post("/userDetails", async (req, resp) => {
 
     // console.log("\n\n\n",userData[0].questions_solved);
     // console.log(currentData);
-    if (heatMap[calculateCurrDays()]=='0' && userData[0].questions_solved.includes(searchParameter)) {
+    if (
+      heatMap[calculateCurrDays()] == "0" &&
+      userData[0].questions_solved.includes(searchParameter)
+    ) {
       const heatMapArray = heatMap.split("");
       heatMapArray[calculateCurrDays()] = "1";
       heatMap = heatMapArray.join("");
@@ -197,7 +199,7 @@ router.post("/topicCodeForces", async (req, res) => {
       binaryString += problemSolved ? "1" : "0";
     }
     for (let i = curDay; i < 21; i++) binaryString += "0";
-    console.log({ binaryString, success: true });
+    console.log({ binaryString, success: true }, "\n\n\n");
     res.status(200).send({ binaryString, success: true });
   } catch (err) {
     console.log("Error: " + err);
