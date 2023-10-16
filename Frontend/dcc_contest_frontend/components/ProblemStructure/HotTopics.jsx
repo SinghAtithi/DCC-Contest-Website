@@ -114,6 +114,7 @@ export default function HotTopics(props) {
                                 className="btn  btn-outline btn-info w-40 min-h-8 h-8"
                                 href={selectedProblem?.resourceURL}
                                 target="_blank"
+                                rel="noopener noreferrer"
                               >
                                 Visit Topic
                               </a>
@@ -121,6 +122,7 @@ export default function HotTopics(props) {
                                 className="btn  btn-outline btn-info w-40 min-h-8 h-8"
                                 href={selectedProblem?.codeforcesURL}
                                 target="_blank"
+                                rel="noopener noreferrer"
                               >
                                 Solve Problem
                               </a>
