@@ -3,21 +3,21 @@ const signupQues = [
     question: "What is your name? ", //made change here
     skippable: false,
     state: "name",
-    placeholder : "Atithi Kumar Singh",
+    placeholder : "Alice Jonas",
     skippable : false,
   },
   {
     question: "Enter Your Email.",
     skippable: false,
     state: "email",
-    placeholder : "coderRavan@gmail.com",
+    placeholder : "alicejonas@gmail.com",
     skippable : false
   },
   {
     question: "Select an UserName",
     skippable: false,
     state: "username",
-    placeholder : "coder_ravan",
+    placeholder : "alice_jonas",
     skippable : false
   },
   {
@@ -49,17 +49,17 @@ const signupQues = [
     skippable : true
   },
   {
-    question: "Finally, we got your name. Btw What is the URL of your CodeForces Profile?",
+    question: "What is the URL of your CodeForces Profile?",
     skippable: true,
     state: "codeforcesURL",
-    placeholder : "coder_ravan",
+    placeholder : "tourist",
     skippable : false
   },
   {
     question: "URL of your CodeChef Profile",
     skippable: true,
     state: "codechefURL",
-    placeholder : "coder_ravan",
+    placeholder : "tourist",
     skippable : true
   },
   {
