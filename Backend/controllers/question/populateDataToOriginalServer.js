@@ -2,6 +2,7 @@ const axios = require("axios");
 const Question21 = require("../../models/question21");
 const Question = require("../../models/question");
 const { json } = require("body-parser");
+const calculateCurrDays = require("../../utils/calculateCurrDays.js");
 
 async function populateDataToOriginalServer() {
   try {
@@ -48,7 +49,7 @@ async function populateDataToOriginalServer() {
     const username = response.username;
 
     //fetch data from the 21 days challenge server
-    const day = new Date().getDate() - 13;
+    const day = calculateCurrDays();
     //look for lean()
     const questions = await Question21.find({ day: day }).exec();
 

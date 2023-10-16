@@ -7,7 +7,7 @@ async function getContestStatisticsController(req, res) {
     const { username } = req.user;
     const { contest_id } = req.params;
 
-    console.log(username, contest_id);
+    // console.log(username, contest_id);
 
     try {
         const contest = await Contest.findOne({
@@ -46,7 +46,7 @@ async function getContestStatisticsController(req, res) {
                 return acc;
             }, {});
 
-            console.log(ques_id__id_map);
+            // console.log(ques_id__id_map);
 
 
             // Match the required documents

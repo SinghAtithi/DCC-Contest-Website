@@ -1,0 +1,25 @@
+const data = [
+  "https://codeforces.com/contest/50/problem/A",
+  "https://codeforces.com/contest/546/problem/A",
+  "https://codeforces.com/contest/41/problem/A",
+  "https://codeforces.com/contest/339/problem/A",
+  "https://codeforces.com/contest/432/problem/A",
+  "https://codeforces.com/contest/71/problem/A",
+  "https://codeforces.com/contest/4/problem/C",
+  "https://codeforces.com/contest/855/problem/A",
+  "https://codeforces.com/contest/1850/problem/C",
+  "https://codeforces.com/contest/1497/problem/A",
+  "https://codeforces.com/contest/1738/problem/B",
+  "https://codeforces.com/contest/1873/problem/D",
+  "https://codeforces.com/contest/625/problem/B",
+  "https://codeforces.com/contest/1611/problem/B",
+  "https://codeforces.com/contest/903/problem/C",
+  "https://codeforces.com/contest/1698/problem/A",
+  "https://codeforces.com/contest/1881/problem/A",
+  "https://codeforces.com/contest/1862/problem/A",
+  "https://codeforces.com/contest/1182/problem/A",
+  "https://codeforces.com/contest/1592/problem/A",
+  "https://codeforces.com/contest/742/problem/A",
+];
+
+module.exports = data;

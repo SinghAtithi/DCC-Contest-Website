@@ -35,7 +35,7 @@ import { Provider } from "react-redux";
 import store from "../store/baseStore";
 import Auth from "../components/Auth";
 import Head from "next/head";
-
+import MainContext from "../../Context/MainContext";
 export default function App({ Component, pageProps }) {
   return (
     <>
@@ -76,6 +76,7 @@ export default function App({ Component, pageProps }) {
         />
         <link rel="manifest" href="/manifest.json" />
       </Head>
+
       <Provider store={store}>
         <Auth>
           <div className="flex flex-col min-h-screen">
