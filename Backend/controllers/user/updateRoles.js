@@ -1,5 +1,5 @@
 const User = require("../../models/user");
-const { EmailQueue } = require("../../queue/EmailQueue");
+// const { EmailQueue } = require("../../queue/EmailQueue");
 
 async function updateRolesController(req, res) {
   // Get the username and new role from the body of the request
