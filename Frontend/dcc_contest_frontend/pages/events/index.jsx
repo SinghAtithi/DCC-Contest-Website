@@ -88,7 +88,7 @@ function ProblemSet() {
         .post(`${BASE_URL}/21days/topicCodeForces`, codeForcesNames)
         .then(function (response) {
           const data = response.data;
-          console.log(data.binaryString);
+          // console.log(data.binaryString);
           if (data.success == false) {
             setSevereError("Error!Posting codeForces Url");
           }

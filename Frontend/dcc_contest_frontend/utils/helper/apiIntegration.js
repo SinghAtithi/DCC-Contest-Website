@@ -49,7 +49,7 @@ export async function getLeaderboardData() {
   }
 }
 export function streak(binaryString) {
-  console.log(binaryString);
+  // console.log(binaryString);
   let maxStreak = 0;
   let currentStreak = 0;
   for (let i = 0; i < binaryString?.length; i++) {
