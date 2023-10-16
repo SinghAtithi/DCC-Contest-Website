@@ -1,3 +1,4 @@
+const { sendEmail } = require("../../email/sendEmail");
 const User = require("../../models/user");
 // const { EmailQueue } = require("../../queue/EmailQueue");
 const { BASE_URL } = require("../../utils/constants");
@@ -42,6 +43,7 @@ async function resendConfirmationEmailController(req, res) {
           //       seq: 0,
           //     });
           //   });
+
 
           try {
             const messageBody = {
