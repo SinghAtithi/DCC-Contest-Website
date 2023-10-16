@@ -60,8 +60,43 @@ function Signup() {
   }, []);
 
   const onSubmit = () => {
-    if (!name || !email || !user_name || !password || !confirm_password) {
-      alert("Please fill in all required fields.");
+    // if (!name || !email || !user_name || !password || !confirm_password || !codeforcesURL) {
+    //   alert("Please fill in all required fields.");
+    //   return;
+    // }
+    if(!name)
+    {
+      alert("Please fill your Name.");
+      return;
+    }
+    else if(!email)
+    {
+      alert("Please fill email.");
+      return;
+    }
+    else if(!user_name)
+    {
+      alert("Please fill UserName.");
+      return;
+    }
+    else if(!password)
+    {
+      alert("Please fill password.");
+      return;
+    }
+    else if(!confirm_password)
+    {
+      alert("Please Confirm Password.");
+      return;
+    }
+    else if(!codeforcesURL)
+    {
+      alert("Please fill CodeforcesUrl");
+      return;
+    }
+    else if(confirm_password!=password)
+    {
+      alert("Password and Confirm Password are not same.");
       return;
     }
     const data = {
@@ -227,6 +262,7 @@ function Signup() {
             )}
             <div className="mt-8 text-xl justify-center flex">
               {signupQues[quesInd].question}
+              {signupQues[quesInd].skippable === false && <span style={{ color: 'red' }}>&nbsp;*</span>}
             </div>
             <div className="flex justify-center items-center">
               {quesInd >= 0 ? (
@@ -244,6 +280,7 @@ function Signup() {
                 type="text"
                 className="input text-2xl rounded-lg my-4 bg-inherit input-success h-16 w-full max-w-lg"
                 value={text}
+                placeholder={signupQues[quesInd].placeholder}
                 onChange={(e) => setText(e.target.value)}
                 onKeyDown={(e) => {
                   if (e.key === "Enter") onNextClick();

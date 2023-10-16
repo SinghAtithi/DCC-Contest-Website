@@ -13,7 +13,7 @@ const Cooking = () => {
                             <div className={style.aurora__item}></div>
                         </div>
                     </h1>
-                    <p className={style.subtitle}>Made with love by DCC.</p>
+                    <p className={style.subtitle}>Made with ❤️ by DCC.</p>
                 </div>
             </div>
         </>);

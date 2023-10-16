@@ -199,7 +199,7 @@ export default function LeaderBoard() {
                   </div>
                 </td>
 
-                <td className="font-bold text-2xl">{item.totalScore}</td>
+                <td className="font-bold text-2xl">{item.totalScore*100}</td>
                 <td>
                   <label className="text-2xl">{streak(item.heatMap)}</label>
                 </td>
