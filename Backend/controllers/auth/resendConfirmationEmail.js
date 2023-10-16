@@ -1,5 +1,5 @@
 const User = require("../../models/user");
-const { EmailQueue } = require("../../queue/EmailQueue");
+// const { EmailQueue } = require("../../queue/EmailQueue");
 const { BASE_URL } = require("../../utils/constants");
 const {
   generateVerificationToken,
@@ -17,31 +17,53 @@ async function resendConfirmationEmailController(req, res) {
         if (!user.confirmed_email) {
           const verification_token = generateVerificationToken(user._id);
 
-          EmailQueue.add({
-            receiver: email,
-            message: {
+          // EmailQueue.add({
+          //   receiver: email,
+          //   message: {
+          //     subject: "DCC : Resent Confirmation Email",
+          //     template: "confirmation",
+          //     context: {
+          //       username: user.username,
+          //       confirmation_link: `${BASE_URL}/confirmEmail/${verification_token}`,
+          //     },
+          //   },
+          // })
+          //   .then(() => {
+          //     console.log("Added to email queue");
+          //     res.status(200).send({
+          //       message: "Successfully sent the email.",
+          //     });
+          //   })
+          //   .catch((err) => {
+          //     console.log(err);
+          //     res.status(402).send({
+          //       error:
+          //         "Could not send the email. Please re-initiate the process of sending email.",
+          //       seq: 0,
+          //     });
+          //   });
+
+          try {
+            const messageBody = {
               subject: "DCC : Resent Confirmation Email",
               template: "confirmation",
               context: {
-                username: user.username,
+                username: user.name,
                 confirmation_link: `${BASE_URL}/confirmEmail/${verification_token}`,
               },
-            },
-          })
-            .then(() => {
-              console.log("Added to email queue");
-              res.status(200).send({
-                message: "Successfully sent the email.",
-              });
-            })
-            .catch((err) => {
-              console.log(err);
-              res.status(402).send({
-                error:
-                  "Could not send the email. Please re-initiate the process of sending email.",
-                seq: 0,
-              });
+            }
+            await sendEmail(email, messageBody);
+            return res.status(200).send({
+              message: "Successfully resent the confirmation email.",
             });
+          }
+          catch (err) {
+            return res.status(402).json({
+              error: "Could not send the email.", seq: 0
+            });
+          }
+
+
         } else {
           res
             .status(401)
