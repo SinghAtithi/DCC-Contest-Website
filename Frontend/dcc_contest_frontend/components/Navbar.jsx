@@ -107,6 +107,9 @@ function Navbar() {
           <Link href={PROBLEM_SET_PAGE}>Problem Set</Link>
         </li>
         <li>
+          <Link href={EVENT_PAGE}>21DaysCode</Link>
+        </li>
+        <li>
           <Link href={INTERVIEW_PREP_PAGE}>Interview Prep</Link>
         </li>
         <li>
