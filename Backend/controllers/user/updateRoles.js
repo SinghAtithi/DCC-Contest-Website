@@ -26,31 +26,9 @@ async function updateRolesController(req, res) {
             { role: new_role }
           ).exec();
 
-          EmailQueue.add({
-            receiver: currUser.email,
-            message: {
-              subject: "DCC : User Role Update",
-              template: "role_update",
-              context: {
-                name: currUser.name,
-                old_role : currUser.role,
-                new_role : new_role
-              },
-            },
-          })
-            .then(() => {
-              console.log("Added to email queue");
-              return res
-                .status(200)
-                .send({ message: "Successfully updated the role." });
-            })
-            .catch((err) => {
-              console.log(err);
-              res.status(405).send({
-                error:
-                  "Could not send the email. Please check if the role is updated or not and re-try accordingly.",
-              });
-            });
+          return res
+            .status(200)
+            .send({ message: "Successfully updated the role." });
         }
         // When username is not in the database
         else return res.status(404).send({ error: "User not found." });
