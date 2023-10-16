@@ -17,8 +17,7 @@ export default function HotTopics(props) {
     setSelectedProblem(problem);
   };
 
-  
-
+  console.log("hotTopicBs", props.binaryStringTopic);
   return (
     <div className="mb-5">
       <table className="table w-full custom-table mx-auto">
@@ -113,14 +112,14 @@ export default function HotTopics(props) {
                             <div className="flex justify-between">
                               <a
                                 className="btn  btn-outline btn-info w-40 min-h-8 h-8"
-                                href={problem.resourceURL}
+                                href={selectedProblem?.resourceURL}
                                 target="_blank"
                               >
                                 Visit Topic
                               </a>
                               <a
                                 className="btn  btn-outline btn-info w-40 min-h-8 h-8"
-                                href={problem.codeforcesURL}
+                                href={selectedProblem?.codeforcesURL}
                                 target="_blank"
                               >
                                 Solve Problem

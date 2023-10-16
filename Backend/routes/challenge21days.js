@@ -169,7 +169,7 @@ router.post("/topicCodeForces", async (req, res) => {
     console.log(username);
     // const queBank = req.body.queBank;
     const today = new Date(); // Get the current date
-    const startDate = new Date("2023-09-25"); // Start date for the challenge
+    const startDate = new Date("2023-10-14"); // Start date for the challenge
     const curDay = Math.ceil((today - startDate) / (1000 * 60 * 60 * 24)); // Calculate the difference in days
 
     const codeforcesUrl = `https://codeforces.com/api/user.status?handle=${username}&from=1&count=500`;
@@ -199,7 +199,7 @@ router.post("/topicCodeForces", async (req, res) => {
       binaryString += problemSolved ? "1" : "0";
     }
     for (let i = curDay; i < 21; i++) binaryString += "0";
-    console.log({ binaryString, success: true }, "\n\n\n");
+    console.log("\n\n\n\n hellolo- ", { binaryString, success: true }, "\n\n\n");
     res.status(200).send({ binaryString, success: true });
   } catch (err) {
     console.log("Error: " + err);

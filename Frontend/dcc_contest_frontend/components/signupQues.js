@@ -1,41 +1,41 @@
 const signupQues = [
   {
-    question: "What is your name(*required)?", //made change here
+    question: "What is your name? * ", //made change here
     skippable: false,
     state: "name",
   },
   {
-    question: "Enter Your Email(*required)",
+    question: "Enter Your Email * ",
     skippable: false,
     state: "email",
   },
   {
-    question: "Select an UserName(*required)",
+    question: "Select an UserName * ",
     skippable: false,
     state: "username",
   },
   {
-    question: "Type your password(*required)",
+    question: "Type your password *",
     skippable: false,
     state: "password",
   },
   {
-    question: "Confirm Your Password(*required)",
+    question: "Confirm Your Password *",
     skippable: false,
     state: "confirmPassword",
   },
   {
-    question: "URL of your Github Profile",
+    question: "Ahey, What was your name, I forgot :)",
     skippable: true,
     state: "githubURL",
   },
   {
-    question: "URL of your LinkedIn Profile",
+    question: "Can you speak loudly, not audible :( - Name?",
     skippable: true,
     state: "linkedinURL",
   },
   {
-    question: "URL of your CodeForces Profile(*required)",
+    question: "Finally, we got your name. Btw What is the URL of your CodeForces Profile? *",
     skippable: true,
     state: "codeforcesURL",
   },

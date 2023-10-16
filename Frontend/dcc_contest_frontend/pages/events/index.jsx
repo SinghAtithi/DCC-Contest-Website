@@ -78,9 +78,9 @@ function ProblemSet() {
       const codeForcesNames = {
         username: codeforcesName(url1),
       };
+      console.log("codeForcesNames.username : ", codeForcesNames.username);
       if (!codeForcesNames.username) return;
       axios
-
         .post(`${BASE_URL}/21days/topicCodeForces`, codeForcesNames)
         .then(function (response) {
           const data = response.data;
