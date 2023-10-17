@@ -22,6 +22,8 @@ const { Question } = require("./models/question.js");
 const { User } = require("./models/user.js");
 const { Contest } = require("./models/contest.js");
 const { Submission } = require("./models/submission.js");
+const { Email } = require("./models/emails.js");
+
 
 const QuesRoutes = require("./routes/question.js");
 const SubmitRoutes = require("./routes/submit.js");
@@ -30,7 +32,8 @@ const ContestRoutes = require("./routes/contest.js");
 const UpdateRating = require("./routes/updateRating.js");
 const DashboardRoutes = require("./routes/dashboard.js");
 const UserRoutes = require("./routes/user.js");
-const challengeRoutes=require("./routes/challenge21days.js");
+const challengeRoutes = require("./routes/challenge21days.js");
+const { sendEmail } = require("./email/sendEmail.js");
 
 const app = express();
 
@@ -50,11 +53,34 @@ app.use("/contest", ContestRoutes); // Routes to handle queries related to conte
 app.use("/", UpdateRating); // Routes to facilitate updating the rating after contest 
 app.use("/dashboard", DashboardRoutes); // Routes for user dashbaord
 app.use("/user", UserRoutes); // Routes to handle updates in user
-app.use ("/21days",challengeRoutes); // Routes to handle 21 days challenge
+app.use("/21days", challengeRoutes); // Routes to handle 21 days challenge
+
+app.get("/test", async (req, res) => {
+  try {
+    const messageBody = {
+      subject: "DCC : Reset Password",
+      template: "reset_password",
+      context: {
+        name: "Ritik",
+        username: "ritik",
+        otp: 123456,
+      },
+    }
+    await sendEmail("ritikkaushallvb@gmail.com", messageBody);
+    return res.status(200).send({
+      message: "Successfully sent the email.",
+    });
+  }
+  catch (err) {
+    return res.status(401).json({
+      error: "Could not send the email.",
+    });
+  }
+})
 
 // ------------- Database connection and starting the server --------------
 const PORT = process.env.PORT || 5000;
-
+console.log(new Date())
 
 /* When "strictQuery" is set to true, Mongoose will throw an error if we try to query a model with undefined fields. 
   This helps ensure that the queries are precise and do not include unintended or misspelled fields.
