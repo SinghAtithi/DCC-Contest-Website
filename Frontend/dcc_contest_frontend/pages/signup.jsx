@@ -64,38 +64,31 @@ function Signup() {
     //   alert("Please fill in all required fields.");
     //   return;
     // }
-    if(!name)
-    {
+    if (!name) {
       alert("Please fill your Name.");
       return;
     }
-    else if(!email)
-    {
+    else if (!email) {
       alert("Please fill email.");
       return;
     }
-    else if(!user_name)
-    {
+    else if (!user_name) {
       alert("Please fill UserName.");
       return;
     }
-    else if(!password)
-    {
+    else if (!password) {
       alert("Please fill password.");
       return;
     }
-    else if(!confirm_password)
-    {
+    else if (!confirm_password) {
       alert("Please Confirm Password.");
       return;
     }
-    else if(!codeforcesURL)
-    {
+    else if (!codeforcesURL) {
       alert("Please fill CodeforcesUrl");
       return;
     }
-    else if(confirm_password!=password)
-    {
+    else if (confirm_password != password) {
       alert("Password and Confirm Password are not same.");
       return;
     }
@@ -261,7 +254,7 @@ function Signup() {
               </div>
             )}
             <div className="mt-8 text-xl justify-center flex">
-              {signupQues[quesInd].question}
+              {signupQues[quesInd]?.question}
               {signupQues[quesInd].skippable === false && <span style={{ color: 'red' }}>&nbsp;*</span>}
             </div>
             <div className="flex justify-center items-center">
@@ -295,11 +288,10 @@ function Signup() {
             </div>
           </div>
           <div
-            className={`${
-              quesInd === signupQues.length - 1
+            className={`${quesInd === signupQues.length - 1
                 ? "flex justify-center items-center flex-col"
                 : "hidden"
-            }`}
+              }`}
           >
             <p className="text-xl my-5 px-2">
               By clicking on the button you accept to our terms and conditions!
