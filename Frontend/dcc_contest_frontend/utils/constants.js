@@ -81,7 +81,7 @@ export const PROBLEM_SET_PAGE = "/problemset";
 export const CONTEST_PAGE = "/contest";
 export const INTERVIEW_PREP_PAGE = "/interviewPrep";
 export const ABOUT_PAGE = "/about";
-export const EVENT_PAGE = `${new Date()>new Date('2023-10-17')?"/event":"/cooking"}`;
+export const EVENT_PAGE = `${new Date()>new Date('2023-10-18')?"/events":"/cooking"}`;
 export const SETTINGS_PAGE = "/settings";
 
 export const ASSIGN_REVOKE_ROLES_PAGE = "/superAdmin/roles";
