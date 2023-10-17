@@ -55,28 +55,28 @@ app.use("/dashboard", DashboardRoutes); // Routes for user dashbaord
 app.use("/user", UserRoutes); // Routes to handle updates in user
 app.use("/21days", challengeRoutes); // Routes to handle 21 days challenge
 
-app.get("/test", async (req, res) => {
-  try {
-    const messageBody = {
-      subject: "DCC : Reset Password",
-      template: "reset_password",
-      context: {
-        name: "Ritik",
-        username: "ritik",
-        otp: 123456,
-      },
-    }
-    await sendEmail("ritikkaushallvb@gmail.com", messageBody);
-    return res.status(200).send({
-      message: "Successfully sent the email.",
-    });
-  }
-  catch (err) {
-    return res.status(401).json({
-      error: "Could not send the email.",
-    });
-  }
-})
+// app.get("/test", async (req, res) => {
+//   try {
+//     const messageBody = {
+//       subject: "DCC : Reset Password",
+//       template: "reset_password",
+//       context: {
+//         name: "Ritik",
+//         username: "ritik",
+//         otp: 123456,
+//       },
+//     }
+//     await sendEmail("ritikkaushallvb@gmail.com", messageBody);
+//     return res.status(200).send({
+//       message: "Successfully sent the email.",
+//     });
+//   }
+//   catch (err) {
+//     return res.status(401).json({
+//       error: "Could not send the email.",
+//     });
+//   }
+// })
 
 // ------------- Database connection and starting the server --------------
 const PORT = process.env.PORT || 5000;
