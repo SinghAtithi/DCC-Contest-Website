@@ -73,6 +73,7 @@ router.post("/userDetails", async (req, resp) => {
     return;
   }
   try {
+    console.log("In /userDetails for " + username)
     const userData = await user
       .find({ username: username }, "codeforcesURL name questions_solved")
       .exec();
@@ -113,9 +114,10 @@ router.post("/userDetails", async (req, resp) => {
       const startOfToday = new Date(now.getFullYear(), now.getMonth(), now.getDate());
       const endOfToday = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1);
 
-      const submission = await Submission.findOne({ ques_id: question._id, username: username, time_stamp: { $gte: startOfToday, $lt: endOfToday } }).sort({ time_stamp: 1 }).exec();
-      if (submission) {
-        const parsedDate = moment(submission.time_stamp, "DD/MM/YYYY HH:mm", true);
+      const submission = await Submission.find({ ques_id: question._id, username: username, time_stamp: { $gte: startOfToday, $lt: endOfToday } }).sort({ time_stamp: 1 }).exec();
+      const sub = submission.filter((s) => s.verdict === "Accepted");
+      if (sub.length !== 0) {
+        const parsedDate = moment(sub[0].time_stamp, "DD/MM/YYYY HH:mm", true);
         thisDaySubmitTimeStamp = parsedDate.toDate();
       }
       console.log(thisDaySubmitTimeStamp)
@@ -170,7 +172,7 @@ router.get("/leaderBoard", async (req, resp) => {
       .sort({ totalScore: -1, thisDaySubmitTimeStamp: 1 })
       .exec();
 
-    // updateData(leaderBoardData)  
+    // updateData(leaderBoardData)
 
     return resp.status(200).json({ data: leaderBoardData });
     //[{name,username,codeForces,totalScore,heatMap}]
@@ -209,22 +211,28 @@ router.get("/leaderBoard", async (req, resp) => {
 //     let heatMap = currentData ? currentData.heatMap : "0".repeat(22);
 //     const codeforcesURL = userData[0].codeforcesURL;
 //     const name = userData[0].name;
-//     let thisDaySubmitTimeStamp = null;
+//     let thisDaySubmitTimeStamp = currentData ? currentData.thisDaySubmitTimeStamp : null;
 
-//     const startOfToday = new Date();
-//     startOfToday.setHours(0, 0, 0, 0);
+//     if (
+//       heatMap[calculateCurrDays()] == "0" &&
+//       userData[0].questions_solved.includes(searchParameter)
+//     ) {
+//       const heatMapArray = heatMap.split("");
+//       heatMapArray[calculateCurrDays()] = "1";
+//       heatMap = heatMapArray.join("");
+//       scoreNow += 1;
 
-//     const endOfToday = new Date();
-//     endOfToday.setHours(23, 59, 59, 999);
+//       const now = new Date();
+//       const startOfToday = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+//       const endOfToday = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1);
 
-
-//     console.log(startOfToday, endOfToday)
-//     const submission = await Submission.findOne({ ques_id: question._id, username: leaderBoardData[i].username, time_stamp: { $gte: startOfToday, $lt: endOfToday } }).sort({ time_stamp: 1 }).exec();
-
-//     console.log(submission)
-//     if (submission) {
-//       const parsedDate = moment(submission.time_stamp, "DD/MM/YYYY HH:mm", true);
-//       thisDaySubmitTimeStamp = parsedDate.toDate();
+//       const submission = await Submission.find({ ques_id: question._id, username: leaderBoardData[i].username, time_stamp: { $gte: startOfToday, $lt: endOfToday } }).sort({ time_stamp: 1 }).exec();
+//       const sub = submission.filter((s) => s.verdict === "Accepted");
+//       if (sub.length !== 0) {
+//         const parsedDate = moment(sub[0].time_stamp, "DD/MM/YYYY HH:mm", true);
+//         thisDaySubmitTimeStamp = parsedDate.toDate();
+//       }
+//       console.log(thisDaySubmitTimeStamp)
 //     }
 
 //     const data = await leaderBoard
