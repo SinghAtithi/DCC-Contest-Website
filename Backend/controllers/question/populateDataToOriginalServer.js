@@ -51,9 +51,10 @@ async function populateDataToOriginalServer() {
     //fetch data from the 21 days challenge server
     const day = calculateCurrDays();
     //look for lean()
+    console.log("Day :", day)
     const questions = await Question21.find({ day: day }).exec();
 
-    // console.log(questions);
+    console.log("QUESTIONS : ", questions);
     //add the questions to the original server
     if (questions.length === 0) {
       console.log("no questions found");
