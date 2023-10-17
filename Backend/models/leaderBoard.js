@@ -21,6 +21,9 @@ const pointSchema = mongoose.Schema({
     type: Number,
     default: 0,
   },
+  thisDaySubmitTimeStamp: {
+    type: Date
+  }
 });
 
 const PointModel = mongoose.model("Point", pointSchema);

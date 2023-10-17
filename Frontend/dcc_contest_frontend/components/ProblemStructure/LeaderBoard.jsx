@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import leaddata from "../../utils/fakeData/leaddata";
 import { streak } from "../../utils/helper/apiIntegration";
 import Spinner from "../Spinner/Spinner";
-import {BASE_URL} from "../../utils/constants";
+import { BASE_URL } from "../../utils/constants";
 export default function LeaderBoard() {
   // console.log(BASE_URL);
   const [leaderBoard, setLeaderBoard] = useState([]);
@@ -199,7 +199,7 @@ export default function LeaderBoard() {
                   </div>
                 </td>
 
-                <td className="font-bold text-2xl">{item.totalScore*100}</td>
+                <td className="font-bold text-2xl">{item.totalScore * 100}</td>
                 <td>
                   <label className="text-2xl">{streak(item.heatMap)}</label>
                 </td>
