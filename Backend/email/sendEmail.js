@@ -28,17 +28,19 @@
 
 // module.exports = { sendEmail }
 
-const { transporter } = require("./transporter");
+const { createTransportor } = require("./transporter");
 
-function sendEmail(receiver, message) {
-    return new Promise((resolve, reject) => {
+async function sendEmail(receiver, message) {
+    return new Promise(async (resolve, reject) => {
         if (!receiver || !message) {
             reject(new Error("Missing receiver or message"));
             return;
         }
 
+        const { transporter, email } = await createTransportor();
+
         const mailData = {
-            from: `Developers and Coders Club <${process.env.EMAIL_USERNAME}>`,
+            from: `Developers and Coders Club <${email}>`,
             to: receiver,
             subject: message.subject,
             template: message.template,
