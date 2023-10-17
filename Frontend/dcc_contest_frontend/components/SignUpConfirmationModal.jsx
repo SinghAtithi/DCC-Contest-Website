@@ -7,10 +7,13 @@ export default function SignUpConfirmaionModal() {
         <h3 className="font-bold text-lg">
           Your account has been successfully created.
         </h3>
-        <p className="py-4">
+        {/* <p className="py-4">
           Please check your email and click on the confirmation link. Check the
           spam in case email is not found. It can take upto 5 min to send the
           email.
+        </p> */}
+        <p className="py-4">
+          Welcome to Twenty One days challenge. Move towards Login page and begin the journey.
         </p>
         <div className="modal-action">
           <Link
@@ -22,7 +25,7 @@ export default function SignUpConfirmaionModal() {
                 .classList.toggle("active");
             }}
           >
-            I have confirmed my email
+            Okay
           </Link>
         </div>
       </div>

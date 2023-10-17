@@ -23,7 +23,7 @@ async function loginController(req, res){
             ).exec();
           }
           if (user) {
-            if (user.confirmed_email) {
+            if (true) {
               const valid = await bcrypt.compare(password, user.password);
   
               if (valid) {

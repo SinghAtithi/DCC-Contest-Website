@@ -61,7 +61,7 @@ async function registerController(req, res) {
                           confirmation_link: `${BASE_URL}/confirmEmail/${verification_token}`,
                         },
                       }
-                      await sendEmail(email, messageBody);
+                      // await sendEmail(email, messageBody);
                       return res.status(200).send({
                         message: "Successfully registered. Please confirm your email before further process.",
                       });
