@@ -14,6 +14,7 @@ router.get("/getQuestion", async (req, res) => {
   try {
     const questions = await Question21.find().select(requiredAttributes).exec();
     const day = calculateCurrDays(); //day is 1-indexed
+    console.log(day);
     if (day<=0)
     {
       res.status(200).json({ message: "too early to get question", questions: [] });
@@ -174,7 +175,7 @@ router.post("/topicCodeForces", async (req, res) => {
     console.log(username);
     // const queBank = req.body.queBank;
     const today = new Date(); // Get the current date
-    const startDate = new Date("2023-10-18"); // Start date for the challenge
+    const startDate = new Date("2023-10-17"); // Start date for the challenge
     const curDay = Math.ceil((today - startDate) / (1000 * 60 * 60 * 24)); // Calculate the difference in days
 
     const codeforcesUrl = `https://codeforces.com/api/user.status?handle=${username}&from=1&count=500`;
