@@ -14,6 +14,11 @@ router.get("/getQuestion", async (req, res) => {
   try {
     const questions = await Question21.find().select(requiredAttributes).exec();
     const day = calculateCurrDays(); //day is 1-indexed
+    if (day<=0)
+    {
+      res.status(200).json({ message: "too early to get question", questions: [] });
+      return;
+    }
     questions.forEach((question) => {
       question.ques_id = question.ques_id.replace("21days", "CPZEN");
       if (question.day == day) {
