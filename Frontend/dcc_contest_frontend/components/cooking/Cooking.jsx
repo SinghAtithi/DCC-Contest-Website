@@ -5,7 +5,7 @@ const Cooking = () => {
         <>
             <div className={style.mainCookingContainer}>
                 <div className={style.content}>
-                    <h1 className={style.title}>Launching Soon
+                    <h1 className={style.title}>We are cooking something for you
                         <div className={style.aurora}>
                             <div className={style.aurora__item}></div>
                             <div className={style.aurora__item}></div>

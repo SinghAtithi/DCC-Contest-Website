@@ -23,7 +23,7 @@ function UserMenu(props) {
                 className="custom-navbar-avtar-pop menu menu-compact dropdown-content mt-3 p-2 shadow bg-base-100 rounded-box w-52"
             >
                 <li>
-                    <Link href={`/${props.username}`}>User Dashboard</Link>
+                    <Link href={`/profile/${props.username}`}>User Dashboard</Link>
                 </li>
                 <li>
                     <Link
