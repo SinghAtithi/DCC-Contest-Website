@@ -55,7 +55,7 @@ function Signup() {
       if (next) Router.push(`/${next}`);
       else if (role === ADMIN) Router.push(ADMIN_DASHBOARD);
       else if (role === SUPER_ADMIN) Router.push(ADMIN_DASHBOARD);
-      else Router.push(`/${username}`);
+      else Router.push(`/profile/${username}`);
     }
   }, []);
 
