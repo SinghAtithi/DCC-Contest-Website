@@ -3,6 +3,9 @@ const express = require("express");
 const cors = require("cors");
 const bodyParser = require("body-parser");
 
+const leaderBoard = require("./models/leaderBoard.js");
+const user=require("./models/user.js");
+
 const dotenv = require("dotenv");
 dotenv.config();
 
@@ -62,8 +65,6 @@ console.log(new Date())
 /* When "strictQuery" is set to true, Mongoose will throw an error if we try to query a model with undefined fields. 
   This helps ensure that the queries are precise and do not include unintended or misspelled fields.
 */
-mongoose.set("strictQuery", true);
-
 
 mongoose
   .connect(process.env.CONNECTION_URL, {
