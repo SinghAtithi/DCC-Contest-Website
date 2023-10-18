@@ -323,7 +323,9 @@ router.post("/topicCodeForces", async (req, res) => {
     res.status(200).send({ binaryString, success: true });
   } catch (err) {
     console.log("Error: " + err);
-    res.status(400).send({ message: "Problem Status Failed", success: false });
+    // res.status(400).send({ message: "Problem Status Failed", success: false });
+    const bs='0'.repeat(22);
+    res.status(200).send({ bs, success: true ,message: "Problem Status Failed"});
   }
 });
 
