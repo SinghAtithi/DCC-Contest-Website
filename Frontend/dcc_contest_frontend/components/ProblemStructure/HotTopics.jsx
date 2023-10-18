@@ -4,10 +4,13 @@ import { flushSync } from "react-dom";
 import { problemSet, problemDescription } from "../../utils/fakeData/data";
 
 function getDay() {
-  const today = new Date(); // Get the current date
-  const startDate = new Date("2023-10-18"); // Start date for the challenge
-  const curDay = Math.ceil((today - startDate) / (1000 * 60 * 60 * 24)); // Calculate the difference in days
-  return curDay;
+  const target = new Date(2023, 9, 17);
+  const todayIstMil =
+    new Date().getTime() + 5 * 60 * 60 * 1000 + 30 * 60 * 1000;
+  const todayIst = new Date(todayIstMil);
+  const diff = Math.floor((todayIst - target) / (1000 * 60 * 60 * 24));
+  // console.log(diff);
+  return diff;
 }
 export default function HotTopics(props) {
   const [selectedProblem, setSelectedProblem] = useState(null);
