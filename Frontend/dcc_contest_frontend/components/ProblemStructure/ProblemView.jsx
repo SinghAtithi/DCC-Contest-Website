@@ -8,7 +8,7 @@ import { progressBar } from "../../utils/helper/apiIntegration";
 
 function getDay() {
   const today = new Date(); // Get the current date
-  const startDate = new Date("2023-10-17"); // Start date for the challenge
+  const startDate = new Date("2023-10-18"); // Start date for the challenge
   const curDay = Math.ceil((today - startDate) / (1000 * 60 * 60 * 24)); // Calculate the difference in days
   return curDay;
 }
@@ -35,7 +35,7 @@ export default function ProblemTable(props) {
           {props.problems && props.problems.length != 0 ? (
             props.problems?.map((problem, index) => (
               <tr key={problem.day} className="hover cursor-pointer">
-                {props.binaryStringProblem[index+1] == "1" ? (
+                {props.binaryStringProblem[index + 1] == "1" ? (
                   <th className="flex items-center justify-center">
                     <td>
                       <svg
@@ -88,11 +88,10 @@ export default function ProblemTable(props) {
                       disabled={problem.day > day}
                     >
                       <button
-                        className={`btn ${
-                          problem.day < day
+                        className={`btn ${problem.day < day
                             ? "bg-slate-600 border-none hover:bg-black hover:text-white"
                             : "hover:bg-blue-800"
-                        } btn-info w-40 min-h-8 h-8`}
+                          } btn-info w-40 min-h-8 h-8`}
                         disabled={problem.day > day}
                       >
                         {problem.status ? "Solve Again" : "Solve"}
