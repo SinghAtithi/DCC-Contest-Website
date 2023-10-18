@@ -18,7 +18,9 @@ router.get("/getQuestion", async (req, res) => {
     const day = calculateCurrDays(); //day is 1-indexed
     console.log(day);
     if (day <= 0) {
-      res.status(200).json({ message: "too early to get question", questions: [] });
+      res
+        .status(200)
+        .json({ message: "too early to get question", questions: [] });
       return;
     }
     questions.forEach((question) => {
@@ -73,7 +75,7 @@ router.post("/userDetails", async (req, resp) => {
     return;
   }
   try {
-    console.log("In /userDetails for " + username)
+    console.log("In /userDetails for " + username);
     const userData = await user
       .find({ username: username }, "codeforcesURL name questions_solved")
       .exec();
@@ -90,7 +92,10 @@ router.post("/userDetails", async (req, resp) => {
     }
     const searchParameter = "CPZEN_" + currentDayCalculated;
 
-    const question = await Question.findOne({ ques_id: searchParameter }, "_id").exec();
+    const question = await Question.findOne(
+      { ques_id: searchParameter },
+      "_id"
+    ).exec();
 
     const currentData = await leaderBoard
       .findOne({ username: username })
@@ -99,7 +104,9 @@ router.post("/userDetails", async (req, resp) => {
     let heatMap = currentData ? currentData.heatMap : "0".repeat(22);
     const codeforcesURL = userData[0].codeforcesURL;
     const name = userData[0].name;
-    let thisDaySubmitTimeStamp = currentData ? currentData.thisDaySubmitTimeStamp : null;
+    let thisDaySubmitTimeStamp = currentData
+      ? currentData.thisDaySubmitTimeStamp
+      : null;
 
     if (
       heatMap[calculateCurrDays()] == "0" &&
@@ -111,16 +118,30 @@ router.post("/userDetails", async (req, resp) => {
       scoreNow += 1;
 
       const now = new Date();
-      const startOfToday = new Date(now.getFullYear(), now.getMonth(), now.getDate());
-      const endOfToday = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1);
+      const startOfToday = new Date(
+        now.getFullYear(),
+        now.getMonth(),
+        now.getDate()
+      );
+      const endOfToday = new Date(
+        now.getFullYear(),
+        now.getMonth(),
+        now.getDate() + 1
+      );
 
-      const submission = await Submission.find({ ques_id: question._id, username: username, time_stamp: { $gte: startOfToday, $lt: endOfToday } }).sort({ time_stamp: 1 }).exec();
+      const submission = await Submission.find({
+        ques_id: question._id,
+        username: username,
+        time_stamp: { $gte: startOfToday, $lt: endOfToday },
+      })
+        .sort({ time_stamp: 1 })
+        .exec();
       const sub = submission.filter((s) => s.verdict === "Accepted");
       if (sub.length !== 0) {
         const parsedDate = moment(sub[0].time_stamp, "DD/MM/YYYY HH:mm", true);
         thisDaySubmitTimeStamp = parsedDate.toDate();
       }
-      console.log(thisDaySubmitTimeStamp)
+      console.log(thisDaySubmitTimeStamp);
     }
     const data = await leaderBoard
       .updateOne(
@@ -132,14 +153,14 @@ router.post("/userDetails", async (req, resp) => {
             codeforcesURL: codeforcesURL,
             username: username,
             name: name,
-            thisDaySubmitTimeStamp: thisDaySubmitTimeStamp
+            thisDaySubmitTimeStamp: thisDaySubmitTimeStamp,
           },
         },
         { upsert: true }
       )
       .exec();
 
-    console.log(data)
+    console.log(data);
 
     resp.status(200).json({
       data: {
@@ -263,9 +284,9 @@ router.post("/topicCodeForces", async (req, res) => {
     console.log(queBank);
     console.log(username);
     // const queBank = req.body.queBank;
-    const today = new Date(); // Get the current date
+    // const today = new Date(); // Get the current date
     const startDate = new Date("2023-10-18"); // Start date for the challenge
-    const curDay = Math.ceil((today - startDate) / (1000 * 60 * 60 * 24)); // Calculate the difference in days
+    const curDay = calculateCurrDays(); // Calculate the difference in days
 
     const codeforcesUrl = `https://codeforces.com/api/user.status?handle=${username}&from=1&count=500`;
     const response = await fetch(codeforcesUrl, { method: "GET" });
