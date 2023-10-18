@@ -5,7 +5,7 @@ import { problemSet, problemDescription } from "../../utils/fakeData/data";
 
 function getDay() {
   const today = new Date(); // Get the current date
-  const startDate = new Date("2023-10-17"); // Start date for the challenge
+  const startDate = new Date("2023-10-18"); // Start date for the challenge
   const curDay = Math.ceil((today - startDate) / (1000 * 60 * 60 * 24)); // Calculate the difference in days
   return curDay;
 }
@@ -34,7 +34,7 @@ export default function HotTopics(props) {
           {problemDescription && problemDescription.length != 0 ? (
             problemDescription.map((problem, index) => (
               <tr key={problem.day} className="hover cursor-pointer">
-                {props.binaryStringTopic[index+1] == "1" ? (
+                {props.binaryStringTopic[index + 1] == "1" ? (
                   <th>
                     <td>
                       <svg
