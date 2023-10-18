@@ -255,7 +255,7 @@ function Signup() {
             )}
             <div className="mt-8 text-xl justify-center flex">
               {signupQues[quesInd]?.question}
-              {signupQues[quesInd].skippable === false && <span style={{ color: 'red' }}>&nbsp;*</span>}
+              {signupQues[quesInd]?.skippable === false && <span style={{ color: 'red' }}>&nbsp;*</span>}
             </div>
             <div className="flex justify-center items-center">
               {quesInd >= 0 ? (
@@ -273,7 +273,7 @@ function Signup() {
                 type="text"
                 className="input text-2xl rounded-lg my-4 bg-inherit input-success h-16 w-full max-w-lg"
                 value={text}
-                placeholder={signupQues[quesInd].placeholder}
+                placeholder={signupQues[quesInd]?.placeholder}
                 onChange={(e) => setText(e.target.value)}
                 onKeyDown={(e) => {
                   if (e.key === "Enter") onNextClick();
@@ -289,8 +289,8 @@ function Signup() {
           </div>
           <div
             className={`${quesInd === signupQues.length - 1
-                ? "flex justify-center items-center flex-col"
-                : "hidden"
+              ? "flex justify-center items-center flex-col"
+              : "hidden"
               }`}
           >
             <p className="text-xl my-5 px-2">

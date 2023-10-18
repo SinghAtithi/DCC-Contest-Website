@@ -15,7 +15,7 @@ async function resetTime(email) {
 async function getEmailPassword() {
     const email = await Email.findOne().sort({ count: 1 }).exec();
 
-    if (email.count >= 20) {
+    if (email.count >=10) {
         resetTime(email);
         return { email: "", password: "", status: false };
     }

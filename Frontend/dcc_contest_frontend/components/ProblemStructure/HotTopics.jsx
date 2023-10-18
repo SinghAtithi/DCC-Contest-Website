@@ -34,7 +34,7 @@ export default function HotTopics(props) {
           {problemDescription && problemDescription.length != 0 ? (
             problemDescription.map((problem, index) => (
               <tr key={problem.day} className="hover cursor-pointer">
-                {props.binaryStringTopic[index+1] == "1" ? (
+                {props.binaryStringTopic[index + 1] == "1" ? (
                   <th>
                     <td>
                       <svg
