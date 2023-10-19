@@ -340,14 +340,9 @@ router.get("/time",(req,res)=>{
   const date=new Date();
   res.status(200).send({date:date.toDateString(),time:date.toTimeString()});
 })
-
-<<<<<<< HEAD
 router.get("/day",(req,res)=>
 {
   const day=calculateCurrDays();
   res.status(200).send({day:day});
 })
-
-=======
->>>>>>> 37ab4d7dc467fb698f7c05d8113ecc859eaed018
 module.exports = router;
