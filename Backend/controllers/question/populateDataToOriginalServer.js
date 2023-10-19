@@ -58,7 +58,8 @@ async function populateDataToOriginalServer() {
     //add the questions to the original server
     if (questions.length === 0) {
       console.log("no questions found");
-      throw new Error("No questions found");
+      // throw new Error("No questions found");
+      return { status: 400, message: "No questions found" };
     }
     const question = questions[0];
     question.ques_id = question.ques_id.replace("21days", "CPZEN");

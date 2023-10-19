@@ -44,6 +44,13 @@ router.get("/getQuestion", async (req, res) => {
       if (!isQuestionPresentInDB) {
         const resultMounted = await populateDataToOriginalServer();
         console.log("result from populated function ", resultMounted);
+
+        if (resultMounted.status===400) 
+        {
+            res.status(200).json({ message: "OKAY", questions:questions, remarks:"NO new question mounted"});
+            return;          
+        }
+
         if (resultMounted.status !== 200) {
           throw new Error("Error in mounting data");
         }
@@ -328,5 +335,10 @@ router.post("/topicCodeForces", async (req, res) => {
     res.status(200).send({ bs, success: true ,message: "Problem Status Failed"});
   }
 });
+
+router.get("/time",(req,res)=>{
+  const date=new Date();
+  res.status(200).send({date:date.toDateString(),time:date.toTimeString()});
+})
 
 module.exports = router;
