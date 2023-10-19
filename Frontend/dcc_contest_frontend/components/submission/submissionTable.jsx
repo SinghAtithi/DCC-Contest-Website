@@ -36,7 +36,7 @@ export default function SubmissionTable(props) {
                     setCode(submission.code);
                     setCodeError(submission.error);
                     setQuesName(submission.ques_name);
-                    setOpen(true);
+                    setOpen(false);
                   }}>
                     View Details
                   </button>
