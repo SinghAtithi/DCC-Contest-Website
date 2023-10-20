@@ -85,7 +85,8 @@ export default function ProblemTable(props) {
                   <div className="pr-[20]">
                     <Link
                       href={
-                        problem.day <= day ? `/problems/${problem.ques_id}` : ``
+                        // problem.day <= day ? `/problems/${problem.ques_id}` : ``
+                        problem.day <= day ? `/cooking` : ``
                       }
                       target={problem.day <= day ? "_blank" : ""}
                       disabled={problem.day > day}
