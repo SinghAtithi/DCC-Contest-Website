@@ -7,4 +7,5 @@ const calculateCurrDays = () => {
   // console.log(diff);
   return diff;
 };
+
 module.exports = calculateCurrDays;
