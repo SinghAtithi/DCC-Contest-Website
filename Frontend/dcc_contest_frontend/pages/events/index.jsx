@@ -79,10 +79,9 @@ function ProblemSet() {
         username: codeforcesName(url1),
       };
       // console.log("codeForcesNames.username : ", codeForcesNames.username);
-      if (!codeForcesNames.username)
-      {
-          // console.log("codeForcesNames.username : ", codeForcesNames.username);
-          return;
+      if (!codeForcesNames.username) {
+        // console.log("codeForcesNames.username : ", codeForcesNames.username);
+        return;
       };
       axios
         .post(`${BASE_URL}/21days/topicCodeForces`, codeForcesNames)
@@ -110,9 +109,8 @@ function ProblemSet() {
       <div className="mx-4 mt-20">
         <div className="tabs flex align-middle justify-center my-2">
           <button
-            className={`tab tab-lifted text-xl ${
-              tabActive === "Problem" && "tab-active"
-            }`}
+            className={`tab tab-lifted text-xl ${tabActive === "Problem" && "tab-active"
+              }`}
             onClick={() => {
               setTabActive("Problem");
             }}
@@ -120,9 +118,8 @@ function ProblemSet() {
             Problem Set
           </button>
           <button
-            className={`tab tab-lifted text-xl ${
-              tabActive === "HotTopics" && "tab-active"
-            }`}
+            className={`tab tab-lifted text-xl ${tabActive === "HotTopics" && "tab-active"
+              }`}
             onClick={() => {
               setTabActive("HotTopics");
             }}
@@ -130,9 +127,8 @@ function ProblemSet() {
             Hot Topics
           </button>
           <button
-            className={`tab tab-lifted text-xl ${
-              tabActive === "LeaderBoard" && "tab-active"
-            }`}
+            className={`tab tab-lifted text-xl ${tabActive === "LeaderBoard" && "tab-active"
+              }`}
             onClick={() => {
               setTabActive("LeaderBoard");
             }}
