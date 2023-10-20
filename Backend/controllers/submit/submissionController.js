@@ -27,8 +27,12 @@ const createSubmission = async (req, res) => {
     console.log(data);
 
     const CompilerApi = `${COMPILER_API}/api/compileWithInput`;
-
-    const compilerResponse = await axios.post(CompilerApi, data);
+    const config = {
+      headers: {
+        "ngrok-skip-browser-warning": "69420",
+      }
+    }
+    const compilerResponse = await axios.post(CompilerApi, data, config);
 
     console.log("compilerResponse", compilerResponse.data);
 
