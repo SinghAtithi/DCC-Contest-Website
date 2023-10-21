@@ -15,7 +15,8 @@ router.get("/getQuestion", async (req, res) => {
   const requiredAttributes = ["name", "ques_id", "day"];
   try {
     const questions = await Question21.find().select(requiredAttributes).exec();
-    const day = calculateCurrDays(); //day is 1-indexed
+    const day = calculateCurrDays(); 
+    // const day=4;//day is 1-indexed
     console.log(day);
     if (day <= 0) {
       res
@@ -34,7 +35,8 @@ router.get("/getQuestion", async (req, res) => {
     console.log(questions);
     //{[name,ques_id,day,isToday]}
     if (isDataMounted[day] === false) {
-      let dayToSearch = calculateCurrDays().toString();
+      // let dayToSearch = calculateCurrDays().toString();
+      let dayToSearch=day.toString();
       if (dayToSearch.length === 1) {
         dayToSearch = "0" + dayToSearch;
       }
@@ -46,7 +48,7 @@ router.get("/getQuestion", async (req, res) => {
         console.log("result from populated function ", resultMounted);
 
         if (resultMounted.status === 400) {
-          res.status(200).json({ message: "OKAY", questions: questions, remarks: "NO new question mounted" });
+          res.status(200).json({ message: "OKAY", questions: questions, remarks: resultMounted.message});
           return;
         }
 
@@ -59,7 +61,10 @@ router.get("/getQuestion", async (req, res) => {
       }
       isDataMounted[day] = true;
     }
-    console.log("already mounted");
+    else
+    {
+      console.log("already mounted");
+    }
     //{status:200,questions:[{name,ques_id,day,isToday}]}
     // {status:200,body:{questions:[{name,ques_id,day,isToday}],message:"OKAY"}}
     res.status(200).json({ message: "OKAY", questions: questions });
