@@ -24,7 +24,7 @@ async function populateDataToOriginalServer() {
     });
 
     if (!resp.ok) {
-      throw new Error("Network response was not ok");
+      throw new Error("Network response was not unable to signIn");
     }
 
     // const response = await axios.post(
@@ -50,16 +50,17 @@ async function populateDataToOriginalServer() {
 
     //fetch data from the 21 days challenge server
     const day = calculateCurrDays();
+    // const day=4;
     //look for lean()
     console.log("Day :", day)
     const questions = await Question21.find({ day: day }).exec();
 
-    console.log("QUESTIONS : ", questions);
+    // console.log("QUESTIONS : ", questions);
     //add the questions to the original server
     if (questions.length === 0) {
       console.log("no questions found");
       // throw new Error("No questions found");
-      return { status: 400, message: "No questions found" };
+      return { status: 400, message: "No questions found in question 21 " };
     }
     const question = questions[0];
     question.ques_id = question.ques_id.replace("21days", "CPZEN");
@@ -77,7 +78,7 @@ async function populateDataToOriginalServer() {
       }
     );
     if (response2.status !== 200) {
-      throw new Error("Error in adding question");
+      throw new Error("Error in adding question in original dataBase");
     }
     console.log("pushed question to original server");
     return { status: 200, message: "Question added successfully" };
