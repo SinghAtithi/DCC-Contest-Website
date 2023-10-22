@@ -348,7 +348,7 @@ router.get("/time", (req, res) => {
 });
 router.get("/day", (req, res) => {
   const day = calculateCurrDays();
-  res.status(200).send({ day: day });
+  res.status(200).send({ day });
 });
 
 router.get("/testLogin", async (req, resp) => {
