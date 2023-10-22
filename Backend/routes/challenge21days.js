@@ -345,10 +345,35 @@ router.post("/topicCodeForces", async (req, res) => {
 router.get("/time", (req, res) => {
   const date = new Date();
   res.status(200).send({ date: date.toDateString(), time: date.toTimeString() });
-})
-router.get("/day",(req,res)=>
-{
-  const day=calculateCurrDays();
-  res.status(200).send({day:day});
-})
+});
+router.get("/day", (req, res) => {
+  const day = calculateCurrDays();
+  res.status(200).send({ day: day });
+});
+
+router.get("/testLogin", async (req, resp) => {
+  try {
+    const apiUrl = `${process.env.COMPILER_API}/auth/login`;
+    const postData = {
+      loginId: process.env.LOGIN_ID,
+      password: process.env.PASSWORD,
+    };
+    // console.log(apiUrl, postData);
+    const resp = await fetch(apiUrl, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json", // Set the Content-Type to JSON
+      },
+      body: JSON.stringify(postData), // Convert the data to JSON format
+    });
+
+    if (!resp.ok) {
+      throw new Error(`Network response was not unable to signIn LoginId ${!(process.env.LOGIN_ID===undefined)} and password ${!(process.env.PASSWORD===undefined)}`);
+    }
+    resp.status(200).json({ message: "OKAY" });
+  } catch (err) 
+  {
+    resp.status(500).json({ message: err.message });
+  }
+});
 module.exports = router;
