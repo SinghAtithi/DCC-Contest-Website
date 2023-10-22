@@ -1,3 +1,3 @@
 const BASE_URL = "https://code-dcc.tech";
-
-module.exports = { BASE_URL };
+const BACKEND_URL="https://ill-pear-dalmatian-slip.cyclic.app"
+module.exports = { BASE_URL , BACKEND_URL};

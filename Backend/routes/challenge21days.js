@@ -10,6 +10,7 @@ const queBank = require("../utils/queBank");
 const calculateCurrDays = require("../utils/calculateCurrDays.js");
 const Submission = require("../models/submission");
 const moment = require("moment");
+const {BACKEND_URL}=require("../utils/constants.js");
 
 router.get("/getQuestion", async (req, res) => {
   const requiredAttributes = ["name", "ques_id", "day"];
@@ -353,7 +354,7 @@ router.get("/day", (req, res) => {
 
 router.get("/testLogin", async (req, resp) => {
   try {
-    const apiUrl = `${process.env.COMPILER_API}/auth/login`;
+    const apiUrl = `${BACKEND_URL}/auth/login`;
     const postData = {
       loginId: process.env.LOGIN_ID,
       password: process.env.PASSWORD,

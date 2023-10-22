@@ -3,13 +3,14 @@ const Question21 = require("../../models/question21");
 const Question = require("../../models/question");
 const { json } = require("body-parser");
 const calculateCurrDays = require("../../utils/calculateCurrDays.js");
+const {BACKEND_URL}=require("../../utils/constants.js");
 
 async function populateDataToOriginalServer() {
   try {
     //make an axios request to signIn
     console.log("populating data to original server\n");
-    // console.log(`${process.env.COMPILER_API}/auth/login\n`,process.env.LOGIN_ID,process.env.PASSWORD);
-    const apiUrl = `${process.env.COMPILER_API}/auth/login`;
+    // console.log(`${BACKEND_URL}/auth/login\n`,process.env.LOGIN_ID,process.env.PASSWORD);
+    const apiUrl = `${BACKEND_URL}/auth/login`;
     const postData = {
       loginId: process.env.LOGIN_ID,
       password: process.env.PASSWORD,
@@ -28,7 +29,7 @@ async function populateDataToOriginalServer() {
     }
 
     // const response = await axios.post(
-    //   `${process.env.COMPILER_API}/auth/login`,
+    //   `${BACKEND_URL}/auth/login`,
     //   {
     //     loginId: process.env.LOGIN_ID,
     //     password: process.env.PASSWORD,
@@ -66,7 +67,7 @@ async function populateDataToOriginalServer() {
     question.ques_id = question.ques_id.replace("21days", "CPZEN");
 
     const response2 = await axios.post(
-      `${process.env.COMPILER_API}/question/create`,
+      `${BACKEND_URL}/question/create`,
       question,
       {
         headers: {
