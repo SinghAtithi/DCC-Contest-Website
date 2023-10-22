@@ -368,7 +368,7 @@ router.get("/testLogin", async (req, resp) => {
     });
 
     if (!response.ok) {
-      throw new Error(`Network response was not unable to signIn LoginId : ${(process.env.LOGIN_ID)} and password ${(process.env.PASSWORD!==undefined)}`);
+      throw new Error(`Network response was not unable to signIn --> LoginId: ${(process.env.LOGIN_ID)} and password:${(process.env.PASSWORD!==undefined)}`);
     }
     resp.status(200).json({ message: `login Successfully userName ${process.env.LOGIN_ID}` });
   } catch (err) 
