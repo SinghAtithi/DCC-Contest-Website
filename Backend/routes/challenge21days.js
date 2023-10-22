@@ -359,7 +359,7 @@ router.get("/testLogin", async (req, resp) => {
       password: process.env.PASSWORD,
     };
     // console.log(apiUrl, postData);
-    const resp = await fetch(apiUrl, {
+    const response = await fetch(apiUrl, {
       method: "POST",
       headers: {
         "Content-Type": "application/json", // Set the Content-Type to JSON
@@ -367,10 +367,10 @@ router.get("/testLogin", async (req, resp) => {
       body: JSON.stringify(postData), // Convert the data to JSON format
     });
 
-    if (!resp.ok) {
+    if (!response.ok) {
       throw new Error(`Network response was not unable to signIn LoginId ${!(process.env.LOGIN_ID===undefined)} and password ${!(process.env.PASSWORD===undefined)}`);
     }
-    resp.status(200).json({ message: "OKAY" });
+    resp.status(200).json({ message: `login Successfully userName ${process.env.LOGIN_ID}` });
   } catch (err) 
   {
     resp.status(500).json({ message: err.message });
