@@ -3,6 +3,7 @@ import leaddata from "../../utils/fakeData/leaddata";
 import { streak } from "../../utils/helper/apiIntegration";
 import Spinner from "../Spinner/Spinner";
 import { BASE_URL } from "../../utils/constants";
+
 export default function LeaderBoard() {
   // console.log(BASE_URL);
   const [leaderBoard, setLeaderBoard] = useState([]);
@@ -60,7 +61,10 @@ export default function LeaderBoard() {
 
   return (
     <>
-      <div className="flex items-center justify-between mx-[500px]">
+      {/* Header */}
+      <div className="flex flex-col lg:flex-row items-center justify-between">
+        {/* Dummy div to facilitate justify between */}
+        <div></div>
         <svg
           xmlns="http://www.w3.org/2000/svg"
           shapeRendering="geometricPrecision"
@@ -129,7 +133,9 @@ export default function LeaderBoard() {
             d="M221.21 146.23h15.68c8.22 0 14.09 1.73 17.59 5.18 3.5 3.44 5.25 8.5 5.25 15.17v22.01c0 13.23-7.39 20.12-22.18 20.68v14.01h-27.68v-14.01c-14.45-.78-21.68-7.67-21.68-20.68v-12.84h29.18v9.01c0 2.44 1.4 3.67 4.18 3.67h4.83c2.78 0 4.17-1.23 4.17-3.67v-15.18c0-2.44-1.39-3.67-4.17-3.67h-16.01c-8.22 0-14.03-1.81-17.43-5.42-3.39-3.62-5.09-8.81-5.09-15.59v-22.01c0-13.12 7.34-20.02 22.02-20.69V88.03h27.68v14.17c14.57.78 21.85 7.68 21.85 20.69v12.84h-29.18v-9.01c0-2.45-1.39-3.67-4.17-3.67h-4.84c-2.78 0-4.17 1.22-4.17 3.67v15.84c0 2.45 1.39 3.67 4.17 3.67z"
           />
         </svg>
+
         <h1 className="text-4xl">LeaderBoard</h1>
+
         <svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg" height={90}>
           <path d="m63 59v4h-62v-4h4 18 18 18z" fill="#422b57" />
           <path d="m41 45h18v14h-18z" fill="#774e9d" />
@@ -164,32 +170,40 @@ export default function LeaderBoard() {
           <path d="m40 30h2v2h-2z" />
           <path d="m37 10h-2c0 .123-.045 3-4 3v2c4.746 0 6-3.271 6-5z" />
         </svg>
+
+        {/* Dummy div to facilitate justify between */}
+        <div></div>
       </div>
-      <div className="px-1">
-        <table className="table w-full mt-10 mb-5">
-          <thead></thead>
-          <tbody>
+
+      {/* Table */}
+      <div className="overflow-x-auto mb-2">
+        <table className="table w-full mt-10">
+          <thead>
             <tr>
-              <th className="pl-[100px]">Rank</th>
+              <th className="flex items-center justify-center">Rank</th>
               <th>Username</th>
               <th>Points</th>
               <th>Streak</th>
             </tr>
+          </thead>
+          <tbody>
             {leaderBoard?.map((item, index) => (
               <tr key={index}>
-                <td className="pl-[90px]">
-                  <label className="text-2xl">
-                    {index === 0 ? (
-                      <span className="text-3xl">{index + 1}👑</span>
-                    ) : index === 1 ? (
-                      <span className="text-3xl">{index + 1}🌟</span>
-                    ) : index === 2 ? (
-                      <span className="text-3xl">{index + 1}🥇</span>
-                    ) : (
-                      <span className="text-3xl">{index + 1}</span>
-                    )}
-                  </label>
-                </td>
+                <th className="flex items-center justify-center">
+                  <td>
+                    <label className="text-2xl">
+                      {index === 0 ? (
+                        <span className="text-3xl">{index + 1}👑</span>
+                      ) : index === 1 ? (
+                        <span className="text-3xl">{index + 1}🌟</span>
+                      ) : index === 2 ? (
+                        <span className="text-3xl">{index + 1}🥇</span>
+                      ) : (
+                        <span className="text-3xl">{index + 1}</span>
+                      )}
+                    </label>
+                  </td>
+                </th>
                 <td>
                   <div className="flex items-center space-x-3">
                     <div>
@@ -208,6 +222,14 @@ export default function LeaderBoard() {
           </tbody>
         </table>
       </div>
+
+      {/* Pagination Button
+      <div className="join">
+        <button className="join-item btn">1</button>
+        <button className="join-item btn btn-active">2</button>
+        <button className="join-item btn">3</button>
+        <button className="join-item btn">4</button>
+      </div> */}
     </>
   );
 }
