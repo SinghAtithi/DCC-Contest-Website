@@ -10,7 +10,8 @@ const queBank = require("../utils/queBank");
 const calculateCurrDays = require("../utils/calculateCurrDays.js");
 const Submission = require("../models/submission");
 const moment = require("moment");
-const {BACKEND_URL}=require("../utils/constants.js");
+const { BACKEND_URL } = require("../utils/constants.js");
+const customComp=require("../utils/customComp.js");
 
 router.get("/getQuestion", async (req, res) => {
   const requiredAttributes = ["name", "ques_id", "day"];
@@ -204,9 +205,47 @@ router.get("/leaderBoard", async (req, resp) => {
   try {
     const leaderBoardData = await leaderBoard
       .find()
-      .sort({ totalScore: -1, thisDaySubmitTimeStamp: 1 })
       .exec();
+      // .sort({ totalScore: -1, thisDaySubmitTimeStamp: 1 })
 
+      leaderBoardData.sort(customComp);
+
+    //function not Allowed in Atlas Tier
+    // const leaderBoardData = await leaderBoard.aggregate([
+    //   {
+    //     $addFields: {
+    //       computedValue: {
+    //         $function: {
+    //           body: `
+    //             function(heatMap) {
+    //               let maxStreak = 0;
+    //               let currentStreak = 0;
+    //               for (let i = 0; i < heatMap?.length; i++) {
+    //                 if (heatMap[i] == '1') {
+    //                   currentStreak++;
+    //                   maxStreak = Math.max(maxStreak, currentStreak);
+    //                 } else {
+    //                   currentStreak = 0;
+    //                 }
+    //               }
+    //               return maxStreak;
+    //             }
+    //           `,
+    //           args: ["$heatMap"],
+    //           lang: "js",
+    //         },
+    //       },
+    //     },
+    //   },
+    //   {
+    //     $sort: {
+    //       totalScore: -1,
+    //       computedValue: -1,
+    //       thisDaySubmitTimeStamp: 1,
+    //     },
+    //   },
+    // ]).exec();
+    
     // updateData(leaderBoardData)
 
     return resp.status(200).json({ data: leaderBoardData });
