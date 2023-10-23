@@ -398,7 +398,7 @@ router.get("/testLogin", async (req, resp) => {
       loginId: process.env.LOGIN_ID,
       password: process.env.PASSWORD,
     };
-    // console.log(apiUrl, postData);
+    console.log(apiUrl, postData);
     const response = await fetch(apiUrl, {
       method: "POST",
       headers: {
