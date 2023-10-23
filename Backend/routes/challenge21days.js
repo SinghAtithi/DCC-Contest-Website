@@ -392,30 +392,27 @@ router.get("/day", (req, res) => {
 });
 
 router.get("/testLogin", async (req, resp) => {
-  resp.status(200).json({ message: `${apiUrl,"\n",process.env.LOGIN_ID,process.env.PASSWORD}` });
-  // try {
-  //   const apiUrl = `${BACKEND_URL}/auth/login`;
-  //   const postData = {
-  //     loginId: process.env.LOGIN_ID,
-  //     password: process.env.PASSWORD,
-  //   };
-  //   // console.log(apiUrl, postData);
-  //   return resp.status(200).json({ message: `${apiUrl,"\n",process.env.LOGIN_ID,process.env.PASSWORD}` });
-  //   const response = await fetch(apiUrl, {
-  //     method: "POST",
-  //     headers: {
-  //       "Content-Type": "application/json", // Set the Content-Type to JSON
-  //     },
-  //     body: JSON.stringify(postData), // Convert the data to JSON format
-  //   });
-
-  //   if (!response.ok) {
-  //     throw new Error(`Network response was not unable to signIn --> LoginId: ${(process.env.LOGIN_ID)} and password:${(process.env.PASSWORD!==undefined)}`);
-  //   }
-  //   resp.status(200).json({ message: `login Successfully userName ${process.env.LOGIN_ID}` });
-  // } catch (err) 
-  // {
-  //   resp.status(500).json({ message: err.message });
-  // }
+  try {
+    const apiUrl = `${BACKEND_URL}/auth/login`;
+    const postData = {
+      loginId: process.env.LOGIN_ID,
+      password: process.env.PASSWORD,
+    };
+    // console.log(apiUrl, postData);
+    const response = await fetch(apiUrl, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json", // Set the Content-Type to JSON
+      },
+      body: JSON.stringify(postData), // Convert the data to JSON format
+    });
+    if (!response.ok) {
+      throw new Error(`Network response was not unable to signIn --> LoginId: ${(process.env.LOGIN_ID)} and password:${(process.env.PASSWORD!==undefined)}`);
+    }
+    resp.status(200).json({ message: `login Successfully userName ${process.env.LOGIN_ID}` });
+  } catch (err) 
+  {
+    resp.status(500).json({ message: err.message });
+  }
 });
 module.exports = router;
