@@ -22,8 +22,8 @@ export default function HotTopics(props) {
 
   // console.log("hotTopicBs", props.binaryStringTopic);
   return (
-    <div className="mb-5">
-      <table className="table w-full custom-table mx-auto">
+    <div className="overflow-x-auto mb-2">
+      <table className="table w-full custom-table">
         <thead>
           <tr>
             <th></th>
@@ -38,7 +38,7 @@ export default function HotTopics(props) {
             problemDescription.map((problem, index) => (
               <tr key={problem.day} className="hover cursor-pointer">
                 {props.binaryStringTopic[index + 1] == "1" ? (
-                  <th>
+                  <th zlassName="flex items-center justify-center">
                     <td>
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
@@ -54,7 +54,7 @@ export default function HotTopics(props) {
                     </td>
                   </th>
                 ) : (
-                  <th>
+                  <th className="flex items-center justify-center">
                     <td>
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
@@ -81,7 +81,7 @@ export default function HotTopics(props) {
                 <td>
                   <>
                     {day >= problem.day ? (
-                      <div className="shadow-xl">
+                      <div>
                         <label
                           htmlFor="my_modal_7"
                           className="btn  btn-outline btn-info w-40 min-h-8 h-8"

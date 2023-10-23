@@ -9,10 +9,10 @@ function ProblemSetPage() {
     <>
       <Head><title>DCC : Problems</title></Head>
       <Navbar />
-        <div className="content-area-top p-2">
-          <ProblemSet />
-        </div>
-        <TheFooter />
+      <div className="content-area-top p-2">
+        <ProblemSet />
+      </div>
+      <TheFooter />
     </>
   );
 }

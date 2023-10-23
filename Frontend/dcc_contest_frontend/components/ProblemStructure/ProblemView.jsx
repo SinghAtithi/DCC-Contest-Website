@@ -9,7 +9,7 @@ import { progressBar } from "../../utils/helper/apiIntegration";
 function getDay() {
   const target = new Date(2023, 9, 17);
   const todayIstMil =
-    new Date().getTime() ;
+    new Date().getTime();
   const todayIst = new Date(todayIstMil);
   const diff = Math.floor((todayIst - target) / (1000 * 60 * 60 * 24));
   // console.log(diff);
@@ -17,20 +17,21 @@ function getDay() {
 }
 export default function ProblemTable(props) {
   const day = getDay();
-  console.log(props.problems);
+
   return (
-    <div className="mb-5">
+    <div className="overflow-x-auto">
       <table className="table w-full custom-table">
         <thead>
           <tr>
             <th></th>
-            <th className="pl-[120px]">Day</th>
+            <th>Day</th>
 
-            {props.tabActive !== "Problem" ? (
-              <th className="pr-[120px]">Name</th>
-            ) : (
+            {props.tabActive !== "Problem"
+              ?
+              <th>Name</th>
+              :
               <th>Topic</th>
-            )}
+            }
             <th>Action</th>
           </tr>
         </thead>
@@ -71,18 +72,19 @@ export default function ProblemTable(props) {
                     </td>
                   </th>
                 )}
+
                 <td>
-                  <div className="pl-[100px]">Day {problem.day}</div>
+                  <div>Day {problem.day}</div>
                 </td>
 
                 <td>
-                  <div className="flex items-center justify-center pr-[100px]">
+                  <div className="flex items-center justify-center">
                     {problem.name}
                   </div>
                 </td>
 
                 <td>
-                  <div className="pr-[20]">
+                  <div>
                     <Link
                       href={
                         problem.day <= day ? `/problems/${problem.ques_id}` : ``
