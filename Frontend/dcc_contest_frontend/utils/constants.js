@@ -34,7 +34,8 @@ export const END_USER = "end_user";
 
 export const ADMIN_DASHBOARD = "/admin/dashboard";
 
-export const BASE_URL = "https://expensive-puce-handbag.cyclic.app";
+export const BASE_URL = "https://b084-185-207-250-57.ngrok-free.app";
+// export const BASE_URL = "https://dcc-code-backend-production.up.railway.app/";
 // export const BASE_URL = "http://localhost:5000";
 
 export const LOGIN_ENDPOINT_BACKEND = "/auth/login";
