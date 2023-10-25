@@ -16,17 +16,16 @@ async function populateDataToOriginalServer() {
       password: process.env.PASSWORD,
     };
     // console.log(apiUrl, postData);
-    const resp = await fetch(apiUrl, {
-      method: "POST",
+    const resp = await axios.post(apiUrl, postData, {
       headers: {
-        "Content-Type": "application/json", // Set the Content-Type to JSON
+        'Content-Type': 'application/json', // Set the Content-Type to JSON
       },
-      body: JSON.stringify(postData), // Convert the data to JSON format
     });
 
-    if (!resp.ok) {
-      throw new Error("Network response was not unable to signIn");
+    if (resp.status !== 200) {
+      throw new Error('Network resp was not unable to signIn');
     }
+    const response = resp.data;
 
     // const response = await axios.post(
     //   `${BACKEND_URL}/auth/login`,
@@ -36,7 +35,6 @@ async function populateDataToOriginalServer() {
     //   }
     // );
     // console.log(response.status,"\n\n");
-    const response = await resp.json();
     // if (response.status !== 200) {
 
     //   console.log("error in logging in");

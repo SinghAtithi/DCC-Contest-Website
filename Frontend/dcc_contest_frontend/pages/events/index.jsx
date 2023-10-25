@@ -241,7 +241,7 @@ function ProblemHeader({ progress, points = 0 }) {
               ></path>
             </svg>
 
-            <h2>{points}</h2>
+            <h2>{points*100}</h2>
           </div>
         </div>
       </div>
@@ -285,7 +285,7 @@ function ProblemHeader({ progress, points = 0 }) {
               ></path>
             </svg>
 
-            <h2>{points}</h2>
+            <h2>{points*100}</h2>
           </div>
         </div>
         <Progress progress={progress} />
