@@ -12,6 +12,7 @@ const Submission = require("../models/submission");
 const moment = require("moment");
 const { BACKEND_URL } = require("../utils/constants.js");
 const customComp=require("../utils/customComp.js");
+const axios = require("axios");
 
 router.get("/getQuestion", async (req, res) => {
   const requiredAttributes = ["name", "ques_id", "day"];
@@ -342,10 +343,9 @@ router.post("/topicCodeForces", async (req, res) => {
     const curDay = calculateCurrDays(); // Calculate the difference in days
 
     const codeforcesUrl = `https://codeforces.com/api/user.status?handle=${username}&from=1&count=500`;
-    const response = await fetch(codeforcesUrl, { method: "GET" });
-    const jsonObject = await response.json();
+    const response = await axios.get(codeforcesUrl);
+    const jsonObject= response.data;
     const status = jsonObject.result;
-
     let binaryString = "0";
 
     for (let i = 0; i < curDay; i++) {
@@ -399,16 +399,17 @@ router.get("/testLogin", async (req, resp) => {
       password: process.env.PASSWORD,
     };
     console.log(apiUrl, postData);
-    const response = await fetch(apiUrl, {
-      method: "POST",
+    const response = await axios.post(apiUrl, postData, {
       headers: {
-        "Content-Type": "application/json", // Set the Content-Type to JSON
+        'Content-Type': 'application/json', // Set the Content-Type to JSON
       },
-      body: JSON.stringify(postData), // Convert the data to JSON format
     });
-    if (!response.ok) {
-      throw new Error(`Network response was not unable to signIn --> LoginId: ${(process.env.LOGIN_ID)} and password:${(process.env.PASSWORD!==undefined)}`);
+
+    if (response.status !== 200) {
+      throw new Error('Network response was not unable to signIn');
     }
+    const responseData = response.data;
+    console.log(responseData);
     resp.status(200).json({ message: `login Successfully userName ${process.env.LOGIN_ID}` });
   } catch (err) 
   {
