@@ -35,7 +35,6 @@ import { Provider } from "react-redux";
 import store from "../store/baseStore";
 import Auth from "../components/Auth";
 import Head from "next/head";
-import MainContext from "../../Context/MainContext";
 export default function App({ Component, pageProps }) {
   return (
     <>
